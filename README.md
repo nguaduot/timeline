@@ -1,4 +1,4 @@
-![icon](./timeline/Assets/StoreLogo.scale-200.png)
+![icon](./Timeline/Assets/StoreLogo.scale-200.png)
 
 # 拾光 for Windows 11
 
