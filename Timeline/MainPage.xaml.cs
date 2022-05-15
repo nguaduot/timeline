@@ -505,6 +505,8 @@ namespace Timeline {
         }
 
         private async void CheckLaunchAsync() {
+            int actions = (int)(localSettings.Values["Actions"] ?? 0);
+            localSettings.Values["Actions"] = ++actions;
             // 检查菜单提示
             if (!localSettings.Values.ContainsKey("MenuLearned")) {
                 await Task.Delay(1000);
@@ -524,22 +526,19 @@ namespace Timeline {
                 }
             }
             // 检查评分提示
-            if (!localSettings.Values.ContainsKey("ReqReview")) {
-                int times = (int)(localSettings.Values["Actions"] ?? 0);
-                localSettings.Values["Actions"] = ++times;
-                if (times >= 15) {
-                    await Task.Delay(1000);
-                    FlyoutMenu.Hide();
-                    var action = await new ReviewDlg {
-                        RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-                    }.ShowAsync();
-                    if (action == ContentDialogResult.Primary) {
-                        _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
-                    } else { // 下次一定
-                        localSettings.Values.Remove("ReqReview");
-                    }
-                    return;
+            if (!localSettings.Values.ContainsKey("ReqReview") && actions >= 15) {
+                await Task.Delay(1000);
+                FlyoutMenu.Hide();
+                var action = await new ReviewDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                }.ShowAsync();
+                if (action == ContentDialogResult.Primary) {
+                    localSettings.Values["ReqReview"] = true;
+                    _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+                } else { // 下次一定
+                    localSettings.Values.Remove("Actions");
                 }
+                return;
             }
             // 检查更新
             release = await Api.CheckUpdate();

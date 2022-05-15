@@ -73,6 +73,8 @@
 
 ## 截图
 
+![Microsoft Store](./sample/store.png)
+
 ![截图1](./sample/screenshot02.png)
 
 ![截图2](./sample/向日葵8号.gif)
