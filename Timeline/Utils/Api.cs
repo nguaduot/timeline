@@ -15,7 +15,7 @@ using Windows.System.UserProfile;
 
 namespace Timeline.Utils {
     public class Api {
-        public const string URI_STORE = "ms-windows-store://pdp/?productid=9N7VHQ989BB7";
+        //public const string URI_STORE = "ms-windows-store://pdp/?productid=9N7VHQ989BB7";
 
         public static async void Stats(Ini ini, bool status) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
@@ -134,58 +134,57 @@ namespace Timeline.Utils {
             if ("fp51msqsmzpvr".Equals(Package.Current.Id.PublisherId)) {
                 return await CheckUpdateFromStore();
             }
-            return await CheckUpdateFromGithub();
+            return await CheckUpdateFromGitee();
         }
 
         public static async Task<ReleaseApi> CheckUpdateFromStore() {
+            ReleaseApi res = new ReleaseApi();
             if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return null;
+                return res;
             }
             try {
                 StoreContext context = StoreContext.GetDefault();
                 IReadOnlyList<StorePackageUpdate> updates = await context.GetAppAndOptionalStorePackageUpdatesAsync();
                 if (updates.Count > 0) {
-                    return new ReleaseApi {
-                        Version = "",
-                        Url = URI_STORE
-                    };
+                    res.Url = "ms-windows-store://pdp/?productid=9N7VHQ989BB7";
                 }
             } catch (Exception e) {
                 Debug.WriteLine(e);
             }
-            return null;
+            return res;
         }
 
-        public static async Task<ReleaseApi> CheckUpdateFromGithub() {
+        public static async Task<ReleaseApi> CheckUpdateFromGitee() {
+            ReleaseApi res = new ReleaseApi();
             if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return null;
+                return res;
             }
-            const string URL_RELEASE = "https://api.github.com/repos/nguaduot/TimelineWallpaper/releases/latest";
+            const string URL_RELEASE = "https://gitee.com/api/v5/repos/nguaduot/timeline/releases/latest";
             try {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("timelinewallpaper", VerUtil.GetPkgVer(true)));
                 string jsonData = await client.GetStringAsync(URL_RELEASE);
                 Debug.WriteLine("release: " + jsonData.Trim());
-                GithubApi api = JsonConvert.DeserializeObject<GithubApi>(jsonData);
+                GiteeApi api = JsonConvert.DeserializeObject<GiteeApi>(jsonData);
+                if (api.Prerelease) { // 忽略预览版本
+                    return res;
+                }
                 string[] versions = api.TagName.Split(".");
                 if (versions.Length < 2) {
-                    return null;
+                    return res;
                 }
                 int major = Package.Current.Id.Version.Major;
                 int minor = Package.Current.Id.Version.Minor;
                 _ = int.TryParse(versions[0], out int majorNew);
                 _ = int.TryParse(versions[1], out int minorNew);
-                if (majorNew < major || (majorNew == major && minorNew <= minor)) {
-                    return null;
+                if (majorNew > major || (majorNew == major && minorNew > minor)) {
+                    res.Version = " v" + majorNew + "." + minorNew;
+                    res.Url = string.Format("https://gitee.com/nguaduot/timeline/releases/{0}", api.TagName);
                 }
-                return new ReleaseApi {
-                    Version = " v" + majorNew + "." + minorNew,
-                    Url = api.Url
-                };
             } catch (Exception e) {
                 Debug.WriteLine(e);
             }
-            return null;
+            return res;
         }
     }
 }

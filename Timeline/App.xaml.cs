@@ -118,11 +118,11 @@ namespace Timeline {
         }
 
         private void OptimizeSize() {
-            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("optimizeSize")) {
-                ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(960, 600);
+            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("OptimizeSize")) {
+                ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
+                ApplicationView.PreferredLaunchViewSize = new Size(960, 600);
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
-                ApplicationData.Current.LocalSettings.Values["optimizeSize"] = true;
             }
         }
 

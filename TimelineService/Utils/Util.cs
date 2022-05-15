@@ -11,7 +11,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-4.5.ini";
+        private const string FILE_INI = "timeline-5.0.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,

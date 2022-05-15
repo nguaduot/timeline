@@ -8,13 +8,13 @@
 
   <Identity
     Name="54311Bysyk.forWindows11"
-    Publisher="CN=2D8A43ED-3DC1-4AB1-AFFC-B379B33C48BD"
-    Version="5.0.1.0" />
+    Publisher="CN=nguaduot"
+    Version="5.0.137.0" />
 
   <mp:PhoneIdentity PhoneProductId="72089c04-a7cf-4ca7-9710-a5a83ac78b21" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>拾光 for Windows 11</DisplayName>
+    <DisplayName>Timeline Wallpaper</DisplayName>
     <PublisherDisplayName>By_syk</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

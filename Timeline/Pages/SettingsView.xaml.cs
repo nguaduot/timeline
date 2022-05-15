@@ -254,9 +254,8 @@ namespace Timeline.Pages {
             SettingsWallhereDesc.Text = resLoader.GetString("Slogan_" + WallhereIni.ID);
 
             if (!ini.Provider.Equals(sender.Tag)) {
-                IniUtil.SaveProvider(sender.Tag.ToString());
                 SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                    ProviderChanged = true
+                    Provider = sender.Tag.ToString()
                 });
             }
         }
@@ -299,6 +298,10 @@ namespace Timeline.Pages {
             LaunchFolder(ApplicationData.Current.TemporaryFolder);
         }
 
+        private void BtnReview_Click(object sender, RoutedEventArgs e) {
+            _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+        }
+
         private void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
@@ -309,7 +312,7 @@ namespace Timeline.Pages {
             IniUtil.SaveBingLang(paras.Id);
             IniUtil.SaveProvider(BingIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -323,7 +326,7 @@ namespace Timeline.Pages {
             IniUtil.SaveNasaMirror(mirror);
             IniUtil.SaveProvider(NasaIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -337,7 +340,7 @@ namespace Timeline.Pages {
             IniUtil.SaveOneplusOrder(paras.Id);
             IniUtil.SaveProvider(OneplusIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -351,7 +354,7 @@ namespace Timeline.Pages {
             IniUtil.SaveTimelineCate(paras.Id);
             IniUtil.SaveProvider(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -365,12 +368,18 @@ namespace Timeline.Pages {
             IniUtil.SaveTimelineOrder(paras.Id);
             IniUtil.SaveProvider(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
         private void BtnTimelineContribute_Click(object sender, RoutedEventArgs e) {
             ContributeChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
+            _ = new DonateDlg {
+                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+            }.ShowAsync();
         }
 
         private void BoxHimawari8Offset_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
@@ -390,7 +399,7 @@ namespace Timeline.Pages {
                     IniUtil.SaveHimawari8Offset(offset);
                     IniUtil.SaveProvider(Himawari8Ini.ID);
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                        ProviderChanged = true
+                        ProviderConfigChanged = true
                     });
                 };
             }
@@ -408,7 +417,7 @@ namespace Timeline.Pages {
             IniUtil.SaveYmyouliCate(paras.Id);
             IniUtil.SaveProvider(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -422,7 +431,7 @@ namespace Timeline.Pages {
             IniUtil.SaveYmyouliOrder(paras.Id);
             IniUtil.SaveProvider(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -440,7 +449,7 @@ namespace Timeline.Pages {
             IniUtil.SaveInfinityOrder(paras.Id);
             IniUtil.SaveProvider(InfinityIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -454,7 +463,7 @@ namespace Timeline.Pages {
             IniUtil.SaveOneOrder(paras.Id);
             IniUtil.SaveProvider(OneIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -468,7 +477,7 @@ namespace Timeline.Pages {
             IniUtil.SaveQingbzCate(paras.Id);
             IniUtil.SaveProvider(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -482,7 +491,7 @@ namespace Timeline.Pages {
             IniUtil.SaveQingbzOrder(paras.Id);
             IniUtil.SaveProvider(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -500,7 +509,7 @@ namespace Timeline.Pages {
             IniUtil.SaveObzhiCate(paras.Id);
             IniUtil.SaveProvider(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -514,7 +523,7 @@ namespace Timeline.Pages {
             IniUtil.SaveObzhiOrder(paras.Id);
             IniUtil.SaveProvider(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -528,7 +537,7 @@ namespace Timeline.Pages {
             IniUtil.SaveWallhereCate(paras.Id);
             IniUtil.SaveProvider(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -542,12 +551,8 @@ namespace Timeline.Pages {
             IniUtil.SaveWallhereOrder(paras.Id);
             IniUtil.SaveProvider(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderChanged = true
+                ProviderConfigChanged = true
             });
-        }
-
-        private void BtnReview_Click(object sender, RoutedEventArgs e) {
-            _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
         }
     }
 
@@ -560,7 +565,9 @@ namespace Timeline.Pages {
     }
 
     public class SettingsEventArgs : EventArgs {
-        public bool ProviderChanged { get; set; }
+        public string Provider { get; set; }
+
+        public bool ProviderConfigChanged { get; set; }
 
         public bool ThemeChanged { get; set; }
     }

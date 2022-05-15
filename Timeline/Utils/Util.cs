@@ -18,7 +18,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-4.5.ini";
+        private const string FILE_INI = "timeline-5.0.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -38,14 +38,15 @@ namespace Timeline.Utils {
                 Debug.WriteLine("copied ini: " + iniFile.Path);
                 if (oldFiles.Length > 0) { // 继承设置
                     Debug.WriteLine("inherit: " + oldFiles[0].Name);
+                    // TODO：下一版 timelinewallpaper >>> app
                     StringBuilder sb = new StringBuilder(1024);
-                    _ = GetPrivateProfileString("app", "provider", "bing", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("timelinewallpaper", "provider", "bing", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "provider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("timelinewallpaper", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("timelinewallpaper", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("timelinewallpaper", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
                 }
             }

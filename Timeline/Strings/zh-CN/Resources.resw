@@ -282,12 +282,6 @@
   <data name="MsgUpdate" xml:space="preserve">
     <value>「拾光」已发布新版本</value>
   </data>
-  <data name="TipMenu.Subtitle" xml:space="preserve">
-    <value>您可以使用鼠标右键弹出菜单，更换桌面背景、保存图片、开启推送等。</value>
-  </data>
-  <data name="TipMenu.Title" xml:space="preserve">
-    <value>操作提示</value>
-  </data>
   <data name="DlgReview.CloseButtonText" xml:space="preserve">
     <value>下次一定</value>
   </data>
@@ -322,7 +316,7 @@
     <value>该项目已在 </value>
   </data>
   <data name="TextContatc1.Text" xml:space="preserve">
-    <value>GitHub</value>
+    <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
     <value> 开源。若有任何疑问、想法或合作意向，可发 </value>
@@ -519,14 +513,8 @@
   <data name="DlgReview.PrimaryButtonText" xml:space="preserve">
     <value>前往评分</value>
   </data>
-  <data name="MsgCtrlR" xml:space="preserve">
-    <value>Ctrl+R：刷新；向左键/滚轮：浏览往期图片</value>
-  </data>
-  <data name="MsgF5" xml:space="preserve">
-    <value>F5：刷新；向左/滚轮：浏览往期图片</value>
-  </data>
-  <data name="MsgKey" xml:space="preserve">
-    <value>快捷键</value>
+  <data name="MsgRefresh" xml:space="preserve">
+    <value>已强制刷新</value>
   </data>
   <data name="TextContributePrivacy.Text" xml:space="preserve">
     <value>投稿一经采用，本项目将无偿非商业性使用您的摄影作品。</value>
@@ -607,7 +595,7 @@
     <value>评分</value>
   </data>
   <data name="BtnYmyouliDonate.Content" xml:space="preserve">
-    <value>赞助支持</value>
+    <value>前往官网</value>
   </data>
   <data name="SettingsReviewDesc.Text" xml:space="preserve">
     <value>连雨不知春去，一晴方觉夏深</value>
@@ -628,7 +616,7 @@
     <value>如果您愿意为「拾光」提供其他语言的翻译，请联系我，感谢。 </value>
   </data>
   <data name="TextYmyouliDonate.Text" xml:space="preserve">
-    <value>维护不易</value>
+    <value>支持一下</value>
   </data>
   <data name="UrlYmyouli" xml:space="preserve">
     <value>https://www.ymyouli.com/</value>
@@ -652,7 +640,7 @@
     <value>随机</value>
   </data>
   <data name="BtnQingbzDonate.Content" xml:space="preserve">
-    <value>加鸡腿</value>
+    <value>前往官网</value>
   </data>
   <data name="MenuProviderQingbz.Text" xml:space="preserve">
     <value>轻壁纸 - 4K壁纸分享站</value>
@@ -712,7 +700,7 @@
     <value>排序</value>
   </data>
   <data name="UrlQingbz" xml:space="preserve">
-    <value>https://bz.qinggongju.com/</value>
+    <value>https://bz.qinggongju.com/1159-2/</value>
   </data>
   <data name="MenuProviderObzhi.Text" xml:space="preserve">
     <value>乌云壁纸 - 高清壁纸站</value>
@@ -768,8 +756,8 @@
   <data name="YmyouliOrder_score" xml:space="preserve">
     <value>热度</value>
   </data>
-  <data name="MsgLeft" xml:space="preserve">
-    <value>你还可以使用方向键或滚轮进行回顾</value>
+  <data name="MsgYesterdayDesc" xml:space="preserve">
+    <value>还可用向左键、鼠标滚轮或滑动来回顾</value>
   </data>
   <data name="MenuProviderWallhere.Text" xml:space="preserve">
     <value>WallHere - 世界著名的壁纸网站之一</value>
@@ -820,6 +808,24 @@
     <value>固定</value>
   </data>
   <data name="MsgPin" xml:space="preserve">
-    <value>将「拾光」固定到任务栏？</value>
+    <value>若频繁使用，可将「拾光」固定到任务栏</value>
+  </data>
+  <data name="BtnTimelineDonate.Content" xml:space="preserve">
+    <value>扫码赞助</value>
+  </data>
+  <data name="MsgMenu" xml:space="preserve">
+    <value>菜单</value>
+  </data>
+  <data name="TextTimelineDonate.Text" xml:space="preserve">
+    <value>支持一下</value>
+  </data>
+  <data name="MsgMenuDesc" xml:space="preserve">
+    <value>可点按鼠标右键显示菜单</value>
+  </data>
+  <data name="MsgProvider" xml:space="preserve">
+    <value>已切换图源：{0}</value>
+  </data>
+  <data name="MsgYesterday" xml:space="preserve">
+    <value>回顾</value>
   </data>
 </root>

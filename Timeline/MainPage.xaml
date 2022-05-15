@@ -327,23 +327,6 @@
             </muxc:CommandBarFlyout.SecondaryCommands>
         </muxc:CommandBarFlyout>
 
-        <muxc:TeachingTip x:Name="TipMenu"
-                          x:Uid="TipMenu"
-                          Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                          IsLightDismissEnabled="True"
-                          PreferredPlacement="Right"
-                          HeroContentPlacement="Top">
-            <muxc:TeachingTip.HeroContent>
-                <Image Source="Assets/Images/tip_menu.jpg"
-                       Opacity="0.7" />
-            </muxc:TeachingTip.HeroContent>
-            <muxc:TeachingTip.IconSource>
-                <muxc:FontIconSource FontFamily="{StaticResource ResourceKey=FluentIcons}"
-                                     FontSize="20"
-                                     Glyph="&#xE961;" />
-            </muxc:TeachingTip.IconSource>
-        </muxc:TeachingTip>
-
         <Flyout x:Key="FlyoutGo"
                 x:Name="FlyoutGo"
                 Placement="RightEdgeAlignedBottom"
@@ -420,6 +403,8 @@
                        Background="Transparent"
                        Tapped="ViewMain_Tapped"
                        DoubleTapped="ViewMain_DoubleTapped"
+                       ManipulationMode="TranslateX,TranslateY"
+                       ManipulationCompleted="ViewMain_ManipulationCompleted"
                        PointerWheelChanged="ViewMain_PointerWheelChanged"
                        ContextFlyout="{x:Bind FlyoutMenu}">
 

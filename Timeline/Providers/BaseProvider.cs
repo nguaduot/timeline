@@ -125,12 +125,12 @@ namespace Timeline.Providers {
             return metas.Count > 0 ? metas[index] : null;
         }
 
-        public Meta Tormorrow() {
+        public Meta Tomorrow() {
             indexFocus = indexFocus > 0 ? indexFocus - 1 : 0;
             return metas.Count > 0 ? metas[indexFocus] : null;
         }
 
-        public Meta GetTormorrow() {
+        public Meta GetTomorrow() {
             int index = indexFocus > 0 ? indexFocus - 1 : 0;
             return metas.Count > 0 ? metas[index] : null;
         }

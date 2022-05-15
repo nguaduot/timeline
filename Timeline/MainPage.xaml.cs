@@ -58,7 +58,7 @@ namespace Timeline {
             localSettings = ApplicationData.Current.LocalSettings;
             Init();
             LoadFocusAsync();
-            CheckUpdateAsync();
+            CheckLaunchAsync();
         }
 
         private void Init() {
@@ -87,13 +87,8 @@ namespace Timeline {
             Meta metaCache = await provider.Cache(meta);
             if (metaCache != null && metaCache.Id == meta?.Id) {
                 ShowImg(meta);
-                ShowTips();
-                CheckReviewAsync();
                 Api.Stats(ini, true);
             }
-
-            // 预加载
-            //PreLoadYesterdayAsync();
         }
 
         private async void LoadYesterdayAsync() {
@@ -116,11 +111,11 @@ namespace Timeline {
             }
             if (metaCache != null && metaCache.Id == meta?.Id) {
                 ShowImg(meta);
-                CheckReviewAsync();
+                localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
             }
         }
 
-        private async void LoadTormorrowAsync() {
+        private async void LoadTomorrowAsync() {
             long cost = DateTime.Now.Ticks;
             if (!await provider.LoadData(ini.GetIni())) {
                 Debug.WriteLine("failed to load data");
@@ -131,7 +126,7 @@ namespace Timeline {
                 return;
             }
 
-            meta = provider.Tormorrow();
+            meta = provider.Tomorrow();
             Debug.WriteLine("tormorrow: " + JsonConvert.SerializeObject(meta).Trim());
             ShowText(meta);
             Meta metaCache = await provider.Cache(meta);
@@ -198,8 +193,6 @@ namespace Timeline {
             }
             provider = ini.GenerateProvider();
 
-            //MenuPushDesktop.Label = string.Format(resLoader.GetString("PushDesktop"), resLoader.GetString("Provider_" + provider.Id));
-            //MenuPushLock.Label = string.Format(resLoader.GetString("PushLock"), resLoader.GetString("Provider_" + provider.Id));
             MenuCurDesktop.Label = string.Format(resLoader.GetString("CurDesktop"), resLoader.GetString("Provider_" + ini.DesktopProvider));
             MenuCurLock.Label = string.Format(resLoader.GetString("CurLock"), resLoader.GetString("Provider_" + ini.LockProvider));
             if (string.IsNullOrEmpty(ini.DesktopProvider)) {
@@ -362,7 +355,7 @@ namespace Timeline {
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
 
-            ToggleInfo(null, null);
+            //ToggleInfo(null, null);
         }
 
         private void StatusLoading() {
@@ -373,7 +366,7 @@ namespace Timeline {
             ProgressLoading.ShowError = false;
             ProgressLoading.Visibility = Visibility.Visible;
 
-            ToggleInfo(null, null);
+            //ToggleInfo(null, null);
         }
 
         private void StatusError() {
@@ -399,17 +392,6 @@ namespace Timeline {
 
             ToggleInfo(null, !NetworkInterface.GetIsNetworkAvailable() ? resLoader.GetString("MsgNoInternet")
                 : string.Format(resLoader.GetString("MsgLostProvider"), resLoader.GetString("Provider_" + provider.Id)));
-        }
-
-        private async void ShowTips() {
-            if (localSettings.Values.ContainsKey("MenuLearned")) {
-                return;
-            }
-            await Task.Delay(3000);
-            if (localSettings.Values.ContainsKey("MenuLearned")) {
-                return;
-            }
-            TipMenu.IsOpen = true;
         }
 
         private async void SetWallpaperAsync(Meta meta, bool setDesktopOrLock) {
@@ -453,8 +435,8 @@ namespace Timeline {
                 resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 ToggleInfo(null, resLoader.GetString("MsgSave1"), InfoBarSeverity.Success, resLoader.GetString("ActionGo"), () => {
-                    LaunchPicLib(file);
                     ToggleInfo(null, null);
+                    LaunchPicLib(file);
                 });
             } else {
                 ToggleInfo(null, resLoader.GetString("MsgSave0"));
@@ -522,49 +504,51 @@ namespace Timeline {
                 InfoBarSeverity.Informational);
         }
 
-        private async void CheckUpdateAsync() {
+        private async void CheckLaunchAsync() {
+            // 检查菜单提示
+            if (!localSettings.Values.ContainsKey("MenuLearned")) {
+                await Task.Delay(1000);
+                ToggleInfo(resLoader.GetString("MsgMenu"), resLoader.GetString("MsgMenuDesc"), InfoBarSeverity.Informational);
+                return;
+            }
+            // 检查任务栏固定提示
+            if (TaskbarManager.GetDefault().IsPinningAllowed && !await TaskbarManager.GetDefault().IsCurrentAppPinnedAsync()) {
+                int times = (int)(localSettings.Values["CheckPinTimes"] ?? 0);
+                localSettings.Values["CheckPinTimes"] = ++times;
+                if (times == 2) {
+                    await Task.Delay(1000);
+                    ToggleInfo(null, resLoader.GetString("MsgPin"), InfoBarSeverity.Informational, resLoader.GetString("ActionPin"), async () => {
+                        _ = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
+                    });
+                    return;
+                }
+            }
+            // 检查评分提示
+            if (!localSettings.Values.ContainsKey("ReqReview")) {
+                int times = (int)(localSettings.Values["Actions"] ?? 0);
+                localSettings.Values["Actions"] = ++times;
+                if (times >= 15) {
+                    await Task.Delay(1000);
+                    FlyoutMenu.Hide();
+                    var action = await new ReviewDlg {
+                        RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                    }.ShowAsync();
+                    if (action == ContentDialogResult.Primary) {
+                        _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+                    } else { // 下次一定
+                        localSettings.Values.Remove("ReqReview");
+                    }
+                    return;
+                }
+            }
+            // 检查更新
             release = await Api.CheckUpdate();
-            if (release == null) {
-                CheckPinAsync();
-                return;
-            }
-            await Task.Delay(2000);
-            ToggleInfo(null, resLoader.GetString("MsgUpdate"), InfoBarSeverity.Informational, resLoader.GetString("ActionGo"), () => {
-                LaunchRelealse();
-                ToggleInfo(null, null);
-            });
-        }
-
-        private async void CheckPinAsync() {
-            if (!TaskbarManager.GetDefault().IsPinningAllowed) { // 任务栏不存在或不允许固定
-                return;
-            }
-            int.TryParse(localSettings.Values["checkPinTimes"]?.ToString(), out int times);
-            localSettings.Values["checkPinTimes"] = ++times;
-            if (times != 2 || await TaskbarManager.GetDefault().IsCurrentAppPinnedAsync()) { // 确保仅提示一次，若已固定则不提示
-                return;
-            }
-            await Task.Delay(1000);
-            ToggleInfo(null, resLoader.GetString("MsgPin"), InfoBarSeverity.Informational, resLoader.GetString("ActionPin"), async () => {
-                _ = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
-            });
-        }
-
-        private async void CheckReviewAsync() {
-            int.TryParse(localSettings.Values["launchTimes"]?.ToString(), out int times);
-            localSettings.Values["launchTimes"] = ++times;
-            if (times != 15) { // 确保仅提示一次
-                return;
-            }
-            await Task.Delay(1000);
-            FlyoutMenu.Hide();
-            var action = await new ReviewDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-            }.ShowAsync();
-            if (action == ContentDialogResult.Primary) {
-                _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
-            } else {
-                localSettings.Values.Remove("launchTimes");
+            if (!string.IsNullOrEmpty(release.Url)) {
+                await Task.Delay(1000);
+                ToggleInfo(null, resLoader.GetString("MsgUpdate"), InfoBarSeverity.Informational, resLoader.GetString("ActionGo"), () => {
+                    ToggleInfo(null, null);
+                    LaunchRelealse();
+                });
             }
         }
 
@@ -645,13 +629,11 @@ namespace Timeline {
 
         private void MenuYesterday_Click(object sender, RoutedEventArgs e) {
             AnimeYesterday1.Begin();
-            int.TryParse(localSettings.Values["actionYesterday"]?.ToString(), out int times);
-            localSettings.Values["actionYesterday"] = ++times;
-            if (times == 2) {
-                ToggleInfo(resLoader.GetString("MsgKey"), resLoader.GetString("MsgLeft"), InfoBarSeverity.Informational);
-            } else {
-                StatusLoading();
-                LoadYesterdayAsync();
+            StatusLoading();
+            LoadYesterdayAsync();
+            if (!localSettings.Values.ContainsKey("YesterdayLearned")) {
+                localSettings.Values["YesterdayLearned"] = true;
+                ToggleInfo(resLoader.GetString("MsgYesterday"), resLoader.GetString("MsgYesterdayDesc"), InfoBarSeverity.Informational);
             }
         }
 
@@ -659,14 +641,14 @@ namespace Timeline {
             FlyoutMenu.Hide();
             SetWallpaperAsync(meta, true);
             Api.Rank(ini, meta, "desktop");
-            CheckReviewAsync();
+            localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
         private void MenuSetLock_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             SetWallpaperAsync(meta, false);
             Api.Rank(ini, meta, "lock");
-            CheckReviewAsync();
+            localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
         private void MenuFill_Click(object sender, RoutedEventArgs e) {
@@ -678,7 +660,7 @@ namespace Timeline {
             FlyoutMenu.Hide();
             DownloadAsync();
             Api.Rank(ini, meta, "save");
-            CheckReviewAsync();
+            localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
         private void MenuDislike_Click(object sender, RoutedEventArgs e) {
@@ -764,11 +746,15 @@ namespace Timeline {
             FlyoutMenu.Hide();
             ViewSplit.IsPaneOpen = false;
 
-            IniUtil.SaveProvider(((RadioMenuFlyoutItem)sender).Tag.ToString());
+            string providerIdNew = ((RadioMenuFlyoutItem)sender).Tag.ToString();
+            IniUtil.SaveProvider(providerIdNew);
             ini = null;
             provider = null;
             StatusLoading();
             LoadFocusAsync();
+
+            ToggleInfo(null, string.Format(resLoader.GetString("MsgProvider"),
+                resLoader.GetString("Provider_" + providerIdNew)), InfoBarSeverity.Informational);
         }
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e) {
@@ -795,10 +781,6 @@ namespace Timeline {
             ToggleInfo(null, null);
         }
 
-        //private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
-        //    StatusEnjoy();
-        //}
-
         private void BoxGo_KeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key == VirtualKey.Enter) {
                 FlyoutGo.Hide();
@@ -817,10 +799,45 @@ namespace Timeline {
 
         private void ViewMain_Tapped(object sender, TappedRoutedEventArgs e) {
             ViewSplit.IsPaneOpen = false;
+            ToggleInfo(null, null);
         }
 
         private void ViewMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
             ToggleFullscreenMode();
+        }
+
+        private void ViewMain_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e) {
+            if (e.Cumulative.Translation.X < -100 || e.Cumulative.Translation.Y < -100) {
+                StatusLoading();
+                LoadYesterdayAsync();
+            } else if (e.Cumulative.Translation.X > 100 || e.Cumulative.Translation.Y > 100) {
+                StatusLoading();
+                LoadTomorrowAsync();
+            }
+            e.Handled = true;
+
+            ToggleInfo(null, null);
+        }
+
+        private void ViewMain_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
+            timerValue = e.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
+            if (stretchTimer == null) {
+                stretchTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 300) };
+                stretchTimer.Tick += (sender2, e2) => {
+                    stretchTimer.Stop();
+                    if (timerValue > 0) {
+                        StatusLoading();
+                        LoadYesterdayAsync();
+                    } else {
+                        StatusLoading();
+                        LoadTomorrowAsync();
+                    }
+                };
+            }
+            stretchTimer.Stop();
+            stretchTimer.Start();
+
+            ToggleInfo(null, null);
         }
 
         //private void ViewMain_RightTapped(object sender, RightTappedRoutedEventArgs e) {
@@ -843,26 +860,8 @@ namespace Timeline {
             e.Handled = true;
         }
 
-        private void ViewMain_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
-            timerValue = e.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
-            if (stretchTimer == null) {
-                stretchTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 300) };
-                stretchTimer.Tick += (sender2, e2) => {
-                    stretchTimer.Stop();
-                    //ToggleImgMode(ImgUhd.Stretch != Stretch.UniformToFill);
-                    StatusLoading();
-                    if (timerValue > 0) {
-                        LoadYesterdayAsync();
-                    } else {
-                        LoadTormorrowAsync();
-                    }
-                };
-            }
-            stretchTimer.Stop();
-            stretchTimer.Start();
-        }
-
         private void KeyInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+            ToggleInfo(null, null);
             switch (sender.Key) {
                 case VirtualKey.Left:
                 case VirtualKey.Up:
@@ -872,7 +871,7 @@ namespace Timeline {
                 case VirtualKey.Right:
                 case VirtualKey.Down:
                     StatusLoading();
-                    LoadTormorrowAsync();
+                    LoadTomorrowAsync();
                     break;
                 case VirtualKey.Escape:
                 case VirtualKey.Enter:
@@ -966,7 +965,7 @@ namespace Timeline {
                 case VirtualKey.R:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
                         FlyoutMenu.Hide();
-                        Refresh(true);
+                        Refresh();
                     }
                     break;
                 case VirtualKey.F5:
@@ -987,17 +986,13 @@ namespace Timeline {
             args.Handled = true;
         }
 
-        private void Refresh(bool useCtrlR = false) {
+        private void Refresh() {
             ini = null;
             provider = null;
             StatusLoading();
             LoadFocusAsync();
 
-            if (!localSettings.Values.ContainsKey("tipRefresh")) {
-                localSettings.Values["tipRefresh"] = true;
-                ToggleInfo(resLoader.GetString("MsgKey"), useCtrlR ? resLoader.GetString("MsgCtrlR") : resLoader.GetString("MsgF5"),
-                    InfoBarSeverity.Informational);
-            }
+            ToggleInfo(null, resLoader.GetString("MsgRefresh"), InfoBarSeverity.Informational);
         }
 
         private void AnimeYesterday1_Completed(object sender, object e) {
@@ -1012,8 +1007,21 @@ namespace Timeline {
             AnimeDislike.Begin();
         }
 
+        private void MenuFillOff_PointerEntered(object sender, PointerRoutedEventArgs e) {
+            AnimeFillOff.Begin();
+        }
+
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
-            if (e.ProviderChanged) {
+            if (e.Provider != null) {
+                IniUtil.SaveProvider(e.Provider);
+                ini = null;
+                provider = null;
+                StatusLoading();
+                LoadFocusAsync();
+
+                ToggleInfo(null, string.Format(resLoader.GetString("MsgProvider"),
+                    resLoader.GetString("Provider_" + e.Provider)), InfoBarSeverity.Informational);
+            } else if (e.ProviderConfigChanged) {
                 ini = null;
                 provider = null;
                 StatusLoading();
@@ -1054,10 +1062,6 @@ namespace Timeline {
                     ToggleInfo(null, resLoader.GetString("MsgContribute0"), InfoBarSeverity.Warning);
                 }
             }
-        }
-
-        private void MenuFillOff_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeFillOff.Begin();
         }
     }
 }

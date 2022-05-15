@@ -222,38 +222,20 @@
   <data name="MsgWallpaper0" xml:space="preserve">
     <value>It's not allowed to change desktop / lock screen background.</value>
   </data>
-  <data name="Provider_3g" xml:space="preserve">
-    <value>3G壁纸</value>
-  </data>
   <data name="Provider_bing" xml:space="preserve">
     <value>Microsoft Bing</value>
   </data>
   <data name="Provider_timeline" xml:space="preserve">
     <value>Timeline</value>
   </data>
-  <data name="Provider_daihan" xml:space="preserve">
-    <value>呆憨API</value>
-  </data>
-  <data name="Provider_dmoe" xml:space="preserve">
-    <value>樱花API</value>
-  </data>
   <data name="Provider_infinity" xml:space="preserve">
     <value>Infinity</value>
-  </data>
-  <data name="Provider_mty" xml:space="preserve">
-    <value>墨天逸API</value>
   </data>
   <data name="Provider_nasa" xml:space="preserve">
     <value>NASA</value>
   </data>
   <data name="Provider_oneplus" xml:space="preserve">
     <value>OnePlus</value>
-  </data>
-  <data name="Provider_seovx" xml:space="preserve">
-    <value>夏末博客API</value>
-  </data>
-  <data name="Provider_toubiec" xml:space="preserve">
-    <value>晓晴API</value>
   </data>
   <data name="Provider_ymyouli" xml:space="preserve">
     <value>Ymyouli</value>
@@ -300,12 +282,6 @@
   <data name="MsgUpdate" xml:space="preserve">
     <value>New version is released.</value>
   </data>
-  <data name="TipMenu.Subtitle" xml:space="preserve">
-    <value>Right-click to show menus.</value>
-  </data>
-  <data name="TipMenu.Title" xml:space="preserve">
-    <value>Tips</value>
-  </data>
   <data name="DlgReview.CloseButtonText" xml:space="preserve">
     <value>Maybe next</value>
   </data>
@@ -340,7 +316,7 @@
     <value>Check out the project on </value>
   </data>
   <data name="TextContatc1.Text" xml:space="preserve">
-    <value>GitHub</value>
+    <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
     <value>. Any questions, please </value>
@@ -531,23 +507,14 @@
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
     <value>Contribute</value>
   </data>
-  <data name="Provider_abyss" xml:space="preserve">
-    <value>Wallpaper Abyss</value>
-  </data>
   <data name="TextContributeUrl.Text" xml:space="preserve">
     <value>Url</value>
   </data>
   <data name="DlgReview.PrimaryButtonText" xml:space="preserve">
     <value>Rate it</value>
   </data>
-  <data name="MsgCtrlR" xml:space="preserve">
-    <value>Ctrl+R: Refresh. LEFT: Look back.</value>
-  </data>
-  <data name="MsgF5" xml:space="preserve">
-    <value>F5: Refresh. LEFT: Look back.</value>
-  </data>
-  <data name="MsgKey" xml:space="preserve">
-    <value>Tips</value>
+  <data name="MsgRefresh" xml:space="preserve">
+    <value>Refreshed.</value>
   </data>
   <data name="TextContributePrivacy.Text" xml:space="preserve">
     <value>Once adopted, this project will use your photographic works for free and non-commercial use.</value>
@@ -631,7 +598,7 @@
     <value>Go</value>
   </data>
   <data name="BtnYmyouliDonate.Content" xml:space="preserve">
-    <value>Donate</value>
+    <value>Go</value>
   </data>
   <data name="SettingsReviewDesc.Text" xml:space="preserve">
     <value>连雨不知春去，一晴方觉夏深</value>
@@ -676,7 +643,7 @@
     <value>Random</value>
   </data>
   <data name="BtnQingbzDonate.Content" xml:space="preserve">
-    <value>Donate</value>
+    <value>Go</value>
   </data>
   <data name="MenuProviderQingbz.Text" xml:space="preserve">
     <value>轻壁纸 - 4K壁纸分享站</value>
@@ -787,12 +754,12 @@
     <value>Recently popular</value>
   </data>
   <data name="UrlQingbz" xml:space="preserve">
-    <value>https://bz.qinggongju.com/</value>
+    <value>https://bz.qinggongju.com/1159-2/</value>
   </data>
   <data name="YmyouliOrder_score" xml:space="preserve">
     <value>Recently popular</value>
   </data>
-  <data name="MsgLeft" xml:space="preserve">
+  <data name="MsgYesterdayDesc" xml:space="preserve">
     <value>Use LEFT or WHEEL to look back.</value>
   </data>
   <data name="MenuProviderWallhere.Text" xml:space="preserve">
@@ -842,5 +809,23 @@
   </data>
   <data name="MsgPin" xml:space="preserve">
     <value>Pin Timeline Wallpaper to the taskbar?</value>
+  </data>
+  <data name="BtnTimelineDonate.Content" xml:space="preserve">
+    <value>Scan QR</value>
+  </data>
+  <data name="MsgMenuDesc" xml:space="preserve">
+    <value>Right-click to show menus.</value>
+  </data>
+  <data name="TextTimelineDonate.Text" xml:space="preserve">
+    <value>Buy me a coffee</value>
+  </data>
+  <data name="MsgMenu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MsgProvider" xml:space="preserve">
+    <value>Current provider: {0}</value>
+  </data>
+  <data name="MsgYesterday" xml:space="preserve">
+    <value>Look back</value>
   </data>
 </root>

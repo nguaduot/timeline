@@ -303,6 +303,27 @@
                                         x:Uid="BtnTimelineContribute"
                                         Click="BtnTimelineContribute_Click" />
                             </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontSize="16"
+                                          Glyph="&#xE95E;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextTimelineDonate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnTimelineDonate"
+                                        x:Uid="BtnTimelineDonate"
+                                        Click="BtnTimelineDonate_Click" />
+                            </Grid>
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
