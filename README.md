@@ -79,8 +79,8 @@
 
 ![截图1](./sample/screenshot02.png)
 
-![截图2](https://s3.bmp.ovh/imgs/2021/12/001241e0a14ef263.gif)
+![截图2](./sample/向日葵8号.gif)
 
-自取：[截图1壁纸原图](./sample/拾光_一梦幽黎_ABUIABACGAAgi8DPjwYoiKbruQYwgDw4-Bw.jpg)
+自取：[截图1壁纸原图](https://gitee.com/nguaduot/timeline/raw/master/sample/%E6%8B%BE%E5%85%89_%E4%B8%80%E6%A2%A6%E5%B9%BD%E9%BB%8E_ABUIABACGAAgi8DPjwYoiKbruQYwgDw4-Bw.jpg)
 
 *Copyright © 2021-2022 nguaduot. All rights reserved.*
