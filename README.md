@@ -1,13 +1,13 @@
-![icon](./Timeline/Assets/StoreLogo.scale-200.png)
+![icon](./sample/icon.png)
 
 # 拾光 for Windows 11
 
 [![release](https://img.shields.io/github/v/release/nguaduot/TimelineWallpaper)](https://gitee.com/nguaduot/timeline/releases)
 [![downloads](https://img.shields.io/github/downloads/nguaduot/TimelineWallpaper/total)](https://gitee.com/nguaduot/timeline/releases)
 
-> 拾光如歌，岁月如诗。拾光，每日一景
+> 时光如歌，岁月如诗。拾光，每日一景
 
-`拾光` 是一款壁纸应用，集成丰富图源，支持每日推送桌面/锁屏。使用 UWP 框架开发，遵循 Fluent Design，是原生的 Windows 应用，于 Windows 11 体验最佳，向下兼容 Windows 10。
+`拾光` 是一款壁纸应用，集成多个高质量图源，支持每日推送桌面/锁屏。使用 UWP 框架开发，遵循 Fluent Design，是原生的 Windows 应用，于 Windows 11 体验最佳，向下兼容 Windows 10。
 
 ## 开始
 
@@ -19,9 +19,7 @@
 
 + 下载安装包手动安装
   
-  打开右侧的 [Release](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。
-
-**Watch** 项目，以获取应用的更新动态。
+  在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。
 
 ## 图源
 
@@ -49,11 +47,9 @@
 ## 进阶
 
 + 使用快捷键
-  + `鼠标右键`：菜单
-  + `鼠标左键`（双击） / `Enter` / `Esc`：切换全屏/窗口模式
-  + `鼠标滚轮`：回顾前一天/预览下一天
-  + `左方向键` / `上方向键`：回顾前一天
-  + `右方向键` / `下方向键`：预览下一天
+  + 鼠标右键：菜单
+  + 鼠标左键（双击） / `Enter` / `Esc`：切换全屏/窗口模式
+  + 方向键 / 鼠标滚轮 / 滑动：回顾/预览
   + `Backspace` / `Delete`：标记“不喜欢”
   + `Space`：切换全图/拉伸
   + `Ctrl` + `B`：用作桌面背景
