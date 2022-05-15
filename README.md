@@ -77,10 +77,10 @@
 
 ## 截图
 
-![截图1](./sample/screenshot01.jpg)
+![截图1](./sample/screenshot02.png)
 
 ![截图2](https://s3.bmp.ovh/imgs/2021/12/001241e0a14ef263.gif)
 
-自取：[截图1壁纸原图](https://s3.bmp.ovh/imgs/2021/11/5db69c315b1ab3e3.jpg)
+自取：[截图1壁纸原图](./sample/拾光_一梦幽黎_ABUIABACGAAgi8DPjwYoiKbruQYwgDw4-Bw.jpg)
 
 *Copyright © 2021-2022 nguaduot. All rights reserved.*
