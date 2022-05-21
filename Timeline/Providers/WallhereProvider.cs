@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class WallhereProvider : BaseProvider {
@@ -35,7 +36,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多
             if (indexFocus < metas.Count - 1) {
                 return true;
@@ -44,15 +45,16 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             string urlApi = string.Format(URL_API, ((WallhereIni)ini).Order, ((WallhereIni)ini).Cate,
                 ((WallhereIni)ini).R18, ++pageIndex);
-            Debug.WriteLine("provider url: " + urlApi);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
-                string jsonData = await client.GetStringAsync(urlApi);
-                Debug.WriteLine("provider data: " + jsonData.Trim());
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (WallhereApiData item in api.Data) {
@@ -64,7 +66,9 @@ namespace Timeline.Providers {
                     AppendMetas(metasAdd);
                 }
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
 
             return metas.Count > 0;

@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Timeline.Utils;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class TimelineProvider : BaseProvider {
@@ -44,7 +45,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1 && date == null) {
                 return true;
@@ -53,19 +54,20 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             nextPage = date ?? nextPage;
             string urlApi = string.Format(URL_API, ((TimelineIni)ini).Cate,
                 nextPage.ToString("yyyyMMdd"), ((TimelineIni)ini).Order, ((TimelineIni)ini).Authorize);
-            Debug.WriteLine("provider url: " + urlApi);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
-                string jsonData = await client.GetStringAsync(urlApi);
-                Debug.WriteLine("provider data: " + jsonData.Trim());
-                TimelineApi timelineApi = JsonConvert.DeserializeObject<TimelineApi>(jsonData);
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                TimelineApi api = JsonConvert.DeserializeObject<TimelineApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (TimelineApiData item in timelineApi.Data) {
+                foreach (TimelineApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, ((TimelineIni)ini).Order));
                 }
                 if ("date".Equals(((TimelineIni)ini).Order) || "score".Equals(((TimelineIni)ini).Order)) { // 有序排列
@@ -74,9 +76,11 @@ namespace Timeline.Providers {
                     AppendMetas(metasAdd);
                 }
                 nextPage = "date".Equals(((TimelineIni)ini).Order)
-                    ? nextPage.AddDays(-timelineApi.Data.Count) : nextPage;
+                    ? nextPage.AddDays(-api.Data.Count) : nextPage;
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
             return metas.Count > 0;
         }

@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class BingProvider : BaseProvider {
@@ -79,7 +80,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 已无更多数据
             if (pageIndex >= URL_API_PAGES.Length - 1) {
                 return true;
@@ -94,25 +95,28 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             string urlApi = URL_API_PAGES[++pageIndex];
             if (((BingIni)ini).Lang.Length > 0) {
                 urlApi += "&setmkt=" + ((BingIni)ini).Lang;
             }
-            Debug.WriteLine("provider url: " + urlApi);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
-                string jsonData = await client.GetStringAsync(urlApi);
-                Debug.WriteLine("provider data: " + jsonData.Trim());
-                BingApi bingApi = JsonConvert.DeserializeObject<BingApi>(jsonData);
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (BingApiImg img in bingApi.Images) {
+                foreach (BingApiImg img in api.Images) {
                     metasAdd.Add(ParseBean(img));
                 }
                 SortMetas(metasAdd); // 按时序倒序排列
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
 
             return metas.Count > 0;

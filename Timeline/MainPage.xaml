@@ -396,11 +396,9 @@
         </SplitView.Pane>
 
         <!-- 避免浮出菜单无法呼出：Background="Transparent"-->
-        <!--ContextFlyout="{x:Bind FlyoutMenu}"-->
-        <!--FlyoutBase.AttachedFlyout="{x:Bind FlyoutMenu}"-->
-        <!--RightTapped="ViewMain_RightTapped"-->
         <RelativePanel KeyboardAcceleratorPlacementMode="Hidden"
                        Background="Transparent"
+                       Name="ViewMain"
                        Tapped="ViewMain_Tapped"
                        DoubleTapped="ViewMain_DoubleTapped"
                        ManipulationMode="TranslateX,TranslateY"
@@ -460,6 +458,9 @@
                 <KeyboardAccelerator Key="C"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="C"
+                                     Modifiers="Shift,Control"
+                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="D"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
@@ -508,10 +509,12 @@
                 </Image.ScaleTransition>
             </Image>
 
+            <!-- 避免指针事件无响应：Background="Transparent"-->
+            <!-- 不响应滑动事件：ManipulationMode="None" -->
             <RelativePanel Name="ViewBarPointer"
                            Background="Transparent"
-                           Tapped="ViewBarPointer_Tapped"
-                           DoubleTapped="ViewBarPointer_DoubleTapped"
+                           ManipulationMode="None"
+                           ContextRequested="ViewBarPointer_ContextRequested"
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignRightWithPanel="False"
                            RelativePanel.AlignBottomWithPanel="True"
@@ -551,25 +554,21 @@
                                    TextTrimming="CharacterEllipsis"
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                    Visibility="Collapsed"
-                                   Margin="0,8,0,0"
-                                   IsTextSelectionEnabled="True" />
+                                   Margin="0,8,0,0" />
                         <TextBlock Name="TextDetailLocation"
                                    Style="{StaticResource BodyTextBlockStyle}"
                                    TextWrapping="NoWrap"
                                    TextTrimming="CharacterEllipsis"
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                    Visibility="Collapsed"
-                                   Margin="0,8,0,0"
-                                   IsTextSelectionEnabled="True" />
+                                   Margin="0,8,0,0" />
                         <TextBlock Name="TextDetailStory"
                                    Style="{StaticResource BodyTextBlockStyle}"
                                    TextWrapping="Wrap"
                                    Margin="0,8,0,0"
-                                   Visibility="Collapsed"
-                                   IsTextSelectionEnabled="True" />
+                                   Visibility="Collapsed" />
                         <TextBlock Name="TextDetailCopyright"
                                    Style="{StaticResource CaptionTextBlockStyle}"
-                                   IsTextSelectionEnabled="True"
                                    Margin="0,8,0,0"
                                    Visibility="Collapsed"
                                    TextWrapping="NoWrap"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -35,9 +36,9 @@ namespace Timeline.Utils {
                 Array.Sort(oldFiles, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime));
                 StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\config.txt");
                 iniFile = await configFile.CopyAsync(folder, FILE_INI, NameCollisionOption.ReplaceExisting);
-                Debug.WriteLine("copied ini: " + iniFile.Path);
+                LogUtil.D("GenerateIniFileAsync() copied ini: " + iniFile.Path);
                 if (oldFiles.Length > 0) { // 继承设置
-                    Debug.WriteLine("inherit: " + oldFiles[0].Name);
+                    LogUtil.D("GenerateIniFileAsync() inherit: " + oldFiles[0].Name);
                     // TODO：下一版 timelinewallpaper >>> app
                     StringBuilder sb = new StringBuilder(1024);
                     _ = GetPrivateProfileString("timelinewallpaper", "provider", "bing", sb, 1024, oldFiles[0].FullName);
@@ -166,7 +167,7 @@ namespace Timeline.Utils {
 
         public static Ini GetIni() {
             string iniFile = GetIniFile();
-            Debug.WriteLine("ini: " + FILE_INI);
+            LogUtil.D("GetIni() " + FILE_INI);
             Ini ini = new Ini();
             if (iniFile == null) { // 尚未初始化
                 return ini;
@@ -423,8 +424,8 @@ namespace Timeline.Utils {
                 if (file != null) {
                     return await FileIO.ReadLinesAsync(file);
                 }
-            } catch (Exception) {
-                Debug.WriteLine("read history error");
+            } catch (Exception e) {
+                LogUtil.E("GetGlitter() " + e.Message);
             }
             return new List<string>();
         }
@@ -491,12 +492,70 @@ namespace Timeline.Utils {
     }
 
     public static class TextUtil {
-        public static void Copy(string content) {
+        public static bool Copy(string content) {
+            if (string.IsNullOrEmpty(content)) {
+                return false;
+            }
             DataPackage pkg = new DataPackage {
                 RequestedOperation = DataPackageOperation.Copy
             };
             pkg.SetText(content);
             Clipboard.SetContent(pkg);
+            return true;
+        }
+
+        public static bool Copy(StorageFile imgFile) {
+            if (imgFile == null || !imgFile.IsAvailable) {
+                return false;
+            }
+            DataPackage pkg = new DataPackage {
+                RequestedOperation = DataPackageOperation.Copy
+            };
+            pkg.SetBitmap(RandomAccessStreamReference.CreateFromFile(imgFile));
+            Clipboard.SetContent(pkg);
+            return true;
+        }
+    }
+
+    public static class LogUtil {
+        private static bool isInitialized = false;
+        
+        public static void I(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Information(message);
+        }
+
+        public static void D(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Debug(message, values);
+        }
+
+        public static void W(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Warning(message);
+        }
+
+        public static void E(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Error(message);
+        }
+
+        private static void Initialize() {
+            string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs/timeline.log");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(logFilePath, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+            isInitialized = true;
+            Log.Debug("Initialized Serilog");
         }
     }
 }

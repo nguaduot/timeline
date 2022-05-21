@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Timeline.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace Timeline {
@@ -39,7 +31,7 @@ namespace Timeline {
             // 上传崩溃日志
             this.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedException;
-            AppDomain.CurrentDomain.UnhandledException += OnBgUnhandledException;
+            //AppDomain.CurrentDomain.UnhandledException += OnBgUnhandledException;
         }
 
         /// <summary>
@@ -106,7 +98,7 @@ namespace Timeline {
         }
 
         private void ChangeTheme() {
-            // b注意：ElementTheme.Default 指向该值，非系统主题
+            // 注意：ElementTheme.Default 指向该值，非系统主题
             switch (IniUtil.GetIni().Theme) {
                 case "light":
                     this.RequestedTheme = ApplicationTheme.Light;
@@ -136,16 +128,18 @@ namespace Timeline {
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) {
             Api.Crash(e.Exception);
+            LogUtil.E("OnUnhandledException() " + e.Exception.ToString());
             e.Handled = true;
         }
 
         private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e) {
             Api.Crash(e.Exception);
+            LogUtil.E("OnUnobservedException() " + e.Exception.ToString());
             e.SetObserved();
         }
 
-        private void OnBgUnhandledException(object sender, System.UnhandledExceptionEventArgs e) {
-            Api.Crash((Exception)e.ExceptionObject);
-        }
+        //private void OnBgUnhandledException(object sender, System.UnhandledExceptionEventArgs e) {
+        //    Api.Crash((Exception)e.ExceptionObject);
+        //}
     }
 }

@@ -9,6 +9,7 @@ using Timeline.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class OneProvider : BaseProvider {
@@ -16,7 +17,7 @@ namespace Timeline.Providers {
         private string nextPage = "0";
 
         private string cookie = null;
-        private string token = null;
+        private string tokenOne = null;
 
         // 图文 - 「ONE · 一个」
         // http://m.wufazhuce.com/one
@@ -56,7 +57,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1 && date == null) {
                 return true;
@@ -65,25 +66,27 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
-            if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(token)) {
+            if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
                 try {
                     HttpClient client = new HttpClient();
-                    HttpResponseMessage msg = await client.GetAsync(URL_TOKEN);
+                    HttpResponseMessage msg = await client.GetAsync(URL_TOKEN, token);
                     cookie = new List<string>(msg.Headers.GetValues("Set-Cookie"))[0];
-                    Debug.WriteLine("cookie: " + cookie);
+                    LogUtil.D("LoadData() cookie: " + cookie);
                     string htmlData = await msg.Content.ReadAsStringAsync();
                     Match match = Regex.Match(htmlData, @"One.token ?= ?[""'](.+?)[""']");
                     if (match.Success) {
-                        token = match.Groups[1].Value;
-                        Debug.WriteLine("token: " + token);
+                        tokenOne = match.Groups[1].Value;
+                        LogUtil.D("LoadData() token: " + token);
                     }
                 } catch (Exception e) {
-                    Debug.WriteLine(e);
+                    // 情况1：任务被取消
+                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                    LogUtil.E("LoadData() " + e.Message);
                 }
             }
-            if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(token)) {
+            if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
                 return metas.Count > 0;
             }
 
@@ -92,8 +95,8 @@ namespace Timeline.Providers {
             } else {
                 nextPage = metas.Count > 0 ? metas[metas.Count - 1].Id : "0";
             }
-            string urlApi = string.Format(URL_API, nextPage, token);
-            Debug.WriteLine("provider url: " + urlApi);
+            string urlApi = string.Format(URL_API, nextPage, tokenOne);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClientHandler handler = new HttpClientHandler() {
                     UseCookies = false
@@ -101,12 +104,12 @@ namespace Timeline.Providers {
                 HttpClient client = new HttpClient(handler);
                 HttpRequestMessage msgReq = new HttpRequestMessage(HttpMethod.Get, urlApi);
                 msgReq.Headers.Add("Cookie", cookie);
-                HttpResponseMessage msgRes = await client.SendAsync(msgReq);
+                HttpResponseMessage msgRes = await client.SendAsync(msgReq, token);
                 string jsonData = await msgRes.Content.ReadAsStringAsync();
-                Debug.WriteLine("provider data: " + jsonData.Trim());
-                OneApi oneApi = JsonConvert.DeserializeObject<OneApi>(jsonData);
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                OneApi api = JsonConvert.DeserializeObject<OneApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (OneApiData item in oneApi.Data) {
+                foreach (OneApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item));
                 }
                 if ("date".Equals(((OneIni)ini).Order)) { // 按时序倒序排列
@@ -115,7 +118,9 @@ namespace Timeline.Providers {
                     RandomMetas(metasAdd);
                 }
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
             return metas.Count > 0;
         }

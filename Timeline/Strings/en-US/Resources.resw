@@ -648,7 +648,7 @@
   <data name="MenuProviderQingbz.Text" xml:space="preserve">
     <value>轻壁纸 - 4K壁纸分享站</value>
   </data>
-  <data name="MsgIdCopied" xml:space="preserve">
+  <data name="MsgCopiedMeta" xml:space="preserve">
     <value>Image code copied.</value>
   </data>
   <data name="Provider_qingbz" xml:space="preserve">
@@ -827,5 +827,11 @@
   </data>
   <data name="MsgYesterday" xml:space="preserve">
     <value>Look back</value>
+  </data>
+  <data name="MsgSave" xml:space="preserve">
+    <value>Saving</value>
+  </data>
+  <data name="MsgCopiedImg" xml:space="preserve">
+    <value>Image copied.</value>
   </data>
 </root>

@@ -147,11 +147,11 @@ namespace Timeline.Pages {
             };
         }
 
-        private async void LaunchFile(StorageFile file) {
+        private async Task LaunchFile(StorageFile file) {
             try {
                 _ = await Launcher.LaunchFileAsync(file);
-            } catch (Exception) {
-                Debug.WriteLine("launch file failed");
+            } catch (Exception e) {
+                LogUtil.E("LaunchFile() " + e.Message);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Timeline.Pages {
                 CreationCollisionOption.OpenIfExists);
         }
 
-        private async void LaunchFolder(StorageFolder folder, StorageFile fileSelected = null) {
+        private async Task LaunchFolder(StorageFolder folder, StorageFile fileSelected = null) {
             try {
                 if (fileSelected != null) {
                     FolderLauncherOptions options = new FolderLauncherOptions();
@@ -169,8 +169,8 @@ namespace Timeline.Pages {
                 } else {
                     _ = await Launcher.LaunchFolderAsync(folder);
                 }
-            } catch (Exception) {
-                Debug.WriteLine("launch folder failed");
+            } catch (Exception e) {
+                LogUtil.E("LaunchFolder() " + e.Message);
             }
         }
 
@@ -210,14 +210,14 @@ namespace Timeline.Pages {
             RadioButton rb = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(c => ini.Theme.Equals(c?.Tag?.ToString()));
             rb.IsChecked = true;
             TextThemeCur.Text = rb.Content.ToString();
-            RandomGlitter();
+            _ = RandomGlitter();
 
             paneOpened = true;
         }
 
-        private async void RandomGlitter() {
+        private async Task RandomGlitter() {
             IList<string> glitter = await FileUtil.GetGlitter();
-            Debug.WriteLine("glitters: " + glitter.Count);
+            LogUtil.I("RandomGlitter() " + glitter.Count);
             if (glitter.Count >= 2) {
                 string glitter1 = glitter[new Random().Next(glitter.Count)];
                 glitter.Remove(glitter1);
@@ -287,15 +287,15 @@ namespace Timeline.Pages {
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
-            LaunchFile(await IniUtil.GetIniPath());
+            _ = LaunchFile(await IniUtil.GetIniPath());
         }
 
         private async void BtnShowSave_Click(object sender, RoutedEventArgs e) {
-            LaunchFolder(await GetFolderSave());
+            _ = LaunchFolder(await GetFolderSave());
         }
 
         private void BtnShowCache_Click(object sender, RoutedEventArgs e) {
-            LaunchFolder(ApplicationData.Current.TemporaryFolder);
+            _ = LaunchFolder(ApplicationData.Current.TemporaryFolder);
         }
 
         private void BtnReview_Click(object sender, RoutedEventArgs e) {

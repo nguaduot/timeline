@@ -42,9 +42,9 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("stats: " + jsonData.Trim());
+                LogUtil.D("Stats() " + jsonData.Trim());
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("Stats() " + e.Message);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Timeline.Utils {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
-            Debug.WriteLine("Rank() " + action);
+            LogUtil.D("Rank() " + action);
             const string URL_API = "https://api.nguaduot.cn/appstats/rank";
             RankApiReq req = new RankApiReq {
                 Provider = ini?.Provider,
@@ -73,9 +73,9 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("rank: " + jsonData.Trim());
+                LogUtil.D("Rank() " + jsonData.Trim());
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("Rank() " + e.Message);
             }
         }
 
@@ -93,10 +93,10 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("stats: " + jsonData.Trim());
+                LogUtil.D("Contribute() " + jsonData.Trim());
                 return jsonData.Contains(@"""status"":1");
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("Contribute() " + e.Message);
             }
             return false;
         }
@@ -124,9 +124,9 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("crash: " + jsonData.Trim());
+                LogUtil.D("Crash() " + jsonData.Trim());
             } catch (Exception ex) {
-                Debug.WriteLine(ex);
+                LogUtil.E("Crash() " + ex.Message);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Timeline.Utils {
                     res.Url = "ms-windows-store://pdp/?productid=9N7VHQ989BB7";
                 }
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("CheckUpdate() " + e.Message);
             }
             return res;
         }
@@ -164,7 +164,7 @@ namespace Timeline.Utils {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("timelinewallpaper", VerUtil.GetPkgVer(true)));
                 string jsonData = await client.GetStringAsync(URL_RELEASE);
-                Debug.WriteLine("release: " + jsonData.Trim());
+                LogUtil.D("CheckUpdateFromGitee() " + jsonData.Trim());
                 GiteeApi api = JsonConvert.DeserializeObject<GiteeApi>(jsonData);
                 if (api.Prerelease) { // 忽略预览版本
                     return res;
@@ -182,7 +182,7 @@ namespace Timeline.Utils {
                     res.Url = string.Format("https://gitee.com/nguaduot/timeline/releases/{0}", api.TagName);
                 }
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("CheckUpdateFromGitee() " + e.Message);
             }
             return res;
         }

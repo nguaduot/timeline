@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Windows.Data.Html;
 using Timeline.Utils;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class NasaProvider : BaseProvider {
@@ -52,7 +53,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1 && date == null) {
                 return true;
@@ -61,16 +62,17 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             nextPage = date ?? nextPage;
             string urlApi = string.Format(URL_API_PAGE, nextPage.AddDays(-PAGE_SIZE + 1).ToString("yyyy-MM-dd"),
                 nextPage.ToString("yyyy-MM-dd"));
-            Debug.WriteLine("provider url: " + urlApi);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
-                string jsonData = await client.GetStringAsync(urlApi);
-                Debug.WriteLine("provider data: " + jsonData.Trim());
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 List<NasaApiItem> items = JsonConvert.DeserializeObject<List<NasaApiItem>>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (NasaApiItem item in items) {
@@ -79,7 +81,9 @@ namespace Timeline.Providers {
                 SortMetas(metasAdd); // 按时序倒序排列
                 nextPage = nextPage.AddDays(-PAGE_SIZE);
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
             return metas.Count > 0;
         }
@@ -135,7 +139,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1) {
                 return true;
@@ -144,16 +148,19 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             if (nextPage >= pageUrls.Count) {
                 string urlBjp = nextPage >= 100 ? string.Format(URL_API_DAY, (int)Math.Ceiling((nextPage + 1) / 100.0)) : URL_API_TODAY;
                 try {
                     HttpClient client = new HttpClient();
-                    string htmlData = await client.GetStringAsync(urlBjp);
+                    HttpResponseMessage res = await client.GetAsync(urlBjp, token);
+                    string htmlData = await res.Content.ReadAsStringAsync();
                     ParsePages(htmlData);
                 } catch (Exception e) {
-                    Debug.WriteLine(e);
+                    // 情况1：任务被取消
+                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                    LogUtil.E("LoadData() " + e.Message);
                 }
             }
             if (nextPage >= pageUrls.Count) {
@@ -161,16 +168,19 @@ namespace Timeline.Providers {
             }
 
             string url = pageUrls[nextPage++];
-            Debug.WriteLine("provider url: " + url);
+            LogUtil.D("provider url: " + url);
             try {
                 HttpClient client = new HttpClient();
-                string htmlData = await client.GetStringAsync(url);
+                HttpResponseMessage res = await client.GetAsync(url, token);
+                string htmlData = await res.Content.ReadAsStringAsync();
                 List<Meta> metasAdd = new List<Meta> {
                     ParseBean(htmlData)
                 };
                 AppendMetas(metasAdd);
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
 
             return metas.Count > 0;

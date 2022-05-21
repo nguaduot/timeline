@@ -645,7 +645,7 @@
   <data name="MenuProviderQingbz.Text" xml:space="preserve">
     <value>轻壁纸 - 4K壁纸分享站</value>
   </data>
-  <data name="MsgIdCopied" xml:space="preserve">
+  <data name="MsgCopiedMeta" xml:space="preserve">
     <value>已复制图片元素</value>
   </data>
   <data name="Provider_qingbz" xml:space="preserve">
@@ -814,18 +814,24 @@
     <value>扫码赞助</value>
   </data>
   <data name="MsgMenu" xml:space="preserve">
-    <value>菜单</value>
+    <value>如何翻页与切换图源？</value>
   </data>
   <data name="TextTimelineDonate.Text" xml:space="preserve">
     <value>支持一下</value>
   </data>
   <data name="MsgMenuDesc" xml:space="preserve">
-    <value>可点按鼠标右键显示菜单</value>
+    <value>方向键或滚轮可翻页；鼠标右键可切换图源</value>
   </data>
   <data name="MsgProvider" xml:space="preserve">
     <value>已切换图源：{0}</value>
   </data>
   <data name="MsgYesterday" xml:space="preserve">
     <value>回顾</value>
+  </data>
+  <data name="MsgSave" xml:space="preserve">
+    <value>正在保存原图</value>
+  </data>
+  <data name="MsgCopiedImg" xml:space="preserve">
+    <value>已复制图片</value>
   </data>
 </root>

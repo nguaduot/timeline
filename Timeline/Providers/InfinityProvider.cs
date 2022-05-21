@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class InfinityProvider : BaseProvider {
@@ -43,7 +44,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1) {
                 return true;
@@ -52,31 +53,34 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             string urlApi = "rate".Equals(((InfinityIni)ini).Order) ? String.Format(URL_API, ++pageIndex)
                 : string.Format(URL_API_RANDOM, DateUtil.CurrentTimeMillis());
-            Debug.WriteLine("provider url: " + urlApi);
+            LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
-                string jsonData = await client.GetStringAsync(urlApi);
-                Debug.WriteLine("provider data: " + jsonData.Trim());
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 List<Meta> metasAdd = new List<Meta>();
                 if ("rate".Equals(((InfinityIni)ini).Order)) {
-                    InfinityApi2 infinityApi = JsonConvert.DeserializeObject<InfinityApi2>(jsonData);
-                    foreach (InfinityApiData item in infinityApi.Data.List) {
+                    InfinityApi2 api = JsonConvert.DeserializeObject<InfinityApi2>(jsonData);
+                    foreach (InfinityApiData item in api.Data.List) {
                         metasAdd.Add(ParseBean(item));
                     }
                     RandomMetas(metasAdd);
                 } else {
-                    InfinityApi1 infinityApi = JsonConvert.DeserializeObject<InfinityApi1>(jsonData);
-                    foreach (InfinityApiData item in infinityApi.Data) {
+                    InfinityApi1 api = JsonConvert.DeserializeObject<InfinityApi1>(jsonData);
+                    foreach (InfinityApiData item in api.Data) {
                         metasAdd.Add(ParseBean(item));
                     }
                     AppendMetas(metasAdd);
                 }
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
 
             return metas.Count > 0;

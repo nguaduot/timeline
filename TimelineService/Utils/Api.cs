@@ -41,10 +41,10 @@ namespace TimelineService.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API_STATS, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("stats2: " + jsonData.Trim());
+                LogUtil.I("Stats() " + jsonData.Trim());
                 return jsonData.Contains(@"""status"":1");
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("Stats() " + e.Message);
             }
             return false;
         }

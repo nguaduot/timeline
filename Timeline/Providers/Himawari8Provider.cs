@@ -12,6 +12,7 @@ using Windows.UI;
 using Windows.Storage;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Timeline.Providers {
     public class Himawari8Provider : BaseProvider {
@@ -40,7 +41,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             offsetEarth = ((Himawari8Ini)ini).Offset;
             // 无需加载更多
             if (indexFocus < metas.Count - 1) {
@@ -50,7 +51,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(ini, date);
+            await base.LoadData(token, ini, date);
 
             try {
                 for (int i = 0; i < 5; i++) {
@@ -58,7 +59,7 @@ namespace Timeline.Providers {
                         nextPage.AddMinutes(-10 * i).ToString(@"yyyy\/MM\/dd"),
                         string.Format("{0}{1}000", nextPage.AddMinutes(-10 * i).ToString("HH"),
                         (nextPage.AddMinutes(-10 * i).Minute / 10)));
-                    Debug.WriteLine("provider url: " + urlApi);
+                    LogUtil.D("LoadData() provider url: " + urlApi);
                     HttpWebRequest req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(urlApi));
                     req.Method = HttpMethod.Head.Method;
                     var res = (HttpWebResponse)await req.GetResponseAsync();
@@ -73,13 +74,13 @@ namespace Timeline.Providers {
                 }
                 nextPage = nextPage.AddHours(-1);
             } catch (Exception e) {
-                Debug.WriteLine(e);
+                LogUtil.E("LoadData() " + e.Message);
             }
             return metas.Count > 0;
         }
 
-        public override async Task<Meta> Cache(Meta meta) {
-            _ = await base.Cache(meta);
+        public override async Task<Meta> CacheAsync(Meta meta, CancellationToken token) {
+            _ = await base.CacheAsync(meta, token);
             string offsetTag = (offsetEarth >= 0 ? "-offset+" : "-offset-") + Math.Abs(offsetEarth * 100).ToString("000");
             if (meta?.CacheUhd == null || meta.CacheUhd.Path.Contains(offsetTag)) {
                 return meta;

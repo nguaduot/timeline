@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Serilog;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,7 +26,7 @@ namespace TimelineService.Utils {
 
         public static Ini GetIni() {
             string iniFile = GetIniFile();
-            Debug.WriteLine("ini: " + FILE_INI);
+            LogUtil.I("IniUtil.GetIni() " + FILE_INI);
             Ini ini = new Ini();
             if (iniFile == null) { // 尚未初始化
                 return ini;
@@ -192,6 +193,48 @@ namespace TimelineService.Utils {
                 return dataReader.ReadGuid().ToString();
             }
             return "";
+        }
+    }
+
+    public static class LogUtil {
+        private static bool isInitialized = false;
+
+        public static void I(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Information(message);
+        }
+
+        public static void D(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Debug(message, values);
+        }
+
+        public static void W(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Warning(message);
+        }
+
+        public static void E(string message, params object[] values) {
+            if (!isInitialized) {
+                Initialize();
+            }
+            Log.Error(message);
+        }
+
+        private static void Initialize() {
+            string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs/timelineservice.log");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(logFilePath, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+            isInitialized = true;
+            Log.Debug("Initialized Serilog");
         }
     }
 }
