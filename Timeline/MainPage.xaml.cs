@@ -137,13 +137,7 @@ namespace Timeline {
                 return;
             }
             ShowText(meta);
-            Meta metaCache; // TODO
-            try {
-                metaCache = await provider.CacheAsync(meta, token);
-            } catch (Exception e) {
-                LogUtil.E("LoadYesterdayAsync() " + e);
-                return;
-            }
+            Meta metaCache = await provider.CacheAsync(meta, token);
             if (token.IsCancellationRequested) {
                 LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
                 return;
