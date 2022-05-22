@@ -245,6 +245,9 @@ namespace Timeline.Providers {
                         var decoder = await BitmapDecoder.CreateAsync(stream);
                         // 获取图片尺寸
                         meta.Dimen = new Size((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                        if (token.IsCancellationRequested) {
+                            return meta;
+                        }
                         // 检测人像位置
                         // TODO: 该行会随机抛出异常 System.Exception: 图像无法识别
                         SoftwareBitmap bitmap = await decoder.GetSoftwareBitmapAsync(decoder.BitmapPixelFormat,
