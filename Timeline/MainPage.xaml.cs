@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace Timeline {
 
         private readonly ResourceLoader resLoader;
         private readonly ApplicationDataContainer localSettings;
+        private CancellationTokenSource ctsLoad = new CancellationTokenSource();
+        private CancellationTokenSource ctsShow = new CancellationTokenSource();
 
         private Ini ini = null;
         private BaseProvider provider = null;
@@ -47,14 +50,13 @@ namespace Timeline {
         private DispatcherTimer dislikeTimer = null;
         private DispatcherTimer pageTimer = null;
         private bool pageTimerYesterdayOrTomorrow = true;
-        private long pageTimerStart = DateTime.Now.Ticks;
         private Meta dislikeTimerMeta = null;
 
-        private CancellationTokenSource cts;
+        private long imgAnimStart = DateTime.Now.Ticks;
+        private long imgLoadStart = DateTime.Now.Ticks;
 
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
-        private const int MIN_COST_OF_PAGE = 800;
 
         public MainPage() {
             this.InitializeComponent();
@@ -62,8 +64,7 @@ namespace Timeline {
             resLoader = ResourceLoader.GetForCurrentView();
             localSettings = ApplicationData.Current.LocalSettings;
             Init();
-            cts = new CancellationTokenSource();
-            _ = LoadFocusAsync(cts.Token);
+            _ = LoadFocusAsync(ctsLoad.Token);
             _ = CheckLaunchAsync();
         }
 
@@ -76,11 +77,11 @@ namespace Timeline {
             pageTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
-                cts = new CancellationTokenSource();
+                ctsLoad = new CancellationTokenSource();
                 if (pageTimerYesterdayOrTomorrow) {
-                    _ = LoadYesterdayAsync(cts.Token);
+                    _ = LoadYesterdayAsync(ctsLoad.Token);
                 } else {
-                    _ = LoadTomorrowAsync(cts.Token);
+                    _ = LoadTomorrowAsync(ctsLoad.Token);
                 }
             };
 
@@ -90,19 +91,24 @@ namespace Timeline {
         }
 
         private async Task LoadFocusAsync(CancellationToken token) {
-            _ = await InitProvider();
-            if (!await provider.LoadData(token, ini.GetIni())) {
-                LogUtil.E("LoadFocusAsync() failed to load data");
-                ShowText(null);
-                Api.Stats(ini, false);
-                return;
-            }
+            _ = await InitProviderAsync();
+            bool res = await provider.LoadData(token, ini.GetIni());
+            _ = Api.StatsAsync(ini, res);
             if (token.IsCancellationRequested) {
                 return;
             }
+            if (!res) {
+                LogUtil.E("LoadFocusAsync() failed to load data");
+                StatusError();
+                return;
+            }
 
-            meta = provider.GetFocus();
+            meta = await provider.Focus();
             LogUtil.D("LoadFocusAsync() " + meta);
+            if (meta == null) {
+                StatusError();
+                return;
+            }
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
             if (token.IsCancellationRequested) {
@@ -110,22 +116,28 @@ namespace Timeline {
             }
             if (metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 ShowImg(meta);
-                Api.Stats(ini, true);
             }
         }
 
         private async Task LoadYesterdayAsync(CancellationToken token) {
-            if (!await provider.LoadData(token, ini.GetIni())) {
+            bool res = await provider.LoadData(token, ini.GetIni());
+            if (token.IsCancellationRequested) {
+                return;
+            }
+            if (!res) {
                 LogUtil.E("LoadYesterdayAsync() failed to load data");
-                await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
-                ShowText(null);
+                StatusError();
                 return;
             }
 
-            meta = provider.Yesterday();
+            meta = await provider.Yesterday();
             LogUtil.D("LoadYesterdayAsync() " + meta);
+            if (meta == null) {
+                StatusError();
+                return;
+            }
             ShowText(meta);
-            Meta metaCache;
+            Meta metaCache; // TODO
             try {
                 metaCache = await provider.CacheAsync(meta, token);
             } catch (Exception e) {
@@ -136,80 +148,94 @@ namespace Timeline {
                 LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
                 return;
             }
-            await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 ShowImg(meta);
-                Api.Stats(ini, true);
             }
         }
 
         private async Task LoadTomorrowAsync(CancellationToken token) {
-            if (!await provider.LoadData(token, ini.GetIni())) {
+            bool res = await provider.LoadData(token, ini.GetIni());
+            if (token.IsCancellationRequested) {
+                return;
+            }
+            if (!res) {
                 LogUtil.E("LoadTomorrowAsync() failed to load data");
-                await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
-                ShowText(null);
+                StatusError();
                 return;
             }
 
             meta = provider.Tomorrow();
             LogUtil.D("LoadTomorrowAsync() " + meta);
+            if (meta == null) {
+                StatusError();
+                return;
+            }
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
             if (token.IsCancellationRequested) {
                 return;
             }
-            await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 ShowImg(meta);
-                Api.Stats(ini, true);
             }
         }
 
         private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
-            if (!await provider.LoadData(token, ini.GetIni(), date)) {
+            bool res = await provider.LoadData(token, ini.GetIni());
+            if (token.IsCancellationRequested) {
+                return;
+            }
+            if (!res) {
                 LogUtil.E("LoadTargetAsync() failed to load data");
-                await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
-                ShowText(null);
+                StatusError();
                 return;
             }
 
             meta = provider.Target(date);
             LogUtil.D("LoadTargetAsync() " + meta);
+            if (meta == null) {
+                StatusError();
+                return;
+            }
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
             if (token.IsCancellationRequested) {
                 return;
             }
-            await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 ShowImg(meta);
-                Api.Stats(ini, true);
+                _ = Api.StatsAsync(ini, true);
             }
         }
 
         private async Task LoadEndAsync(bool farthestOrLatest, CancellationToken token) {
-            if (!await provider.LoadData(token, ini.GetIni())) {
+            bool res = await provider.LoadData(token, ini.GetIni());
+            if (token.IsCancellationRequested) {
+                return;
+            }
+            if (!res) {
                 LogUtil.E("LoadEndAsync() failed to load data");
-                await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
-                ShowText(null);
+                StatusError();
                 return;
             }
 
             meta = farthestOrLatest ? provider.Farthest() : provider.Latest();
             LogUtil.D("LoadEndAsync() " + meta);
+            if (meta == null) {
+                StatusError();
+                return;
+            }
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
             if (token.IsCancellationRequested) {
                 return;
             }
-            await Task.Delay(Math.Max(0, MIN_COST_OF_PAGE - (int)((DateTime.Now.Ticks - pageTimerStart) / 10000)));
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 ShowImg(meta);
-                Api.Stats(ini, true);
             }
         }
 
-        private async Task<bool> InitProvider() {
+        private async Task<bool> InitProviderAsync() {
             if (ini == null) {
                 ini = await IniUtil.GetIniAsync();
             }
@@ -247,9 +273,9 @@ namespace Timeline {
             if (string.IsNullOrEmpty(ini.DesktopProvider) && string.IsNullOrEmpty(ini.LockProvider)) {
                 UnregService();
             } else {
-                _ = RegService();
+                _ = RegServiceAsync();
                 if (ini.DesktopProvider.Equals(ini.Provider) || ini.LockProvider.Equals(ini.Provider)) {
-                    _ = RunServiceNow(); // 用户浏览图源与推送图源一致，立即推送一次
+                    _ = RunServiceNowAsync(); // 用户浏览图源与推送图源一致，立即推送一次
                 }
             }
 
@@ -262,8 +288,8 @@ namespace Timeline {
         }
 
         private void ShowText(Meta meta) {
+            LogUtil.D("ShowText() " + meta.Id);
             if (meta == null) {
-                StatusError();
                 return;
             }
 
@@ -296,20 +322,16 @@ namespace Timeline {
         }
 
         private void ShowImg(Meta meta) {
+            LogUtil.D("ShowImg() {0} {1}ms", meta?.Id, (int)((DateTime.Now.Ticks - imgAnimStart) / 10000));
             if (meta == null) {
-                StatusError();
                 return;
             }
-            LogUtil.D("ShowImg() " + meta.Id);
+            imgLoadStart = DateTime.Now.Ticks;
 
             // 显示图片
             float winW = Window.Current.Content.ActualSize.X;
             float winH = Window.Current.Content.ActualSize.Y;
             BitmapImage biUhd = new BitmapImage();
-            biUhd.ImageOpened += (sender, e) => {
-                LogUtil.D("ImageOpened " + meta.Id);
-                StatusEnjoy();
-            };
             ImgUhd.Source = biUhd;
             biUhd.DecodePixelType = DecodePixelType.Logical;
             if (meta.Dimen.Width * 1.0f / meta.Dimen.Height > winW / winH) { // 图片比窗口宽，缩放至与窗口等高
@@ -365,13 +387,26 @@ namespace Timeline {
                 bi.PixelWidth, bi.PixelHeight, winW, winH, bi.DecodePixelWidth, bi.DecodePixelHeight);
         }
 
-        private void StatusEnjoy() {
-            ImgUhd.Opacity = 1;
-            ImgUhd.Scale = new Vector3(1, 1, 1);
+        private void StatusLoading() {
+            ctsShow.Cancel();
+            imgAnimStart = DateTime.Now.Ticks;
+            
+            ImgUhd.Opacity = 0;
+            ImgUhd.Scale = new Vector3(1.014f, 1.014f, 1.014f);
 
-            ProgressLoading.ShowPaused = true;
-            ProgressLoading.ShowError = false;
-            ProgressLoading.Visibility = ViewStory.Visibility;
+            if (ProgressLoading.ShowPaused || ProgressLoading.ShowError) {
+                ProgressLoading.ShowPaused = false;
+                ProgressLoading.ShowError = false;
+                ProgressLoading.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async Task StatusEnjoyAsync(CancellationToken token) {
+            await Task.Delay(Math.Max(0, 500 - (int)((DateTime.Now.Ticks - imgAnimStart) / 10000)));
+            if (token.IsCancellationRequested) {
+                LogUtil.D("StatusEnjoyAsync() IsCancellationRequested");
+                return;
+            }
 
             MenuSetDesktop.IsEnabled = true;
             MenuSetLock.IsEnabled = true;
@@ -379,17 +414,13 @@ namespace Timeline {
             MenuDislike.IsEnabled = true;
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
-        }
 
-        private void StatusLoading() {
-            ImgUhd.Opacity = 0;
-            ImgUhd.Scale = new Vector3(1.014f, 1.014f, 1.014f);
+            ImgUhd.Opacity = 1;
+            ImgUhd.Scale = new Vector3(1, 1, 1);
 
-            ProgressLoading.ShowPaused = false;
+            ProgressLoading.ShowPaused = true;
             ProgressLoading.ShowError = false;
-            ProgressLoading.Visibility = Visibility.Visible;
-
-            pageTimerStart = DateTime.Now.Ticks;
+            ProgressLoading.Visibility = ViewStory.Visibility;
         }
 
         private void StatusError() {
@@ -460,14 +491,14 @@ namespace Timeline {
             if (file != null) {
                 ToggleInfo(null, resLoader.GetString("MsgSave1"), InfoBarSeverity.Success, resLoader.GetString("ActionGo"), () => {
                     ToggleInfo(null, null);
-                    _ = LaunchPicLib(file);
+                    _ = LaunchPicLibAsync(file);
                 });
             } else {
                 ToggleInfo(null, resLoader.GetString("MsgSave0"));
             }
         }
 
-        private async Task LaunchPicLib(StorageFile fileSelected) {
+        private async Task LaunchPicLibAsync(StorageFile fileSelected) {
             try {
                 var folder = await KnownFolders.PicturesLibrary.GetFolderAsync(resLoader.GetString("AppNameShort"));
                 FolderLauncherOptions options = new FolderLauncherOptions();
@@ -480,7 +511,7 @@ namespace Timeline {
             }
         }
 
-        private async Task LaunchRelealse() {
+        private async Task LaunchRelealseAsync() {
             try {
                 _ = await Launcher.LaunchUriAsync(new Uri(release?.Url));
             } catch (Exception e) {
@@ -565,17 +596,17 @@ namespace Timeline {
                 return;
             }
             // 检查更新
-            release = await Api.CheckUpdate();
+            release = await Api.CheckUpdateAsync();
             if (!string.IsNullOrEmpty(release.Url)) {
                 await Task.Delay(1000);
                 ToggleInfo(null, resLoader.GetString("MsgUpdate"), InfoBarSeverity.Informational, resLoader.GetString("ActionGo"), () => {
                     ToggleInfo(null, null);
-                    _ = LaunchRelealse();
+                    _ = LaunchRelealseAsync();
                 });
             }
         }
 
-        private async Task<bool> RegService() {
+        private async Task<bool> RegServiceAsync() {
             BackgroundAccessStatus reqStatus = await BackgroundExecutionManager.RequestAccessAsync();
             LogUtil.D("RegService() RequestAccessAsync " + reqStatus);
             if (reqStatus != BackgroundAccessStatus.AlwaysAllowed
@@ -614,7 +645,7 @@ namespace Timeline {
             }
         }
 
-        private async Task RunServiceNow() {
+        private async Task RunServiceNowAsync() {
             LogUtil.D("RunServiceNow()");
 
             ApplicationTrigger _AppTrigger = null;
@@ -660,7 +691,7 @@ namespace Timeline {
                 ToggleInfo(resLoader.GetString("MsgYesterday"), resLoader.GetString("MsgYesterdayDesc"), InfoBarSeverity.Informational);
             }
 
-            cts.Cancel();
+            ctsLoad.Cancel();
             StatusLoading();
             pageTimer.Stop();
             pageTimer.Start();
@@ -669,14 +700,14 @@ namespace Timeline {
         private void MenuSetDesktop_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = SetWallpaperAsync(meta, true);
-            Api.Rank(ini, meta, "desktop");
+            _ = Api.RankAsync(ini, meta, "desktop");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
         private void MenuSetLock_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = SetWallpaperAsync(meta, false);
-            Api.Rank(ini, meta, "lock");
+            _ = Api.RankAsync(ini, meta, "lock");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
@@ -688,7 +719,7 @@ namespace Timeline {
         private void MenuSave_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = DownloadAsync();
-            Api.Rank(ini, meta, "save");
+            _ = Api.RankAsync(ini, meta, "save");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
@@ -699,14 +730,14 @@ namespace Timeline {
 
             ToggleInfo(null, resLoader.GetString("MsgMarkDislike"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                 ToggleInfo(null, null);
-                Api.Rank(ini, meta, "dislike", true);
+                _ = Api.RankAsync(ini, meta, "dislike", true);
             });
 
             if (dislikeTimer == null) {
                 dislikeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
                 dislikeTimer.Tick += (sender2, e2) => {
                     dislikeTimer.Stop();
-                    Api.Rank(ini, dislikeTimerMeta, "dislike");
+                    _ = Api.RankAsync(ini, dislikeTimerMeta, "dislike");
                 };
             }
             dislikeTimer.Stop();
@@ -744,20 +775,20 @@ namespace Timeline {
 
             if (MenuCurDesktopIcon.Visibility == Visibility.Collapsed) {
                 ini.DesktopProvider = MenuPushDesktopIcon.Visibility == Visibility.Visible ? provider.Id : "";
-                IniUtil.SaveDesktopProvider(ini.DesktopProvider);
+                _ = IniUtil.SaveDesktopProviderAsync(ini.DesktopProvider);
             }
             if (MenuCurLockIcon.Visibility == Visibility.Collapsed) {
                 ini.LockProvider = MenuPushLockIcon.Visibility == Visibility.Visible ? provider.Id : "";
-                IniUtil.SaveLockProvider(ini.LockProvider);
+                _ = IniUtil.SaveLockProviderAsync(ini.LockProvider);
             }
 
             if (string.IsNullOrEmpty(ini.DesktopProvider) && string.IsNullOrEmpty(ini.LockProvider)) {
                 UnregService();
             } else {
-                _ = RegService();
+                _ = RegServiceAsync();
                 if ((MenuPushDesktop.Tag.Equals(menuCheck.Tag) && MenuPushDesktopIcon.Visibility == Visibility.Visible)
                     || (MenuPushLock.Tag.Equals(menuCheck.Tag) && MenuPushLockIcon.Visibility == Visibility.Visible)) {
-                    _ = RunServiceNow(); // 用户浏览图源与推送图源一致，立即推送一次
+                    _ = RunServiceNowAsync(); // 用户浏览图源与推送图源一致，立即推送一次
                 }
             }
 
@@ -788,13 +819,13 @@ namespace Timeline {
             ViewSplit.IsPaneOpen = false;
 
             string providerIdNew = ((RadioMenuFlyoutItem)sender).Tag.ToString();
-            IniUtil.SaveProvider(providerIdNew);
+            _ = IniUtil.SaveProviderAsync(providerIdNew);
             ini = null;
             provider = null;
             StatusLoading();
-            cts.Cancel();
-            cts = new CancellationTokenSource();
-            _ = LoadFocusAsync(cts.Token);
+            ctsLoad.Cancel();
+            ctsLoad = new CancellationTokenSource();
+            _ = LoadFocusAsync(ctsLoad.Token);
 
             ToggleInfo(null, string.Format(resLoader.GetString("MsgProvider"),
                 resLoader.GetString("Provider_" + providerIdNew)), InfoBarSeverity.Informational);
@@ -804,6 +835,18 @@ namespace Timeline {
             FlyoutMenu.Hide();
             ViewSettings.BeforePaneOpen(ini);
             ViewSplit.IsPaneOpen = true;
+        }
+
+        private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
+            LogUtil.D("ImgUhd_ImageOpened() {0} {1}ms", meta?.Id, (int)((DateTime.Now.Ticks - imgLoadStart) / 10000));
+            ctsShow = new CancellationTokenSource();
+            _ = StatusEnjoyAsync(ctsShow.Token);
+        }
+
+        private void ImgUhd_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
+            LogUtil.E("ImgUhd_ImageFailed() " + meta?.Id);
+            ctsShow = new CancellationTokenSource();
+            _ = StatusEnjoyAsync(ctsShow.Token);
         }
 
         private void BtnInfoLink_Click(object sender, RoutedEventArgs e) {
@@ -834,10 +877,10 @@ namespace Timeline {
                 FlyoutGo.Hide();
                 DateTime date = DateUtil.ParseDate(BoxGo.Text);
                 if (date.Date != meta?.Date?.Date) {
-                    cts.Cancel();
+                    ctsLoad.Cancel();
                     StatusLoading();
-                    cts = new CancellationTokenSource();
-                    _ = LoadTargetAsync(date, cts.Token);
+                    ctsLoad = new CancellationTokenSource();
+                    _ = LoadTargetAsync(date, ctsLoad.Token);
                 }
             }
         }
@@ -869,7 +912,7 @@ namespace Timeline {
 
             ToggleInfo(null, null);
 
-            cts.Cancel();
+            ctsLoad.Cancel();
             StatusLoading();
             pageTimer.Stop();
             pageTimer.Start();
@@ -880,7 +923,7 @@ namespace Timeline {
 
             ToggleInfo(null, null);
 
-            cts.Cancel();
+            ctsLoad.Cancel();
             StatusLoading();
             pageTimer.Stop();
             pageTimer.Start();
@@ -892,7 +935,7 @@ namespace Timeline {
                 case VirtualKey.Left:
                 case VirtualKey.Up:
                     pageTimerYesterdayOrTomorrow = true;
-                    cts.Cancel();
+                    ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();
                     pageTimer.Start();
@@ -900,7 +943,7 @@ namespace Timeline {
                 case VirtualKey.Right:
                 case VirtualKey.Down:
                     pageTimerYesterdayOrTomorrow = false;
-                    cts.Cancel();
+                    ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();
                     pageTimer.Start();
@@ -911,17 +954,17 @@ namespace Timeline {
                     break;
                 case VirtualKey.Home:
                 case VirtualKey.PageUp:
-                    cts.Cancel();
+                    ctsLoad.Cancel();
                     StatusLoading();
-                    cts = new CancellationTokenSource();
-                    _ = LoadEndAsync(true, cts.Token);
+                    ctsLoad = new CancellationTokenSource();
+                    _ = LoadEndAsync(true, ctsLoad.Token);
                     break;
                 case VirtualKey.End:
                 case VirtualKey.PageDown:
-                    cts.Cancel();
+                    ctsLoad.Cancel();
                     StatusLoading();
-                    cts = new CancellationTokenSource();
-                    _ = LoadEndAsync(false, cts.Token);
+                    ctsLoad = new CancellationTokenSource();
+                    _ = LoadEndAsync(false, ctsLoad.Token);
                     break;
                 case VirtualKey.Space:
                     ToggleImgMode(ImgUhd.Stretch != Stretch.UniformToFill);
@@ -932,37 +975,37 @@ namespace Timeline {
                     break;
                 case VirtualKey.Number1:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        Api.Rank(ini, meta, "dislike");
+                        _ = Api.RankAsync(ini, meta, "dislike");
                         ToggleInfo(null, resLoader.GetString("MsgMarkDislike"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            Api.Rank(ini, meta, "dislike", true);
+                            _ = Api.RankAsync(ini, meta, "dislike", true);
                         });
                     }
                     break;
                 case VirtualKey.Number2:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        Api.Rank(ini, meta, "r18");
+                        _ = Api.RankAsync(ini, meta, "r18");
                         ToggleInfo(null, resLoader.GetString("MsgMarkR18"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            Api.Rank(ini, meta, "r18", true);
+                            _ = Api.RankAsync(ini, meta, "r18", true);
                         });
                     }
                     break;
                 case VirtualKey.Number3:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        Api.Rank(ini, meta, "acg");
+                        _ = Api.RankAsync(ini, meta, "acg");
                         ToggleInfo(null, resLoader.GetString("MsgMarkAcg"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            Api.Rank(ini, meta, "acg", true);
+                            _ = Api.RankAsync(ini, meta, "acg", true);
                         });
                     }
                     break;
                 case VirtualKey.Number4:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        Api.Rank(ini, meta, "photograph");
+                        _ = Api.RankAsync(ini, meta, "photograph");
                         ToggleInfo(null, resLoader.GetString("MsgMarkPhotograph"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            Api.Rank(ini, meta, "photograph", true);
+                            _ = Api.RankAsync(ini, meta, "photograph", true);
                         });
                     }
                     break;
@@ -986,6 +1029,7 @@ namespace Timeline {
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
                         if (TextUtil.Copy(meta?.CacheUhd)) {
                             ToggleInfo(null, resLoader.GetString("MsgCopiedImg"), InfoBarSeverity.Success);
+                            _ = Api.RankAsync(ini, meta, "copy");
                         }
                     } else { // Shift + Control
                         if (meta != null) {
@@ -1019,14 +1063,15 @@ namespace Timeline {
         }
 
         private void Refresh() {
+            ToggleInfo(null, string.Format(resLoader.GetString("MsgRefresh"),
+                resLoader.GetString("Provider_" + provider.Id)), InfoBarSeverity.Informational);
+
             ini = null;
             provider = null;
             StatusLoading();
-            cts.Cancel();
-            cts = new CancellationTokenSource();
-            _ = LoadFocusAsync(cts.Token);
-
-            ToggleInfo(null, resLoader.GetString("MsgRefresh"), InfoBarSeverity.Informational);
+            ctsLoad.Cancel();
+            ctsLoad = new CancellationTokenSource();
+            _ = LoadFocusAsync(ctsLoad.Token);
         }
 
         private void AnimeYesterday1_Completed(object sender, object e) {
@@ -1047,13 +1092,13 @@ namespace Timeline {
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.Provider != null) {
-                IniUtil.SaveProvider(e.Provider);
+                _ = IniUtil.SaveProviderAsync(e.Provider);
                 ini = null;
                 provider = null;
                 StatusLoading();
-                cts.Cancel();
-                cts = new CancellationTokenSource();
-                _ = LoadFocusAsync(cts.Token);
+                ctsLoad.Cancel();
+                ctsLoad = new CancellationTokenSource();
+                _ = LoadFocusAsync(ctsLoad.Token);
 
                 ToggleInfo(null, string.Format(resLoader.GetString("MsgProvider"),
                     resLoader.GetString("Provider_" + e.Provider)), InfoBarSeverity.Informational);
@@ -1061,9 +1106,9 @@ namespace Timeline {
                 ini = null;
                 provider = null;
                 StatusLoading();
-                cts.Cancel();
-                cts = new CancellationTokenSource();
-                _ = LoadFocusAsync(cts.Token);
+                ctsLoad.Cancel();
+                ctsLoad = new CancellationTokenSource();
+                _ = LoadFocusAsync(ctsLoad.Token);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
                 ElementTheme theme = ThemeUtil.ParseTheme(ini.Theme);
@@ -1093,7 +1138,7 @@ namespace Timeline {
             var res = await dlg.ShowAsync();
             if (res == ContentDialogResult.Primary) {
                 ContributeApiReq req = dlg.GetContent();
-                bool status = await Api.Contribute(req);
+                bool status = await Api.ContributeAsync(req);
                 if (status) {
                     ToggleInfo(null, resLoader.GetString("MsgContribute1"), InfoBarSeverity.Success);
                 } else {

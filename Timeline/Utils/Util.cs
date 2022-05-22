@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -60,103 +61,103 @@ namespace Timeline.Utils {
             return File.Exists(iniFile) ? iniFile : null;
         }
 
-        public static async void SaveProvider(string provider) {
+        public static async Task SaveProviderAsync(string provider) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("app", "provider", provider, iniFile.Path);
         }
 
-        public static async void SaveDesktopProvider(string provider) {
+        public static async Task SaveDesktopProviderAsync(string provider) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("app", "desktopprovider", provider, iniFile.Path);
         }
 
-        public static async void SaveLockProvider(string provider) {
+        public static async Task SaveLockProviderAsync(string provider) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("app", "lockprovider", provider, iniFile.Path);
         }
 
-        public static async void SaveTheme(string theme) {
+        public static async Task SaveThemeAsync(string theme) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("app", "theme", theme, iniFile.Path);
         }
 
-        public static async void SaveBingLang(string langCode) {
+        public static async Task SaveBingLangAsync(string langCode) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("bing", "lang", langCode, iniFile.Path);
         }
 
-        public static async void SaveNasaMirror(string mirror) {
+        public static async Task SaveNasaMirrorAsync(string mirror) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("nasa", "mirror", mirror, iniFile.Path);
         }
 
-        public static async void SaveOneplusOrder(string order) {
+        public static async Task SaveOneplusOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("oneplus", "order", order, iniFile.Path);
         }
 
-        public static async void SaveTimelineOrder(string order) {
+        public static async Task SaveTimelineOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("timeline", "order", order, iniFile.Path);
         }
 
-        public static async void SaveTimelineCate(string order) {
+        public static async Task SaveTimelineCateAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("timeline", "cate", order, iniFile.Path);
         }
 
-        public static async void SaveHimawari8Offset(float offset) {
+        public static async Task SaveHimawari8OffsetAsync(float offset) {
             offset = offset < -1 ? -1 : (offset > 1 ? 1 : offset);
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("himawari8", "offset", offset.ToString("0.00"), iniFile.Path);
         }
 
-        public static async void SaveYmyouliOrder(string order) {
+        public static async Task SaveYmyouliOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("ymyouli", "order", order, iniFile.Path);
         }
 
-        public static async void SaveYmyouliCate(string cate) {
+        public static async Task SaveYmyouliCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("ymyouli", "cate", cate, iniFile.Path);
         }
 
-        public static async void SaveInfinityOrder(string order) {
+        public static async Task SaveInfinityOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("infinity", "order", order, iniFile.Path);
         }
 
-        public static async void SaveOneOrder(string order) {
+        public static async Task SaveOneOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("one", "order", order, iniFile.Path);
         }
 
-        public static async void SaveQingbzOrder(string order) {
+        public static async Task SaveQingbzOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("qingbz", "order", order, iniFile.Path);
         }
 
-        public static async void SaveQingbzCate(string cate) {
+        public static async Task SaveQingbzCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("qingbz", "cate", cate, iniFile.Path);
         }
 
-        public static async void SaveObzhiOrder(string order) {
+        public static async Task SaveObzhiOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("obzhi", "order", order, iniFile.Path);
         }
 
-        public static async void SaveObzhiCate(string cate) {
+        public static async Task SaveObzhiCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("obzhi", "cate", cate, iniFile.Path);
         }
 
-        public static async void SaveWallhereOrder(string order) {
+        public static async Task SaveWallhereOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("wallhere", "order", order, iniFile.Path);
         }
 
-        public static async void SaveWallhereCate(string cate) {
+        public static async Task SaveWallhereCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("wallhere", "cate", cate, iniFile.Path);
         }
@@ -418,16 +419,46 @@ namespace Timeline.Utils {
             return (size / 1024.0 / 1024.0 / 1024.0).ToString("0.00GB");
         }
 
-        public static async Task<IList<string>> GetGlitter() {
+        public static async Task<IList<string>> GetGlitterAsync() {
             try {
                 StorageFile file = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\glitter.txt");
                 if (file != null) {
                     return await FileIO.ReadLinesAsync(file);
                 }
             } catch (Exception e) {
-                LogUtil.E("GetGlitter() " + e.Message);
+                LogUtil.E("GetGlitterAsync() " + e.Message);
             }
             return new List<string>();
+        }
+
+        public static async Task<Dictionary<string, int>> GetHistory(string provider) {
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.TryGetItemAsync("count") as StorageFolder;
+                if (folder == null) {
+                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count");
+                }
+                StorageFile file = await folder.CreateFileAsync(provider + ".json", CreationCollisionOption.OpenIfExists);
+                string content = await FileIO.ReadTextAsync(file);
+                return JsonConvert.DeserializeObject<Dictionary<string, int>>(content) ?? new Dictionary<string, int>();
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("GetHistory() " + e.Message);
+            }
+            return new Dictionary<string, int>();
+        }
+
+        public static async Task SaveHistory(string provider, Dictionary<string, int> dic) {
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.TryGetItemAsync("count") as StorageFolder;
+                if (folder == null) {
+                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count");
+                }
+                StorageFile file = await folder.CreateFileAsync(provider + ".json", CreationCollisionOption.OpenIfExists);
+                await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(dic));
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("SaveHistory() " + e.Message);
+            }
         }
     }
 

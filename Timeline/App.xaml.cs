@@ -30,7 +30,7 @@ namespace Timeline {
 
             // 上传崩溃日志
             this.UnhandledException += OnUnhandledException;
-            TaskScheduler.UnobservedTaskException += OnUnobservedException;
+            //TaskScheduler.UnobservedTaskException += OnUnobservedException;
             //AppDomain.CurrentDomain.UnhandledException += OnBgUnhandledException;
         }
 
@@ -127,16 +127,16 @@ namespace Timeline {
         }
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) {
-            Api.Crash(e.Exception);
-            LogUtil.E("OnUnhandledException() " + e.Exception.ToString());
             e.Handled = true;
+            _ = Api.CrashAsync(e.Exception);
+            LogUtil.E("OnUnhandledException() " + e.Exception.ToString());
         }
 
-        private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e) {
-            Api.Crash(e.Exception);
-            LogUtil.E("OnUnobservedException() " + e.Exception.ToString());
-            e.SetObserved();
-        }
+        //private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e) {
+        //    e.SetObserved();
+        //    _ = Api.CrashAsync(e.Exception);
+        //    LogUtil.E("OnUnobservedException() " + e.Exception.ToString());
+        //}
 
         //private void OnBgUnhandledException(object sender, System.UnhandledExceptionEventArgs e) {
         //    Api.Crash((Exception)e.ExceptionObject);

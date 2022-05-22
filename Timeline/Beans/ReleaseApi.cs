@@ -8,21 +8,22 @@ namespace Timeline.Beans {
         public string Url { get; set; }
     }
 
-    public class GiteeApi {
-        // 标签
-        [JsonProperty(PropertyName = "tag_name")]
-        public string TagName { get; set; }
+    public class AppstatsApi {
+        [JsonProperty(PropertyName = "status")]
+        public int Status { set; get; }
 
-        // 标题
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "data")]
+        public AppstatsApiData Data { set; get; }
+    }
 
-        // 描述
-        [JsonProperty(PropertyName = "body")]
-        public string Body { get; set; }
+    public class AppstatsApiData {
+        // 版本
+        [JsonProperty(PropertyName = "ver")]
 
-        // 预览版本
-        [JsonProperty(PropertyName = "prerelease")]
-        public bool Prerelease { get; set; }
+        public string Version { get; set; }
+
+        // 链接
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
     }
 }

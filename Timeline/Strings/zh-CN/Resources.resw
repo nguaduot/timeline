@@ -178,7 +178,7 @@
     <value>切换显示模式：全图</value>
   </data>
   <data name="MenuFillOn.Label" xml:space="preserve">
-    <value>切换显示模式：拉伸</value>
+    <value>切换显示模式：填充</value>
   </data>
   <data name="YmyouliCate_acgcharacter" xml:space="preserve">
     <value>动漫人物</value>
@@ -514,7 +514,7 @@
     <value>前往评分</value>
   </data>
   <data name="MsgRefresh" xml:space="preserve">
-    <value>已强制刷新</value>
+    <value>已刷新图源：{0}</value>
   </data>
   <data name="TextContributePrivacy.Text" xml:space="preserve">
     <value>投稿一经采用，本项目将无偿非商业性使用您的摄影作品。</value>
@@ -562,7 +562,7 @@
     <value>图片显示模式：全图</value>
   </data>
   <data name="MsgUniformToFill" xml:space="preserve">
-    <value>图片显示模式：拉伸</value>
+    <value>图片显示模式：填充</value>
   </data>
   <data name="ActionClose" xml:space="preserve">
     <value>关闭</value>
@@ -833,5 +833,8 @@
   </data>
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>已复制图片</value>
+  </data>
+  <data name="TextThank2.Text" xml:space="preserve">
+    <value>感谢 Bili.Uwp 开发者 @Richasy 帮助解决闪退问题。</value>
   </data>
 </root>

@@ -497,15 +497,17 @@
                    Opacity="0"
                    Scale="1.014,1.014,1.014"
                    Stretch="UniformToFill"
+                   ImageOpened="ImgUhd_ImageOpened"
+                   ImageFailed="ImgUhd_ImageFailed"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                    RelativePanel.AlignVerticalCenterWithPanel="True">
                 <Image.OpacityTransition>
-                    <ScalarTransition />
+                    <ScalarTransition Duration="0:0:0.4" />
                 </Image.OpacityTransition>
                 <Image.ScaleTransition>
-                    <Vector3Transition />
+                    <Vector3Transition Duration="0:0:0.4" />
                 </Image.ScaleTransition>
             </Image>
 

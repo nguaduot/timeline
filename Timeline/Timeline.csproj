@@ -129,6 +129,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\BingApi.cs" />
     <Compile Include="Beans\ContributeApiReq.cs" />
     <Compile Include="Beans\CrashApiReq.cs" />

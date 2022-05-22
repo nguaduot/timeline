@@ -298,24 +298,16 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadHimawari8(bool setDesktopOrLock) {
-            const string URL_API = "https://himawari8.nict.go.jp/img/D531106/thumbnail/550/{0}/{1}_0_0.png";
-            DateTime now = DateTime.UtcNow.AddMinutes(-15);
-            now = now.AddMinutes(-now.Minute % 10);
-            string urlUhd = null;
-            for (int i = 0; i < 5; i++) {
-                string urlApi = string.Format(URL_API, now.AddMinutes(-10 * i).ToString(@"yyyy\/MM\/dd"),
-                    string.Format("{0}{1}000", now.AddMinutes(-10 * i).ToString("HH"),
-                    (now.AddMinutes(-10 * i).Minute / 10)));
-                LogUtil.I("PushService.LoadHimawari8() api url: " + urlApi);
-                HttpWebRequest req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(urlApi));
-                req.Method = HttpMethod.Head.Method;
-                var res = (HttpWebResponse)await req.GetResponseAsync();
-                if (res.StatusCode == HttpStatusCode.OK && res.ContentLength > 10 * 1024) {
-                    urlUhd = urlApi;
-                    break;
-                }
-                res.Close();
-            }
+            const string URL_API = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json";
+            const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
+            LogUtil.I("PushService.LoadHimawari8() api url: " + URL_API);
+            HttpClient client = new HttpClient();
+            string jsonData = await client.GetStringAsync(URL_API);
+            Match match = Regex.Match(jsonData, @"""date"": ?""(.+?)""");
+            DateTime time = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd HH:mm:ss",
+                new System.Globalization.CultureInfo("en-US"));
+            string urlUhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"),
+                string.Format("{0}{1}000", time.ToString("HH"), time.Minute / 10));
             LogUtil.I("PushService.LoadHimawari8() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(1920, 1080), ini.Himawari8.Offset);
         }

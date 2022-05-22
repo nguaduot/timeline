@@ -22,7 +22,7 @@ namespace TimelineService.Utils {
             }
             const string URL_API_STATS = "https://api.nguaduot.cn/appstats";
             StatsApiReq req = new StatsApiReq {
-                App = "拾光推送服务",
+                App = "TimelineService",
                 Package = "TWPushService.winmd",
                 Version = "5.0", // TODO
                 Api = ini?.ToString(),

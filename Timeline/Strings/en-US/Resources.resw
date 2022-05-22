@@ -514,7 +514,7 @@
     <value>Rate it</value>
   </data>
   <data name="MsgRefresh" xml:space="preserve">
-    <value>Refreshed.</value>
+    <value>Refreshed: {0}</value>
   </data>
   <data name="TextContributePrivacy.Text" xml:space="preserve">
     <value>Once adopted, this project will use your photographic works for free and non-commercial use.</value>
@@ -833,5 +833,8 @@
   </data>
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>Image copied.</value>
+  </data>
+  <data name="TextThank2.Text" xml:space="preserve">
+    <value>Thank Github@Richasy for bugfix.</value>
   </data>
 </root>

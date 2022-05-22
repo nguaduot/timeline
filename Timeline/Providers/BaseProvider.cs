@@ -9,9 +9,6 @@ using Windows.Storage.FileProperties;
 using Timeline.Utils;
 using Windows.Graphics.Imaging;
 using System.Drawing;
-using Newtonsoft.Json;
-using System.Text;
-using System.IO;
 using System.Linq;
 using Windows.Media.FaceAnalysis;
 using System.Threading;
@@ -32,6 +29,7 @@ namespace Timeline.Providers {
         private BackgroundDownloader downloader = new BackgroundDownloader();
         private Queue<DownloadOperation> activeDownloads = new Queue<DownloadOperation>();
 
+        // 缓存图片量
         private static int POOL_CACHE = 5;
 
         protected void AppendMetas(List<Meta> metasAdd) {
@@ -86,26 +84,30 @@ namespace Timeline.Providers {
         }
 
         public virtual async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            await Task.Run(() => {
-                dicHistory = GetHistory(Id);
-            });
+            dicHistory = await FileUtil.GetHistory(Id);
             return false;
         }
 
-        public Meta GetFocus() {
+        public async Task<Meta> Focus() {
+            indexFocus = indexFocus < metas.Count ? indexFocus : 0;
             if (metas.Count > 0) {
                 if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
                     dicHistory[metas[indexFocus].Id] += 1;
                 } else {
                     dicHistory[metas[indexFocus].Id] = 1;
                 }
-                SaveHistory(Id, dicHistory);
+                await FileUtil.SaveHistory(Id, dicHistory);
                 return metas[indexFocus];
             }
             return null;
         }
 
-        public Meta Yesterday() {
+        public Meta GetFocus() {
+            int index = indexFocus < metas.Count ? indexFocus : 0;
+            return metas.Count > 0 ? metas[index] : null;
+        }
+
+        public async Task<Meta> Yesterday() {
             indexFocus = indexFocus < metas.Count - 1 ? indexFocus + 1 : metas.Count - 1;
             if (metas.Count > 0) {
                 if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
@@ -113,7 +115,7 @@ namespace Timeline.Providers {
                 } else {
                     dicHistory[metas[indexFocus].Id] = 1;
                 }
-                SaveHistory(Id, dicHistory);
+                await FileUtil.SaveHistory(Id, dicHistory);
                 return metas[indexFocus];
             }
             return null;
@@ -238,7 +240,7 @@ namespace Timeline.Providers {
             }
             // 获取图片尺寸&检测人像位置
             if (meta.CacheUhd != null && FaceDetector.IsSupported) {
-                //try {
+                try {
                     using (var stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
                         var decoder = await BitmapDecoder.CreateAsync(stream);
                         // 获取图片尺寸
@@ -260,9 +262,9 @@ namespace Timeline.Providers {
                         meta.FaceOffset = offset >= 0 ? offset : 0.5f;
                         bitmap.Dispose();
                     }
-                //} catch (Exception ex) {
-                //    LogUtil.E("Cache() " + ex.Message);
-                //}
+                } catch (Exception ex) {
+                    LogUtil.E("Cache() " + ex.Message);
+                }
             }
             return meta;
         }
@@ -282,28 +284,6 @@ namespace Timeline.Providers {
                 LogUtil.E("DownloadAsync() " + e.Message);
             }
             return null;
-        }
-
-        public static Dictionary<string, int> GetHistory(string provider) {
-            try {
-                string file = Path.Combine(ApplicationData.Current.LocalFolder.Path, provider + ".json");
-                if (File.Exists(file)) {
-                    string content = File.ReadAllText(file, UTF8Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<Dictionary<string, int>>(content);
-                }
-            } catch (Exception e) {
-                LogUtil.E("GetHistory() " + e.Message);
-            }
-            return new Dictionary<string, int>();
-        }
-
-        public static void SaveHistory(string provider, Dictionary<string, int> dic) {
-            try {
-                string file = Path.Combine(ApplicationData.Current.LocalFolder.Path, provider + ".json");
-                File.WriteAllText(file, JsonConvert.SerializeObject(dic), UTF8Encoding.UTF8);
-            } catch (Exception e) {
-                LogUtil.E("SaveHistory() " + e.Message);
-            }
         }
     }
 }

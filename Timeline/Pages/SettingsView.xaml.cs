@@ -216,7 +216,7 @@ namespace Timeline.Pages {
         }
 
         private async Task RandomGlitter() {
-            IList<string> glitter = await FileUtil.GetGlitter();
+            IList<string> glitter = await FileUtil.GetGlitterAsync();
             LogUtil.I("RandomGlitter() " + glitter.Count);
             if (glitter.Count >= 2) {
                 string glitter1 = glitter[new Random().Next(glitter.Count)];
@@ -272,7 +272,7 @@ namespace Timeline.Pages {
                         rootElement.RequestedTheme = ThemeUtil.ParseTheme(theme);
                     }
                     ini.Theme = theme;
-                    IniUtil.SaveTheme(theme);
+                    _ = IniUtil.SaveThemeAsync(theme);
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
                         ThemeChanged = true
                     });
@@ -309,8 +309,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             BingIni bi = (BingIni)ini.GetIni(BingIni.ID);
             bi.Lang = paras.Id;
-            IniUtil.SaveBingLang(paras.Id);
-            IniUtil.SaveProvider(BingIni.ID);
+            _ = IniUtil.SaveBingLangAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(BingIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -323,8 +323,8 @@ namespace Timeline.Pages {
             string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
             NasaIni bi = (NasaIni)ini.GetIni(NasaIni.ID);
             bi.Mirror = mirror;
-            IniUtil.SaveNasaMirror(mirror);
-            IniUtil.SaveProvider(NasaIni.ID);
+            _ = IniUtil.SaveNasaMirrorAsync(mirror);
+            _ = IniUtil.SaveProviderAsync(NasaIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -337,8 +337,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             OneplusIni bi = (OneplusIni)ini.GetIni(OneplusIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveOneplusOrder(paras.Id);
-            IniUtil.SaveProvider(OneplusIni.ID);
+            _ = IniUtil.SaveOneplusOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(OneplusIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -351,8 +351,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             TimelineIni bi = (TimelineIni)ini.GetIni(TimelineIni.ID);
             bi.Cate = paras.Id;
-            IniUtil.SaveTimelineCate(paras.Id);
-            IniUtil.SaveProvider(TimelineIni.ID);
+            _ = IniUtil.SaveTimelineCateAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -365,8 +365,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             TimelineIni bi = (TimelineIni)ini.GetIni(TimelineIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveTimelineOrder(paras.Id);
-            IniUtil.SaveProvider(TimelineIni.ID);
+            _ = IniUtil.SaveTimelineOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -396,8 +396,8 @@ namespace Timeline.Pages {
                         return;
                     }
                     bi.Offset = offset;
-                    IniUtil.SaveHimawari8Offset(offset);
-                    IniUtil.SaveProvider(Himawari8Ini.ID);
+                    _ = IniUtil.SaveHimawari8OffsetAsync(offset);
+                    _ = IniUtil.SaveProviderAsync(Himawari8Ini.ID);
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
                         ProviderConfigChanged = true
                     });
@@ -414,8 +414,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             YmyouliIni bi = (YmyouliIni)ini.GetIni(YmyouliIni.ID);
             bi.Cate = paras.Id;
-            IniUtil.SaveYmyouliCate(paras.Id);
-            IniUtil.SaveProvider(YmyouliIni.ID);
+            _ = IniUtil.SaveYmyouliCateAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -428,8 +428,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             YmyouliIni bi = (YmyouliIni)ini.GetIni(YmyouliIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveYmyouliOrder(paras.Id);
-            IniUtil.SaveProvider(YmyouliIni.ID);
+            _ = IniUtil.SaveYmyouliOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -446,8 +446,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             InfinityIni bi = (InfinityIni)ini.GetIni(InfinityIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveInfinityOrder(paras.Id);
-            IniUtil.SaveProvider(InfinityIni.ID);
+            _ = IniUtil.SaveInfinityOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(InfinityIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -460,8 +460,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             OneIni bi = (OneIni)ini.GetIni(OneIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveOneOrder(paras.Id);
-            IniUtil.SaveProvider(OneIni.ID);
+            _ = IniUtil.SaveOneOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(OneIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -474,8 +474,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             QingbzIni bi = (QingbzIni)ini.GetIni(QingbzIni.ID);
             bi.Cate = paras.Id;
-            IniUtil.SaveQingbzCate(paras.Id);
-            IniUtil.SaveProvider(QingbzIni.ID);
+            _ = IniUtil.SaveQingbzCateAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -488,8 +488,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             QingbzIni bi = (QingbzIni)ini.GetIni(QingbzIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveQingbzOrder(paras.Id);
-            IniUtil.SaveProvider(QingbzIni.ID);
+            _ = IniUtil.SaveQingbzOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -506,8 +506,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             ObzhiIni bi = (ObzhiIni)ini.GetIni(ObzhiIni.ID);
             bi.Cate = paras.Id;
-            IniUtil.SaveObzhiCate(paras.Id);
-            IniUtil.SaveProvider(ObzhiIni.ID);
+            _ = IniUtil.SaveObzhiCateAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -520,8 +520,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             ObzhiIni bi = (ObzhiIni)ini.GetIni(ObzhiIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveObzhiOrder(paras.Id);
-            IniUtil.SaveProvider(ObzhiIni.ID);
+            _ = IniUtil.SaveObzhiOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -534,8 +534,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             WallhereIni bi = (WallhereIni)ini.GetIni(WallhereIni.ID);
             bi.Cate = paras.Id;
-            IniUtil.SaveWallhereCate(paras.Id);
-            IniUtil.SaveProvider(WallhereIni.ID);
+            _ = IniUtil.SaveWallhereCateAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -548,8 +548,8 @@ namespace Timeline.Pages {
             Paras paras = e.AddedItems[0] as Paras;
             WallhereIni bi = (WallhereIni)ini.GetIni(WallhereIni.ID);
             bi.Order = paras.Id;
-            IniUtil.SaveWallhereOrder(paras.Id);
-            IniUtil.SaveProvider(WallhereIni.ID);
+            _ = IniUtil.SaveWallhereOrderAsync(paras.Id);
+            _ = IniUtil.SaveProviderAsync(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
