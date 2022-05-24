@@ -29,6 +29,9 @@ namespace Timeline.Providers {
             if (bean.R18 == 1) {
                 meta.Title = "🚫 " + meta.Title;
             }
+            if (!string.IsNullOrEmpty(bean.Copyright)) {
+                meta.Copyright = "© " + bean.Copyright;
+            }
             return meta;
         }
 

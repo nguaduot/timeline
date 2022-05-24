@@ -40,15 +40,14 @@ namespace Timeline.Utils {
                 LogUtil.D("GenerateIniFileAsync() copied ini: " + iniFile.Path);
                 if (oldFiles.Length > 0) { // 继承设置
                     LogUtil.D("GenerateIniFileAsync() inherit: " + oldFiles[0].Name);
-                    // TODO：下一版 timelinewallpaper >>> app
                     StringBuilder sb = new StringBuilder(1024);
-                    _ = GetPrivateProfileString("timelinewallpaper", "provider", "bing", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("app", "provider", "bing", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "provider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("timelinewallpaper", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("timelinewallpaper", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("timelinewallpaper", "theme", "", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
                 }
             }

@@ -155,11 +155,6 @@ namespace Timeline.Pages {
             }
         }
 
-        private async Task<StorageFolder> GetFolderSave() {
-            return await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
-                CreationCollisionOption.OpenIfExists);
-        }
-
         private async Task LaunchFolder(StorageFolder folder, StorageFile fileSelected = null) {
             try {
                 if (fileSelected != null) {
@@ -287,11 +282,12 @@ namespace Timeline.Pages {
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
-            _ = LaunchFile(await IniUtil.GetIniPath());
+            await LaunchFile(await IniUtil.GetIniPath());
         }
 
         private async void BtnShowSave_Click(object sender, RoutedEventArgs e) {
-            _ = LaunchFolder(await GetFolderSave());
+            await LaunchFolder(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+                CreationCollisionOption.OpenIfExists));
         }
 
         private void BtnShowCache_Click(object sender, RoutedEventArgs e) {

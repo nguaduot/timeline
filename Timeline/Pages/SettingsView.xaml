@@ -7,13 +7,6 @@
              xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
              mc:Ignorable="d">
 
-    <UserControl.Resources>
-
-        <!-- 兼容 Windows 10，否则 Fluent 文字图标无法显示 -->
-        <FontFamily x:Key="FluentIcons">Assets/Icons/Segoe-Fluent-Icons.ttf#Segoe Fluent Icons</FontFamily>
-
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -92,7 +85,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE909;" />
                             <TextBlock Grid.Column="1" x:Uid="TextBingLang"
@@ -143,7 +136,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE774;" />
                             <TextBlock Grid.Column="1"
@@ -194,7 +187,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE8CB;" />
                             <TextBlock Grid.Column="1"
@@ -247,7 +240,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8F1;" />
                                 <TextBlock Grid.Column="1"
@@ -269,7 +262,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8CB;" />
                                 <TextBlock Grid.Column="1"
@@ -291,7 +284,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xEE56;" />
                                 <TextBlock Grid.Column="1"
@@ -312,7 +305,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE95E;" />
                                 <TextBlock Grid.Column="1"
@@ -364,7 +357,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE8CB;" />
                             <TextBlock Grid.Column="1"
@@ -417,7 +410,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE759;" />
                             <TextBlock Grid.Column="1"
@@ -475,7 +468,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8F1;" />
                                 <TextBlock Grid.Column="1"
@@ -497,7 +490,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8CB;" />
                                 <TextBlock Grid.Column="1"
@@ -519,7 +512,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE95E;" />
                                 <TextBlock Grid.Column="1"
@@ -572,7 +565,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8F1;" />
                                 <TextBlock Grid.Column="1"
@@ -594,7 +587,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8CB;" />
                                 <TextBlock Grid.Column="1"
@@ -616,7 +609,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE95E;" />
                                 <TextBlock Grid.Column="1"
@@ -669,7 +662,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8F1;" />
                                 <TextBlock Grid.Column="1"
@@ -691,7 +684,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8CB;" />
                                 <TextBlock Grid.Column="1"
@@ -745,7 +738,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8F1;" />
                                 <TextBlock Grid.Column="1"
@@ -767,7 +760,7 @@
                                 <FontIcon Margin="0,0,12,0"
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource FluentIcons}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
                                           Glyph="&#xE8CB;" />
                                 <TextBlock Grid.Column="1"
@@ -820,7 +813,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE8CB;" />
                             <TextBlock Grid.Column="1"
@@ -854,7 +847,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE790;" />
                             <StackPanel Grid.Column="1"
@@ -906,7 +899,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE838;" />
                             <StackPanel Grid.Column="1"
@@ -959,7 +952,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE943;" />
                             <StackPanel Grid.Column="1"
@@ -1008,7 +1001,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE8E1;" />
                             <StackPanel Grid.Column="1"
@@ -1064,7 +1057,7 @@
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource FluentIcons}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xEB51;" />
                             <StackPanel Grid.Column="1"

@@ -296,9 +296,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Icons\Segoe-Fluent-Icons.ttf" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>

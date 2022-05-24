@@ -11,9 +11,6 @@
 
     <Page.Resources>
 
-        <!-- 兼容 Windows 10，否则 Fluent 文字图标无法显示 -->
-        <FontFamily x:Key="FluentIcons">Assets/Icons/Segoe-Fluent-Icons.ttf#Segoe Fluent Icons</FontFamily>
-
         <Storyboard x:Name="AnimeYesterday1"
                     Completed="AnimeYesterday1_Completed">
             <DoubleAnimation Duration="0:0:0.3"
@@ -92,7 +89,7 @@
                           Click="MenuYesterday_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconYesterday"
-                              FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                              FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xEB9E;">
                         <FontIcon.RenderTransform>
                             <TranslateTransform X="0" />
@@ -109,7 +106,7 @@
                           Visibility="Collapsed"
                           Click="MenuFill_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE740;" />
                 </AppBarButton.Icon>
                 <AppBarButton.KeyboardAccelerators>
@@ -122,7 +119,7 @@
                           PointerEntered="MenuFillOff_PointerEntered"
                           Click="MenuFill_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               x:Name="IconFillOff"
                               Glyph="&#xE73F;">
                         <FontIcon.RenderTransform>
@@ -141,7 +138,7 @@
                           IsEnabled="False"
                           Click="MenuSave_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE896;" />
                 </AppBarButton.Icon>
                 <AppBarButton.KeyboardAccelerators>
@@ -156,7 +153,7 @@
                           Click="MenuDislike_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconDislike"
-                              FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                              FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE8E0;"
                               RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -175,7 +172,7 @@
                           Click="MenuSettings_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconSettings"
-                              FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                              FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE713;"
                               RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -190,7 +187,7 @@
                               IsEnabled="False"
                               Click="MenuSetDesktop_Click">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xE7F7;" />
                     </AppBarButton.Icon>
                     <AppBarButton.KeyboardAccelerators>
@@ -203,7 +200,7 @@
                               IsEnabled="False"
                               Click="MenuSetLock_Click">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xEE3F;" />
                     </AppBarButton.Icon>
                     <AppBarButton.KeyboardAccelerators>
@@ -217,7 +214,7 @@
                               Tag="pushdesktop"
                               Click="MenuPush_Click">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Name="MenuPushDesktopIcon"
                                   Visibility="Collapsed"
                                   Glyph="&#xE73E;" />
@@ -228,7 +225,7 @@
                               Click="MenuPush_Click"
                               Visibility="Collapsed">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Name="MenuCurDesktopIcon"
                                   Visibility="Collapsed"
                                   Glyph="&#xE73E;" />
@@ -240,7 +237,7 @@
                               Tag="pushlock"
                               Click="MenuPush_Click">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Name="MenuPushLockIcon"
                                   Visibility="Collapsed"
                                   Glyph="&#xE73E;" />
@@ -251,7 +248,7 @@
                               Click="MenuPush_Click"
                               Visibility="Collapsed">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Name="MenuCurLockIcon"
                                   Visibility="Collapsed"
                                   Glyph="&#xE73E;" />
@@ -261,7 +258,7 @@
                 <AppBarButton Name="MenuProvider"
                               x:Uid="MenuProvider">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="{StaticResource ResourceKey=FluentIcons}"
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xE8B9;" />
                     </AppBarButton.Icon>
                     <AppBarButton.Flyout>

@@ -175,7 +175,7 @@ namespace Timeline {
         }
 
         private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
-            bool res = await provider.LoadData(token, ini.GetIni());
+            bool res = await provider.LoadData(token, ini.GetIni(), date);
             if (token.IsCancellationRequested) {
                 return;
             }

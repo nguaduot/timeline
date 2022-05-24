@@ -33,6 +33,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "thumburl")]
         public string ThumbUrl { set; get; }
 
+        // 版权所有
+        [JsonProperty(PropertyName = "copyright")]
+        public string Copyright { set; get; }
+
         // 发布日期
         [JsonProperty(PropertyName = "reldate")]
         public string RelDate { set; get; }
