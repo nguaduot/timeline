@@ -458,6 +458,7 @@ namespace Timeline.Pages {
 
         private void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
             _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
+            _ = Api.RankAsync(YmyouliIni.ID, null, "donate");
         }
 
         private void BoxInfinityOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -518,6 +519,7 @@ namespace Timeline.Pages {
 
         private void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
             _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
+            _ = Api.RankAsync(QingbzIni.ID, null, "donate");
         }
 
         private void BoxObzhiCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {

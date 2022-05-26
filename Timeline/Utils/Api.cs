@@ -48,17 +48,14 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task RankAsync(Ini ini, Meta meta, string action, bool undo = false) {
-            if (ini == null || meta == null) {
-                return;
-            }
+        public static async Task RankAsync(string provider, Meta meta, string action, bool undo = false) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
             LogUtil.D("Rank() " + action);
             const string URL_API = "https://api.nguaduot.cn/appstats/rank";
             RankApiReq req = new RankApiReq {
-                Provider = ini?.Provider,
+                Provider = provider,
                 ImgId = meta?.Id,
                 ImgUrl = meta?.Uhd,
                 Action = action,

@@ -695,14 +695,14 @@ namespace Timeline {
         private void MenuSetDesktop_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = SetWallpaperAsync(meta, true);
-            _ = Api.RankAsync(ini, meta, "desktop");
+            _ = Api.RankAsync(ini?.Provider, meta, "desktop");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
         private void MenuSetLock_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = SetWallpaperAsync(meta, false);
-            _ = Api.RankAsync(ini, meta, "lock");
+            _ = Api.RankAsync(ini?.Provider, meta, "lock");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
@@ -714,7 +714,7 @@ namespace Timeline {
         private void MenuSave_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             _ = DownloadAsync();
-            _ = Api.RankAsync(ini, meta, "save");
+            _ = Api.RankAsync(ini?.Provider, meta, "save");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
@@ -725,14 +725,14 @@ namespace Timeline {
 
             ToggleInfo(null, resLoader.GetString("MsgMarkDislike"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                 ToggleInfo(null, null);
-                _ = Api.RankAsync(ini, meta, "dislike", true);
+                _ = Api.RankAsync(ini?.Provider, meta, "dislike", true);
             });
 
             if (dislikeTimer == null) {
                 dislikeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
                 dislikeTimer.Tick += (sender2, e2) => {
                     dislikeTimer.Stop();
-                    _ = Api.RankAsync(ini, dislikeTimerMeta, "dislike");
+                    _ = Api.RankAsync(ini?.Provider, dislikeTimerMeta, "dislike");
                 };
             }
             dislikeTimer.Stop();
@@ -970,37 +970,37 @@ namespace Timeline {
                     break;
                 case VirtualKey.Number1:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini, meta, "dislike");
+                        _ = Api.RankAsync(ini?.Provider, meta, "dislike");
                         ToggleInfo(null, resLoader.GetString("MsgMarkDislike"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            _ = Api.RankAsync(ini, meta, "dislike", true);
+                            _ = Api.RankAsync(ini?.Provider, meta, "dislike", true);
                         });
                     }
                     break;
                 case VirtualKey.Number2:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini, meta, "r18");
+                        _ = Api.RankAsync(ini?.Provider, meta, "r18");
                         ToggleInfo(null, resLoader.GetString("MsgMarkR18"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            _ = Api.RankAsync(ini, meta, "r18", true);
+                            _ = Api.RankAsync(ini?.Provider, meta, "r18", true);
                         });
                     }
                     break;
                 case VirtualKey.Number3:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini, meta, "acg");
+                        _ = Api.RankAsync(ini?.Provider, meta, "acg");
                         ToggleInfo(null, resLoader.GetString("MsgMarkAcg"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            _ = Api.RankAsync(ini, meta, "acg", true);
+                            _ = Api.RankAsync(ini?.Provider, meta, "acg", true);
                         });
                     }
                     break;
                 case VirtualKey.Number4:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini, meta, "photograph");
+                        _ = Api.RankAsync(ini?.Provider, meta, "photograph");
                         ToggleInfo(null, resLoader.GetString("MsgMarkPhotograph"), InfoBarSeverity.Success, resLoader.GetString("ActionUndo"), () => {
                             ToggleInfo(null, null);
-                            _ = Api.RankAsync(ini, meta, "photograph", true);
+                            _ = Api.RankAsync(ini?.Provider, meta, "photograph", true);
                         });
                     }
                     break;
@@ -1024,7 +1024,7 @@ namespace Timeline {
                     if (sender.Modifiers == VirtualKeyModifiers.Control) {
                         if (TextUtil.Copy(meta?.CacheUhd)) {
                             ToggleInfo(null, resLoader.GetString("MsgCopiedImg"), InfoBarSeverity.Success);
-                            _ = Api.RankAsync(ini, meta, "copy");
+                            _ = Api.RankAsync(ini?.Provider, meta, "copy");
                         }
                     } else { // Shift + Control
                         if (meta != null) {
