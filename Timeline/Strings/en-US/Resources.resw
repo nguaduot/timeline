@@ -837,4 +837,37 @@
   <data name="TextThank2.Text" xml:space="preserve">
     <value>Thank Github@Richasy for bugfix.</value>
   </data>
+  <data name="LspCate_" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="LspCate_acg" xml:space="preserve">
+    <value>ACG</value>
+  </data>
+  <data name="LspCate_photograph" xml:space="preserve">
+    <value>Photograph</value>
+  </data>
+  <data name="LspOrder_date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="LspOrder_random" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="LspOrder_score" xml:space="preserve">
+    <value>Recently popular</value>
+  </data>
+  <data name="Provider_lsp" xml:space="preserve">
+    <value>LSP</value>
+  </data>
+  <data name="Slogan_lsp" xml:space="preserve">
+    <value>一切尽在不言中</value>
+  </data>
+  <data name="TextLspCate.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="TextLspOrder.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="MenuProviderLsp.Text" xml:space="preserve">
+    <value>LSP - 一切尽在不言中</value>
+  </data>
 </root>

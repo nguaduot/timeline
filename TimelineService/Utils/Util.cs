@@ -12,7 +12,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.0.ini";
+        private const string FILE_INI = "timeline-5.2.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -74,9 +74,9 @@ namespace TimelineService.Utils {
             ini.Timeline.Order = sb.ToString();
             _ = GetPrivateProfileString("timeline", "cate", "", sb, 1024, iniFile);
             ini.Timeline.Cate = sb.ToString();
-            _ = GetPrivateProfileString("timeline", "authorize", "1", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int authorize);
-            ini.Timeline.Authorize = authorize;
+            _ = GetPrivateProfileString("timeline", "unauthorized", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int unauthorized);
+            ini.Timeline.Unauthorized = unauthorized;
             _ = GetPrivateProfileString("himawari8", "desktopperiod", "1", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Himawari8.DesktopPeriod = period;
@@ -98,7 +98,6 @@ namespace TimelineService.Utils {
             ini.Ymyouli.Cate = sb.ToString();
             _ = GetPrivateProfileString("ymyouli", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
-            ini.Ymyouli.R18 = r18;
             _ = GetPrivateProfileString("infinity", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Infinity.DesktopPeriod = period;
@@ -125,7 +124,6 @@ namespace TimelineService.Utils {
             ini.Qingbz.Cate = sb.ToString();
             _ = GetPrivateProfileString("qingbz", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out r18);
-            ini.Qingbz.R18 = r18;
             _ = GetPrivateProfileString("obzhi", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Obzhi.DesktopPeriod = period;
@@ -138,7 +136,6 @@ namespace TimelineService.Utils {
             ini.Obzhi.Cate = sb.ToString();
             _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out r18);
-            ini.Obzhi.R18 = r18;
             _ = GetPrivateProfileString("infinity", "order", "", sb, 1024, iniFile);
             ini.Infinity.Order = sb.ToString();
             _ = GetPrivateProfileString("wallhere", "desktopperiod", "24", sb, 1024, iniFile);
@@ -151,6 +148,16 @@ namespace TimelineService.Utils {
             ini.Wallhere.Order = sb.ToString();
             _ = GetPrivateProfileString("wallhere", "cate", "", sb, 1024, iniFile);
             ini.Wallhere.Cate = sb.ToString();
+            _ = GetPrivateProfileString("lsp", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
+            ini.Lsp.DesktopPeriod = period;
+            _ = GetPrivateProfileString("lsp", "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
+            ini.Lsp.LockPeriod = period;
+            _ = GetPrivateProfileString("lsp", "order", "random", sb, 1024, iniFile);
+            ini.Lsp.Order = sb.ToString();
+            _ = GetPrivateProfileString("lsp", "cate", "", sb, 1024, iniFile);
+            ini.Lsp.Cate = sb.ToString();
             return ini;
         }
     }

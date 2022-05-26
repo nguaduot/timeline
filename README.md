@@ -2,8 +2,9 @@
 
 # 拾光 for Windows 11
 
-[![release](https://img.shields.io/badge/release-v5.0.220522-blue)](https://gitee.com/nguaduot/timeline/releases)
-[![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v5.2-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.1.220525-blue)](https://gitee.com/nguaduot/timeline/releases)
+[platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
 
@@ -41,6 +42,7 @@
 + [乌云壁纸](https://www.obzhi.com) - 高清壁纸站
 + [WallHere](https://wallhere.com) - 世界著名的壁纸网站之一
 + [Infinity](http://cn.infinitynewtab.com) - 精选壁纸
++ LSP - 一切尽在不言中
 
 *特别注明：三方图源均为来自网络，本应用无权且不提供商用授权，所以请勿用于商业用途，仅供学习交流。欢迎分享图源*
 
@@ -66,6 +68,10 @@
   + 开启目标图源的桌面/锁屏推送
   + 右键菜单点击“**设置**”图标，导航至“**常规**”组，展开“**配置文件**”，点击“**打开**”，即可编辑配置文件
   + 找到当前图源的块 `[xxx]`，将 `desktopperiod` 参数值修改为 `2`，即2h/次，保存即可
+
++ 如何解锁 `LSP` 图源
+  + 右键菜单点击“**设置**”图标，导航至“**常规**”组，展开“**配置文件**”，点击“**打开**”，即可编辑配置文件
+  + 找到 `[app]` 块，将 r18` 参数值修改为 `1`，保存，重新打开应用图源列表中将出现 `LSP`
 
 ## 反馈
 

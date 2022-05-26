@@ -1,5 +1,6 @@
-﻿; Timeline v5.0
-; https://gitee.com/nguaduot/timeline
+﻿; 拾光 / Timeline v5.2
+; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
+; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
 
 [app]
@@ -16,6 +17,7 @@ provider=bing
 ; provider=obzhi      图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
 ; provider=wallhere   图源：WallHere - 世界著名的壁纸网站之一 https://wallhere.com
 ; provider=infinity   图源：Infinity - 精选壁纸 http://cn.infinitynewtab.com
+; provider=lsp        图源：LSP - 一切尽在不言中
 
 desktopprovider=
 ; desktopprovider={provider}  桌面背景推送图源：参数参考 provider（置空则关闭推送）
@@ -27,6 +29,9 @@ theme=
 ; theme=       主题：跟随系统（默认）
 ; theme=light  主题：亮色
 ; theme=dark   主题：暗色
+
+r18=0
+; r18={n}  R18内容：0或1（默认为0，不含R18内容）
 
 [bing]
 
@@ -89,8 +94,8 @@ cate=
 ; cate=culture    类别：人文摄影
 ; cate=term       类别：节气摄影
 
-authorize=1
-; authorize={n}  授权：0或1（默认为1，仅展示已授权图片，若手动修改为0，请勿擅自商用未授权图片）
+unauthorized=0
+; unauthorized={n}  未授权内容：0或1（默认为0，仅展示已授权内容）
 
 [one]
 
@@ -142,9 +147,6 @@ cate=
 ; cate=delicacy      类别：美食蔬果
 ; cate=nature        类别：山水花草
 
-r18=0
-; r18={n}  R18内容：0或1（默认为0，不含R18内容）
-
 [qingbz]
 
 desktopperiod=24
@@ -169,9 +171,6 @@ cate=
 ; cate=game      类别：游戏迷
 ; cate=animal    类别：动物萌宠
 
-r18=0
-; r18={n}  R18内容：0或1（默认为0，不含R18内容）
-
 [obzhi]
 
 desktopperiod=24
@@ -194,9 +193,6 @@ cate=
 ; cate=portrait  类别：人物
 ; cate=game      类别：游戏
 ; cate=animal    类别：动物
-
-r18=0
-; r18={n}  R18内容：0或1（默认为0，不含R18内容）
 
 [infinity]
 
@@ -228,5 +224,20 @@ cate=
 ; cate=acg         类别：ACG
 ; cate=photograph  类别：摄影
 
-r18=0
-; r18={n}  R18内容：0或1（默认为0，不含R18内容）
+[lsp]
+
+desktopperiod=24
+; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：热度
+; order=random  排序：随机（默认）
+
+cate=
+; cate=            类别：全部（默认）
+; cate=acg         类别：ACG
+; cate=photograph  类别：摄影

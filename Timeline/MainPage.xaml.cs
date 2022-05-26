@@ -74,7 +74,7 @@ namespace Timeline {
 
             TextTitle.Text = resLoader.GetString("AppDesc");
 
-            pageTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
+            pageTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(240) };
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
                 ctsLoad = new CancellationTokenSource();
@@ -238,6 +238,7 @@ namespace Timeline {
             }
             provider = ini.GenerateProvider();
 
+            MenuProviderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
             MenuCurDesktop.Label = string.Format(resLoader.GetString("CurDesktop"), resLoader.GetString("Provider_" + ini.DesktopProvider));
             MenuCurLock.Label = string.Format(resLoader.GetString("CurLock"), resLoader.GetString("Provider_" + ini.LockProvider));
             if (string.IsNullOrEmpty(ini.DesktopProvider)) {

@@ -144,6 +144,7 @@
     <Compile Include="Beans\ReleaseApi.cs" />
     <Compile Include="Beans\StatsApiReq.cs" />
     <Compile Include="Beans\TimelineApi.cs" />
+    <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -155,6 +156,7 @@
     <Compile Include="Pages\DonateDlg.xaml.cs">
       <DependentUpon>DonateDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\OsVerTrigger.cs" />
     <Compile Include="Pages\ReviewDlg.xaml.cs">
       <DependentUpon>ReviewDlg.xaml</DependentUpon>
     </Compile>
@@ -172,6 +174,7 @@
     <Compile Include="Providers\OneProvider.cs" />
     <Compile Include="Providers\QingbzProvider.cs" />
     <Compile Include="Providers\TimelineProvider.cs" />
+    <Compile Include="Providers\LspProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
     <Compile Include="Providers\YmyouliProvider.cs" />
     <Compile Include="Utils\Api.cs" />

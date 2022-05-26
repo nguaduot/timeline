@@ -10,28 +10,24 @@ using System.Collections.Generic;
 using System.Threading;
 
 namespace Timeline.Providers {
-    public class WallhereProvider : BaseProvider {
+    public class LspProvider : BaseProvider {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/wallhere?client=timelinewallpaper&order={0}&cate={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/lsp?client=timelinewallpaper&order={0}&cate={1}&page={2}";
         
-        private Meta ParseBean(WallhereApiData bean, string order) {
+        private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
                 Id = bean.ImgId.ToString(),
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
-                Cate = bean.CateAlt,
-                Date = DateTime.Now,
+                Cate = bean.Cate,
+                Date = DateTime.ParseExact(bean.RelDate, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US")),
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
-            meta.Title = string.Format("{0} #{1}", bean.CateAlt, bean.CateAltNo);
-            meta.Story = bean.Tag?.Replace(",", " ");
-            if (bean.R18 == 1) {
-                meta.Title = "🚫 " + meta.Title;
-            }
-            if (!string.IsNullOrEmpty(bean.Author)) {
-                meta.Copyright = "@" + bean.Author;
+            meta.Title = string.Format("{0} #{1}", bean.Cate, bean.CateNo);
+            if (!string.IsNullOrEmpty(bean.Provider)) {
+                meta.Copyright = "© " + bean.Provider;
             }
             return meta;
         }
@@ -47,19 +43,19 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            string urlApi = string.Format(URL_API, ((WallhereIni)ini).Order, ((WallhereIni)ini).Cate, ++pageIndex);
+            string urlApi = string.Format(URL_API, ((LspIni)ini).Order, ((LspIni)ini).Cate, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
                 HttpResponseMessage res = await client.GetAsync(urlApi, token);
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (WallhereApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ((WallhereIni)ini).Order));
+                foreach (LspApiData item in api.Data) {
+                    metasAdd.Add(ParseBean(item, ((LspIni)ini).Order));
                 }
-                if ("date".Equals(((WallhereIni)ini).Order) || "score".Equals(((WallhereIni)ini).Order)) { // 有序排列
+                if ("date".Equals(((LspIni)ini).Order) || "score".Equals(((LspIni)ini).Order)) { // 有序排列
                     SortMetas(metasAdd);
                 } else {
                     AppendMetas(metasAdd);

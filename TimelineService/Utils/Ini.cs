@@ -5,7 +5,7 @@ namespace TimelineService.Utils {
         private readonly HashSet<string> PROVIDER = new HashSet<string>() {
             BingIni.GetId(), NasaIni.GetId(), OneplusIni.GetId(), TimelineIni.GetId(), Himawari8Ini.GetId(),
             YmyouliIni.GetId(), InfinityIni.GetId(), OneIni.GetId(), QingbzIni.GetId(), ObzhiIni.GetId(),
-            WallhereIni.GetId()
+            WallhereIni.GetId(), LspIni.GetId()
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
 
@@ -24,6 +24,8 @@ namespace TimelineService.Utils {
             set => theme = THEME.Contains(value) ? value : "";
             get => theme;
         }
+
+        public int R18 { set; get; } = 0;
 
         public BingIni Bing { set; get; } = new BingIni();
 
@@ -47,6 +49,8 @@ namespace TimelineService.Utils {
 
         public WallhereIni Wallhere { set; get; } = new WallhereIni();
 
+        public LspIni Lsp { set; get; } = new LspIni();
+
         public int GetDesktopPeriod(string provider) {
             if (NasaIni.GetId().Equals(provider)) {
                 return Nasa.DesktopPeriod;
@@ -68,6 +72,8 @@ namespace TimelineService.Utils {
                 return Obzhi.DesktopPeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.DesktopPeriod;
+            } else if (LspIni.GetId().Equals(provider)) {
+                return Lsp.DesktopPeriod;
             } else {
                 return Bing.DesktopPeriod;
             }
@@ -94,6 +100,8 @@ namespace TimelineService.Utils {
                 return Obzhi.LockPeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.LockPeriod;
+            } else if (LspIni.GetId().Equals(provider)) {
+                return Lsp.LockPeriod;
             } else {
                 return Bing.LockPeriod;
             }
@@ -121,10 +129,12 @@ namespace TimelineService.Utils {
                 paras = Himawari8.ToString();
             } else if (WallhereIni.GetId().Equals(provider)) {
                 paras = Wallhere.ToString();
+            } else if (LspIni.GetId().Equals(provider)) {
+                paras = Lsp.ToString();
             } else {
                 paras = Bing.ToString();
             }
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}" + (paras.Length > 0 ? "&" : "") + paras;
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&r18={R18}" + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
 
@@ -222,7 +232,7 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        public int Authorize { set; get; } = 1;
+        public int Unauthorized { set; get; } = 0;
 
         private int desktopPeriod = 24;
         public int DesktopPeriod {
@@ -236,7 +246,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&authorize={Authorize}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
 
         public static string GetId() => "timeline";
     }
@@ -282,8 +292,6 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -296,7 +304,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "ymyouli";
     }
@@ -370,8 +378,6 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -384,7 +390,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "qingbz";
     }
@@ -406,8 +412,6 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -420,7 +424,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "obzhi";
     }
@@ -453,10 +457,41 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        public int R18 { set; get; } = 0;
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "wallhere";
+    }
+
+    public sealed class LspIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
+
+        private string order = "date";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "date";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = CATE.Contains(value) ? value : "";
+            get => cate;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+
+        public static string GetId() => "lsp";
     }
 }

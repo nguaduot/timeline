@@ -14,7 +14,7 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order={1}&r18={2}&page={3}";
+        private const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
         private Meta ParseBean(ObzhiApiData bean, string order) {
             Meta meta = new Meta {
@@ -45,8 +45,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            string urlApi = string.Format(URL_API, ((ObzhiIni)ini).Cate, ((ObzhiIni)ini).Order,
-                ((ObzhiIni)ini).R18, ++pageIndex);
+            string urlApi = string.Format(URL_API, ((ObzhiIni)ini).Cate, ((ObzhiIni)ini).Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

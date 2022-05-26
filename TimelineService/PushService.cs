@@ -67,6 +67,8 @@ namespace TimelineService {
                         done = await LoadHimawari8(true);
                     } else if (WallhereIni.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadWallhere(true);
+                    } else if (LspIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadLsp(true);
                     }
                     if (done) {
                         localSettings.Values[desktopTag] = (int)localSettings.Values[desktopTag] + 1;
@@ -99,6 +101,8 @@ namespace TimelineService {
                         done = await LoadHimawari8(false);
                     } else if (WallhereIni.GetId().Equals(ini.LockProvider)) {
                         done = await LoadWallhere(false);
+                    } else if (LspIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadLsp(false);
                     }
                     if (done) {
                         localSettings.Values[lockTag] = (int)localSettings.Values[lockTag] + 1;
@@ -258,8 +262,8 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadTimeline(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/timeline?client=timelinewallpaper&cate={0}&order={1}&authorize={2}";
-            string urlApi = string.Format(URL_API, ini.Timeline.Cate, ini.Timeline.Order, ini.Timeline.Authorize);
+            const string URL_API = "https://api.nguaduot.cn/timeline?client=timelinewallpaper&cate={0}&order={1}&unauthorized={2}";
+            string urlApi = string.Format(URL_API, ini.Timeline.Cate, ini.Timeline.Order, ini.Timeline.Unauthorized);
             LogUtil.I("PushService.LoadTimeline() api url: " + urlApi);
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(urlApi);
@@ -270,7 +274,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadYmyouli(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/ymyouli?client=timelinewallpaper&cate={0}&order=random&r18=0";
+            const string URL_API = "https://api.nguaduot.cn/ymyouli?client=timelinewallpaper&cate={0}&order=random";
             string urlApi = string.Format(URL_API, ini.Ymyouli.Cate);
             LogUtil.I("PushService.LoadYmyouli() api url: " + urlApi);
             HttpClient client = new HttpClient();
@@ -331,7 +335,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadQingbz(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/qingbz?client=timelinewallpaper&cate={0}&order=random&r18=0";
+            const string URL_API = "https://api.nguaduot.cn/qingbz?client=timelinewallpaper&cate={0}&order=random";
             string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
             LogUtil.I("PushService.LoadQingbz() api url: " + urlApi);
             HttpClient client = new HttpClient();
@@ -343,7 +347,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadObzhi(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order=random&r18=0";
+            const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order=random";
             string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
             LogUtil.I("PushService.LoadObzhi() api url: " + urlApi);
             HttpClient client = new HttpClient();
@@ -355,7 +359,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhere(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/wallhere?client=timelinewallpaper&order=random&cate={0}&r18=0";
+            const string URL_API = "https://api.nguaduot.cn/wallhere?client=timelinewallpaper&order=random&cate={0}";
             string urlApi = string.Format(URL_API, ini.Wallhere.Cate);
             LogUtil.I("PushService.LoadWallhere() api url: " + urlApi);
             HttpClient client = new HttpClient();
@@ -363,6 +367,18 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadWallhere() img url: " + urlUhd);
+            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+        }
+
+        private async Task<bool> LoadLsp(bool setDesktopOrLock) {
+            const string URL_API = "https://api.nguaduot.cn/lsp?client=timelinewallpaper&order=random&cate={0}";
+            string urlApi = string.Format(URL_API, ini.Lsp.Cate);
+            LogUtil.I("PushService.LoadLsp() api url: " + urlApi);
+            HttpClient client = new HttpClient();
+            string jsonData = await client.GetStringAsync(urlApi);
+            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
+            string urlUhd = match.Groups[1].Value;
+            LogUtil.I("PushService.LoadLsp() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
         }
     }

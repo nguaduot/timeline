@@ -83,6 +83,7 @@
 
         <muxc:CommandBarFlyout x:Name="FlyoutMenu"
                                AlwaysExpanded="True"
+                               ShowMode="Standard"
                                Opened="FlyoutMenu_Opened">
             <AppBarButton Name="MenuYesterday"
                           x:Uid="MenuYesterday"
@@ -318,6 +319,12 @@
                                                       Click="MenuProvider_Click"
                                                       Tag="infinity"
                                                       GroupName="Provider" />
+                            <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
+                                                      x:Uid="MenuProviderLsp"
+                                                      Click="MenuProvider_Click"
+                                                      Visibility="Collapsed"
+                                                      Tag="lsp"
+                                                      GroupName="Provider" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
@@ -327,7 +334,7 @@
         <Flyout x:Key="FlyoutGo"
                 x:Name="FlyoutGo"
                 Placement="RightEdgeAlignedBottom"
-                LightDismissOverlayMode="Off">
+                LightDismissOverlayMode="On">
             <TextBox Name="BoxGo"
                      x:Uid="BoxGo"
                      MaxLength="10"

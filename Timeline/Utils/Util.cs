@@ -20,7 +20,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.0.ini";
+        private const string FILE_INI = "timeline-5.2.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -49,6 +49,8 @@ namespace Timeline.Utils {
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
+                    _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                    _ = WritePrivateProfileString("app", "r18", sb.ToString(), iniFile.Path);
                 }
             }
             return iniFile;
@@ -161,6 +163,16 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString("wallhere", "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveLspOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString("lsp", "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveLspCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString("lsp", "cate", cate, iniFile.Path);
+        }
+
         public static async Task<StorageFile> GetIniPath() {
             return await GenerateIniFileAsync();
         }
@@ -181,6 +193,9 @@ namespace Timeline.Utils {
             ini.LockProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
+            _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int r18);
+            ini.R18 = r18;
             _ = GetPrivateProfileString("bing", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int desktopPeriod);
             _ = GetPrivateProfileString("bing", "lockperiod", "24", sb, 1024, iniFile);
@@ -223,9 +238,9 @@ namespace Timeline.Utils {
             timelineIni.Order = sb.ToString();
             _ = GetPrivateProfileString("timeline", "cate", "", sb, 1024, iniFile);
             timelineIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("timeline", "authorize", "1", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int authorize);
-            timelineIni.Authorize = authorize;
+            _ = GetPrivateProfileString("timeline", "unauthorized", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int unauthorized);
+            timelineIni.Unauthorized = unauthorized;
             ini.SetIni("timeline", timelineIni);
             _ = GetPrivateProfileString("ymyouli", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -239,9 +254,6 @@ namespace Timeline.Utils {
             ymyouliIni.Order = sb.ToString();
             _ = GetPrivateProfileString("ymyouli", "cate", "", sb, 1024, iniFile);
             ymyouliIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("ymyouli", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int r18);
-            ymyouliIni.R18 = r18;
             ini.SetIni("ymyouli", ymyouliIni);
             _ = GetPrivateProfileString("himawari8", "desktopperiod", "1", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -286,9 +298,6 @@ namespace Timeline.Utils {
             qingbzIni.Order = sb.ToString();
             _ = GetPrivateProfileString("qingbz", "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("qingbz", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out r18);
-            qingbzIni.R18 = r18;
             ini.SetIni("qingbz", qingbzIni);
             _ = GetPrivateProfileString("obzhi", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -302,9 +311,6 @@ namespace Timeline.Utils {
             obzhiIni.Order = sb.ToString();
             _ = GetPrivateProfileString("obzhi", "cate", "", sb, 1024, iniFile);
             obzhiIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out r18);
-            obzhiIni.R18 = r18;
             ini.SetIni("obzhi", obzhiIni);
             _ = GetPrivateProfileString("wallhere", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -318,10 +324,20 @@ namespace Timeline.Utils {
             wallhereIni.Order = sb.ToString();
             _ = GetPrivateProfileString("wallhere", "cate", "", sb, 1024, iniFile);
             wallhereIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("wallhere", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out r18);
-            wallhereIni.R18 = r18;
             ini.SetIni("wallhere", wallhereIni);
+            _ = GetPrivateProfileString("lsp", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString("lsp", "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            LspIni lspIni = new LspIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod
+            };
+            _ = GetPrivateProfileString("lsp", "order", "random", sb, 1024, iniFile);
+            lspIni.Order = sb.ToString();
+            _ = GetPrivateProfileString("lsp", "cate", "", sb, 1024, iniFile);
+            lspIni.Cate = sb.ToString();
+            ini.SetIni("lsp", lspIni);
             return ini;
         }
 
@@ -479,6 +495,11 @@ namespace Timeline.Utils {
             ulong build = (version & 0x00000000FFFF0000L) >> 16;
             ulong revision = (version & 0x000000000000FFFFL);
             return $"{major}.{minor}.{build}.{revision}";
+        }
+
+        public static bool IsWin11() { // TODO
+            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+            return true;
         }
 
         public static string GetDevice() {

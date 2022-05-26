@@ -14,7 +14,8 @@ namespace Timeline.Utils {
             { OneIni.ID, new OneIni() },
             { QingbzIni.ID, new QingbzIni() },
             { ObzhiIni.ID, new ObzhiIni() },
-            { WallhereIni.ID, new WallhereIni() }
+            { WallhereIni.ID, new WallhereIni() },
+            { LspIni.ID, new LspIni() }
         };
 
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
@@ -43,6 +44,8 @@ namespace Timeline.Utils {
             get => theme;
         }
 
+        public int R18 { set; get; } = 0;
+
         public bool SetIni(string provider, BaseIni ini) {
             if (Inis.ContainsKey(provider) && ini != null) {
                 Inis[provider] = ini;
@@ -63,7 +66,7 @@ namespace Timeline.Utils {
 
         override public string ToString() {
             string paras = Inis[provider].ToString();
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}" + (paras.Length > 0 ? "&" : "") + paras;
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&r18={R18}" + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
 
@@ -157,13 +160,13 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int Authorize { set; get; } = 1;
+        public int Unauthorized { set; get; } = 0;
 
         public override bool IsSequential() => "date".Equals(order);
 
         public override BaseProvider GenerateProvider() => new TimelineProvider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&authorize={Authorize}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
     }
 
     public class Himawari8Ini : BaseIni {
@@ -205,13 +208,11 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new YmyouliProvider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
     public class InfinityIni : BaseIni {
@@ -266,13 +267,11 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new QingbzProvider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
     public class ObzhiIni : BaseIni {
@@ -293,13 +292,11 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new ObzhiProvider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
     public class WallhereIni : BaseIni {
@@ -319,12 +316,34 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int R18 { set; get; } = 0;
-
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new WallhereProvider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r18={R18}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+    }
+
+    public class LspIni : BaseIni {
+        public const string ID = "lsp";
+        public static readonly List<string> ORDER = new List<string>() { "date", "score", "random" };
+        public static readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = CATE.Contains(value) ? value : "";
+            get => cate;
+        }
+
+        public override bool IsSequential() => false;
+
+        public override BaseProvider GenerateProvider() => new LspProvider() { Id = ID };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 }
