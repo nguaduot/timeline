@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.2-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.1.220525-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v5.3-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.2.220527-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -84,10 +84,8 @@
 
 ![Microsoft Store](./sample/store.png)
 
-![截图1](./sample/screenshot02.png)
+[![截图1](./sample/screenshot02.png)](https://gitee.com/nguaduot/timeline/raw/master/sample/%E6%8B%BE%E5%85%89_%E4%B8%80%E6%A2%A6%E5%B9%BD%E9%BB%8E_ABUIABACGAAgi8DPjwYoiKbruQYwgDw4-Bw.jpg)
 
 ![截图2](./sample/向日葵8号.gif)
-
-自取：[截图1壁纸原图](https://gitee.com/nguaduot/timeline/raw/master/sample/%E6%8B%BE%E5%85%89_%E4%B8%80%E6%A2%A6%E5%B9%BD%E9%BB%8E_ABUIABACGAAgi8DPjwYoiKbruQYwgDw4-Bw.jpg)
 
 *Copyright © 2021-2022 nguaduot. All rights reserved.*

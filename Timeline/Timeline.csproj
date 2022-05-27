@@ -192,6 +192,7 @@
     <Content Include="Assets\Images\default.png" />
     <Content Include="Assets\Images\donate_alipay.png" />
     <Content Include="Assets\Images\donate_wechat.png" />
+    <Content Include="Assets\Images\himawari8-20220521182000.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />

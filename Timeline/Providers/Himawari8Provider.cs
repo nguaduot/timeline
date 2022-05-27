@@ -12,6 +12,7 @@ using Windows.Storage;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Threading;
+using Windows.ApplicationModel;
 
 namespace Timeline.Providers {
     public class Himawari8Provider : BaseProvider {
@@ -61,7 +62,7 @@ namespace Timeline.Providers {
                     HttpClient client = new HttpClient();
                     HttpResponseMessage res = await client.GetAsync(URL_API, token);
                     string jsonData = await res.Content.ReadAsStringAsync();
-                    LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                    //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                     Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
                     nextPage = DateTime.ParseExact(api.Date, "yyyy-MM-dd HH:mm:ss", new System.Globalization.CultureInfo("en-US"));
                 } catch (Exception e) {
@@ -77,6 +78,13 @@ namespace Timeline.Providers {
                 }
                 SortMetas(metasAdd);
                 nextPage = nextPage.Value.AddHours(-99);
+            } else if (metas.Count == 0) {
+                StorageFile defaultFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Images\\himawari8-20220521182000.png");
+                List<Meta> metasAdd = new List<Meta>();
+                Meta meta = ParseBean(DateTime.Parse("2022-05-21 18:20:00"));
+                meta.CacheUhd = defaultFile;
+                metasAdd.Add(meta);
+                SortMetas(metasAdd);
             }
 
             return metas.Count > 0;
