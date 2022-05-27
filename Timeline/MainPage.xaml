@@ -391,6 +391,22 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+            <!-- win10 隐藏菜单分隔条，显示突兀 -->
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <local:OsVerTrigger OsVer="10" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Separator1.Visibility"
+                                Value="Collapsed" />
+                        <Setter Target="Separator2.Visibility"
+                                Value="Collapsed" />
+                        <Setter Target="Separator3.Visibility"
+                                Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <SplitView.Pane>

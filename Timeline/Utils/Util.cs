@@ -50,6 +50,18 @@ namespace Timeline.Utils {
                     _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                    if (sb.ToString().Equals("0")) {
+                        _ = GetPrivateProfileString("ymyouli", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                        if (sb.ToString().Equals("0")) {
+                            _ = GetPrivateProfileString("qingbz", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                            if (sb.ToString().Equals("0")) {
+                                _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                                if (sb.ToString().Equals("0")) {
+                                    _ = GetPrivateProfileString("wallhere", "r18", "0", sb, 1024, oldFiles[0].FullName);
+                                }
+                            }
+                        }
+                    }
                     _ = WritePrivateProfileString("app", "r18", sb.ToString(), iniFile.Path);
                 }
             }
@@ -495,11 +507,6 @@ namespace Timeline.Utils {
             ulong build = (version & 0x00000000FFFF0000L) >> 16;
             ulong revision = (version & 0x000000000000FFFFL);
             return $"{major}.{minor}.{build}.{revision}";
-        }
-
-        public static bool IsWin11() { // TODO
-            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
-            return true;
         }
 
         public static string GetDevice() {
