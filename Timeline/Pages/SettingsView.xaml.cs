@@ -164,7 +164,7 @@ namespace Timeline.Pages {
 
         private async Task LaunchFile(StorageFile file) {
             try {
-                _ = await Launcher.LaunchFileAsync(file);
+                await Launcher.LaunchFileAsync(file);
             } catch (Exception e) {
                 LogUtil.E("LaunchFile() " + e.Message);
             }
@@ -175,9 +175,9 @@ namespace Timeline.Pages {
                 if (fileSelected != null) {
                     FolderLauncherOptions options = new FolderLauncherOptions();
                     options.ItemsToSelect.Add(fileSelected); // 打开文件夹同时选中目标文件
-                    _ = await Launcher.LaunchFolderAsync(folder, options);
+                    await Launcher.LaunchFolderAsync(folder, options);
                 } else {
-                    _ = await Launcher.LaunchFolderAsync(folder);
+                    await Launcher.LaunchFolderAsync(folder);
                 }
             } catch (Exception e) {
                 LogUtil.E("LaunchFolder() " + e.Message);
@@ -270,17 +270,19 @@ namespace Timeline.Pages {
             SettingsLspDesc.Text = resLoader.GetString("Slogan_" + LspIni.ID);
         }
 
-        private void ExpanderProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
-            RefreshProvider(sender.Tag as string);
+        private async void ExpanderProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
+            string providerId = sender.Tag as string;
+            RefreshProvider(providerId);
 
-            if (!ini.Provider.Equals(sender.Tag)) {
+            if (!ini.Provider.Equals(providerId)) {
+                await IniUtil.SaveProviderAsync(providerId);
                 SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                    Provider = sender.Tag.ToString()
+                    ProviderChanged = true
                 });
             }
         }
 
-        private void RbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void RbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
@@ -292,7 +294,7 @@ namespace Timeline.Pages {
                         rootElement.RequestedTheme = ThemeUtil.ParseTheme(theme);
                     }
                     ini.Theme = theme;
-                    _ = IniUtil.SaveThemeAsync(theme);
+                    await IniUtil.SaveThemeAsync(theme);
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
                         ThemeChanged = true
                     });
@@ -300,8 +302,8 @@ namespace Timeline.Pages {
             }
         }
 
-        private void LinkDonate_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
-            _ = new DonateDlg {
+        private async void LinkDonate_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
+            await new DonateDlg {
                 RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
             }.ShowAsync();
         }
@@ -315,79 +317,79 @@ namespace Timeline.Pages {
                 CreationCollisionOption.OpenIfExists));
         }
 
-        private void BtnShowCache_Click(object sender, RoutedEventArgs e) {
-            _ = LaunchFolder(ApplicationData.Current.TemporaryFolder);
+        private async void BtnShowCache_Click(object sender, RoutedEventArgs e) {
+            await LaunchFolder(ApplicationData.Current.TemporaryFolder);
         }
 
-        private void BtnReview_Click(object sender, RoutedEventArgs e) {
-            _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+        private async void BtnReview_Click(object sender, RoutedEventArgs e) {
+            await Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
         }
 
-        private void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             BingIni bi = (BingIni)ini.GetIni(BingIni.ID);
             bi.Lang = paras.Id;
-            _ = IniUtil.SaveBingLangAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(BingIni.ID);
+            await IniUtil.SaveBingLangAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(BingIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void ToggleNasaMirror_Toggled(object sender, RoutedEventArgs e) {
+        private async void ToggleNasaMirror_Toggled(object sender, RoutedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
             NasaIni bi = (NasaIni)ini.GetIni(NasaIni.ID);
             bi.Mirror = mirror;
-            _ = IniUtil.SaveNasaMirrorAsync(mirror);
-            _ = IniUtil.SaveProviderAsync(NasaIni.ID);
+            await IniUtil.SaveNasaMirrorAsync(mirror);
+            await IniUtil.SaveProviderAsync(NasaIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxOneplusOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxOneplusOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             OneplusIni bi = (OneplusIni)ini.GetIni(OneplusIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveOneplusOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(OneplusIni.ID);
+            await IniUtil.SaveOneplusOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(OneplusIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxTimelineCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxTimelineCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             TimelineIni bi = (TimelineIni)ini.GetIni(TimelineIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveTimelineCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(TimelineIni.ID);
+            await IniUtil.SaveTimelineCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxTimelineOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxTimelineOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             TimelineIni bi = (TimelineIni)ini.GetIni(TimelineIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveTimelineOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(TimelineIni.ID);
+            await IniUtil.SaveTimelineOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(TimelineIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -397,8 +399,8 @@ namespace Timeline.Pages {
             ContributeChanged?.Invoke(this, new EventArgs());
         }
 
-        private void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
-            _ = new DonateDlg {
+        private async void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
+            await new DonateDlg {
                 RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
             }.ShowAsync();
         }
@@ -409,7 +411,7 @@ namespace Timeline.Pages {
             }
             if (settingsTimer == null) {
                 settingsTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
-                settingsTimer.Tick += (sender2, e2) => {
+                settingsTimer.Tick += async (sender2, e2) => {
                     settingsTimer.Stop();
                     float offset = (float)BoxHimawari8Offset.Value;
                     Himawari8Ini bi = (Himawari8Ini)ini.GetIni(Himawari8Ini.ID);
@@ -417,8 +419,8 @@ namespace Timeline.Pages {
                         return;
                     }
                     bi.Offset = offset;
-                    _ = IniUtil.SaveHimawari8OffsetAsync(offset);
-                    _ = IniUtil.SaveProviderAsync(Himawari8Ini.ID);
+                    await IniUtil.SaveHimawari8OffsetAsync(offset);
+                    await IniUtil.SaveProviderAsync(Himawari8Ini.ID);
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
                         ProviderConfigChanged = true
                     });
@@ -428,179 +430,179 @@ namespace Timeline.Pages {
             settingsTimer.Start();
         }
 
-        private void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             YmyouliIni bi = (YmyouliIni)ini.GetIni(YmyouliIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveYmyouliCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(YmyouliIni.ID);
+            await IniUtil.SaveYmyouliCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxYmyouliOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxYmyouliOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             YmyouliIni bi = (YmyouliIni)ini.GetIni(YmyouliIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveYmyouliOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(YmyouliIni.ID);
+            await IniUtil.SaveYmyouliOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(YmyouliIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
-            _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
+        private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
+            await Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
             _ = Api.RankAsync(YmyouliIni.ID, null, "donate");
         }
 
-        private void BoxInfinityOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxInfinityOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             InfinityIni bi = (InfinityIni)ini.GetIni(InfinityIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveInfinityOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(InfinityIni.ID);
+            await IniUtil.SaveInfinityOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(InfinityIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxOneOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxOneOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             OneIni bi = (OneIni)ini.GetIni(OneIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveOneOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(OneIni.ID);
+            await IniUtil.SaveOneOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(OneIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxQingbzCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxQingbzCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             QingbzIni bi = (QingbzIni)ini.GetIni(QingbzIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveQingbzCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(QingbzIni.ID);
+            await IniUtil.SaveQingbzCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxQingbzOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxQingbzOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             QingbzIni bi = (QingbzIni)ini.GetIni(QingbzIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveQingbzOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(QingbzIni.ID);
+            await IniUtil.SaveQingbzOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(QingbzIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
-            _ = Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
+        private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
+            await Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
             _ = Api.RankAsync(QingbzIni.ID, null, "donate");
         }
 
-        private void BoxObzhiCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxObzhiCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             ObzhiIni bi = (ObzhiIni)ini.GetIni(ObzhiIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveObzhiCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(ObzhiIni.ID);
+            await IniUtil.SaveObzhiCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxObzhiOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxObzhiOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             ObzhiIni bi = (ObzhiIni)ini.GetIni(ObzhiIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveObzhiOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(ObzhiIni.ID);
+            await IniUtil.SaveObzhiOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(ObzhiIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxWallhereCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxWallhereCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             WallhereIni bi = (WallhereIni)ini.GetIni(WallhereIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveWallhereCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(WallhereIni.ID);
+            await IniUtil.SaveWallhereCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxWallhereOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxWallhereOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             WallhereIni bi = (WallhereIni)ini.GetIni(WallhereIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveWallhereOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(WallhereIni.ID);
+            await IniUtil.SaveWallhereOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(WallhereIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
             bi.Cate = paras.Id;
-            _ = IniUtil.SaveLspCateAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(LspIni.ID);
+            await IniUtil.SaveLspCateAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(LspIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private void BoxLspOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxLspOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (!paneOpened) {
                 return;
             }
             Paras paras = e.AddedItems[0] as Paras;
             LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
             bi.Order = paras.Id;
-            _ = IniUtil.SaveLspOrderAsync(paras.Id);
-            _ = IniUtil.SaveProviderAsync(LspIni.ID);
+            await IniUtil.SaveLspOrderAsync(paras.Id);
+            await IniUtil.SaveProviderAsync(LspIni.ID);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
@@ -616,7 +618,7 @@ namespace Timeline.Pages {
     }
 
     public class SettingsEventArgs : EventArgs {
-        public string Provider { get; set; }
+        public bool ProviderChanged { get; set; }
 
         public bool ProviderConfigChanged { get; set; }
 

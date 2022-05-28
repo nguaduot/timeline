@@ -44,11 +44,12 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            // 现有数据未浏览完，无需加载更多
-            if (date == null || GetFarthest() == null || date.Value.Date >= GetFarthest().Date.Value.Date) {
-                if (indexFocus < metas.Count - 1) {
+            if (date != null) {
+                if (metas.Count > 0 && date.Value.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
+            } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
+                return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {

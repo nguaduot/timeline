@@ -454,12 +454,6 @@
                 <KeyboardAccelerator Key="Space"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Home"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="End"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="PageUp"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />

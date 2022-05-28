@@ -385,7 +385,7 @@
     <value>Open</value>
   </data>
   <data name="CurDate" xml:space="preserve">
-    <value>current: {0}</value>
+    <value>Current: {0}</value>
   </data>
   <data name="RbThemeDark.Content" xml:space="preserve">
     <value>Dark</value>
@@ -514,7 +514,7 @@
     <value>Rate it</value>
   </data>
   <data name="MsgRefresh" xml:space="preserve">
-    <value>Refreshed: {0}</value>
+    <value>Current: {0}</value>
   </data>
   <data name="TextContributePrivacy.Text" xml:space="preserve">
     <value>Once adopted, this project will use your photographic works for free and non-commercial use.</value>
@@ -813,17 +813,11 @@
   <data name="BtnTimelineDonate.Content" xml:space="preserve">
     <value>Scan QR</value>
   </data>
-  <data name="MsgMenuDesc" xml:space="preserve">
+  <data name="MsgWelcome" xml:space="preserve">
     <value>Right-click to show menus.</value>
   </data>
   <data name="TextTimelineDonate.Text" xml:space="preserve">
     <value>Buy me a coffee</value>
-  </data>
-  <data name="MsgMenu" xml:space="preserve">
-    <value>Menu</value>
-  </data>
-  <data name="MsgProvider" xml:space="preserve">
-    <value>Current provider: {0}</value>
   </data>
   <data name="MsgYesterday" xml:space="preserve">
     <value>Look back</value>
@@ -859,7 +853,7 @@
     <value>LSP</value>
   </data>
   <data name="Slogan_lsp" xml:space="preserve">
-    <value>一切尽在不言中</value>
+    <value>R18</value>
   </data>
   <data name="TextLspCate.Text" xml:space="preserve">
     <value>Category</value>
@@ -868,6 +862,18 @@
     <value>Order</value>
   </data>
   <data name="MenuProviderLsp.Text" xml:space="preserve">
-    <value>LSP - 一切尽在不言中</value>
+    <value>LSP - R18</value>
+  </data>
+  <data name="ActionContinue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="ActionExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="CurIndex" xml:space="preserve">
+    <value>Current: {0}</value>
+  </data>
+  <data name="MsgLsp" xml:space="preserve">
+    <value>Think about where you are.</value>
   </data>
 </root>

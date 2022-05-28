@@ -387,10 +387,10 @@ namespace Timeline.Utils {
             return 30;
         }
 
-        public static DateTime ParseDate(string text) {
-            DateTime date = DateTime.Now;
+        public static DateTime? ParseDate(string text) {
+            DateTime now = DateTime.Now;
             if (string.IsNullOrEmpty(text)) {
-                return date;
+                return null;
             }
             if (Regex.Match(text, @"\d").Success) {
                 if (text.Length == 8) {
@@ -404,17 +404,19 @@ namespace Timeline.Utils {
                 } else if (text.Length == 3) {
                     text = text.Substring(0, 1) + "-" + text.Substring(1);
                 } else if (text.Length == 2) {
-                    if (int.Parse(text) > DateTime.DaysInMonth(date.Year, date.Month)) {
+                    if (int.Parse(text) > DateTime.DaysInMonth(now.Year, now.Month)) {
                         text = text.Substring(0, 1) + "-" + text.Substring(1);
                     } else {
-                        text = date.Month + "-" + text;
+                        text = now.Month + "-" + text;
                     }
                 } else if (text.Length == 1) {
-                    text = date.Month + "-" + text;
+                    text = now.Month + "-" + text;
                 }
             }
-            DateTime.TryParse(text, out date);
-            return date;
+            if (DateTime.TryParse(text, out DateTime date)) {
+                return date;
+            }
+            return null;
         }
     }
 

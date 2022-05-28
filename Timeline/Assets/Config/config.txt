@@ -1,4 +1,4 @@
-﻿; 拾光 / Timeline v5.2
+﻿; 拾光 / Timeline v5.3
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -17,7 +17,7 @@ provider=bing
 ; provider=obzhi      图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
 ; provider=wallhere   图源：WallHere - 世界著名的壁纸网站之一 https://wallhere.com
 ; provider=infinity   图源：Infinity - 精选壁纸 http://cn.infinitynewtab.com
-; provider=lsp        图源：LSP - 一切尽在不言中
+; provider=lsp        图源：LSP - 不可描述
 
 desktopprovider=
 ; desktopprovider={provider}  桌面背景推送图源：参数参考 provider（置空则关闭推送）
@@ -239,5 +239,5 @@ order=random
 
 cate=
 ; cate=            类别：全部（默认）
-; cate=acg         类别：ACG
+; cate=acg         类别：纸片
 ; cate=photograph  类别：摄影

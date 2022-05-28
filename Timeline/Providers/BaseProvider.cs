@@ -88,78 +88,141 @@ namespace Timeline.Providers {
             return false;
         }
 
+        public int GetIndexFocus() {
+            return indexFocus;
+        }
+
         public async Task<Meta> Focus() {
-            indexFocus = indexFocus < metas.Count ? indexFocus : 0;
-            if (metas.Count > 0) {
-                if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-                    dicHistory[metas[indexFocus].Id] += 1;
-                } else {
-                    dicHistory[metas[indexFocus].Id] = 1;
-                }
-                await FileUtil.SaveHistory(Id, dicHistory);
-                return metas[indexFocus];
+            if (metas.Count == 0) {
+                indexFocus = 0;
+                return null;
             }
-            return null;
+            if (indexFocus >= metas.Count - 1) {
+                indexFocus = metas.Count - 1;
+            } else if (indexFocus < 0) {
+                indexFocus = 0;
+            }
+
+            // 更新沉底机制数据
+            if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
+                dicHistory[metas[indexFocus].Id] += 1;
+            } else {
+                dicHistory[metas[indexFocus].Id] = 1;
+            }
+            await FileUtil.SaveHistory(Id, dicHistory);
+
+            return metas[indexFocus];
         }
 
         public Meta GetFocus() {
-            int index = indexFocus < metas.Count ? indexFocus : 0;
-            return metas.Count > 0 ? metas[index] : null;
+            if (metas.Count == 0) {
+                return null;
+            }
+
+            int index = 0;
+            if (indexFocus >= metas.Count - 1) {
+                index = metas.Count - 1;
+            } else if (indexFocus >= 0) {
+                index = indexFocus;
+            }
+            return metas[index];
         }
 
         public async Task<Meta> Yesterday() {
-            indexFocus = indexFocus < metas.Count - 1 ? indexFocus + 1 : metas.Count - 1;
-            if (metas.Count > 0) {
-                if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-                    dicHistory[metas[indexFocus].Id] += 1;
-                } else {
-                    dicHistory[metas[indexFocus].Id] = 1;
-                }
-                await FileUtil.SaveHistory(Id, dicHistory);
-                return metas[indexFocus];
+            if (metas.Count == 0) {
+                indexFocus = 0;
+                return null;
             }
-            return null;
+            if (indexFocus >= metas.Count - 1) {
+                indexFocus = metas.Count - 1;
+            } else if (indexFocus >= 0) {
+                indexFocus++;
+            } else {
+                indexFocus = 0;
+            }
+
+            // 更新沉底机制数据
+            if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
+                dicHistory[metas[indexFocus].Id] += 1;
+            } else {
+                dicHistory[metas[indexFocus].Id] = 1;
+            }
+            await FileUtil.SaveHistory(Id, dicHistory);
+
+            return metas[indexFocus];
         }
 
         public Meta GetYesterday() {
-            int index = indexFocus < metas.Count - 1 ? indexFocus + 1 : metas.Count - 1;
-            return metas.Count > 0 ? metas[index] : null;
+            if (metas.Count == 0) {
+                return null;
+            }
+            int index = 0;
+            if (indexFocus >= metas.Count - 1) {
+                index = metas.Count - 1;
+            } else if (indexFocus >= 0) {
+                index = indexFocus + 1;
+            }
+            return metas[index];
         }
 
         public Meta Tomorrow() {
-            indexFocus = indexFocus > 0 ? indexFocus - 1 : 0;
-            return metas.Count > 0 ? metas[indexFocus] : null;
+            if (metas.Count == 0) {
+                indexFocus = 0;
+                return null;
+            }
+            if (indexFocus >= metas.Count) {
+                indexFocus = metas.Count - 1;
+            } else if (indexFocus > 0) {
+                indexFocus--;
+            } else {
+                indexFocus = 0;
+            }
+            return metas[indexFocus];
         }
 
         public Meta GetTomorrow() {
-            int index = indexFocus > 0 ? indexFocus - 1 : 0;
-            return metas.Count > 0 ? metas[index] : null;
+            if (metas.Count == 0) {
+                return null;
+            }
+            int index = 0;
+            if (indexFocus >= metas.Count) {
+                index = metas.Count - 1;
+            } else if (indexFocus > 0) {
+                index = indexFocus - 1;
+            }
+            return metas[index];
         }
 
-        public Meta Latest() {
-            indexFocus = 0;
-            return metas.Count > 0 ? metas[indexFocus] : null;
+        public Meta Index(int index) {
+            if (metas.Count == 0) {
+                indexFocus = 0;
+                return null;
+            }
+            if (index >= metas.Count) {
+                indexFocus = metas.Count - 1;
+            } else if (index >= 0) {
+                indexFocus = index;
+            } else {
+                indexFocus = 0;
+            }
+            return metas[indexFocus];
         }
 
-        public Meta GetLatest() {
-            return metas.Count > 0 ? metas[0] : null;
-        }
-
-        public Meta Farthest() {
-            indexFocus = metas.Count - 1;
-            return metas.Count > 0 ? metas[indexFocus] : null;
-        }
-
-        public Meta GetFarthest() {
-            return metas.Count > 0 ? metas[metas.Count - 1] : null;
+        public Meta GetIndex(int index) {
+            if (metas.Count == 0) {
+                return null;
+            }
+            if (index >= metas.Count) {
+                index = metas.Count - 1;
+            } else if (index < 0) {
+                index = 0;
+            }
+            return metas[index];
         }
 
         public Meta Target(DateTime date) {
-            if (date == null) {
-                return null;
-            }
             for (int i = 0; i < metas.Count; i++) {
-                if (date.ToString("yyyyMMdd").Equals(metas[i].Date?.ToString("yyyyMMdd"))) {
+                if (date.ToString("yyyyMMddHHmm").Equals(metas[i].Date?.ToString("yyyyMMddHHmm"))) {
                     indexFocus = i;
                     return metas[i];
                 }

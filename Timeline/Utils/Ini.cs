@@ -183,7 +183,7 @@ namespace Timeline.Utils {
             LockPeriod = 2;
         }
 
-        public override bool IsSequential() => false;
+        public override bool IsSequential() => true;
 
         public override BaseProvider GenerateProvider() => new Himawari8Provider() { Id = ID };
 

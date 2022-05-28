@@ -31,7 +31,7 @@ namespace Timeline.Providers {
         //private const string URL_IMG = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/{0}/{1}_0_0.png";
 
         private Meta ParseBean(DateTime time) {
-            string index = string.Format("{0}{1}000", time.ToString("HH"), (time.Minute / 10));
+            string index = string.Format("{0}{1}000", time.ToString("HH"), (time.Minute / 10)); // 转整十分钟
             Meta meta = new Meta {
                 Id = time.ToString("yyyyMMdd") + index,
                 Uhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"), index),
@@ -47,7 +47,7 @@ namespace Timeline.Providers {
         public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             offsetEarth = ((Himawari8Ini)ini).Offset;
             // 无需加载更多
-            if (indexFocus < metas.Count - 1) {
+            if (indexFocus < metas.Count - 1 && date == null) {
                 return true;
             }
             // 无网络连接
@@ -56,7 +56,10 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            if (nextPage == null) { // 获取最新UTC时间
+            if (date != null) { // 指定时间
+                metas.Clear();
+                nextPage = date;
+            } else if (nextPage == null) { // 获取最新UTC时间
                 LogUtil.D("LoadData() provider url: " + URL_API);
                 try {
                     HttpClient client = new HttpClient();
