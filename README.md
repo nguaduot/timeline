@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.4-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.2.220527-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v5.5-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.4.220530-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -69,7 +69,7 @@
   + 标记分类：`Ctrl` + `5`
   + 打开图片保存位置：`Ctrl` + `O`
   + 打开配置文件：`Ctrl` + `I`
-  + 打开日志文件：`F12`
+  + 打开日志位置：`F12`
 
 + 如何调高桌面壁纸推送频率？
   + 打开配置文件
