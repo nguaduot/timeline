@@ -252,10 +252,16 @@ namespace TimelineService.Utils {
     }
 
     public sealed class Himawari8Ini {
-        private float offset = 0;
+        private float offset = 0.5f;
         public float Offset {
-            set => offset = value < -1 ? -1 : (value > 1 ? 1 : value);
+            set => offset = value < 0.01f ? 0.01f : (value > 1 ? 1 : value);
             get => offset;
+        }
+
+        private float ratio = 0.5f;
+        public float Ratio {
+            set => ratio = value < 0.1f ? 0.1f : (value > 1 ? 1 : value);
+            get => ratio;
         }
 
         private int desktopPeriod = 1;
@@ -270,7 +276,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&offset={Offset}&ratio={Ratio}";
 
         public static string GetId() => "himawari8";
     }

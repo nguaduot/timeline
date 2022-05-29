@@ -178,10 +178,16 @@ namespace Timeline.Utils {
     public class Himawari8Ini : BaseIni {
         public const string ID = "himawari8";
         
-        private float offset = 0;
+        private float offset = 0.5f;
         public float Offset {
-            set => offset = value < -1 ? -1 : (value > 1 ? 1 : value);
+            set => offset = value < 0.01f ? 0.01f : (value > 1 ? 1 : value);
             get => offset;
+        }
+
+        private float ratio = 0.5f;
+        public float Ratio {
+            set => ratio = value < 0.1f ? 0.1f : (value > 1 ? 1 : value);
+            get => ratio;
         }
 
         public Himawari8Ini() {
@@ -193,7 +199,7 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new Himawari8Provider() { Id = ID };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&offset={Offset}&ratio={Ratio}";
     }
 
     public class YmyouliIni : BaseIni {

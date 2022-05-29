@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TimelineService.Beans;
 using TimelineService.Utils;
 using Windows.ApplicationModel.Background;
+using Windows.Graphics.Display;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.System.UserProfile;
@@ -115,7 +116,8 @@ namespace TimelineService {
                     _ = await Api.Stats(ini, true);
                 }
             } catch (Exception e) {
-                LogUtil.E("PushService.Run() " + e.GetType().Name);
+                LogUtil.E("PushService.Run() " + e.Message);
+                Debug.WriteLine(e);
             } finally {
                 deferral.Complete();
             }
@@ -170,7 +172,7 @@ namespace TimelineService {
             return (int)localSettings.Values[lockTag] == 0;
         }
 
-        private async Task<bool> SetWallpaper(string urlImg, bool setDesktopOrLock, Size resize, float offset) {
+        private async Task<bool> SetWallpaper(string urlImg, bool setDesktopOrLock, float offset = -1f, float ratio = -1f) {
             if (urlImg == null) {
                 LogUtil.I("PushService.SetWallpaper() invalid url");
                 return false;
@@ -185,7 +187,7 @@ namespace TimelineService {
                 LogUtil.I("PushService.SetWallpaper() download error");
                 return false;
             }
-            if (!resize.IsEmpty) {
+            if (offset >= 0 && ratio >= 0) {
                 CanvasDevice device = CanvasDevice.GetSharedDevice();
                 CanvasBitmap bitmap = null;
                 using (var stream = await fileWallpaper.OpenReadAsync()) {
@@ -194,12 +196,28 @@ namespace TimelineService {
                 if (bitmap == null) {
                     return false;
                 }
-                float offsetWidthPixels = (resize.Width + bitmap.SizeInPixels.Width) / 2.0f * offset;
-                CanvasRenderTarget target = new CanvasRenderTarget(device, resize.Width, resize.Height, 96);
+                //DisplayInformation info = DisplayInformation.GetForCurrentView();
+                //Size monitorSize = new Size((int)info.ScreenWidthInRawPixels, (int)info.ScreenHeightInRawPixels);
+                long screen = (long)(localSettings.Values["Screen"] ?? 0);
+                long screenW = (screen & 0xffff0000) >> 16;
+                long screenH = screen & 0x0000ffff;
+                if (screen == 0) {
+                    screenW = 1920;
+                    screenH = 1080;
+                }
+                float canvasW, canvasH;
+                if (screenW > screenH) {
+                    canvasH = bitmap.SizeInPixels.Height / ratio;
+                    canvasW = canvasH / screenH * screenW;
+                } else {
+                    canvasW = bitmap.SizeInPixels.Width / ratio;
+                    canvasH = canvasW / screenW * screenH;
+                }
+                CanvasRenderTarget target = new CanvasRenderTarget(device, canvasW, canvasH, 96);
                 using (var session = target.CreateDrawingSession()) {
                     session.Clear(Colors.Black);
-                    session.DrawImage(bitmap, (resize.Width - bitmap.SizeInPixels.Width) / 2.0f + offsetWidthPixels,
-                        (resize.Height - bitmap.SizeInPixels.Height) / 2.0f);
+                    session.DrawImage(bitmap, (canvasW + bitmap.SizeInPixels.Width) * offset - bitmap.SizeInPixels.Width,
+                        canvasH / 2 - bitmap.SizeInPixels.Height / 2);
                 }
                 fileWallpaper = await ApplicationData.Current.LocalFolder.CreateFileAsync(setDesktopOrLock ? "desktop-reset" : "lock-reset",
                     CreationCollisionOption.ReplaceExisting);
@@ -219,7 +237,7 @@ namespace TimelineService {
             BingApi bing = JsonConvert.DeserializeObject<BingApi>(jsonData);
             string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bing.Images[0].UrlBase);
             LogUtil.I("PushService.LoadBing() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadNasa(bool setDesktopOrLock) {
@@ -237,7 +255,7 @@ namespace TimelineService {
                 }
             }
             LogUtil.I("PushService.LoadBing() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadOneplus(bool setDesktopOrLock) {
@@ -258,7 +276,7 @@ namespace TimelineService {
             OneplusApi oneplusApi = JsonConvert.DeserializeObject<OneplusApi>(jsonData);
             string urlUhd = oneplusApi.Items[0].PhotoUrl;
             LogUtil.I("PushService.LoadBing() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadTimeline(bool setDesktopOrLock) {
@@ -270,7 +288,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadTimeline() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadYmyouli(bool setDesktopOrLock) {
@@ -282,7 +300,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadYmyouli() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadInfinity(bool setDesktopOrLock) {
@@ -295,7 +313,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadInfinity() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadHimawari8(bool setDesktopOrLock) {
@@ -310,7 +328,7 @@ namespace TimelineService {
             string urlUhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"),
                 string.Format("{0}{1}000", time.ToString("HH"), time.Minute / 10));
             LogUtil.I("PushService.LoadHimawari8() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(1920, 1080), ini.Himawari8.Offset);
+            return await SetWallpaper(urlUhd, setDesktopOrLock, ini.Himawari8.Offset, ini.Himawari8.Ratio);
         }
 
         private async Task<bool> LoadOne(bool setDesktopOrLock) {
@@ -331,7 +349,7 @@ namespace TimelineService {
             match = Regex.Match(jsonData, @"""img_url"": ?""(.+?)""");
             string urlUhd = Regex.Unescape(match.Groups[1].Value); // 反转义
             LogUtil.I("PushService.LoadOne() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadQingbz(bool setDesktopOrLock) {
@@ -343,7 +361,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadQingbz() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadObzhi(bool setDesktopOrLock) {
@@ -355,7 +373,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadObzhi() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadWallhere(bool setDesktopOrLock) {
@@ -367,7 +385,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadWallhere() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadLsp(bool setDesktopOrLock) {
@@ -379,7 +397,7 @@ namespace TimelineService {
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadLsp() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock, new Size(), 0);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
     }
 }

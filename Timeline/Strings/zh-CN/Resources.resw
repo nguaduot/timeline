@@ -421,7 +421,7 @@
     <value>地区</value>
   </data>
   <data name="BoxHimawari8Offset.PlaceholderText" xml:space="preserve">
-    <value>-1.0~1.0</value>
+    <value>0~1.00</value>
   </data>
   <data name="BtnShowCache.Content" xml:space="preserve">
     <value>前往</value>
@@ -457,7 +457,7 @@
     <value>图片缓存位置</value>
   </data>
   <data name="TextHimawari8Offset.Text" xml:space="preserve">
-    <value>地球偏移量</value>
+    <value>地球位置</value>
   </data>
   <data name="TextInfinityOrder.Text" xml:space="preserve">
     <value>排序</value>
@@ -884,5 +884,11 @@
   </data>
   <data name="MsgMarked" xml:space="preserve">
     <value>已标记：{0}</value>
+  </data>
+  <data name="BoxHimawari8Ratio.PlaceholderText" xml:space="preserve">
+    <value>0~1.00</value>
+  </data>
+  <data name="TextHimawari8Ratio.Text" xml:space="preserve">
+    <value>地球大小</value>
   </data>
 </root>

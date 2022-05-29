@@ -42,7 +42,8 @@ namespace Timeline.Pages {
 
         private bool paneOpened = false; // 避免初始化设置选项的非必要事件
 
-        private DispatcherTimer settingsTimer = null;
+        private DispatcherTimer himawari8OffsetTimer = null;
+        private DispatcherTimer himawari8RatioTimer = null;
 
         public SettingsView() {
             this.InitializeComponent();
@@ -52,7 +53,7 @@ namespace Timeline.Pages {
         }
 
         private void Init() {
-            TextApp.Text = resLoader.GetString("AppName") + " " + VerUtil.GetPkgVer(false);
+            TextApp.Text = resLoader.GetString("AppName") + " " + SysUtil.GetPkgVer(false);
             RefreshProvider();
 
             foreach (string item in BingIni.LANG) {
@@ -160,28 +161,14 @@ namespace Timeline.Pages {
                     RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp
                 }
             };
-        }
-
-        private async Task LaunchFileAsync(StorageFile file) {
-            try {
-                await Launcher.LaunchFileAsync(file);
-            } catch (Exception e) {
-                LogUtil.E("LaunchFile() " + e.Message);
-            }
-        }
-
-        private async Task LaunchFolderAsync(StorageFolder folder, StorageFile fileSelected = null) {
-            try {
-                if (fileSelected != null) {
-                    FolderLauncherOptions options = new FolderLauncherOptions();
-                    options.ItemsToSelect.Add(fileSelected); // 打开文件夹同时选中目标文件
-                    await Launcher.LaunchFolderAsync(folder, options);
-                } else {
-                    await Launcher.LaunchFolderAsync(folder);
+            BoxHimawari8Ratio.NumberFormatter = new DecimalFormatter {
+                IntegerDigits = 1,
+                FractionDigits = 2,
+                NumberRounder = new IncrementNumberRounder {
+                    Increment = 0.01,
+                    RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp
                 }
-            } catch (Exception e) {
-                LogUtil.E("LaunchFolder() " + e.Message);
-            }
+            };
         }
 
         public void BeforePaneOpen(Ini ini) {
@@ -207,6 +194,7 @@ namespace Timeline.Pages {
             BoxTimelineCate.SelectedIndex = listTimelineCate.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Cate);
             BoxTimelineOrder.SelectedIndex = listTimelineOrder.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Order);
             BoxHimawari8Offset.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Offset;
+            BoxHimawari8Ratio.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Ratio;
             BoxYmyouliCate.SelectedIndex = listYmyouliCate.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Cate);
             BoxYmyouliOrder.SelectedIndex = listYmyouliOrder.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
@@ -309,20 +297,20 @@ namespace Timeline.Pages {
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
-            await LaunchFileAsync(await IniUtil.GetIniPath());
+            await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
         }
 
         private async void BtnShowSave_Click(object sender, RoutedEventArgs e) {
-            await LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+            await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
                 CreationCollisionOption.OpenIfExists));
         }
 
         private async void BtnShowCache_Click(object sender, RoutedEventArgs e) {
-            await LaunchFolderAsync(ApplicationData.Current.TemporaryFolder);
+            await FileUtil.LaunchFolderAsync(ApplicationData.Current.TemporaryFolder);
         }
 
         private async void BtnReview_Click(object sender, RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
         }
 
         private async void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -409,10 +397,10 @@ namespace Timeline.Pages {
             if (!paneOpened) {
                 return;
             }
-            if (settingsTimer == null) {
-                settingsTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
-                settingsTimer.Tick += async (sender2, e2) => {
-                    settingsTimer.Stop();
+            if (himawari8OffsetTimer == null) {
+                himawari8OffsetTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
+                himawari8OffsetTimer.Tick += async (sender2, e2) => {
+                    himawari8OffsetTimer.Stop();
                     float offset = (float)BoxHimawari8Offset.Value;
                     Himawari8Ini bi = (Himawari8Ini)ini.GetIni(Himawari8Ini.ID);
                     if (Math.Abs(offset - bi.Offset) < 0.01f) {
@@ -426,8 +414,33 @@ namespace Timeline.Pages {
                     });
                 };
             }
-            settingsTimer.Stop();
-            settingsTimer.Start();
+            himawari8OffsetTimer.Stop();
+            himawari8OffsetTimer.Start();
+        }
+
+        private void BoxHimawari8Ratio_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
+            if (!paneOpened) {
+                return;
+            }
+            if (himawari8RatioTimer == null) {
+                himawari8RatioTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
+                himawari8RatioTimer.Tick += async (sender2, e2) => {
+                    himawari8RatioTimer.Stop();
+                    float ratio = (float)BoxHimawari8Ratio.Value;
+                    Himawari8Ini bi = (Himawari8Ini)ini.GetIni(Himawari8Ini.ID);
+                    if (Math.Abs(ratio - bi.Ratio) < 0.01f) {
+                        return;
+                    }
+                    bi.Ratio = ratio;
+                    await IniUtil.SaveHimawari8RatioAsync(ratio);
+                    await IniUtil.SaveProviderAsync(Himawari8Ini.ID);
+                    SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                        ProviderConfigChanged = true
+                    });
+                };
+            }
+            himawari8RatioTimer.Stop();
+            himawari8RatioTimer.Start();
         }
 
         private async void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -459,7 +472,7 @@ namespace Timeline.Pages {
         }
 
         private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
             _ = Api.RankAsync(YmyouliIni.ID, null, "donate");
         }
 
@@ -520,7 +533,7 @@ namespace Timeline.Pages {
         }
 
         private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
             _ = Api.RankAsync(QingbzIni.ID, null, "donate");
         }
 

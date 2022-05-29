@@ -38,24 +38,20 @@ namespace Timeline {
         private readonly ResourceLoader resLoader;
         private readonly ApplicationDataContainer localSettings;
         private CancellationTokenSource ctsLoad = new CancellationTokenSource();
-        private CancellationTokenSource ctsShow = new CancellationTokenSource();
 
         private Ini ini;
         private BaseProvider provider;
         private Meta meta = null;
         private bool r18 = false;
-
         private ReleaseApi release = null;
+        private long imgAnimStart = DateTime.Now.Ticks;
+        private long imgLoadStart = DateTime.Now.Ticks;
 
         private DispatcherTimer resizeTimer = null;
-        private DispatcherTimer markTimer = null;
-        private DispatcherTimer pageTimer = null;
+        private DispatcherTimer pageTimer;
         private bool pageTimerYesterdayOrTomorrow = true;
         private Meta markTimerMeta = null;
         private string markTimerAction = null;
-
-        private long imgAnimStart = DateTime.Now.Ticks;
-        private long imgLoadStart = DateTime.Now.Ticks;
 
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
@@ -117,11 +113,8 @@ namespace Timeline {
             }
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            if (metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                ShowImg(meta);
+            if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+                await ShowImg(meta, token);
             }
         }
 
@@ -149,7 +142,7 @@ namespace Timeline {
                 return;
             }
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                ShowImg(meta);
+                await ShowImg(meta, token);
             }
         }
 
@@ -176,7 +169,7 @@ namespace Timeline {
                 return;
             }
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                ShowImg(meta);
+                await ShowImg(meta, token);
             }
         }
 
@@ -206,8 +199,7 @@ namespace Timeline {
                 return;
             }
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                ShowImg(meta);
-                _ = Api.StatsAsync(ini, true);
+                await ShowImg(meta, token);
             }
         }
 
@@ -234,7 +226,7 @@ namespace Timeline {
                 return;
             }
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                ShowImg(meta);
+                await ShowImg(meta, token);
             }
         }
 
@@ -243,8 +235,8 @@ namespace Timeline {
             InitProvider();
             ShowToastI(string.Format(resLoader.GetString("MsgRefresh"), resLoader.GetString("Provider_" + provider.Id)));
 
-            StatusLoading();
             ctsLoad.Cancel();
+            StatusLoading();
             ctsLoad = new CancellationTokenSource();
             await LoadFocusAsync(ctsLoad.Token);
         }
@@ -328,9 +320,35 @@ namespace Timeline {
             TextDetailProperties.Visibility = Visibility.Visible;
         }
 
-        private void ShowImg(Meta meta) {
-            LogUtil.D("ShowImg() {0} {1}ms", meta?.Id, (int)((DateTime.Now.Ticks - imgAnimStart) / 10000));
+        private async Task ShowImg(Meta meta, CancellationToken token) {
+            LogUtil.D("ShowImg() {0}", meta?.Id);
             if (meta == null) {
+                return;
+            }
+
+            if (meta.CacheUhd != null) {
+                // 显示与图片文件相关的信息
+                string source = resLoader.GetString("Provider_" + provider.Id) + (meta.Cate != null ? (" · " + meta.Cate) : "");
+                string fileSize = FileUtil.ConvertFileSize(File.Exists(meta.CacheUhd.Path)
+                    ? new FileInfo(meta.CacheUhd.Path).Length : 0);
+                TextDetailProperties.Text = string.Format("{0} / {1}x{2}, {3}",
+                    source, meta.Dimen.Width, meta.Dimen.Height, fileSize);
+                TextDetailProperties.Visibility = Visibility.Visible;
+                // 根据人脸识别优化组件放置位置
+                bool faceLeft = meta.ExistsFaceAndAllLeft();
+                RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !faceLeft);
+                RelativePanel.SetAlignRightWithPanel(ViewBarPointer, faceLeft);
+                RelativePanel.SetAlignLeftWithPanel(Info, !faceLeft);
+                RelativePanel.SetAlignRightWithPanel(Info, faceLeft);
+                RelativePanel.SetAlignLeftWithPanel(AnchorGo, faceLeft);
+                RelativePanel.SetAlignRightWithPanel(AnchorGo, !faceLeft);
+                RelativePanel.SetAlignLeftWithPanel(AnchorCate, faceLeft);
+                RelativePanel.SetAlignRightWithPanel(AnchorCate, !faceLeft);
+            }
+
+            // 等待图片消失动画完成，保持连贯
+            await Task.Delay(Math.Max(0, 400 - (int)((DateTime.Now.Ticks - imgAnimStart) / 10000)));
+            if (token.IsCancellationRequested) {
                 return;
             }
             imgLoadStart = DateTime.Now.Ticks;
@@ -356,24 +374,6 @@ namespace Timeline {
                 biUhd.UriSource = new Uri(meta.CacheUhd.Path, UriKind.Absolute);
             } else {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.Absolute);
-            }
-
-            if (meta.CacheUhd != null) {
-                // 显示与图片文件相关的信息
-                string source = resLoader.GetString("Provider_" + provider.Id) + (meta.Cate != null ? (" · " + meta.Cate) : "");
-                string fileSize = FileUtil.ConvertFileSize(File.Exists(meta.CacheUhd.Path)
-                    ? new FileInfo(meta.CacheUhd.Path).Length : 0);
-                TextDetailProperties.Text = string.Format("{0} / {1}x{2}, {3}",
-                    source, meta.Dimen.Width, meta.Dimen.Height, fileSize);
-                TextDetailProperties.Visibility = Visibility.Visible;
-                // 根据人脸识别优化组件放置位置
-                bool faceLeft = meta.FaceOffset < 0.4;
-                RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !faceLeft);
-                RelativePanel.SetAlignRightWithPanel(ViewBarPointer, faceLeft);
-                RelativePanel.SetAlignLeftWithPanel(Info, !faceLeft);
-                RelativePanel.SetAlignRightWithPanel(Info, faceLeft);
-                RelativePanel.SetAlignLeftWithPanel(AnchorGo, faceLeft);
-                RelativePanel.SetAlignRightWithPanel(AnchorGo, !faceLeft);
             }
         }
 
@@ -401,7 +401,6 @@ namespace Timeline {
         }
 
         private void StatusLoading() {
-            ctsShow.Cancel();
             imgAnimStart = DateTime.Now.Ticks;
             
             ImgUhd.Opacity = 0;
@@ -414,13 +413,11 @@ namespace Timeline {
             }
         }
 
-        private async Task StatusEnjoyAsync(CancellationToken token) {
-            await Task.Delay(Math.Max(0, 500 - (int)((DateTime.Now.Ticks - imgAnimStart) / 10000)));
-            if (token.IsCancellationRequested) {
-                LogUtil.D("StatusEnjoyAsync() IsCancellationRequested");
+        private void StatusEnjoy() {
+            if (imgLoadStart < imgAnimStart || ImgUhd.Opacity == 1) { // 下一波进行中或下一波提前结束
                 return;
             }
-
+            
             MenuSetDesktop.IsEnabled = true;
             MenuSetLock.IsEnabled = true;
             MenuSave.IsEnabled = true;
@@ -507,39 +504,11 @@ namespace Timeline {
             if (file != null) {
                 ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionGo"), async () => {
                     CloseToast();
-                    await LaunchPicLibAsync(file);
+                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+                        CreationCollisionOption.OpenIfExists), file);
                 });
             } else {
                 ShowToastE(resLoader.GetString("MsgSave0"));
-            }
-        }
-
-        private async Task LaunchPicLibAsync(StorageFile fileSelected) {
-            try {
-                var folder = await KnownFolders.PicturesLibrary.GetFolderAsync(resLoader.GetString("AppNameShort"));
-                FolderLauncherOptions options = new FolderLauncherOptions();
-                if (fileSelected != null) { // 打开文件夹同时选中目标文件
-                    options.ItemsToSelect.Add(fileSelected);
-                }
-                await Launcher.LaunchFolderAsync(folder, options);
-            } catch (Exception e) {
-                LogUtil.E("LaunchPicLib() " + e.Message);
-            }
-        }
-
-        private async Task LaunchRelealseAsync() {
-            try {
-                await Launcher.LaunchUriAsync(new Uri(release?.Url));
-            } catch (Exception e) {
-                LogUtil.E("LaunchRelealse() " + e.Message);
-            }
-        }
-
-        private async Task LaunchIniFileAsync() {
-            try {
-                await Launcher.LaunchFileAsync(await IniUtil.GetIniPath());
-            } catch (Exception e) {
-                LogUtil.E("LaunchIniFile() " + e.Message);
             }
         }
 
@@ -607,12 +576,12 @@ namespace Timeline {
             if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
-                    r18 = true;
-                    StatusLoading();
-                    ctsLoad.Cancel();
-                    ctsLoad = new CancellationTokenSource();
-                    await LoadFocusAsync(ctsLoad.Token);
-                });
+                        r18 = true;
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        await LoadFocusAsync(ctsLoad.Token);
+                    });
                 return;
             } else {
                 r18 = true;
@@ -656,9 +625,25 @@ namespace Timeline {
                 await Task.Delay(1000);
                 ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
                     CloseToast();
-                    await LaunchRelealseAsync();
+                    await FileUtil.LaunchUriAsync(new Uri(release?.Url));
                 });
             }
+        }
+
+        private void ShowFlyoutGo() {
+            if (FlyoutGo.IsOpen) {
+                FlyoutGo.Hide();
+                return;
+            }
+            if (ini.GetIni().IsSequential()) {
+                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"), meta?.Date?.ToString("MMdd") ?? "MMdd");
+            } else {
+                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"), provider.GetIndexFocus());
+            }
+            BoxGo.Text = "";
+            FlyoutGo.Placement = RelativePanel.GetAlignRightWithPanel(AnchorGo)
+                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
+            FlyoutBase.ShowAttachedFlyout(AnchorGo);
         }
 
         private void ShowFlyoutMarkCate() {
@@ -686,6 +671,8 @@ namespace Timeline {
                 item.Click += MenuMarkCate_Click;
                 FlyoutMarkCate.Items.Add(item);
             }
+            FlyoutMarkCate.Placement = RelativePanel.GetAlignRightWithPanel(AnchorCate)
+                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorCate);
         }
 
@@ -936,16 +923,14 @@ namespace Timeline {
             ViewSplit.IsPaneOpen = true;
         }
 
-        private async void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
-            LogUtil.D("ImgUhd_ImageOpened() {0} {1}ms", meta?.Id, (int)((DateTime.Now.Ticks - imgLoadStart) / 10000));
-            ctsShow = new CancellationTokenSource();
-            await StatusEnjoyAsync(ctsShow.Token);
+        private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
+            LogUtil.D("ImgUhd_ImageOpened() {0}", meta?.Id);
+            StatusEnjoy();
         }
 
-        private async void ImgUhd_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
+        private void ImgUhd_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
             LogUtil.E("ImgUhd_ImageFailed() " + meta?.Id);
-            ctsShow = new CancellationTokenSource();
-            await StatusEnjoyAsync(ctsShow.Token);
+            StatusEnjoy();
         }
 
         private void BtnInfoLink_Click(object sender, RoutedEventArgs e) {
@@ -1097,17 +1082,7 @@ namespace Timeline {
                 case VirtualKey.F3: // F3
                 case VirtualKey.F: // Ctrl + F
                 case VirtualKey.G: // Ctrl + G
-                    if (!FlyoutGo.IsOpen) {
-                        if (ini.GetIni().IsSequential()) {
-                            BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"), meta?.Date?.ToString("MMdd") ?? "MMdd");
-                        } else {
-                            BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"), provider.GetIndexFocus());
-                        }
-                        BoxGo.Text = "";
-                        FlyoutBase.ShowAttachedFlyout(AnchorGo);
-                    } else {
-                        FlyoutGo.Hide();
-                    }
+                    ShowFlyoutGo();
                     break;
                 case VirtualKey.Number5: // Ctrl + 5
                     ShowFlyoutMarkCate();
@@ -1124,8 +1099,14 @@ namespace Timeline {
                     }
                     break;
                 case VirtualKey.I: // Ctrl + I
+                    await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
+                    break;
                 case VirtualKey.O: // Ctrl + O
-                    await LaunchIniFileAsync();
+                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+                        CreationCollisionOption.OpenIfExists));
+                    break;
+                case VirtualKey.F12: // F12
+                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
                     break;
             }
         }

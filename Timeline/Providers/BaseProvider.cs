@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using Windows.Media.FaceAnalysis;
 using System.Threading;
+using Windows.Storage.Streams;
 
 namespace Timeline.Providers {
     public class BaseProvider {
@@ -84,7 +85,7 @@ namespace Timeline.Providers {
         }
 
         public virtual async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            dicHistory = await FileUtil.GetHistory(Id);
+            dicHistory = await FileUtil.GetHistoryAsync(Id);
             return false;
         }
 
@@ -109,7 +110,7 @@ namespace Timeline.Providers {
             } else {
                 dicHistory[metas[indexFocus].Id] = 1;
             }
-            await FileUtil.SaveHistory(Id, dicHistory);
+            await FileUtil.SaveHistoryAsync(Id, dicHistory);
 
             return metas[indexFocus];
         }
@@ -147,7 +148,7 @@ namespace Timeline.Providers {
             } else {
                 dicHistory[metas[indexFocus].Id] = 1;
             }
-            await FileUtil.SaveHistory(Id, dicHistory);
+            await FileUtil.SaveHistoryAsync(Id, dicHistory);
 
             return metas[indexFocus];
         }
@@ -301,35 +302,54 @@ namespace Timeline.Providers {
                     LogUtil.E("Cache() " + e.Message);
                 }
             }
-            // 获取图片尺寸&检测人像位置
-            if (meta.CacheUhd != null && FaceDetector.IsSupported) {
+            // 获取图片尺寸（耗时短）
+            if (meta.Dimen.IsEmpty && meta.CacheUhd != null) {
                 try {
-                    using (var stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
-                        var decoder = await BitmapDecoder.CreateAsync(stream);
-                        // 获取图片尺寸
+                    using (IRandomAccessStream stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
+                        BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
                         meta.Dimen = new Size((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                    }
+                } catch (Exception e) {
+                    LogUtil.E("Cache() " + e.Message);
+                }
+            }
+            if (token.IsCancellationRequested) {
+                return meta;
+            }
+            // 检测人脸位置（耗时较长）
+            if (meta.FacePos == null && meta.CacheUhd != null && FaceDetector.IsSupported) {
+                long start = DateTime.Now.Ticks;
+                meta.FacePos = new List<Point>();
+                SoftwareBitmap bitmap = null;
+                try {
+                    using (IRandomAccessStream stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
+                        BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                        // TODO: 该行会随机抛出异常 System.Exception: 图像无法识别
+                        bitmap = await decoder.GetSoftwareBitmapAsync(decoder.BitmapPixelFormat,
+                            BitmapAlphaMode.Premultiplied, new BitmapTransform(),
+                            ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage);
                         if (token.IsCancellationRequested) {
                             return meta;
                         }
-                        // 检测人像位置
-                        // TODO: 该行会随机抛出异常 System.Exception: 图像无法识别
-                        SoftwareBitmap bitmap = await decoder.GetSoftwareBitmapAsync(decoder.BitmapPixelFormat,
-                            BitmapAlphaMode.Premultiplied, new BitmapTransform(),
-                            ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage);
                         if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Gray8) {
                             bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Gray8);
                         }
+                        LogUtil.D("cost3: " + (int)((DateTime.Now.Ticks - start) / 10000));
+                        start = DateTime.Now.Ticks;
                         FaceDetector detector = await FaceDetector.CreateAsync();
                         IList<DetectedFace> faces = await detector.DetectFacesAsync(bitmap);
-                        float offset = -1;
                         foreach (DetectedFace face in faces) {
-                            offset = Math.Max(offset, (face.FaceBox.X + face.FaceBox.Width / 2.0f) / bitmap.PixelWidth);
+                            meta.FacePos.Add(new Point {
+                                X = (int)(face.FaceBox.X + face.FaceBox.Width / 2.0f),
+                                Y = (int)(face.FaceBox.Y + face.FaceBox.Height / 2.0f)
+                            });
                         }
-                        meta.FaceOffset = offset >= 0 ? offset : 0.5f;
-                        bitmap.Dispose();
+                        LogUtil.D("cost4: " + (int)((DateTime.Now.Ticks - start) / 10000));
                     }
                 } catch (Exception ex) {
                     LogUtil.E("Cache() " + ex.Message);
+                } finally {
+                    bitmap?.Dispose();
                 }
             }
             return meta;
@@ -339,10 +359,9 @@ namespace Timeline.Providers {
             if (meta?.CacheUhd == null) {
                 return null;
             }
-
             try {
-                StorageFolder folder = await KnownFolders.PicturesLibrary
-                    .CreateFolderAsync(appName, CreationCollisionOption.OpenIfExists);
+                StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(appName,
+                    CreationCollisionOption.OpenIfExists);
                 string name = string.Format("{0}_{1}_{2}{3}", appName, provider, meta.Id, meta.Format);
                 name = FileUtil.MakeValidFileName(name, "");
                 return await meta.CacheUhd.CopyAsync(folder, name, NameCollisionOption.ReplaceExisting);

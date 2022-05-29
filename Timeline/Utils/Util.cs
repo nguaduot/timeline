@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,16 +12,18 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Graphics.Display;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.System.Profile;
 using Windows.UI.Xaml;
 
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.2.ini";
+        private const string FILE_INI = "timeline-5.4.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -120,9 +123,15 @@ namespace Timeline.Utils {
         }
 
         public static async Task SaveHimawari8OffsetAsync(float offset) {
-            offset = offset < -1 ? -1 : (offset > 1 ? 1 : offset);
+            offset = offset < 0.01f ? 0.01f : (offset > 1 ? 1 : offset);
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("himawari8", "offset", offset.ToString("0.00"), iniFile.Path);
+        }
+
+        public static async Task SaveHimawari8RatioAsync(float ratio) {
+            ratio = ratio < 0.1f ? 0.1f : (ratio > 1 ? 1 : ratio);
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString("himawari8", "ratio", ratio.ToString("0.00"), iniFile.Path);
         }
 
         public static async Task SaveYmyouliOrderAsync(string order) {
@@ -271,12 +280,15 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString("himawari8", "lockperiod", "2", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("himawari8", "offset", "0", sb, 1024, iniFile);
+            _ = GetPrivateProfileString("himawari8", "offset", "0.50", sb, 1024, iniFile);
             _ = float.TryParse(sb.ToString(), out float offset);
+            _ = GetPrivateProfileString("himawari8", "ratio", "0.50", sb, 1024, iniFile);
+            _ = float.TryParse(sb.ToString(), out float ratio);
             ini.SetIni("himawari8", new Himawari8Ini {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
-                Offset = offset
+                Offset = offset,
+                Ratio = ratio
             });
             _ = GetPrivateProfileString("infinity", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -460,38 +472,68 @@ namespace Timeline.Utils {
             return new List<string>();
         }
 
-        public static async Task<Dictionary<string, int>> GetHistory(string provider) {
+        public static async Task<Dictionary<string, int>> GetHistoryAsync(string provider) {
             try {
-                StorageFolder folder = await ApplicationData.Current.LocalFolder.TryGetItemAsync("count") as StorageFolder;
-                if (folder == null) {
-                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count");
-                }
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
                 StorageFile file = await folder.CreateFileAsync(provider + ".json", CreationCollisionOption.OpenIfExists);
                 string content = await FileIO.ReadTextAsync(file);
                 return JsonConvert.DeserializeObject<Dictionary<string, int>>(content) ?? new Dictionary<string, int>();
             } catch (Exception e) {
                 Debug.WriteLine(e);
-                LogUtil.E("GetHistory() " + e.Message);
+                LogUtil.E("GetHistoryAsync() " + e.Message);
             }
             return new Dictionary<string, int>();
         }
 
-        public static async Task SaveHistory(string provider, Dictionary<string, int> dic) {
+        public static async Task SaveHistoryAsync(string provider, Dictionary<string, int> dic) {
             try {
-                StorageFolder folder = await ApplicationData.Current.LocalFolder.TryGetItemAsync("count") as StorageFolder;
-                if (folder == null) {
-                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count");
-                }
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
                 StorageFile file = await folder.CreateFileAsync(provider + ".json", CreationCollisionOption.OpenIfExists);
                 await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(dic));
             } catch (Exception e) {
                 Debug.WriteLine(e);
-                LogUtil.E("SaveHistory() " + e.Message);
+                LogUtil.E("SaveHistoryAsync() " + e.Message);
+            }
+        }
+
+        public static async Task<StorageFolder> GetLogFolder() {
+            return await ApplicationData.Current.LocalFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
+        }
+
+        public static async Task LaunchFileAsync(StorageFile file) {
+            try {
+                await Launcher.LaunchFileAsync(file);
+            } catch (Exception e) {
+                LogUtil.E("LaunchFileAsync() " + e.Message);
+            }
+        }
+
+        public static async Task LaunchFolderAsync(StorageFolder folder, StorageFile fileSelected = null) {
+            try {
+                if (fileSelected != null) {
+                    FolderLauncherOptions options = new FolderLauncherOptions();
+                    options.ItemsToSelect.Add(fileSelected); // 打开文件夹同时选中目标文件
+                    await Launcher.LaunchFolderAsync(folder, options);
+                } else {
+                    await Launcher.LaunchFolderAsync(folder);
+                }
+            } catch (Exception e) {
+                LogUtil.E("LaunchFolderAsync() " + e.Message);
+            }
+        }
+
+        public static async Task LaunchUriAsync(Uri uri) {
+            try {
+                await Launcher.LaunchUriAsync(uri);
+            } catch (Exception e) {
+                LogUtil.E("LaunchUriAsync() " + e.Message);
             }
         }
     }
 
-    public class VerUtil {
+    public class SysUtil {
         public static string GetPkgVer(bool forShort) {
             if (forShort) {
                 return string.Format("{0}.{1}",
@@ -529,6 +571,16 @@ namespace Timeline.Utils {
                 return dataReader.ReadGuid().ToString();
             }
             return "";
+        }
+
+        public static Size GetMonitorPhysicalPixels() {
+            try {
+                DisplayInformation info = DisplayInformation.GetForCurrentView();
+                return new Size((int)info.ScreenWidthInRawPixels, (int)info.ScreenHeightInRawPixels);
+            } catch (Exception e) {
+                LogUtil.E("GetMonitorSize() " + e.Message);
+            }
+            return new Size();
         }
     }
 

@@ -401,33 +401,62 @@
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE759;" />
-                            <TextBlock Grid.Column="1"
-                                       x:Uid="TextHimawari8Offset"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <muxc:NumberBox Name="BoxHimawari8Offset"
-                                            x:Uid="BoxHimawari8Offset"
-                                            Grid.Column="2"
-                                            Maximum="1.0"
-                                            Minimum="-1.0"
-                                            SmallChange="0.1"
-                                            LargeChange="1"
-                                            SpinButtonPlacementMode="Compact"
-                                            ValueChanged="BoxHimawari8Offset_ValueChanged"
-                                            MinWidth="140" />
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE759;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextHimawari8Offset"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <muxc:NumberBox Name="BoxHimawari8Offset"
+                                                x:Uid="BoxHimawari8Offset"
+                                                Grid.Column="2"
+                                                Maximum="1.0"
+                                                Minimum="0.01"
+                                                SmallChange="0.1"
+                                                LargeChange="1"
+                                                SpinButtonPlacementMode="Compact"
+                                                ValueChanged="BoxHimawari8Offset_ValueChanged"
+                                                MinWidth="140" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8A3;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextHimawari8Ratio"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <muxc:NumberBox Name="BoxHimawari8Ratio"
+                                                x:Uid="BoxHimawari8Ratio"
+                                                Grid.Column="2"
+                                                Maximum="1.0"
+                                                Minimum="0.1"
+                                                SmallChange="0.1"
+                                                LargeChange="1"
+                                                SpinButtonPlacementMode="Compact"
+                                                ValueChanged="BoxHimawari8Ratio_ValueChanged"
+                                                MinWidth="140" />
+                            </Grid>
+                        </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
                 <muxc:Expander Name="ExpanderYmyouli"

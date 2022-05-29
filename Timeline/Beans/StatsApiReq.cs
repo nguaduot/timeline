@@ -23,6 +23,9 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "osver")]
         public string OsVersion { set; get; }
 
+        [JsonProperty(PropertyName = "screen")]
+        public string Screen { set; get; }
+
         [JsonProperty(PropertyName = "device")]
         public string Device { set; get; }
 

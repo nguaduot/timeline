@@ -32,7 +32,8 @@ namespace Timeline.Providers {
             };
 
             string[] nodes = (bean.No ?? "").Split("/");
-            meta.Title = string.Format("{0} #{1}", bean.Source, nodes[nodes.Length - 1]);
+            meta.Title = string.Format("{0} #{1}", bean.Source,
+                nodes[nodes.Length - 1].Substring(0, Math.Min(nodes[nodes.Length - 1].Length, 10)));
             if (bean.Tags != null) {
                 meta.Story = string.Join(" ", bean.Tags ?? new List<string>());
             }

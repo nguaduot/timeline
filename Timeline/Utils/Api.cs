@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -22,16 +23,18 @@ namespace Timeline.Utils {
                 return;
             }
             const string URL_API = "https://api.nguaduot.cn/appstats";
+            Size screen = SysUtil.GetMonitorPhysicalPixels();
             StatsApiReq req = new StatsApiReq {
                 App = Package.Current.DisplayName, // 不会随语言改变
                 Package = Package.Current.Id.FamilyName,
-                Version = VerUtil.GetPkgVer(false),
+                Version = SysUtil.GetPkgVer(false),
                 Api = ini?.ToString(),
                 Status = status ? 1 : 0,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
-                OsVersion = VerUtil.GetOsVer(),
-                Device = VerUtil.GetDevice(),
-                DeviceId = VerUtil.GetDeviceId(),
+                OsVersion = SysUtil.GetOsVer(),
+                Screen = String.Format("{0}x{1}", screen.Width, screen.Height),
+                Device = SysUtil.GetDevice(),
+                DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };
             try {
@@ -61,7 +64,7 @@ namespace Timeline.Utils {
                 Action = action,
                 Target = target,
                 Undo = undo,
-                DeviceId = VerUtil.GetDeviceId(),
+                DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };
             try {
@@ -82,7 +85,7 @@ namespace Timeline.Utils {
                 return false;
             }
             const string URL_API = "https://api.nguaduot.cn/timeline/contribute";
-            req.AppVer = VerUtil.GetPkgVer(false);
+            req.AppVer = SysUtil.GetPkgVer(false);
             try {
                 HttpClient client = new HttpClient();
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(req),
@@ -107,11 +110,11 @@ namespace Timeline.Utils {
             CrashApiReq req = new CrashApiReq {
                 App = Package.Current.DisplayName, // 不会随语言改变
                 Package = Package.Current.Id.FamilyName,
-                Version = VerUtil.GetPkgVer(false),
+                Version = SysUtil.GetPkgVer(false),
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
-                OsVersion = VerUtil.GetOsVer(),
-                Device = VerUtil.GetDevice(),
-                DeviceId = VerUtil.GetDeviceId(),
+                OsVersion = SysUtil.GetOsVer(),
+                Device = SysUtil.GetDevice(),
+                DeviceId = SysUtil.GetDeviceId(),
                 Exception = e.ToString()
             };
             try {

@@ -19,8 +19,10 @@ namespace Timeline.Providers {
         // 下一页索引（从最新UTC时间开始，非实时，延迟15~25分钟）（用于按需加载）
         private DateTime? nextPage = null;
 
-        // 地球偏移位置（0 为居中，-1~0 偏左，0~1 偏右）
-        private float offsetEarth = 0;
+        // 地球位置（0.01~1.00，0.50 为居中，0.01~0.50 偏左，0.50~1.00 偏右）
+        private float offsetEarth = 0.5f;
+        // 地球大小（0.10~1.00）
+        private float ratioEarth = 0.5f;
 
         // 向日葵-8号即時網頁 - NICT
         // https://himawari8.nict.go.jp/zh/himawari8-image.htm
@@ -46,6 +48,7 @@ namespace Timeline.Providers {
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
             offsetEarth = ((Himawari8Ini)ini).Offset;
+            ratioEarth = ((Himawari8Ini)ini).Ratio;
             // 无需加载更多
             if (indexFocus < metas.Count - 1 && date == null) {
                 return true;
@@ -95,34 +98,59 @@ namespace Timeline.Providers {
 
         public override async Task<Meta> CacheAsync(Meta meta, CancellationToken token) {
             await base.CacheAsync(meta, token);
-            string offsetTag = (offsetEarth >= 0 ? "-offset+" : "-offset-") + Math.Abs(offsetEarth * 100).ToString("000");
-            if (meta?.CacheUhd == null || meta.CacheUhd.Path.Contains(offsetTag) || token.IsCancellationRequested) {
+            if (meta?.CacheUhd == null) {
+                return null;
+            }
+            string tag = String.Format("-offset{0}-ratio{1}",
+                (offsetEarth * 100).ToString("000"), (ratioEarth * 100).ToString("000"));
+            if (meta.CacheUhd.Path.Contains(tag)) {
+                return meta;
+            }
+            StorageFile cacheUhd = meta.CacheUhd;
+            meta.CacheUhd = null;
+            meta.Dimen = new Size();
+            meta.FacePos = new List<Point>();
+            if (token.IsCancellationRequested) {
                 return meta;
             }
 
             CanvasDevice device = CanvasDevice.GetSharedDevice();
             CanvasBitmap bitmap = null;
-            using (var stream = await meta.CacheUhd.OpenReadAsync()) {
+            using (var stream = await cacheUhd.OpenReadAsync()) {
                 bitmap = await CanvasBitmap.LoadAsync(device, stream);
             }
             if (bitmap == null || token.IsCancellationRequested) {
                 return meta;
             }
 
-            meta.Dimen = new Size(1920, 1080);
-            float offsetWidthPixels = (meta.Dimen.Width + bitmap.SizeInPixels.Width) / 2.0f * offsetEarth;
+            // 获取显示器分辨率
+            Size monitorSize = SysUtil.GetMonitorPhysicalPixels();
+            if (monitorSize.IsEmpty) {
+                monitorSize = new Size(1920, 1080);
+            }
+            // 根据地球大小参数计算画布大小
+            float canvasW, canvasH;
+            if (monitorSize.Width > monitorSize.Height) {
+                canvasH = bitmap.SizeInPixels.Height / ratioEarth;
+                canvasW = canvasH / monitorSize.Height * monitorSize.Width;
+            } else {
+                canvasW = bitmap.SizeInPixels.Width / ratioEarth;
+                canvasH = canvasW / monitorSize.Width * monitorSize.Height;
+            }
+            meta.Dimen = new Size((int)canvasW, (int)canvasH);
+            // 根据地球位置参数在画布上绘制地球
             CanvasRenderTarget target = new CanvasRenderTarget(device, meta.Dimen.Width, meta.Dimen.Height, 96);
             using (var session = target.CreateDrawingSession()) {
                 session.Clear(Colors.Black);
-                session.DrawImage(bitmap, (meta.Dimen.Width - bitmap.SizeInPixels.Width) / 2.0f + offsetWidthPixels,
-                    (meta.Dimen.Height - bitmap.SizeInPixels.Height) / 2.0f);
+                session.DrawImage(bitmap, (meta.Dimen.Width + bitmap.SizeInPixels.Width) * offsetEarth - bitmap.SizeInPixels.Width,
+                    meta.Dimen.Height / 2.0f - bitmap.SizeInPixels.Height / 2.0f);
             }
             if (token.IsCancellationRequested) {
                 return meta;
             }
 
             meta.CacheUhd = await ApplicationData.Current.TemporaryFolder
-                .CreateFileAsync(Id + "-" + meta.Id + offsetTag + meta.Format, CreationCollisionOption.OpenIfExists);
+                .CreateFileAsync(Id + "-" + meta.Id + tag + meta.Format, CreationCollisionOption.OpenIfExists);
             await target.SaveAsync(meta.CacheUhd.Path, CanvasBitmapFileFormat.Png);
             return meta;
         }

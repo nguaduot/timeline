@@ -1,4 +1,4 @@
-﻿; 拾光 / Timeline v5.3
+﻿; 拾光 / Timeline v5.4
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -117,8 +117,11 @@ desktopperiod=1
 lockperiod=2
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为2h/次，开启推送后生效）
 
-offset=0
-; offset={n}  地球位置：-1.0~1.0（默认为0，居中，-1.0~0偏左，0~1.0偏右）
+offset=0.50
+; offset={n}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
+
+ratio=0.50
+; ratio={n}  地球大小：0.10~1.00（默认为0.50，半屏大小）
 
 [ymyouli]
 

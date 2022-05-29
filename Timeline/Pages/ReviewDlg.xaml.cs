@@ -10,7 +10,7 @@ namespace Timeline.Pages {
         public ReviewDlg() {
             this.InitializeComponent();
 
-            this.Title = ResourceLoader.GetForCurrentView().GetString("AppNameShort") + " " + VerUtil.GetPkgVer(true);
+            this.Title = ResourceLoader.GetForCurrentView().GetString("AppNameShort") + " " + SysUtil.GetPkgVer(true);
         }
 
         private async void LinkDonate_Click(object sender, RoutedEventArgs e) {

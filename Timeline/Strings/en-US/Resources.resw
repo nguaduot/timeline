@@ -421,7 +421,7 @@
     <value>Provider</value>
   </data>
   <data name="BoxHimawari8Offset.PlaceholderText" xml:space="preserve">
-    <value>-1.0~1.0</value>
+    <value>0~1.00</value>
   </data>
   <data name="BtnShowCache.Content" xml:space="preserve">
     <value>Go</value>
@@ -884,5 +884,11 @@
   </data>
   <data name="MsgMarked" xml:space="preserve">
     <value>Submitted: {0}</value>
+  </data>
+  <data name="BoxHimawari8Ratio.PlaceholderText" xml:space="preserve">
+    <value>0~1.00</value>
+  </data>
+  <data name="TextHimawari8Ratio.Text" xml:space="preserve">
+    <value>Earth size</value>
   </data>
 </root>

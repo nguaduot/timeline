@@ -6,6 +6,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -110,6 +111,10 @@ namespace Timeline {
         }
 
         private void OptimizeSize() {
+            // 保存显示器分辨率
+            System.Drawing.Size screen = SysUtil.GetMonitorPhysicalPixels();
+            ApplicationData.Current.LocalSettings.Values["Screen"] = (long)((screen.Width << 16) + screen.Height);
+            // 调整窗口尺寸
             if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("OptimizeSize")) {
                 ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
                 ApplicationView.PreferredLaunchViewSize = new Size(960, 600);

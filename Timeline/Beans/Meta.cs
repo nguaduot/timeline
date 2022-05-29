@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
@@ -52,7 +53,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "format", NullValueHandling = NullValueHandling.Ignore)]
         public string Format { set; get; } = ".jpg";
 
-        // 原图尺寸
+        // 原图尺寸（默认：0,0）
         [JsonConverter(typeof(SizeConverter))]
         [JsonProperty(PropertyName = "dimen", NullValueHandling = NullValueHandling.Ignore)]
         public Size Dimen { set; get; }
@@ -65,9 +66,9 @@ namespace Timeline.Beans {
         [JsonIgnore()]
         public DownloadOperation Do { set; get; }
 
-        // 人像位置
-        [JsonProperty(PropertyName = "faceOffset", NullValueHandling = NullValueHandling.Ignore)]
-        public float FaceOffset { set; get; } = 0.5f;
+        // 人脸位置（默认为null未检测，空则为已检测无人脸，多个则为多个人脸）
+        [JsonProperty(PropertyName = "facePos", NullValueHandling = NullValueHandling.Ignore)]
+        public List<Point> FacePos { set; get; }
 
         [JsonProperty(PropertyName = "sortFactor", NullValueHandling = NullValueHandling.Ignore)]
         public double SortFactor { set; get; }
@@ -78,6 +79,18 @@ namespace Timeline.Beans {
 
         public string GetTitleOrCaption() {
             return Title ?? Caption;
+        }
+
+        public bool ExistsFaceAndAllLeft() {
+            if (FacePos == null || FacePos.Count == 0 || Dimen.IsEmpty) {
+                return false;
+            }
+            foreach (Point point in FacePos) {
+                if (point.X * 1.0 / Dimen.Width >= 0.5) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public override string ToString() {

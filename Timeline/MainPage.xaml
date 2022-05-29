@@ -332,19 +332,6 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <MenuFlyout x:Key="FlyoutMarkCate"
-                    x:Name="FlyoutMarkCate"
-                    LightDismissOverlayMode="On">
-            <MenuFlyoutItem x:Uid="MenuMarkCateHint"
-                            IsEnabled="False">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE8F1;" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutSeparator />
-        </MenuFlyout>
-
         <MenuFlyout x:Key="FlyoutProvider"
                     x:Name="FlyoutProvider">
             <muxc:RadioMenuFlyoutItem Name="MenuProviderBing"
@@ -410,9 +397,23 @@
                                       GroupName="Provider" />
         </MenuFlyout>
 
+        <MenuFlyout x:Key="FlyoutMarkCate"
+                    x:Name="FlyoutMarkCate"
+                    Placement="LeftEdgeAlignedBottom"
+                    LightDismissOverlayMode="On">
+            <MenuFlyoutItem x:Uid="MenuMarkCateHint"
+                            IsEnabled="False">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE8F1;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator />
+        </MenuFlyout>
+
         <Flyout x:Key="FlyoutGo"
                 x:Name="FlyoutGo"
-                Placement="RightEdgeAlignedBottom"
+                Placement="LeftEdgeAlignedBottom"
                 LightDismissOverlayMode="On">
             <TextBox Name="BoxGo"
                      x:Uid="BoxGo"
@@ -451,6 +452,8 @@
                         <Setter Target="Info.Margin"
                                 Value="24,36,24,24" />
                         <Setter Target="AnchorGo.Margin"
+                                Value="20,24,20,24" />
+                        <Setter Target="AnchorCate.Margin"
                                 Value="20,24,20,24" />
                     </VisualState.Setters>
                 </VisualState>
@@ -571,6 +574,9 @@
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="F10"
                                      Modifiers="Shift"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="F12"
+                                     Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="I"
                                      Modifiers="Control"
@@ -708,8 +714,9 @@
                        Height="0"
                        FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
                        Margin="10,12,10,12"
-                       RelativePanel.AlignHorizontalCenterWithPanel="True"
-                       RelativePanel.AlignVerticalCenterWithPanel="True" />
+                       RelativePanel.AlignLeftWithPanel="False"
+                       RelativePanel.AlignRightWithPanel="True"
+                       RelativePanel.AlignBottomWithPanel="True" />
 
         </RelativePanel>
 
