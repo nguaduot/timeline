@@ -9,6 +9,10 @@ namespace Timeline.Beans {
     }
 
     public class ObzhiApiData {
+        // 排序编号
+        [JsonProperty(PropertyName = "no")]
+        public int No { set; get; }
+
         // 类别ID
         [JsonProperty(PropertyName = "cateidalt")]
         public string CateIdAlt { set; get; }
@@ -31,7 +35,7 @@ namespace Timeline.Beans {
 
         // 图片ID
         [JsonProperty(PropertyName = "imgid")]
-        public int ImgId { set; get; }
+        public string ImgId { set; get; }
 
         // 图片URL
         [JsonProperty(PropertyName = "imgurl")]
@@ -41,7 +45,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "thumburl")]
         public string ThumbUrl { set; get; }
 
-        // 发布日期
+        // 发布日期：yyyy-MM-dd
         [JsonProperty(PropertyName = "reldate")]
         public string RelDate { set; get; }
 

@@ -22,8 +22,8 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Cate = bean.CateAlt,
-                Date = DateTime.ParseExact(bean.RelDate, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US")),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.ImgId
+                Date = DateTime.Now,
+                SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             meta.Title = string.Format("{0} #{1}", bean.CateAlt, bean.CateAltNo);
             if (bean.R18 == 1) {
@@ -31,6 +31,10 @@ namespace Timeline.Providers {
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
+            }
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
             }
             return meta;
         }

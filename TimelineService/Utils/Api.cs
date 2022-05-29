@@ -24,7 +24,7 @@ namespace TimelineService.Utils {
             StatsApiReq req = new StatsApiReq {
                 App = "TimelineService",
                 Package = "TWPushService.winmd",
-                Version = "5.2", // TODO
+                Version = "5.4", // TODO
                 Api = ini?.ToString(),
                 Status = status ? 1 : 0,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,

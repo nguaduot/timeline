@@ -126,7 +126,7 @@
   <data name="AppNameShort" xml:space="preserve">
     <value>拾光</value>
   </data>
-  <data name="MenuSettings.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="MenuSettings.Label" xml:space="preserve">
     <value>设置</value>
   </data>
   <data name="ActionGo" xml:space="preserve">
@@ -624,11 +624,8 @@
   <data name="ActionUndo" xml:space="preserve">
     <value>撤销</value>
   </data>
-  <data name="MenuDislike.Label" xml:space="preserve">
-    <value>我不喜欢这张图片</value>
-  </data>
-  <data name="MsgMarkDislike" xml:space="preserve">
-    <value>您已将该图标记为“不喜欢”</value>
+  <data name="MenuMark.ToolTipService.ToolTip" xml:space="preserve">
+    <value>标记为...</value>
   </data>
   <data name="TextYmyouliOrder.Text" xml:space="preserve">
     <value>排序</value>
@@ -646,7 +643,7 @@
     <value>轻壁纸 - 4K壁纸分享站</value>
   </data>
   <data name="MsgCopiedMeta" xml:space="preserve">
-    <value>已复制图片元素</value>
+    <value>已复制JSON</value>
   </data>
   <data name="Provider_qingbz" xml:space="preserve">
     <value>轻壁纸</value>
@@ -762,15 +759,6 @@
   <data name="MenuProviderWallhere.Text" xml:space="preserve">
     <value>WallHere - 世界著名的壁纸网站之一</value>
   </data>
-  <data name="MsgMarkAcg" xml:space="preserve">
-    <value>您已将该图分类为“ACG”</value>
-  </data>
-  <data name="MsgMarkPhotograph" xml:space="preserve">
-    <value>您已将该图分类为“摄影”</value>
-  </data>
-  <data name="MsgMarkR18" xml:space="preserve">
-    <value>您已将该图标记为“R18”</value>
-  </data>
   <data name="Slogan_wallhere" xml:space="preserve">
     <value>世界著名的壁纸网站之一</value>
   </data>
@@ -873,7 +861,28 @@
   <data name="CurIndex" xml:space="preserve">
     <value>当前索引：{0}</value>
   </data>
+  <data name="MenuMark404.Text" xml:space="preserve">
+    <value>该图无法显示</value>
+  </data>
+  <data name="MenuMarkCateHint.Text" xml:space="preserve">
+    <value>标记分类为...</value>
+  </data>
+  <data name="MenuMarkDirty.Text" xml:space="preserve">
+    <value>该图含水印</value>
+  </data>
+  <data name="MenuMarkDislike.Text" xml:space="preserve">
+    <value>我不喜欢该图</value>
+  </data>
+  <data name="MenuMarkHint.Text" xml:space="preserve">
+    <value>标记为...</value>
+  </data>
+  <data name="MenuMarkR18.Text" xml:space="preserve">
+    <value>该图为R18内容</value>
+  </data>
   <data name="MsgLsp" xml:space="preserve">
     <value>请注意场合，是否继续？</value>
+  </data>
+  <data name="MsgMarked" xml:space="preserve">
+    <value>已标记：{0}</value>
   </data>
 </root>

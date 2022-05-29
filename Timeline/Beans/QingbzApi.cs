@@ -9,6 +9,10 @@ namespace Timeline.Beans {
     }
 
     public class QingbzApiData {
+        // 排序编号
+        [JsonProperty(PropertyName = "no")]
+        public int No { set; get; }
+
         // 类别内排序序号
         [JsonProperty(PropertyName = "catealtno")]
         public int CateAltNo { set; get; }
@@ -23,7 +27,7 @@ namespace Timeline.Beans {
 
         // 图片ID
         [JsonProperty(PropertyName = "imgid")]
-        public int ImgId { set; get; }
+        public string ImgId { set; get; }
 
         // 图片URL
         [JsonProperty(PropertyName = "imgurl")]
@@ -37,7 +41,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "copyright")]
         public string Copyright { set; get; }
 
-        // 发布日期
+        // 发布日期：yyyy-MM-dd
         [JsonProperty(PropertyName = "reldate")]
         public string RelDate { set; get; }
 

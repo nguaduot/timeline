@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using System.Globalization;
 
 namespace Timeline.Providers {
     public class YmyouliProvider : BaseProvider {
@@ -34,6 +35,10 @@ namespace Timeline.Providers {
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
+            }
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
             }
             return meta;
         }

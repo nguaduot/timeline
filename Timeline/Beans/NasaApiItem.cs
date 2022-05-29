@@ -2,7 +2,7 @@
 
 namespace Timeline.Beans {
     public class NasaApiItem {
-        // 日期
+        // 日期：yyyy-MM-dd
         [JsonProperty(PropertyName = "date")]
         public string Date { set; get; }
 

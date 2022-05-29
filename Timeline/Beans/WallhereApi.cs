@@ -45,6 +45,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "tag")]
         public string Tag { set; get; }
 
+        // 发布日期：yyyy-MM-dd
+        [JsonProperty(PropertyName = "reldate")]
+        public string RelDate { set; get; }
+
         // 热度分
         [JsonProperty(PropertyName = "score")]
         public float Score { set; get; }

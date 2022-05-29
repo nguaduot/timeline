@@ -22,12 +22,16 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Cate = bean.Cate,
-                Date = DateTime.ParseExact(bean.RelDate, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US")),
+                Date = DateTime.Now,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             meta.Title = string.Format("{0} #{1}", bean.Cate, bean.CateNo);
             if (!string.IsNullOrEmpty(bean.Provider)) {
                 meta.Copyright = "© " + bean.Provider;
+            }
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
             }
             return meta;
         }

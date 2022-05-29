@@ -48,7 +48,7 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task RankAsync(string provider, Meta meta, string action, bool undo = false) {
+        public static async Task RankAsync(string provider, Meta meta, string action, string target = null, bool undo = false) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
@@ -59,6 +59,7 @@ namespace Timeline.Utils {
                 ImgId = meta?.Id,
                 ImgUrl = meta?.Uhd,
                 Action = action,
+                Target = target,
                 Undo = undo,
                 DeviceId = VerUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion

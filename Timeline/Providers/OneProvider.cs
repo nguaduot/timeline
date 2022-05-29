@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Threading;
+using System.Globalization;
 
 namespace Timeline.Providers {
     public class OneProvider : BaseProvider {
@@ -32,9 +33,8 @@ namespace Timeline.Providers {
                 Title = bean.Title,
                 Story = bean.Content,
                 Copyright = bean.PictureAuthor,
-                Date = DateTime.ParseExact(bean.Date, "yyyy / MM / dd", new System.Globalization.CultureInfo("en-US")),
+                Date = DateTime.Now,
             };
-            meta.SortFactor = meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";
                 foreach (Match match in Regex.Matches(bean.Content, @"([^  ，、。！？；：(?:——)\n(?:\r\n)]+)([  ，、。！？；：(?:——)\n(?:\r\n)])")) {
@@ -53,7 +53,10 @@ namespace Timeline.Providers {
             if (!string.IsNullOrEmpty(bean.TextAuthors)) {
                 meta.Story += "\n——" + bean.TextAuthors;
             }
-
+            if (DateTime.TryParseExact(bean.Date, "yyyy / MM / dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
+                meta.Date = date;
+            }
+            meta.SortFactor = meta.Date.Value.Ticks;
             return meta;
         }
 

@@ -19,8 +19,8 @@ namespace Timeline.Providers {
         // http://cn.infinitynewtab.com/
         //private const string URL_API = "https://infinity-api.infinitynewtab.com/get-wallpaper?source=&tag=&order=1&page={0}";
         private const string URL_API = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&order=like&page={0}";
-        private const string URL_API_LANDSCAPE = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=InfinityLandscape&page={0}";
-        private const string URL_API_ACG = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=Infinity&page={0}";
+        //private const string URL_API_LANDSCAPE = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=InfinityLandscape&page={0}";
+        //private const string URL_API_ACG = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=Infinity&page={0}";
         private const string URL_API_RANDOM = "https://infinity-api.infinitynewtab.com/random-wallpaper?_={0}";
 
         private Meta ParseBean(InfinityApiData bean) {

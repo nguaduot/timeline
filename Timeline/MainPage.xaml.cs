@@ -48,10 +48,11 @@ namespace Timeline {
         private ReleaseApi release = null;
 
         private DispatcherTimer resizeTimer = null;
-        private DispatcherTimer dislikeTimer = null;
+        private DispatcherTimer markTimer = null;
         private DispatcherTimer pageTimer = null;
         private bool pageTimerYesterdayOrTomorrow = true;
-        private Meta dislikeTimerMeta = null;
+        private Meta markTimerMeta = null;
+        private string markTimerAction = null;
 
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
@@ -287,7 +288,7 @@ namespace Timeline {
                 }
             }
 
-            RadioMenuFlyoutItem item = SubmenuProvider.Items.Cast<RadioMenuFlyoutItem>().FirstOrDefault(c => ini.Provider.Equals(c?.Tag?.ToString()));
+            RadioMenuFlyoutItem item = FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>().FirstOrDefault(c => ini.Provider.Equals(c?.Tag?.ToString()));
             if (item != null) {
                 item.IsChecked = true;
             }
@@ -423,7 +424,7 @@ namespace Timeline {
             MenuSetDesktop.IsEnabled = true;
             MenuSetLock.IsEnabled = true;
             MenuSave.IsEnabled = true;
-            MenuDislike.IsEnabled = true;
+            MenuMark.IsEnabled = true;
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
 
@@ -452,7 +453,7 @@ namespace Timeline {
             MenuSetDesktop.IsEnabled = false;
             MenuSetLock.IsEnabled = false;
             MenuSave.IsEnabled = false;
-            MenuDislike.IsEnabled = false;
+            MenuMark.IsEnabled = false;
             MenuFillOn.IsEnabled = false;
             MenuFillOff.IsEnabled = false;
 
@@ -534,6 +535,14 @@ namespace Timeline {
             }
         }
 
+        private async Task LaunchIniFileAsync() {
+            try {
+                await Launcher.LaunchFileAsync(await IniUtil.GetIniPath());
+            } catch (Exception e) {
+                LogUtil.E("LaunchIniFile() " + e.Message);
+            }
+        }
+
         private void ToggleFullscreenMode() {
             ToggleFullscreenMode(!ApplicationView.GetForCurrentView().IsFullScreenMode);
         }
@@ -554,7 +563,6 @@ namespace Timeline {
             if (string.IsNullOrEmpty(msg)) {
                 return;
             }
-            Debug.WriteLine("title: " + title);
             Info.Severity = severity;
             Info.Title = title ?? "";
             Info.Message = msg;
@@ -651,6 +659,34 @@ namespace Timeline {
                     await LaunchRelealseAsync();
                 });
             }
+        }
+
+        private void ShowFlyoutMarkCate() {
+            if (FlyoutMarkCate.IsOpen) {
+                FlyoutMarkCate.Hide();
+                return;
+            }
+            List<string> cates = ini.GetIni().GetCate();
+            if (cates.Count == 0) {
+                return;
+            }
+            MenuFlyoutItemBase item1 = FlyoutMarkCate.Items[0];
+            MenuFlyoutItemBase item2 = FlyoutMarkCate.Items[1];
+            FlyoutMarkCate.Items.Clear();
+            FlyoutMarkCate.Items.Add(item1);
+            FlyoutMarkCate.Items.Add(item2);
+            foreach (string cate in cates) {
+                if (string.IsNullOrEmpty(cate)) {
+                    continue;
+                }
+                MenuFlyoutItem item = new MenuFlyoutItem {
+                    Text = cate,
+                    Tag = cate
+                };
+                item.Click += MenuMarkCate_Click;
+                FlyoutMarkCate.Items.Add(item);
+            }
+            FlyoutBase.ShowAttachedFlyout(AnchorCate);
         }
 
         private async Task<bool> RegServiceAsync() {
@@ -788,25 +824,31 @@ namespace Timeline {
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
-        private void MenuDislike_Click(object sender, RoutedEventArgs e) {
-            dislikeTimerMeta = meta;
-
-            FlyoutMenu.Hide();
-
-            ShowToastS(resLoader.GetString("MsgMarkDislike"), null, resLoader.GetString("ActionUndo"), () => {
+        private void MenuMark_Click(object sender, RoutedEventArgs e) {
+            markTimerMeta = meta;
+            markTimerAction = (sender as MenuFlyoutItem).Tag as string;
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
+                resLoader.GetString("ActionUndo"), () => {
                 CloseToast();
-                _ = Api.RankAsync(ini?.Provider, meta, "dislike", true);
+                _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
             });
+            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
+        }
 
-            if (dislikeTimer == null) {
-                dislikeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-                dislikeTimer.Tick += (sender2, e2) => {
-                    dislikeTimer.Stop();
-                    _ = Api.RankAsync(ini?.Provider, dislikeTimerMeta, "dislike");
-                };
-            }
-            dislikeTimer.Stop();
-            dislikeTimer.Start();
+        private void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
+            markTimerMeta = meta;
+            markTimerAction = "cate";
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
+                resLoader.GetString("ActionUndo"), () => {
+                    CloseToast();
+                    _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+                });
+            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, (sender as MenuFlyoutItem).Tag as string);
+        }
+
+        private void FlyoutMark_Closed(object sender, object e) {
+            // 该子菜单隐藏时不会自动隐藏菜单，因此手动关联
+            FlyoutMenu.Hide();
         }
 
         private async void MenuPush_Click(object sender, RoutedEventArgs e) {
@@ -1000,110 +1042,61 @@ namespace Timeline {
             args.Handled = true;
             CloseToast();
             switch (sender.Key) {
-                case VirtualKey.Left:
-                case VirtualKey.Up:
+                case VirtualKey.Left: // Left
+                case VirtualKey.Up: // Up
                     pageTimerYesterdayOrTomorrow = true;
                     ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();
                     pageTimer.Start();
                     break;
-                case VirtualKey.Right:
-                case VirtualKey.Down:
+                case VirtualKey.Right: // Right
+                case VirtualKey.Down: // Down
                     pageTimerYesterdayOrTomorrow = false;
                     ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();
                     pageTimer.Start();
                     break;
-                case VirtualKey.Escape:
-                case VirtualKey.Enter:
+                case VirtualKey.F11: // F11
+                case VirtualKey.Escape: // Escape
+                case VirtualKey.Enter: // Enter
                     ToggleFullscreenMode();
                     break;
-                case VirtualKey.Space:
-                    ToggleImgMode(ImgUhd.Stretch != Stretch.UniformToFill);
+                case VirtualKey.Space: // Space
+                    MenuFill_Click(null, null);
                     break;
-                case VirtualKey.Back:
-                case VirtualKey.Delete:
-                    MenuDislike_Click(null, null);
+                case VirtualKey.B: // Ctrl + B
+                    MenuSetDesktop_Click(null, null);
                     break;
-                case VirtualKey.Number1:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini?.Provider, meta, "dislike");
-                        ShowToastS(resLoader.GetString("MsgMarkDislike"), null, resLoader.GetString("ActionUndo"), () => {
-                            CloseToast();
-                            _ = Api.RankAsync(ini?.Provider, meta, "dislike", true);
-                        });
-                    }
+                case VirtualKey.L: // Ctrl + L
+                    MenuSetLock_Click(null, null);
                     break;
-                case VirtualKey.Number2:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini?.Provider, meta, "r18");
-                        ShowToastS(resLoader.GetString("MsgMarkR18"), null, resLoader.GetString("ActionUndo"), () => {
-                            CloseToast();
-                            _ = Api.RankAsync(ini?.Provider, meta, "r18", true);
-                        });
-                    }
-                    break;
-                case VirtualKey.Number3:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini?.Provider, meta, "acg");
-                        ShowToastS(resLoader.GetString("MsgMarkAcg"), null, resLoader.GetString("ActionUndo"), () => {
-                            CloseToast();
-                            _ = Api.RankAsync(ini?.Provider, meta, "acg", true);
-                        });
-                    }
-                    break;
-                case VirtualKey.Number4:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        _ = Api.RankAsync(ini?.Provider, meta, "photograph");
-                        ShowToastS(resLoader.GetString("MsgMarkPhotograph"), null, resLoader.GetString("ActionUndo"), () => {
-                            CloseToast();
-                            _ = Api.RankAsync(ini?.Provider, meta, "photograph", true);
-                        });
-                    }
-                    break;
-                case VirtualKey.B:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        MenuSetDesktop_Click(null, null);
-                    }
-                    break;
-                case VirtualKey.L:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        MenuSetLock_Click(null, null);
-                    }
-                    break;
-                case VirtualKey.D:
-                case VirtualKey.S:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        MenuSave_Click(null, null);
-                    }
+                case VirtualKey.D: // Ctrl + D
+                case VirtualKey.S: // Ctrl + S
+                    MenuSave_Click(null, null);
                     break;
                 case VirtualKey.C:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
+                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + C
                         if (TextUtil.Copy(meta?.CacheUhd)) {
                             ShowToastS(resLoader.GetString("MsgCopiedImg"));
                             _ = Api.RankAsync(ini?.Provider, meta, "copy");
                         }
-                    } else { // Shift + Control
+                    } else { // Shift + Control + C
                         if (meta != null) {
                             TextUtil.Copy(JsonConvert.SerializeObject(meta, Formatting.Indented));
                             ShowToastS(resLoader.GetString("MsgCopiedMeta"));
                         }
                     }
                     break;
-                case VirtualKey.R:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) {
-                        FlyoutMenu.Hide();
-                        await Refresh();
-                    }
-                    break;
-                case VirtualKey.F5:
+                case VirtualKey.F5: // F5
+                case VirtualKey.R: // Ctrl + R
                     FlyoutMenu.Hide();
                     await Refresh();
                     break;
-                case VirtualKey.F:
-                case VirtualKey.G:
+                case VirtualKey.F3: // F3
+                case VirtualKey.F: // Ctrl + F
+                case VirtualKey.G: // Ctrl + G
                     if (!FlyoutGo.IsOpen) {
                         if (ini.GetIni().IsSequential()) {
                             BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"), meta?.Date?.ToString("MMdd") ?? "MMdd");
@@ -1116,6 +1109,24 @@ namespace Timeline {
                         FlyoutGo.Hide();
                     }
                     break;
+                case VirtualKey.Number5: // Ctrl + 5
+                    ShowFlyoutMarkCate();
+                    break;
+                case VirtualKey.F10:
+                    if (sender.Modifiers == VirtualKeyModifiers.Shift) { // Shift + F10
+                        // TODO
+                    } else { // F10
+                        if (ViewSplit.IsPaneOpen) {
+                            ViewSplit.IsPaneOpen = false;
+                        } else {
+                            MenuSettings_Click(null, null);
+                        }
+                    }
+                    break;
+                case VirtualKey.I: // Ctrl + I
+                case VirtualKey.O: // Ctrl + O
+                    await LaunchIniFileAsync();
+                    break;
             }
         }
 
@@ -1123,16 +1134,20 @@ namespace Timeline {
             AnimeYesterday2.Begin();
         }
 
-        private void MenuSettings_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeSettings.Begin();
+        private void MenuSave_PointerEntered(object sender, PointerRoutedEventArgs e) {
+            AnimeSave.Begin();
         }
 
-        private void MenuDislike_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeDislike.Begin();
+        private void MenuMark_PointerEntered(object sender, PointerRoutedEventArgs e) {
+            AnimeMark.Begin();
         }
 
         private void MenuFillOff_PointerEntered(object sender, PointerRoutedEventArgs e) {
             AnimeFillOff.Begin();
+        }
+
+        private void MenuSettings_PointerEntered(object sender, PointerRoutedEventArgs e) {
+            AnimeSettings.Begin();
         }
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
@@ -1151,9 +1166,9 @@ namespace Timeline {
                 Separator1.RequestedTheme = theme;
                 Separator2.RequestedTheme = theme;
                 Separator3.RequestedTheme = theme;
-                foreach (RadioMenuFlyoutItem item in SubmenuProvider.Items.Cast<RadioMenuFlyoutItem>()) {
-                    item.RequestedTheme = theme;
-                }
+                //foreach (RadioMenuFlyoutItem item in FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>()) {
+                //    item.RequestedTheme = theme;
+                //}
                 // 刷新状态颜色
                 ProgressLoading.ShowError = !ProgressLoading.ShowError;
                 ProgressLoading.ShowError = !ProgressLoading.ShowError;

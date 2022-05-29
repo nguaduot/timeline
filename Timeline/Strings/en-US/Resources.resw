@@ -126,7 +126,7 @@
   <data name="AppNameShort" xml:space="preserve">
     <value>Timeline</value>
   </data>
-  <data name="MenuSettings.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="MenuSettings.Label" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="ActionGo" xml:space="preserve">
@@ -627,11 +627,8 @@
   <data name="ActionUndo" xml:space="preserve">
     <value>Undo</value>
   </data>
-  <data name="MenuDislike.Label" xml:space="preserve">
-    <value>Dislike the picture</value>
-  </data>
-  <data name="MsgMarkDislike" xml:space="preserve">
-    <value>Marked as DISLIKE.</value>
+  <data name="MenuMark.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Mark as...</value>
   </data>
   <data name="TextYmyouliOrder.Text" xml:space="preserve">
     <value>Order</value>
@@ -649,7 +646,7 @@
     <value>轻壁纸 - 4K壁纸分享站</value>
   </data>
   <data name="MsgCopiedMeta" xml:space="preserve">
-    <value>Image code copied.</value>
+    <value>Json copied.</value>
   </data>
   <data name="Provider_qingbz" xml:space="preserve">
     <value>轻壁纸</value>
@@ -765,15 +762,6 @@
   <data name="MenuProviderWallhere.Text" xml:space="preserve">
     <value>WallHere - One of the best hd wallpapers site</value>
   </data>
-  <data name="MsgMarkAcg" xml:space="preserve">
-    <value>Marked as ACG.</value>
-  </data>
-  <data name="MsgMarkPhotograph" xml:space="preserve">
-    <value>Marked as PHOTOGRAPH.</value>
-  </data>
-  <data name="MsgMarkR18" xml:space="preserve">
-    <value>Marked as R18.</value>
-  </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
@@ -873,7 +861,28 @@
   <data name="CurIndex" xml:space="preserve">
     <value>Current: {0}</value>
   </data>
+  <data name="MenuMark404.Text" xml:space="preserve">
+    <value>Mark as 404</value>
+  </data>
+  <data name="MenuMarkCateHint.Text" xml:space="preserve">
+    <value>Mark as category...</value>
+  </data>
+  <data name="MenuMarkDirty.Text" xml:space="preserve">
+    <value>Mark as watermark</value>
+  </data>
+  <data name="MenuMarkDislike.Text" xml:space="preserve">
+    <value>Mark as waste</value>
+  </data>
+  <data name="MenuMarkHint.Text" xml:space="preserve">
+    <value>Mark as...</value>
+  </data>
+  <data name="MenuMarkR18.Text" xml:space="preserve">
+    <value>Mark as R18</value>
+  </data>
   <data name="MsgLsp" xml:space="preserve">
     <value>Think about where you are.</value>
+  </data>
+  <data name="MsgMarked" xml:space="preserve">
+    <value>Submitted: {0}</value>
   </data>
 </root>

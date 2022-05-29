@@ -14,6 +14,9 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "action")]
         public string Action { set; get; }
 
+        [JsonProperty(PropertyName = "target")]
+        public string Target { set; get; }
+
         [JsonProperty(PropertyName = "deviceid")]
         public string DeviceId { set; get; }
 

@@ -162,7 +162,7 @@ namespace Timeline.Pages {
             };
         }
 
-        private async Task LaunchFile(StorageFile file) {
+        private async Task LaunchFileAsync(StorageFile file) {
             try {
                 await Launcher.LaunchFileAsync(file);
             } catch (Exception e) {
@@ -170,7 +170,7 @@ namespace Timeline.Pages {
             }
         }
 
-        private async Task LaunchFolder(StorageFolder folder, StorageFile fileSelected = null) {
+        private async Task LaunchFolderAsync(StorageFolder folder, StorageFile fileSelected = null) {
             try {
                 if (fileSelected != null) {
                     FolderLauncherOptions options = new FolderLauncherOptions();
@@ -309,16 +309,16 @@ namespace Timeline.Pages {
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
-            await LaunchFile(await IniUtil.GetIniPath());
+            await LaunchFileAsync(await IniUtil.GetIniPath());
         }
 
         private async void BtnShowSave_Click(object sender, RoutedEventArgs e) {
-            await LaunchFolder(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+            await LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
                 CreationCollisionOption.OpenIfExists));
         }
 
         private async void BtnShowCache_Click(object sender, RoutedEventArgs e) {
-            await LaunchFolder(ApplicationData.Current.TemporaryFolder);
+            await LaunchFolderAsync(ApplicationData.Current.TemporaryFolder);
         }
 
         private async void BtnReview_Click(object sender, RoutedEventArgs e) {

@@ -2,7 +2,7 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.3-brightgreen)
+![developing](https://img.shields.io/badge/developing-v5.4-brightgreen)
 [![release](https://img.shields.io/badge/release-v5.2.220527-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
@@ -49,20 +49,25 @@
 ## 进阶
 
 + 使用快捷键
-  + 鼠标右键：菜单
-  + 方向键 / 鼠标滚轮 / 滑动：回顾/预览
-  + `Enter` / `Esc` / 鼠标左键（双击）：切换全屏/窗口模式
-  + `Backspace` / `Delete`：标记“不喜欢”
-  + `Home` / `Page Up`：跳转至最远
-  + `End` / `Page Down`：跳转至最近
-  + `Space`：切换全图/填充
-  + `Ctrl` + `B`：用作桌面背景
-  + `Ctrl` + `L`：用作锁屏背景
-  + `Ctrl` + `S` / `Ctrl` + `D`：保存图片
-  + `Ctrl` + `R` / `F5`：刷新
-  + `Ctrl` + `F` / `Ctrl` + `G`：跳转至指定日期
-  + `Ctrl` + `C`：复制图片
-  + `Ctrl` + `Shift` + `C`：复制图片元素
+  + 菜单：`Shift` + `F10` / 鼠标右键 / 触屏长按图片
+  + 设置：`F10`
+  + 回顾：向左键 / 向上键 / 鼠标滚轮上滚 / 触屏左滑 / 触摸板双指左滑
+  + 预览：向右键 / 向下键 / 鼠标滚轮下滚 / 触屏右滑 / 触摸板双指右滑
+  + 切换全屏/窗口：`F11` / `Enter` / `Esc` / 双击鼠标左键
+  + 切换全图/填充：`Space`
+  + 用作桌面背景：`Ctrl` + `B`
+  + 用作锁屏背景：`Ctrl` + `L`
+  + 保存图片：`Ctrl` + `S` / `Ctrl` + `D`
+  + 复制图片：`Ctrl` + `C`
+  + 复制JSON：`Ctrl` + `Shift` + `C`
+  + 刷新：`F5` / `Ctrl` + `R`
+  + 跳转：`F3` / `Ctrl` + `F` / `Ctrl` + `G`
+  + 标记“不喜欢”：`Backspace` / `Delete` / `Ctrl` + `1`
+  + 标记“水印”：`Ctrl` + `2`
+  + 标记“R18”：`Ctrl` + `3`
+  + 标记“404”：`Ctrl` + `4`
+  + 标记分类：`Ctrl` + `5`
+  + 打开配置文件：`Ctrl` + `I` / `Ctrl` + `O`
 
 + 如何调高桌面壁纸推送频率？
   + 右键菜单点击“**设置**”图标，导航至“**常规**”组，展开“**配置文件**”，点击“**打开**”，即可编辑配置文件

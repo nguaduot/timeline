@@ -25,11 +25,15 @@ namespace Timeline.Providers {
                 Story = bean.Story,
                 Copyright = "@" + bean.Author,
                 Cate = bean.CateAlt,
-                Date = DateTime.ParseExact(bean.RelDate, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US")),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.ImgId
+                Date = DateTime.Now,
+                SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             if (bean.R18 == 1) {
                 meta.Title = "🚫 " + meta.Title;
+            }
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
             }
             return meta;
         }

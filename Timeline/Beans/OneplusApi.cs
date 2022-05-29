@@ -17,7 +17,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "photoUrl")]
         public string PhotoUrl { set; get; }
 
-        // 日期
+        // 日期：yyyyMMdd
         [JsonProperty(PropertyName = "scheduleTime")]
         public string ScheduleTime { set; get; }
 

@@ -68,13 +68,25 @@
                              Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
                              Storyboard.TargetName="IconFillOff" />
         </Storyboard>
-        <Storyboard x:Name="AnimeDislike"
+        <Storyboard x:Name="AnimeSave"
                     AutoReverse="True">
             <DoubleAnimation Duration="0:0:0.1"
                              From="0"
-                             To="-4"
+                             To="-3"
                              Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Y)"
-                             Storyboard.TargetName="IconDislike">
+                             Storyboard.TargetName="IconSave">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="AnimeMark"
+                    AutoReverse="True">
+            <DoubleAnimation Duration="0:0:0.1"
+                             From="0"
+                             To="-3"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Y)"
+                             Storyboard.TargetName="IconMark">
                 <DoubleAnimation.EasingFunction>
                     <CircleEase EasingMode="EaseOut" />
                 </DoubleAnimation.EasingFunction>
@@ -137,35 +149,36 @@
             <AppBarButton Name="MenuSave"
                           x:Uid="MenuSave"
                           IsEnabled="False"
+                          PointerEntered="MenuSave_PointerEntered"
                           Click="MenuSave_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE896;" />
-                </AppBarButton.Icon>
-                <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="S"
-                                         Modifiers="Control" />
-                </AppBarButton.KeyboardAccelerators>
-            </AppBarButton>
-            <AppBarButton Name="MenuDislike"
-                          x:Uid="MenuDislike"
-                          IsEnabled="False"
-                          PointerEntered="MenuDislike_PointerEntered"
-                          Click="MenuDislike_Click">
-                <AppBarButton.Icon>
-                    <FontIcon x:Name="IconDislike"
+                    <FontIcon x:Name="IconSave"
                               FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE8E0;"
-                              RenderTransformOrigin="0.5,0.5">
+                              Glyph="&#xE896;">
                         <FontIcon.RenderTransform>
                             <TranslateTransform X="0" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
                 </AppBarButton.Icon>
                 <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="Back"
-                                         Modifiers="None" />
+                    <KeyboardAccelerator Key="S"
+                                         Modifiers="Control" />
                 </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton Name="MenuMark"
+                          x:Uid="MenuMark"
+                          IsEnabled="False"
+                          Flyout="{StaticResource FlyoutMark}"
+                          PointerEntered="MenuMark_PointerEntered">
+                <AppBarButton.Icon>
+                    <FontIcon x:Name="IconMark"
+                              FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE730;">
+                        <FontIcon.RenderTransform>
+                            <TranslateTransform X="0" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
+                </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton Name="MenuSettings"
                           x:Uid="MenuSettings"
@@ -181,6 +194,10 @@
                         </FontIcon.RenderTransform>
                     </FontIcon>
                 </AppBarButton.Icon>
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F10"
+                                         Modifiers="None" />
+                </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
             <muxc:CommandBarFlyout.SecondaryCommands>
                 <AppBarButton Name="MenuSetDesktop"
@@ -257,79 +274,141 @@
                 </AppBarButton>
                 <AppBarSeparator Name="Separator3" />
                 <AppBarButton Name="MenuProvider"
-                              x:Uid="MenuProvider">
+                              x:Uid="MenuProvider"
+                              Flyout="{StaticResource FlyoutProvider}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xE8B9;" />
                     </AppBarButton.Icon>
-                    <AppBarButton.Flyout>
-                        <MenuFlyout x:Name="SubmenuProvider">
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderBing"
-                                                      x:Uid="MenuProviderBing"
-                                                      Tag="bing"
-                                                      Click="MenuProvider_Click"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderNasa"
-                                                      x:Uid="MenuProviderNasa"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="nasa"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderOneplus"
-                                                      x:Uid="MenuProviderOneplus"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="oneplus"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderTimeline"
-                                                      x:Uid="MenuProviderTimeline"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="timeline"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderOne"
-                                                      x:Uid="MenuProviderOne"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="one"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderHimawari8"
-                                                      x:Uid="MenuProviderHimawari8"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="himawari8"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderYmyouli"
-                                                      x:Uid="MenuProviderYmyouli"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="ymyouli"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderQingbz"
-                                                      x:Uid="MenuProviderQingbz"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="qingbz"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderObzhi"
-                                                      x:Uid="MenuProviderObzhi"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="obzhi"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderWallhere"
-                                                      x:Uid="MenuProviderWallhere"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="wallhere"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderInfinity"
-                                                      x:Uid="MenuProviderInfinity"
-                                                      Click="MenuProvider_Click"
-                                                      Tag="infinity"
-                                                      GroupName="Provider" />
-                            <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
-                                                      x:Uid="MenuProviderLsp"
-                                                      Click="MenuProvider_Click"
-                                                      Visibility="Collapsed"
-                                                      Tag="lsp"
-                                                      GroupName="Provider" />
-                        </MenuFlyout>
-                    </AppBarButton.Flyout>
                 </AppBarButton>
             </muxc:CommandBarFlyout.SecondaryCommands>
         </muxc:CommandBarFlyout>
+
+        <MenuFlyout x:Key="FlyoutMark"
+                    Closed="FlyoutMark_Closed">
+            <MenuFlyoutItem x:Uid="MenuMarkHint"
+                            IsEnabled="False">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE730;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem x:Uid="MenuMarkDislike"
+                            Tag="dislike"
+                            Click="MenuMark_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Back"
+                                         Modifiers="None" />
+                    <KeyboardAccelerator Key="Delete"
+                                         Modifiers="None" />
+                    <KeyboardAccelerator Key="Number1"
+                                         Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuMarkDirty"
+                            Tag="dirty"
+                            Click="MenuMark_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Number2"
+                                         Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuMarkR18"
+                            Tag="r18"
+                            Click="MenuMark_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Number3"
+                                         Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuMark404"
+                            Tag="404"
+                            Click="MenuMark_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Number4"
+                                         Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="FlyoutMarkCate"
+                    x:Name="FlyoutMarkCate"
+                    LightDismissOverlayMode="On">
+            <MenuFlyoutItem x:Uid="MenuMarkCateHint"
+                            IsEnabled="False">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE8F1;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator />
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="FlyoutProvider"
+                    x:Name="FlyoutProvider">
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderBing"
+                                      x:Uid="MenuProviderBing"
+                                      Tag="bing"
+                                      Click="MenuProvider_Click"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderNasa"
+                                      x:Uid="MenuProviderNasa"
+                                      Click="MenuProvider_Click"
+                                      Tag="nasa"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderOneplus"
+                                      x:Uid="MenuProviderOneplus"
+                                      Click="MenuProvider_Click"
+                                      Tag="oneplus"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderTimeline"
+                                      x:Uid="MenuProviderTimeline"
+                                      Click="MenuProvider_Click"
+                                      Tag="timeline"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderOne"
+                                      x:Uid="MenuProviderOne"
+                                      Click="MenuProvider_Click"
+                                      Tag="one"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderHimawari8"
+                                      x:Uid="MenuProviderHimawari8"
+                                      Click="MenuProvider_Click"
+                                      Tag="himawari8"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderYmyouli"
+                                      x:Uid="MenuProviderYmyouli"
+                                      Click="MenuProvider_Click"
+                                      Tag="ymyouli"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderQingbz"
+                                      x:Uid="MenuProviderQingbz"
+                                      Click="MenuProvider_Click"
+                                      Tag="qingbz"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderObzhi"
+                                      x:Uid="MenuProviderObzhi"
+                                      Click="MenuProvider_Click"
+                                      Tag="obzhi"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderWallhere"
+                                      x:Uid="MenuProviderWallhere"
+                                      Click="MenuProvider_Click"
+                                      Tag="wallhere"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderInfinity"
+                                      x:Uid="MenuProviderInfinity"
+                                      Click="MenuProvider_Click"
+                                      Tag="infinity"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
+                                      x:Uid="MenuProviderLsp"
+                                      Click="MenuProvider_Click"
+                                      Visibility="Collapsed"
+                                      Tag="lsp"
+                                      GroupName="Provider" />
+        </MenuFlyout>
 
         <Flyout x:Key="FlyoutGo"
                 x:Name="FlyoutGo"
@@ -439,31 +518,25 @@
                 <KeyboardAccelerator Key="Down"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="F11"
+                                     Modifiers="None"
+                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Enter"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Escape"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Back"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Delete"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Space"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="PageUp"
-                                     Modifiers="None"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="PageDown"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="B"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="L"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="D"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="S"
@@ -475,16 +548,13 @@
                 <KeyboardAccelerator Key="C"
                                      Modifiers="Shift,Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="D"
-                                     Modifiers="Control"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="O"
-                                     Modifiers="Control"
+                <KeyboardAccelerator Key="F5"
+                                     Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="R"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="F5"
+                <KeyboardAccelerator Key="F3"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="F"
@@ -493,16 +563,19 @@
                 <KeyboardAccelerator Key="G"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number1"
+                <KeyboardAccelerator Key="Number5"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number2"
+                <KeyboardAccelerator Key="F10"
+                                     Modifiers="None"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="F10"
+                                     Modifiers="Shift"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="I"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number3"
-                                     Modifiers="Control"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number4"
+                <KeyboardAccelerator Key="O"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
             </RelativePanel.KeyboardAccelerators>
@@ -629,6 +702,14 @@
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />
+
+            <Rectangle Name="AnchorCate"
+                       Width="0"
+                       Height="0"
+                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
+                       Margin="10,12,10,12"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True" />
 
         </RelativePanel>
 

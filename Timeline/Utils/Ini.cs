@@ -83,6 +83,8 @@ namespace Timeline.Utils {
             get => lockPeriod;
         }
 
+        public virtual List<string> GetCate() => new List<string>();
+
         // 时序图源
         public virtual bool IsSequential() => true;
 
@@ -162,6 +164,10 @@ namespace Timeline.Utils {
 
         public int Unauthorized { set; get; } = 0;
 
+        public override List<string> GetCate() {
+            return CATE;
+        }
+
         public override bool IsSequential() => "date".Equals(order);
 
         public override BaseProvider GenerateProvider() => new TimelineProvider() { Id = ID };
@@ -206,6 +212,10 @@ namespace Timeline.Utils {
         public string Cate {
             set => cate = CATE.Contains(value) ? value : "";
             get => cate;
+        }
+
+        public override List<string> GetCate() {
+            return CATE;
         }
 
         public override bool IsSequential() => false;
@@ -267,6 +277,10 @@ namespace Timeline.Utils {
             get => cate;
         }
 
+        public override List<string> GetCate() {
+            return CATE;
+        }
+
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new QingbzProvider() { Id = ID };
@@ -290,6 +304,10 @@ namespace Timeline.Utils {
         public string Cate {
             set => cate = CATE.Contains(value) ? value : "";
             get => cate;
+        }
+
+        public override List<string> GetCate() {
+            return CATE;
         }
 
         public override bool IsSequential() => false;
@@ -316,6 +334,10 @@ namespace Timeline.Utils {
             get => cate;
         }
 
+        public override List<string> GetCate() {
+            return CATE;
+        }
+
         public override bool IsSequential() => false;
 
         public override BaseProvider GenerateProvider() => new WallhereProvider() { Id = ID };
@@ -338,6 +360,10 @@ namespace Timeline.Utils {
         public string Cate {
             set => cate = CATE.Contains(value) ? value : "";
             get => cate;
+        }
+
+        public override List<string> GetCate() {
+            return CATE;
         }
 
         public override bool IsSequential() => false;

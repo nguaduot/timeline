@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Globalization;
 
 namespace Timeline.Providers {
     public class OneplusProvider : BaseProvider {
@@ -26,9 +27,8 @@ namespace Timeline.Providers {
                 Thumb = bean.PhotoUrl.Replace(".jpg", "_400_0.jpg"),
                 Title = bean.PhotoTopic?.Trim(),
                 Copyright = "@" + bean.Author,
-                Date = DateTime.ParseExact(bean.ScheduleTime, "yyyyMMdd", new System.Globalization.CultureInfo("en-US"))
+                Date = DateTime.Now
             };
-            meta.SortFactor = meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
 
             if (!bean.PhotoTopic.Equals(bean.Remark?.Trim())) {
                 meta.Caption = bean.Remark?.Trim();
@@ -39,7 +39,10 @@ namespace Timeline.Providers {
             if (!string.IsNullOrEmpty(bean.CountryCodeStr)) {
                 meta.Copyright += " | " + bean.CountryCodeStr;
             }
-
+            if (DateTime.TryParseExact(bean.ScheduleTime, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
+                meta.Date = date;
+            }
+            meta.SortFactor = meta.Date.Value.Ticks;
             return meta;
         }
 

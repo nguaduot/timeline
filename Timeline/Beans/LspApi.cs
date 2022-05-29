@@ -41,7 +41,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "provider")]
         public string Provider { set; get; }
 
-        // 推送日期
+        // 发布日期：yyyy-MM-dd
         [JsonProperty(PropertyName = "reldate")]
         public string RelDate { set; get; }
 

@@ -42,8 +42,11 @@ namespace Timeline.Providers {
                 meta.Thumb = bean.ThumbnailUrl;
             }*/
             if (!string.IsNullOrEmpty(bean.Date)) {
-                meta.Date = DateTime.ParseExact(bean.Date, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US"));
-                meta.SortFactor = meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
+                //DateTime.TryParseExact(bean.Date, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+                if (DateTime.TryParse(bean.Date, out DateTime date)) { // 无效日期则该条数据会被剔除
+                    meta.Date = date;
+                }
+                meta.SortFactor = meta.Date.Value.Ticks;
                 meta.Id = bean.MediaType + meta.Date?.ToString("yyyyMMdd");
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
@@ -133,8 +136,11 @@ namespace Timeline.Providers {
             }
             match = Regex.Match(htmlData, @">(\d+\-\d+\-\d+)<");
             if (match.Success) {
-                meta.Date = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US"));
-                meta.SortFactor = meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
+                //DateTime.TryParseExact(match.Groups[1].Value, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+                if (DateTime.TryParse(match.Groups[1].Value, out DateTime date)) { // 无效日期则该条数据会被剔除
+                    meta.Date = date;
+                }
+                meta.SortFactor = meta.Date.Value.Ticks;
             }
             return meta;
         }

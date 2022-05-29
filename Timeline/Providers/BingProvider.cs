@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using System.Globalization;
 
 namespace Timeline.Providers {
     public class BingProvider : BaseProvider {
@@ -43,10 +44,9 @@ namespace Timeline.Providers {
                 Id = bean.Hsh,
                 Uhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bean.UrlBase),
                 Thumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, bean.UrlBase),
-                Date = DateTime.ParseExact(bean.EndDate, "yyyyMMdd", new System.Globalization.CultureInfo("en-US")),
+                Date = DateTime.Now,
                 Caption = bean.Copyright
             };
-            meta.SortFactor = meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
 
             if (!string.IsNullOrEmpty(bean.Title)) {
                 if (!bean.Title.Equals("Info")) { // ko-kr等未支持的地区
@@ -76,6 +76,11 @@ namespace Timeline.Providers {
                     }
                 }
             }
+
+            if (DateTime.TryParseExact(bean.EndDate, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
+                meta.Date = date;
+            }
+            meta.SortFactor = meta.Date.Value.Ticks;
 
             return meta;
         }

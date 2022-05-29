@@ -33,7 +33,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "text_authors")]
         public string TextAuthors { set; get; }
 
-        // 日期
+        // 日期：yyyy / MM / dd
         [JsonProperty(PropertyName = "date")]
         public string Date { set; get; }
 

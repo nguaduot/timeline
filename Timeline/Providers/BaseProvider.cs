@@ -26,8 +26,8 @@ namespace Timeline.Providers {
 
         protected Dictionary<string, int> dicHistory = new Dictionary<string, int>();
 
-        private BackgroundDownloader downloader = new BackgroundDownloader();
-        private Queue<DownloadOperation> activeDownloads = new Queue<DownloadOperation>();
+        private readonly BackgroundDownloader downloader = new BackgroundDownloader();
+        private readonly Queue<DownloadOperation> activeDownloads = new Queue<DownloadOperation>();
 
         // 缓存图片量
         private static int POOL_CACHE = 5;

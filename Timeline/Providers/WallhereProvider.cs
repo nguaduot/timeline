@@ -33,6 +33,10 @@ namespace Timeline.Providers {
             if (!string.IsNullOrEmpty(bean.Author)) {
                 meta.Copyright = "@" + bean.Author;
             }
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
+            }
             return meta;
         }
 

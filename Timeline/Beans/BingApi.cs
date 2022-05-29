@@ -18,7 +18,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "urlbase")]
         public string UrlBase { set; get; }
 
-        // 日期
+        // 日期：yyyyMMdd
         [JsonProperty(PropertyName = "enddate")]
         public string EndDate { set; get; }
 

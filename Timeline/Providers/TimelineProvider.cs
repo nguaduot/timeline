@@ -27,9 +27,8 @@ namespace Timeline.Providers {
                 Cate = bean.Cate,
                 Story = bean.Story?.Trim(),
                 Copyright = "@" + bean.Author?.Trim(),
-                Date = DateTime.ParseExact(bean.RelDate, "yyyy-MM-dd", new System.Globalization.CultureInfo("en-US"))
+                Date = DateTime.Now
             };
-            meta.SortFactor = "score".Equals(order) ? bean.Score : meta.Date.Value.Subtract(new DateTime(1970, 1, 1)).TotalDays;
             if (bean.Deprecated != 0) {
                 meta.Title = "🚫 " + meta.Title;
             }
@@ -41,7 +40,11 @@ namespace Timeline.Providers {
                 string[] name = uri.Segments[uri.Segments.Length - 1].Split(".");
                 meta.Format = "." + name[1];
             }
-            
+            //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
+                meta.Date = date;
+            }
+            meta.SortFactor = "score".Equals(order) ? bean.Score : meta.Date.Value.Ticks;
             return meta;
         }
 
