@@ -42,7 +42,7 @@
 + [乌云壁纸](https://www.obzhi.com) - 高清壁纸站
 + [WallHere](https://wallhere.com) - 世界著名的壁纸网站之一
 + [Infinity](http://cn.infinitynewtab.com) - 精选壁纸
-+ LSP - 一切尽在不言中
++ LSP - 不可描述
 
 *特别注明：三方图源均为来自网络，本应用无权且不提供商用授权，所以请勿用于商业用途，仅供学习交流。欢迎分享图源*
 
