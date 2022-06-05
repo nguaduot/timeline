@@ -294,7 +294,7 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString("infinity", "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("infinity", "order", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString("infinity", "order", "random", sb, 1024, iniFile);
             ini.SetIni("infinity", new InfinityIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,

@@ -14,20 +14,20 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/lsp?client=timelinewallpaper&order={0}&cate={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&order={0}&cate={1}&page={2}";
         
         private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
-                Id = bean.ImgId.ToString(),
+                Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
-                Cate = bean.Cate,
-                Date = DateTime.Now,
+                Title = bean.Title,
+                Story = bean.Story,
+                Cate = bean.CateName,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
-            meta.Title = string.Format("{0} #{1}", bean.Cate, bean.CateNo);
-            if (!string.IsNullOrEmpty(bean.Provider)) {
-                meta.Copyright = "© " + bean.Provider;
+            if (!string.IsNullOrEmpty(bean.Copyright)) {
+                meta.Copyright = "© " + bean.Copyright;
             }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
@@ -36,7 +36,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多
             if (indexFocus < metas.Count - 1) {
                 return true;

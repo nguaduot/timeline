@@ -80,6 +80,33 @@ namespace Timeline.Utils {
             }
         }
 
+        public static async Task<List<CateMeta>> CateAsync(string urlApi) {
+            List<CateMeta> data = new List<CateMeta>();
+            if (!NetworkInterface.GetIsNetworkAvailable()) {
+                return data;
+            }
+            if (string.IsNullOrEmpty(urlApi)) {
+                return data;
+            }
+            try {
+                HttpClient client = new HttpClient();
+                HttpResponseMessage res = await client.GetAsync(urlApi);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                CateApi api = JsonConvert.DeserializeObject<CateApi>(jsonData);
+                api.Data.Sort((a, b) => b.Score.CompareTo(a.Score));
+                foreach (CateApiData item in api.Data) {
+                    data.Add(new CateMeta {
+                        Id = item.Id,
+                        Name = item.Name
+                    });
+                }
+            } catch (Exception e) {
+                LogUtil.E("CateAsync() " + e.Message);
+            }
+            return data;
+        }
+
         public static async Task<bool> ContributeAsync(ContributeApiReq req) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;

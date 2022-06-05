@@ -139,7 +139,7 @@ namespace TimelineService.Utils {
             ini.Obzhi.Cate = sb.ToString();
             _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out r18);
-            _ = GetPrivateProfileString("infinity", "order", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString("infinity", "order", "random", sb, 1024, iniFile);
             ini.Infinity.Order = sb.ToString();
             _ = GetPrivateProfileString("wallhere", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);

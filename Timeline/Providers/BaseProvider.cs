@@ -13,6 +13,8 @@ using System.Linq;
 using Windows.Media.FaceAnalysis;
 using System.Threading;
 using Windows.Storage.Streams;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Timeline.Providers {
     public class BaseProvider {
@@ -84,8 +86,35 @@ namespace Timeline.Providers {
             AppendMetas(metasAdd);
         }
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            dicHistory = await FileUtil.GetHistoryAsync(Id);
+        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+            dicHistory.Clear();
+            Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
+            foreach (var item in dicNew) {
+                dicHistory.Add(item.Key, item.Value);
+            }
+            //if (ini.Cates.Count == 0 && !string.IsNullOrEmpty(ini.CateApi)) {
+            //    try {
+            //        HttpClient client = new HttpClient();
+            //        HttpResponseMessage res = await client.GetAsync(ini.CateApi, token);
+            //        string jsonData = await res.Content.ReadAsStringAsync();
+            //        //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+            //        CateApi api = JsonConvert.DeserializeObject<CateApi>(jsonData);
+            //        if (api.Status == 1 && api.Data != null) {
+            //            api.Data.Sort((a, b) => b.Score.CompareTo(a.Score));
+            //            ini.Cates.Clear();
+            //            foreach (CateApiData item in api.Data) {
+            //                ini.Cates.Add(new CateMeta {
+            //                    Id = item.Id,
+            //                    Name = item.Name
+            //                });
+            //            }
+            //        }
+            //    } catch (Exception e) {
+            //        // 情况1：任务被取消
+            //        // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+            //        LogUtil.E("LoadData() " + e.Message);
+            //    }
+            //}
             return false;
         }
 
@@ -223,7 +252,7 @@ namespace Timeline.Providers {
 
         public Meta Target(DateTime date) {
             for (int i = 0; i < metas.Count; i++) {
-                if (date.ToString("yyyyMMddHHmm").Equals(metas[i].Date?.ToString("yyyyMMddHHmm"))) {
+                if (date.ToString("yyyyMMddHHmm").Equals(metas[i].Date.ToString("yyyyMMddHHmm"))) {
                     indexFocus = i;
                     return metas[i];
                 }

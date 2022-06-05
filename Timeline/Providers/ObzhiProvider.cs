@@ -14,23 +14,19 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
         private Meta ParseBean(ObzhiApiData bean, string order) {
             Meta meta = new Meta {
-                Id = bean.ImgId.ToString(),
+                Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
                 Story = bean.Story,
-                Copyright = "@" + bean.Author,
-                Cate = bean.CateAlt,
-                Date = DateTime.Now,
+                Copyright = "@" + bean.Copyright,
+                Cate = bean.CateName,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
-            if (bean.R18 == 1) {
-                meta.Title = "🚫 " + meta.Title;
-            }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
                 meta.Date = date;
@@ -38,7 +34,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多
             if (indexFocus < metas.Count - 1) {
                 return true;

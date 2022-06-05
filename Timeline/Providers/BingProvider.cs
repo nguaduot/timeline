@@ -44,7 +44,6 @@ namespace Timeline.Providers {
                 Id = bean.Hsh,
                 Uhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bean.UrlBase),
                 Thumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, bean.UrlBase),
-                Date = DateTime.Now,
                 Caption = bean.Copyright
             };
 
@@ -80,18 +79,18 @@ namespace Timeline.Providers {
             if (DateTime.TryParseExact(bean.EndDate, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = meta.Date.Value.Ticks;
+            meta.SortFactor = meta.Date.Ticks;
 
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 已无更多数据
             if (pageIndex >= URL_API_PAGES.Length - 1) {
                 return true;
             }
-            if (date != null) {
-                if (metas.Count > 0 && date.Value.Date > metas[metas.Count - 1].Date) {
+            if (date.Ticks > 0) {
+                if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
             } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多

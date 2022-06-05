@@ -262,7 +262,7 @@ namespace TimelineService {
             OneplusRequest request = new OneplusRequest {
                 PageSize = 1,
                 CurrentPage = 1,
-                SortMethod = "1"
+                SortMethod = "1" // 默认按：最新添加
             };
             string requestStr = JsonConvert.SerializeObject(request);
             const string URL_API = "https://photos.oneplus.com/cn/shot/photo/schedule";
@@ -280,7 +280,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadTimeline(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/timeline?client=timelinewallpaper&cate={0}&order={1}&unauthorized={2}";
+            const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&order={1}&unauthorized={2}";
             string urlApi = string.Format(URL_API, ini.Timeline.Cate, ini.Timeline.Order, ini.Timeline.Unauthorized);
             LogUtil.I("PushService.LoadTimeline() api url: " + urlApi);
             HttpClient client = new HttpClient();
@@ -292,13 +292,14 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadYmyouli(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/ymyouli?client=timelinewallpaper&cate={0}&order=random";
+            const string URL_API = "https://api.nguaduot.cn/ymyouli/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Ymyouli.Cate);
             LogUtil.I("PushService.LoadYmyouli() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadYmyouli() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
@@ -353,49 +354,53 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadQingbz(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/qingbz?client=timelinewallpaper&cate={0}&order=random";
+            const string URL_API = "https://api.nguaduot.cn/qingbz/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
             LogUtil.I("PushService.LoadQingbz() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadQingbz() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadObzhi(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/obzhi?client=timelinewallpaper&cate={0}&order=random";
+            const string URL_API = "https://api.nguaduot.cn/obzhi/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
             LogUtil.I("PushService.LoadObzhi() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadObzhi() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadWallhere(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/wallhere?client=timelinewallpaper&order=random&cate={0}";
+            const string URL_API = "https://api.nguaduot.cn/wallhere/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Wallhere.Cate);
             LogUtil.I("PushService.LoadWallhere() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadWallhere() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
         private async Task<bool> LoadLsp(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/lsp?client=timelinewallpaper&order=random&cate={0}";
+            const string URL_API = "https://api.nguaduot.cn/lsp/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Lsp.Cate);
             LogUtil.I("PushService.LoadLsp() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadLsp() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }

@@ -9,25 +9,41 @@ namespace Timeline.Beans {
     }
 
     public class QingbzApiData {
-        // 排序编号
+        // ID
+        [JsonProperty(PropertyName = "id")]
+        public string Id { set; get; }
+
+        // 收录顺序
         [JsonProperty(PropertyName = "no")]
         public int No { set; get; }
 
-        // 类别内排序序号
-        [JsonProperty(PropertyName = "catealtno")]
-        public int CateAltNo { set; get; }
+        // 标题
+        [JsonProperty(PropertyName = "title")]
+        public string Title { set; get; }
 
-        // 类别ID
-        [JsonProperty(PropertyName = "cateidalt")]
-        public string CateIdAlt { set; get; }
+        // 故事（null）
+        [JsonProperty(PropertyName = "story")]
+        public string Story { set; get; }
 
-        // 类别
-        [JsonProperty(PropertyName = "catealt")]
-        public string CateAlt { set; get; }
+        // 版权所有（可能为null）
+        [JsonProperty(PropertyName = "copyright")]
+        public string Copyright { set; get; }
 
-        // 图片ID
-        [JsonProperty(PropertyName = "imgid")]
-        public string ImgId { set; get; }
+        // 收录日期：yyyy-MM-dd
+        [JsonProperty(PropertyName = "reldate")]
+        public string RelDate { set; get; }
+
+        // 热度分
+        [JsonProperty(PropertyName = "score")]
+        public float Score { set; get; }
+
+        // 分类ID
+        [JsonProperty(PropertyName = "cateid")]
+        public string CateId { set; get; }
+
+        // 分类名
+        [JsonProperty(PropertyName = "catename")]
+        public string CateName { set; get; }
 
         // 图片URL
         [JsonProperty(PropertyName = "imgurl")]
@@ -36,23 +52,5 @@ namespace Timeline.Beans {
         // 缩略图URL
         [JsonProperty(PropertyName = "thumburl")]
         public string ThumbUrl { set; get; }
-
-        // 版权所有
-        [JsonProperty(PropertyName = "copyright")]
-        public string Copyright { set; get; }
-
-        // 发布日期：yyyy-MM-dd
-        [JsonProperty(PropertyName = "reldate")]
-        public string RelDate { set; get; }
-
-        // 热度分
-        [JsonProperty(PropertyName = "score")]
-        public float Score { set; get; }
-
-        // R18内容
-        [JsonProperty(PropertyName = "r18")]
-        public int R18 { set; get; }
-
-        // ...
     }
 }

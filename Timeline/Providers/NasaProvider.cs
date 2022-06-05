@@ -46,8 +46,8 @@ namespace Timeline.Providers {
                 if (DateTime.TryParse(bean.Date, out DateTime date)) { // 无效日期则该条数据会被剔除
                     meta.Date = date;
                 }
-                meta.SortFactor = meta.Date.Value.Ticks;
-                meta.Id = bean.MediaType + meta.Date?.ToString("yyyyMMdd");
+                meta.SortFactor = meta.Date.Ticks;
+                meta.Id = bean.MediaType + meta.Date.ToString("yyyyMMdd");
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright.Replace("\n", "").Replace(" Music:", "");
@@ -56,9 +56,9 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
-            if (indexFocus < metas.Count - 1 && date == null) {
+            if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
                 return true;
             }
             // 无网络连接
@@ -67,7 +67,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            nextPage = date ?? nextPage;
+            nextPage = date.Ticks > 0 ? date : nextPage;
             string urlApi = string.Format(URL_API_PAGE, nextPage.AddDays(-PAGE_SIZE + 1).ToString("yyyy-MM-dd"),
                 nextPage.ToString("yyyy-MM-dd"));
             LogUtil.D("LoadData() provider url: " + urlApi);
@@ -140,14 +140,13 @@ namespace Timeline.Providers {
                 if (DateTime.TryParse(match.Groups[1].Value, out DateTime date)) { // 无效日期则该条数据会被剔除
                     meta.Date = date;
                 }
-                meta.SortFactor = meta.Date.Value.Ticks;
+                meta.SortFactor = meta.Date.Ticks;
             }
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            // 现有数据未浏览完，无需加载更多，或已无更多数据
-            if (indexFocus < metas.Count - 1) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+            if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
                 return true;
             }
             // 无网络连接
@@ -182,7 +181,7 @@ namespace Timeline.Providers {
                 List<Meta> metasAdd = new List<Meta> {
                     ParseBean(htmlData)
                 };
-                AppendMetas(metasAdd);
+                SortMetas(metasAdd); // 按时序倒序排列
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.

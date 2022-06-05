@@ -191,7 +191,7 @@ namespace TimelineService.Utils {
     }
 
     public sealed class OneplusIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "rate", "view" };
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "view" };
 
         private string order = "date";
         public string Order {
@@ -316,11 +316,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class InfinityIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "", "rate" };
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "random", "score" };
 
-        private string order = "";
+        private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "";
+            set => order = ORDER.Contains(value) ? value : "random";
             get => order;
         }
 

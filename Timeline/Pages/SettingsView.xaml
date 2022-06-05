@@ -59,10 +59,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsBingTitle"
@@ -110,10 +110,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsNasaTitle"
@@ -161,10 +161,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsOneplusTitle"
@@ -213,10 +213,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsTimelineTitle"
@@ -331,10 +331,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsOneTitle"
@@ -384,10 +384,10 @@
                         <Grid HorizontalAlignment="Stretch"
                               VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsHimawari8Title"
@@ -470,10 +470,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsYmyouliTitle"
@@ -567,10 +567,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsQingbzTitle"
@@ -664,10 +664,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsObzhiTitle"
@@ -740,10 +740,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsWallhereTitle"
@@ -816,10 +816,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsInfinityTitle"
@@ -869,10 +869,10 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1"
+                            <StackPanel Grid.Column="0"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Name="SettingsLspTitle"

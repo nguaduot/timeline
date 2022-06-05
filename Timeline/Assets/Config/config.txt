@@ -70,9 +70,9 @@ lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
 order=date
-; order=date  排序：最新添加（默认）
-; order=rate  排序：点赞最多
-; order=view  排序：浏览最多
+; order=date   排序：收录（默认）
+; order=score  排序：热度
+; order=view   排序：浏览
 
 [timeline]
 
@@ -206,8 +206,8 @@ lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
 order=
-; order=      排序：随机（默认）
-; order=rate  排序：热度
+; order=score   排序：热度
+; order=random  排序：随机（默认）
 
 [wallhere]
 

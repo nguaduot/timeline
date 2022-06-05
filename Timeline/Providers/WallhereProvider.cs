@@ -14,24 +14,20 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/wallhere?client=timelinewallpaper&order={0}&cate={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&order={0}&cate={1}&page={2}";
         
         private Meta ParseBean(WallhereApiData bean, string order) {
             Meta meta = new Meta {
-                Id = bean.ImgId.ToString(),
+                Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
-                Cate = bean.CateAlt,
-                Date = DateTime.Now,
+                Title = bean.Title,
+                Story = bean.Story,
+                Cate = bean.CateName,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
-            meta.Title = string.Format("{0} #{1}", bean.CateAlt, bean.CateAltNo);
-            meta.Story = bean.Tag?.Replace(",", " ");
-            if (bean.R18 == 1) {
-                meta.Title = "🚫 " + meta.Title;
-            }
-            if (!string.IsNullOrEmpty(bean.Author)) {
-                meta.Copyright = "@" + bean.Author;
+            if (!string.IsNullOrEmpty(bean.Copyright)) {
+                meta.Copyright = "@" + bean.Copyright;
             }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
@@ -40,7 +36,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多
             if (indexFocus < metas.Count - 1) {
                 return true;

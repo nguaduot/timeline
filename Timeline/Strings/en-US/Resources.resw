@@ -435,21 +435,6 @@
   <data name="SettingsSaveDesc.Text" xml:space="preserve">
     <value>Show saved pictures</value>
   </data>
-  <data name="InfinityOrder_" xml:space="preserve">
-    <value>Random</value>
-  </data>
-  <data name="InfinityOrder_rate" xml:space="preserve">
-    <value>Highest rated</value>
-  </data>
-  <data name="OneplusOrder_date" xml:space="preserve">
-    <value>Newest</value>
-  </data>
-  <data name="OneplusOrder_rate" xml:space="preserve">
-    <value>Highest rated</value>
-  </data>
-  <data name="OneplusOrder_view" xml:space="preserve">
-    <value>Recently popular</value>
-  </data>
   <data name="SettingsSaveTitle.Text" xml:space="preserve">
     <value>Save location</value>
   </data>
@@ -491,12 +476,6 @@
   </data>
   <data name="TimelineCate_portrait" xml:space="preserve">
     <value>Portrait</value>
-  </data>
-  <data name="TimelineOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="TimelineOrder_random" xml:space="preserve">
-    <value>Random</value>
   </data>
   <data name="TextThank1.Text" xml:space="preserve">
     <value>Thank Coolapk@鱼离不开水 for designing the main icon.</value>
@@ -585,12 +564,6 @@
   <data name="MenuProviderOne.Text" xml:space="preserve">
     <value>ONE - ONE IS ALL</value>
   </data>
-  <data name="OneOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="OneOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
   <data name="TextOneOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
@@ -633,12 +606,6 @@
   <data name="TextYmyouliOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
-  <data name="YmyouliOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="YmyouliOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
   <data name="BtnQingbzDonate.Content" xml:space="preserve">
     <value>Go</value>
   </data>
@@ -677,15 +644,6 @@
   </data>
   <data name="QingbzCate_star" xml:space="preserve">
     <value>Star</value>
-  </data>
-  <data name="QingbzOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="QingbzOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
-  <data name="QingbzOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
   </data>
   <data name="Slogan_qingbz" xml:space="preserve">
     <value>4K壁纸分享站</value>
@@ -729,15 +687,6 @@
   <data name="ObzhiCate_portrait" xml:space="preserve">
     <value>Portrait</value>
   </data>
-  <data name="ObzhiOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="ObzhiOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
-  <data name="ObzhiOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
-  </data>
   <data name="Slogan_obzhi" xml:space="preserve">
     <value>高清壁纸站</value>
   </data>
@@ -747,14 +696,8 @@
   <data name="TextObzhiOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
-  <data name="TimelineOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
-  </data>
   <data name="UrlQingbz" xml:space="preserve">
     <value>https://bz.qinggongju.com/1159-2/</value>
-  </data>
-  <data name="YmyouliOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
   </data>
   <data name="MsgYesterdayDesc" xml:space="preserve">
     <value>Use LEFT or WHEEL to look back.</value>
@@ -776,15 +719,6 @@
   </data>
   <data name="WallhereCate_photograph" xml:space="preserve">
     <value>Photograph</value>
-  </data>
-  <data name="WallhereOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="WallhereOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
-  <data name="WallhereOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
   </data>
   <data name="SettingsIniDesc.Text" xml:space="preserve">
     <value>Beta, only for experienced users</value>
@@ -827,15 +761,6 @@
   </data>
   <data name="LspCate_photograph" xml:space="preserve">
     <value>Photograph</value>
-  </data>
-  <data name="LspOrder_date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="LspOrder_random" xml:space="preserve">
-    <value>Random</value>
-  </data>
-  <data name="LspOrder_score" xml:space="preserve">
-    <value>Recently popular</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
     <value>LSP</value>
@@ -890,5 +815,20 @@
   </data>
   <data name="TextHimawari8Ratio.Text" xml:space="preserve">
     <value>Earth size</value>
+  </data>
+  <data name="Order_date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Order_random" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="Order_score" xml:space="preserve">
+    <value>Recently popular</value>
+  </data>
+  <data name="Order_view" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Cate_all" xml:space="preserve">
+    <value>All</value>
   </data>
 </root>

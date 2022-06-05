@@ -26,8 +26,7 @@ namespace Timeline.Providers {
                 Uhd = bean.PhotoUrl,
                 Thumb = bean.PhotoUrl.Replace(".jpg", "_400_0.jpg"),
                 Title = bean.PhotoTopic?.Trim(),
-                Copyright = "@" + bean.Author,
-                Date = DateTime.Now
+                Copyright = "@" + bean.Author
             };
 
             if (!bean.PhotoTopic.Equals(bean.Remark?.Trim())) {
@@ -42,13 +41,13 @@ namespace Timeline.Providers {
             if (DateTime.TryParseExact(bean.ScheduleTime, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = meta.Date.Value.Ticks;
+            meta.SortFactor = meta.Date.Ticks;
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            if (date != null) {
-                if (metas.Count > 0 && date.Value.Date > metas[metas.Count - 1].Date) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+            if (date.Ticks > 0) {
+                if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
             } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
@@ -61,7 +60,7 @@ namespace Timeline.Providers {
             await base.LoadData(token, ini, date);
 
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
-            string sort = "rate".Equals(((OneplusIni)ini).Order) ? "2" : ("view".Equals(((OneplusIni)ini).Order) ? "3" : "1");
+            string sort = "score".Equals(((OneplusIni)ini).Order) ? "2" : ("view".Equals(((OneplusIni)ini).Order) ? "3" : "1");
             OneplusRequest request = new OneplusRequest {
                 PageSize = PAGE_SIZE, // 不限
                 CurrentPage = ++pageIndex,

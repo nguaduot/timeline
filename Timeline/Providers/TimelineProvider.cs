@@ -16,21 +16,22 @@ namespace Timeline.Providers {
 
         // 自建图源
         // https://github.com/nguaduot/TimelineApi
-        private const string URL_API = "https://api.nguaduot.cn/timeline?client=timelinewallpaper&cate={0}&enddate={1}&order={2}&unauthorized={3}";
+        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&enddate={1}&order={2}&unauthorized={3}";
         
         private Meta ParseBean(TimelineApiData bean, string order) {
             Meta meta = new Meta {
-                Id = bean.Id.ToString(),
+                Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
-                Cate = bean.Cate,
-                Story = bean.Story?.Trim(),
-                Copyright = "@" + bean.Author?.Trim(),
-                Date = DateTime.Now
+                Cate = bean.CateName,
+                Story = bean.Story?.Trim()
             };
-            if (bean.Deprecated != 0) {
+            if (bean.Unauthorized != 0) {
                 meta.Title = "🚫 " + meta.Title;
+            }
+            if (!string.IsNullOrEmpty(bean.Copyright)) {
+                meta.Copyright = "@" + bean.Copyright;
             }
             if (!string.IsNullOrEmpty(bean.Platform)) {
                 meta.Copyright = bean.Platform + meta.Copyright;
@@ -44,13 +45,13 @@ namespace Timeline.Providers {
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = "score".Equals(order) ? bean.Score : meta.Date.Value.Ticks;
+            meta.SortFactor = "score".Equals(order) ? bean.Score : meta.Date.Ticks;
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
-            if (indexFocus < metas.Count - 1 && date == null) {
+            if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
                 return true;
             }
             // 无网络连接
@@ -59,7 +60,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            nextPage = date ?? nextPage;
+            nextPage = date.Ticks > 0 ? date : nextPage;
             string urlApi = string.Format(URL_API, ((TimelineIni)ini).Cate,
                 nextPage.ToString("yyyyMMdd"), ((TimelineIni)ini).Order, ((TimelineIni)ini).Unauthorized);
             LogUtil.D("LoadData() provider url: " + urlApi);

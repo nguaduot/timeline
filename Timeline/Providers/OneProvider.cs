@@ -32,8 +32,7 @@ namespace Timeline.Providers {
                 Thumb = bean.ImgUrl,
                 Title = bean.Title,
                 Story = bean.Content,
-                Copyright = bean.PictureAuthor,
-                Date = DateTime.Now,
+                Copyright = bean.PictureAuthor
             };
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";
@@ -56,13 +55,13 @@ namespace Timeline.Providers {
             if (DateTime.TryParseExact(bean.Date, "yyyy / MM / dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = meta.Date.Value.Ticks;
+            meta.SortFactor = meta.Date.Ticks;
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
-            if (date != null) {
-                if (metas.Count > 0 && date.Value.Date > metas[metas.Count - 1].Date) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+            if (date.Ticks > 0) {
+                if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
             } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多

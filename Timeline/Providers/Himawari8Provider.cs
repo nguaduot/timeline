@@ -42,15 +42,15 @@ namespace Timeline.Providers {
             meta.Thumb = meta.Uhd;
             meta.Date = time.ToLocalTime();
             meta.SortFactor = time.Ticks;
-            meta.Caption = meta.Date.Value.ToString("M") + " " + meta.Date.Value.ToString("t");
+            meta.Caption = meta.Date.ToString("M") + " " + meta.Date.ToString("t");
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime? date = null) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
             offsetEarth = ((Himawari8Ini)ini).Offset;
             ratioEarth = ((Himawari8Ini)ini).Ratio;
             // 无需加载更多
-            if (indexFocus < metas.Count - 1 && date == null) {
+            if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
                 return true;
             }
             // 无网络连接
@@ -59,7 +59,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            if (date != null) { // 指定时间
+            if (date.Ticks > 0) { // 指定时间
                 metas.Clear();
                 nextPage = date;
             } else if (nextPage == null) { // 获取最新UTC时间

@@ -311,9 +311,9 @@ namespace Timeline {
             // 版权所有者
             TextDetailCopyright.Text = meta.Copyright ?? "";
             TextDetailCopyright.Visibility = TextDetailCopyright.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-            // 日期（保持可见）
-            TextDetailDate.Text = meta.Date?.ToLongDateString();
-            TextDetailDate.Visibility = Visibility.Visible;
+            // 日期
+            TextDetailDate.Text = meta.Date.Ticks > 0 ? meta.Date.ToLongDateString() : "";
+            TextDetailDate.Visibility = TextDetailDate.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             // 文件属性（保持可见）
             TextDetailProperties.Text = resLoader.GetString("Provider_" + provider.Id)
                 + (meta.Cate != null ? (" · " + meta.Cate) : "");
@@ -636,7 +636,8 @@ namespace Timeline {
                 return;
             }
             if (ini.GetIni().IsSequential()) {
-                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"), meta?.Date?.ToString("MMdd") ?? "MMdd");
+                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"),
+                    meta != null && meta.Date.Ticks > 0 ? meta.Date.ToString("MMdd") : "MMdd");
             } else {
                 BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"), provider.GetIndexFocus());
             }
@@ -646,13 +647,16 @@ namespace Timeline {
             FlyoutBase.ShowAttachedFlyout(AnchorGo);
         }
 
-        private void ShowFlyoutMarkCate() {
+        private async Task ShowFlyoutMarkCate() {
             if (FlyoutMarkCate.IsOpen) {
                 FlyoutMarkCate.Hide();
                 return;
             }
-            List<string> cates = ini.GetIni().GetCate();
-            if (cates.Count == 0) {
+            BaseIni bi = ini.GetIni();
+            if (bi.Cates.Count == 0) {
+                bi.Cates = await Api.CateAsync(bi.GetCateApi());
+            }
+            if (bi.Cates.Count == 0) {
                 return;
             }
             MenuFlyoutItemBase item1 = FlyoutMarkCate.Items[0];
@@ -660,13 +664,10 @@ namespace Timeline {
             FlyoutMarkCate.Items.Clear();
             FlyoutMarkCate.Items.Add(item1);
             FlyoutMarkCate.Items.Add(item2);
-            foreach (string cate in cates) {
-                if (string.IsNullOrEmpty(cate)) {
-                    continue;
-                }
+            foreach (CateMeta cate in bi.Cates) {
                 MenuFlyoutItem item = new MenuFlyoutItem {
-                    Text = cate,
-                    Tag = cate
+                    Text = cate.Name,
+                    Tag = cate.Id
                 };
                 item.Click += MenuMarkCate_Click;
                 FlyoutMarkCate.Items.Add(item);
@@ -788,7 +789,7 @@ namespace Timeline {
             if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
-                        await SetWallpaperAsync(meta, true);
+                        await SetWallpaperAsync(meta, false);
                     _ = Api.RankAsync(ini?.Provider, meta, "lock");
                     localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
                 });
@@ -1085,7 +1086,7 @@ namespace Timeline {
                     ShowFlyoutGo();
                     break;
                 case VirtualKey.Number5: // Ctrl + 5
-                    ShowFlyoutMarkCate();
+                    await ShowFlyoutMarkCate();
                     break;
                 case VirtualKey.F10:
                     if (sender.Modifiers == VirtualKeyModifiers.Shift) { // Shift + F10
@@ -1133,6 +1134,7 @@ namespace Timeline {
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.ProviderChanged || e.ProviderConfigChanged) {
+                Debug.WriteLine("ViewSettings_SettingsChanged");
                 _ = Refresh();
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
