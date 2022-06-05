@@ -180,18 +180,6 @@
   <data name="MenuFillOn.Label" xml:space="preserve">
     <value>切换显示模式：填充</value>
   </data>
-  <data name="YmyouliCate_acgcharacter" xml:space="preserve">
-    <value>动漫人物</value>
-  </data>
-  <data name="YmyouliCate_acgscene" xml:space="preserve">
-    <value>动漫场景</value>
-  </data>
-  <data name="YmyouliCate_nature" xml:space="preserve">
-    <value>山水花草</value>
-  </data>
-  <data name="YmyouliCate_artistry" xml:space="preserve">
-    <value>意境</value>
-  </data>
   <data name="MsgLostProvider" xml:space="preserve">
     <value>无数据或无法连接图源：{0}</value>
   </data>
@@ -257,27 +245,6 @@
   </data>
   <data name="Slogan_ymyouli" xml:space="preserve">
     <value>8K优质壁纸资源</value>
-  </data>
-  <data name="YmyouliCate_portrait" xml:space="preserve">
-    <value>人像</value>
-  </data>
-  <data name="YmyouliCate_car" xml:space="preserve">
-    <value>机车</value>
-  </data>
-  <data name="YmyouliCate_sword" xml:space="preserve">
-    <value>刀光剑影</value>
-  </data>
-  <data name="YmyouliCate_animal" xml:space="preserve">
-    <value>动物</value>
-  </data>
-  <data name="YmyouliCate_sky" xml:space="preserve">
-    <value>日暮云天</value>
-  </data>
-  <data name="YmyouliCate_war" xml:space="preserve">
-    <value>战场战争</value>
-  </data>
-  <data name="YmyouliCate_delicacy" xml:space="preserve">
-    <value>美食蔬果</value>
   </data>
   <data name="MsgUpdate" xml:space="preserve">
     <value>「拾光」已发布新版本</value>
@@ -465,23 +432,8 @@
   <data name="TextYmyouliCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TimelineCate_" xml:space="preserve">
-    <value>全部</value>
-  </data>
-  <data name="TimelineCate_culture" xml:space="preserve">
-    <value>人文摄影</value>
-  </data>
-  <data name="TimelineCate_landscape" xml:space="preserve">
-    <value>风光摄影</value>
-  </data>
-  <data name="TimelineCate_portrait" xml:space="preserve">
-    <value>人像摄影</value>
-  </data>
   <data name="TextThank1.Text" xml:space="preserve">
     <value>感谢酷安 @鱼离不开水 帮助设计主图标。</value>
-  </data>
-  <data name="YmyouliCate_" xml:space="preserve">
-    <value>全部</value>
   </data>
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
     <value>我要投稿</value>
@@ -549,9 +501,6 @@
   <data name="MsgContribute0" xml:space="preserve">
     <value>投稿失败</value>
   </data>
-  <data name="TimelineCate_term" xml:space="preserve">
-    <value>节气摄影</value>
-  </data>
   <data name="Provider_one" xml:space="preserve">
     <value>ONE · 一个</value>
   </data>
@@ -615,33 +564,6 @@
   <data name="Provider_qingbz" xml:space="preserve">
     <value>轻壁纸</value>
   </data>
-  <data name="QingbzCate_" xml:space="preserve">
-    <value>全部</value>
-  </data>
-  <data name="QingbzCate_acg" xml:space="preserve">
-    <value>二次元</value>
-  </data>
-  <data name="QingbzCate_animal" xml:space="preserve">
-    <value>动物萌宠</value>
-  </data>
-  <data name="QingbzCate_car" xml:space="preserve">
-    <value>汽车迷</value>
-  </data>
-  <data name="QingbzCate_color" xml:space="preserve">
-    <value>颜色系</value>
-  </data>
-  <data name="QingbzCate_game" xml:space="preserve">
-    <value>游戏迷</value>
-  </data>
-  <data name="QingbzCate_nature" xml:space="preserve">
-    <value>自然界</value>
-  </data>
-  <data name="QingbzCate_portrait" xml:space="preserve">
-    <value>人物墙</value>
-  </data>
-  <data name="QingbzCate_star" xml:space="preserve">
-    <value>明星区</value>
-  </data>
   <data name="Slogan_qingbz" xml:space="preserve">
     <value>4K壁纸分享站</value>
   </data>
@@ -662,30 +584,6 @@
   </data>
   <data name="Provider_obzhi" xml:space="preserve">
     <value>乌云壁纸</value>
-  </data>
-  <data name="ObzhiCate_" xml:space="preserve">
-    <value>全部</value>
-  </data>
-  <data name="ObzhiCate_acg" xml:space="preserve">
-    <value>动漫</value>
-  </data>
-  <data name="ObzhiCate_animal" xml:space="preserve">
-    <value>动物</value>
-  </data>
-  <data name="ObzhiCate_specific" xml:space="preserve">
-    <value>另类</value>
-  </data>
-  <data name="ObzhiCate_concise" xml:space="preserve">
-    <value>简约</value>
-  </data>
-  <data name="ObzhiCate_game" xml:space="preserve">
-    <value>游戏</value>
-  </data>
-  <data name="ObzhiCate_nature" xml:space="preserve">
-    <value>风景</value>
-  </data>
-  <data name="ObzhiCate_portrait" xml:space="preserve">
-    <value>人物</value>
   </data>
   <data name="Slogan_obzhi" xml:space="preserve">
     <value>高清壁纸站</value>
@@ -710,15 +608,6 @@
   </data>
   <data name="TextWallhereOrder.Text" xml:space="preserve">
     <value>排序</value>
-  </data>
-  <data name="WallhereCate_" xml:space="preserve">
-    <value>全部</value>
-  </data>
-  <data name="WallhereCate_acg" xml:space="preserve">
-    <value>ACG</value>
-  </data>
-  <data name="WallhereCate_photograph" xml:space="preserve">
-    <value>摄影</value>
   </data>
   <data name="SettingsIniDesc.Text" xml:space="preserve">
     <value>实验性功能，谨慎尝试</value>
@@ -752,15 +641,6 @@
   </data>
   <data name="TextThank2.Text" xml:space="preserve">
     <value>感谢 Bili.Uwp 开发者 @云之幻 指导解决闪退问题。</value>
-  </data>
-  <data name="LspCate_" xml:space="preserve">
-    <value>全部</value>
-  </data>
-  <data name="LspCate_acg" xml:space="preserve">
-    <value>纸片</value>
-  </data>
-  <data name="LspCate_photograph" xml:space="preserve">
-    <value>摄影</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
     <value>LSP</value>

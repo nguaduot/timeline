@@ -180,18 +180,6 @@
   <data name="MenuFillOn.Label" xml:space="preserve">
     <value>Uniform to fill</value>
   </data>
-  <data name="YmyouliCate_acgcharacter" xml:space="preserve">
-    <value>ACG character</value>
-  </data>
-  <data name="YmyouliCate_acgscene" xml:space="preserve">
-    <value>ACG scene</value>
-  </data>
-  <data name="YmyouliCate_nature" xml:space="preserve">
-    <value>Nature</value>
-  </data>
-  <data name="YmyouliCate_artistry" xml:space="preserve">
-    <value>Artistry</value>
-  </data>
   <data name="MsgLostProvider" xml:space="preserve">
     <value>Connection failed: {0}</value>
   </data>
@@ -257,27 +245,6 @@
   </data>
   <data name="Slogan_ymyouli" xml:space="preserve">
     <value>8K high-quality wallpapers</value>
-  </data>
-  <data name="YmyouliCate_portrait" xml:space="preserve">
-    <value>Portrait</value>
-  </data>
-  <data name="YmyouliCate_car" xml:space="preserve">
-    <value>Car</value>
-  </data>
-  <data name="YmyouliCate_sword" xml:space="preserve">
-    <value>Sword</value>
-  </data>
-  <data name="YmyouliCate_animal" xml:space="preserve">
-    <value>Animal</value>
-  </data>
-  <data name="YmyouliCate_sky" xml:space="preserve">
-    <value>Sky</value>
-  </data>
-  <data name="YmyouliCate_war" xml:space="preserve">
-    <value>War</value>
-  </data>
-  <data name="YmyouliCate_delicacy" xml:space="preserve">
-    <value>Delicacy</value>
   </data>
   <data name="MsgUpdate" xml:space="preserve">
     <value>New version is released.</value>
@@ -465,23 +432,8 @@
   <data name="TextYmyouliCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="TimelineCate_" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="TimelineCate_culture" xml:space="preserve">
-    <value>Culture</value>
-  </data>
-  <data name="TimelineCate_landscape" xml:space="preserve">
-    <value>Landscape</value>
-  </data>
-  <data name="TimelineCate_portrait" xml:space="preserve">
-    <value>Portrait</value>
-  </data>
   <data name="TextThank1.Text" xml:space="preserve">
     <value>Thank Coolapk@鱼离不开水 for designing the main icon.</value>
-  </data>
-  <data name="YmyouliCate_" xml:space="preserve">
-    <value>All</value>
   </data>
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
     <value>Contribute</value>
@@ -552,9 +504,6 @@
   <data name="MsgContribute1" xml:space="preserve">
     <value>Contributed. Thanks.</value>
   </data>
-  <data name="TimelineCate_term" xml:space="preserve">
-    <value>Solar term</value>
-  </data>
   <data name="Provider_one" xml:space="preserve">
     <value>ONE</value>
   </data>
@@ -618,33 +567,6 @@
   <data name="Provider_qingbz" xml:space="preserve">
     <value>轻壁纸</value>
   </data>
-  <data name="QingbzCate_" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="QingbzCate_acg" xml:space="preserve">
-    <value>ACG</value>
-  </data>
-  <data name="QingbzCate_animal" xml:space="preserve">
-    <value>Animal</value>
-  </data>
-  <data name="QingbzCate_car" xml:space="preserve">
-    <value>Car</value>
-  </data>
-  <data name="QingbzCate_color" xml:space="preserve">
-    <value>Color</value>
-  </data>
-  <data name="QingbzCate_game" xml:space="preserve">
-    <value>Game</value>
-  </data>
-  <data name="QingbzCate_nature" xml:space="preserve">
-    <value>Nature</value>
-  </data>
-  <data name="QingbzCate_portrait" xml:space="preserve">
-    <value>Portrait</value>
-  </data>
-  <data name="QingbzCate_star" xml:space="preserve">
-    <value>Star</value>
-  </data>
   <data name="Slogan_qingbz" xml:space="preserve">
     <value>4K壁纸分享站</value>
   </data>
@@ -662,30 +584,6 @@
   </data>
   <data name="Provider_obzhi" xml:space="preserve">
     <value>乌云壁纸</value>
-  </data>
-  <data name="ObzhiCate_" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="ObzhiCate_acg" xml:space="preserve">
-    <value>ACG</value>
-  </data>
-  <data name="ObzhiCate_animal" xml:space="preserve">
-    <value>Animal</value>
-  </data>
-  <data name="ObzhiCate_specific" xml:space="preserve">
-    <value>Specific</value>
-  </data>
-  <data name="ObzhiCate_concise" xml:space="preserve">
-    <value>Concise</value>
-  </data>
-  <data name="ObzhiCate_game" xml:space="preserve">
-    <value>Game</value>
-  </data>
-  <data name="ObzhiCate_nature" xml:space="preserve">
-    <value>Nature</value>
-  </data>
-  <data name="ObzhiCate_portrait" xml:space="preserve">
-    <value>Portrait</value>
   </data>
   <data name="Slogan_obzhi" xml:space="preserve">
     <value>高清壁纸站</value>
@@ -710,15 +608,6 @@
   </data>
   <data name="TextWallhereOrder.Text" xml:space="preserve">
     <value>Order</value>
-  </data>
-  <data name="WallhereCate_" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="WallhereCate_acg" xml:space="preserve">
-    <value>ACG</value>
-  </data>
-  <data name="WallhereCate_photograph" xml:space="preserve">
-    <value>Photograph</value>
   </data>
   <data name="SettingsIniDesc.Text" xml:space="preserve">
     <value>Beta, only for experienced users</value>
@@ -752,15 +641,6 @@
   </data>
   <data name="TextThank2.Text" xml:space="preserve">
     <value>Thank Github@Richasy for bugfix.</value>
-  </data>
-  <data name="LspCate_" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="LspCate_acg" xml:space="preserve">
-    <value>ACG</value>
-  </data>
-  <data name="LspCate_photograph" xml:space="preserve">
-    <value>Photograph</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
     <value>LSP</value>
