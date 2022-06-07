@@ -667,6 +667,9 @@
                                    Margin="0,8,0,0"
                                    Visibility="Collapsed"
                                    TextWrapping="NoWrap"
+                                   PointerEntered="TextDetailCopyright_PointerEntered"
+                                   PointerExited="TextDetailCopyright_PointerExited"
+                                   Tapped="TextDetailCopyright_Tapped"
                                    TextTrimming="CharacterEllipsis" />
                         <TextBlock Name="TextDetailDate"
                                    Style="{StaticResource CaptionTextBlockStyle}"

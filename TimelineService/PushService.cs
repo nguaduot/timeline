@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -12,7 +11,6 @@ using System.Threading.Tasks;
 using TimelineService.Beans;
 using TimelineService.Utils;
 using Windows.ApplicationModel.Background;
-using Windows.Graphics.Display;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.System.UserProfile;
@@ -280,11 +278,10 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadTimeline(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&order={1}&unauthorized={2}";
-            string urlApi = string.Format(URL_API, ini.Timeline.Cate, ini.Timeline.Order, ini.Timeline.Unauthorized);
-            LogUtil.I("PushService.LoadTimeline() api url: " + urlApi);
+            const string URL_API = "https://api.nguaduot.cn/timeline/today?client=timelinewallpaper";
+            LogUtil.I("PushService.LoadTimeline() api url: " + URL_API);
             HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
+            string jsonData = await client.GetStringAsync(URL_API);
             Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
             string urlUhd = match.Groups[1].Value;
             LogUtil.I("PushService.LoadTimeline() img url: " + urlUhd);

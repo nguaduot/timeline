@@ -25,7 +25,8 @@ namespace Timeline.Providers {
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
                 Cate = bean.CateName,
-                Story = bean.Story?.Trim()
+                Story = bean.Story?.Trim(),
+                Src = bean.SrcUrl
             };
             if (bean.Unauthorized != 0) {
                 meta.Title = "🚫 " + meta.Title;

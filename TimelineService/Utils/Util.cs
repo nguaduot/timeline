@@ -40,6 +40,9 @@ namespace TimelineService.Utils {
             ini.LockProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
+            _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int r18);
+            ini.R18 = r18;
             _ = GetPrivateProfileString("bing", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int period);
             ini.Bing.DesktopPeriod = period;
@@ -99,14 +102,14 @@ namespace TimelineService.Utils {
             ini.Ymyouli.Order = sb.ToString();
             _ = GetPrivateProfileString("ymyouli", "cate", "", sb, 1024, iniFile);
             ini.Ymyouli.Cate = sb.ToString();
-            _ = GetPrivateProfileString("ymyouli", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int r18);
             _ = GetPrivateProfileString("infinity", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Infinity.DesktopPeriod = period;
             _ = GetPrivateProfileString("infinity", "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Infinity.LockPeriod = period;
+            _ = GetPrivateProfileString("infinity", "order", "random", sb, 1024, iniFile);
+            ini.Infinity.Order = sb.ToString();
             _ = GetPrivateProfileString("one", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.One.DesktopPeriod = period;
@@ -125,8 +128,6 @@ namespace TimelineService.Utils {
             ini.Qingbz.Order = sb.ToString();
             _ = GetPrivateProfileString("qingbz", "cate", "", sb, 1024, iniFile);
             ini.Qingbz.Cate = sb.ToString();
-            _ = GetPrivateProfileString("qingbz", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out r18);
             _ = GetPrivateProfileString("obzhi", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Obzhi.DesktopPeriod = period;
@@ -137,10 +138,6 @@ namespace TimelineService.Utils {
             ini.Obzhi.Order = sb.ToString();
             _ = GetPrivateProfileString("obzhi", "cate", "", sb, 1024, iniFile);
             ini.Obzhi.Cate = sb.ToString();
-            _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out r18);
-            _ = GetPrivateProfileString("infinity", "order", "random", sb, 1024, iniFile);
-            ini.Infinity.Order = sb.ToString();
             _ = GetPrivateProfileString("wallhere", "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Wallhere.DesktopPeriod = period;

@@ -101,7 +101,7 @@ namespace Timeline.Utils {
         }
 
         public string Order {
-            set => order = value;
+            set => order = value; // TODO
             get => order;
         }
 

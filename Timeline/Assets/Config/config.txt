@@ -205,7 +205,7 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
-order=
+order=random
 ; order=score   排序：热度
 ; order=random  排序：随机（默认）
 

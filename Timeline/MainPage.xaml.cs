@@ -25,6 +25,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -308,7 +309,7 @@ namespace Timeline {
             // 图文故事
             TextDetailStory.Text = meta.Story ?? "";
             TextDetailStory.Visibility = TextDetailStory.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-            // 版权所有者
+            // 版权所有 / 作者
             TextDetailCopyright.Text = meta.Copyright ?? "";
             TextDetailCopyright.Visibility = TextDetailCopyright.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             // 日期
@@ -932,6 +933,24 @@ namespace Timeline {
         private void ImgUhd_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
             LogUtil.E("ImgUhd_ImageFailed() " + meta?.Id);
             StatusEnjoy();
+        }
+
+        private async void TextDetailCopyright_Tapped(object sender, TappedRoutedEventArgs e) {
+            if (!string.IsNullOrEmpty(meta?.Src)) {
+                await FileUtil.LaunchUriAsync(new Uri(meta?.Src));
+            }
+        }
+
+        private void TextDetailCopyright_PointerEntered(object sender, PointerRoutedEventArgs e) {
+            if (!string.IsNullOrEmpty(meta?.Src) && !TextDetailCopyright.Text.EndsWith(" 🌐")) {
+                TextDetailCopyright.Text += " 🌐";
+            }
+        }
+
+        private void TextDetailCopyright_PointerExited(object sender, PointerRoutedEventArgs e) {
+            if (TextDetailCopyright.Text.EndsWith(" 🌐")) {
+                TextDetailCopyright.Text = TextDetailCopyright.Text.Replace(" 🌐", "");
+            }
         }
 
         private void BtnInfoLink_Click(object sender, RoutedEventArgs e) {

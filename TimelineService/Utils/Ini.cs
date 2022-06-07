@@ -218,7 +218,6 @@ namespace TimelineService.Utils {
 
     public sealed class TimelineIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly HashSet<string> CATE = new HashSet<string>() { "", "landscape", "portrait", "culture", "term" };
 
         private string order = "date";
         public string Order {
@@ -228,7 +227,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 
@@ -283,8 +282,6 @@ namespace TimelineService.Utils {
 
     public sealed class YmyouliIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly List<string> CATE = new List<string>() { "", "acgcharacter", "acgscene", "sky",
-            "war", "sword", "artistry", "car", "portrait", "animal", "delicacy", "nature" };
 
         private string order = "random";
         public string Order {
@@ -294,7 +291,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 
@@ -369,8 +366,6 @@ namespace TimelineService.Utils {
 
     public sealed class QingbzIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly List<string> CATE = new List<string>() { "", "portrait", "acg", "nature",
-            "star", "color", "car", "game", "animal" };
 
         private string order = "random";
         public string Order {
@@ -380,7 +375,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 
@@ -403,8 +398,6 @@ namespace TimelineService.Utils {
 
     public sealed class ObzhiIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly List<string> CATE = new List<string>() { "", "acg", "specific", "concise",
-            "nature", "portrait", "game", "animal" };
 
         private string order = "random";
         public string Order {
@@ -414,7 +407,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 
@@ -437,7 +430,6 @@ namespace TimelineService.Utils {
 
     public sealed class WallhereIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
 
         private string order = "date";
         public string Order {
@@ -447,7 +439,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 
@@ -470,8 +462,7 @@ namespace TimelineService.Utils {
 
     public sealed class LspIni {
         private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
-
+        
         private string order = "date";
         public string Order {
             set => order = ORDER.Contains(value) ? value : "date";
@@ -480,7 +471,7 @@ namespace TimelineService.Utils {
 
         private string cate = "";
         public string Cate {
-            set => cate = CATE.Contains(value) ? value : "";
+            set => cate = value ?? "";
             get => cate;
         }
 

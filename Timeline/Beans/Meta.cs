@@ -44,6 +44,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "copyright", NullValueHandling = NullValueHandling.Ignore)]
         public string Copyright { set; get; }
 
+        // 来源URL
+        [JsonProperty(PropertyName = "src", NullValueHandling = NullValueHandling.Ignore)]
+        public string Src { set; get; }
+
         // 收录日期（非null，默认Ticks为0）
         [JsonConverter(typeof(DateConverter))]
         [JsonProperty(PropertyName = "date", NullValueHandling = NullValueHandling.Ignore)]

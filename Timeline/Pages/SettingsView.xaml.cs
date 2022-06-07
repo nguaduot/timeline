@@ -69,24 +69,12 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in TimelineIni.CATE) {
-            //    listTimelineCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("TimelineCate_" + item)
-            //    });
-            //}
             foreach (string item in TimelineIni.ORDERS) {
                 listTimelineOrder.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in YmyouliIni.CATE) {
-            //    listYmyouliCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("YmyouliCate_" + item)
-            //    });
-            //}
             foreach (string item in YmyouliIni.ORDERS) {
                 listYmyouliOrder.Add(new CateMeta {
                     Id = item,
@@ -105,48 +93,24 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in QingbzIni.CATE) {
-            //    listQingbzCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("QingbzCate_" + item)
-            //    });
-            //}
             foreach (string item in QingbzIni.ORDERS) {
                 listQingbzOrder.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in ObzhiIni.CATE) {
-            //    listObzhiCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("ObzhiCate_" + item)
-            //    });
-            //}
             foreach (string item in ObzhiIni.ORDERS) {
                 listObzhiOrder.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in WallhereIni.CATE) {
-            //    listWallhereCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("WallhereCate_" + item)
-            //    });
-            //}
             foreach (string item in WallhereIni.ORDERS) {
                 listWallhereOrder.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            //foreach (string item in LspIni.CATE) {
-            //    listLspCate.Add(new CateMeta {
-            //        Id = item,
-            //        Name = resLoader.GetString("LspCate_" + item)
-            //    });
-            //}
             foreach (string item in LspIni.ORDERS) {
                 listLspOrder.Add(new CateMeta {
                     Id = item,
@@ -279,7 +243,6 @@ namespace Timeline.Pages {
         }
 
         private async void ExpanderProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
-            Debug.WriteLine("ExpanderProvider_Expanding");
             string providerId = sender.Tag as string;
             if (!ini.Provider.Equals(providerId)) {
                 ini.Provider = providerId;
@@ -483,7 +446,6 @@ namespace Timeline.Pages {
             if (cate.Equals(bi.Cate)) {
                 return;
             }
-            Debug.WriteLine("BoxYmyouliCate_SelectionChanged");
             bi.Cate = cate;
             await IniUtil.SaveYmyouliCateAsync(bi.Cate);
             await IniUtil.SaveProviderAsync(bi.Id);
