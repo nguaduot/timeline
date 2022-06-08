@@ -50,12 +50,18 @@ namespace Timeline {
 
         private DispatcherTimer resizeTimer = null;
         private DispatcherTimer pageTimer;
-        private bool pageTimerYesterdayOrTomorrow = true;
+        private PageAction pageTimerAction = PageAction.Yesterday;
         private Meta markTimerMeta = null;
         private string markTimerAction = null;
 
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
+        private enum PageAction {
+            Focus,
+            Yesterday,
+            Tomorrow,
+            Target
+        }
 
         public MainPage() {
             this.InitializeComponent();
@@ -77,10 +83,12 @@ namespace Timeline {
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
                 ctsLoad = new CancellationTokenSource();
-                if (pageTimerYesterdayOrTomorrow) {
+                if (pageTimerAction == PageAction.Yesterday) {
                     _ = LoadYesterdayAsync(ctsLoad.Token);
-                } else {
+                } else if (pageTimerAction == PageAction.Tomorrow) {
                     _ = LoadTomorrowAsync(ctsLoad.Token);
+                } else if (pageTimerAction == PageAction.Target) {
+                    _ = LoadFocusAsync(ctsLoad.Token);
                 }
             };
 
@@ -455,11 +463,18 @@ namespace Timeline {
             MenuFillOn.IsEnabled = false;
             MenuFillOff.IsEnabled = false;
 
+            string title = null;
+            string msg = resLoader.GetString("MsgNoInternet");
             if (NetworkInterface.GetIsNetworkAvailable()) {
-                ShowToastE(string.Format(resLoader.GetString("MsgLostProvider"), resLoader.GetString("Provider_" + provider.Id)));
-            } else {
-                ShowToastE(resLoader.GetString("MsgNoInternet"));
+                title = resLoader.GetString("Provider_" + provider.Id);
+                msg = resLoader.GetString("MsgLostProvider");
             }
+            ShowToastE(msg, title, resLoader.GetString("ActionTry"), () => {
+                ctsLoad.Cancel();
+                StatusLoading();
+                ctsLoad = new CancellationTokenSource();
+                _ = LoadFocusAsync(ctsLoad.Token);
+            });
         }
 
         private async Task SetWallpaperAsync(Meta meta, bool setDesktopOrLock) {
@@ -754,7 +769,7 @@ namespace Timeline {
         }
 
         private void MenuYesterday_Click(object sender, RoutedEventArgs e) {
-            pageTimerYesterdayOrTomorrow = true;
+            pageTimerAction = PageAction.Yesterday;
             
             AnimeYesterday1.Begin();
 
@@ -1021,7 +1036,7 @@ namespace Timeline {
             if (Math.Abs(e.Cumulative.Translation.X) <= 100 && Math.Abs(e.Cumulative.Translation.Y) <= 100) {
                 return;
             }
-            pageTimerYesterdayOrTomorrow = e.Cumulative.Translation.X < -100 || e.Cumulative.Translation.Y < -100;
+            pageTimerAction = e.Cumulative.Translation.X < -100 || e.Cumulative.Translation.Y < -100 ? PageAction.Yesterday : PageAction.Tomorrow;
             e.Handled = true;
 
             CloseToast();
@@ -1033,7 +1048,7 @@ namespace Timeline {
         }
 
         private void ViewMain_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
-            pageTimerYesterdayOrTomorrow = e.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta > 0;
+            pageTimerAction = e.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta > 0 ? PageAction.Yesterday : PageAction.Tomorrow;
 
             CloseToast();
 
@@ -1049,7 +1064,7 @@ namespace Timeline {
             switch (sender.Key) {
                 case VirtualKey.Left: // Left
                 case VirtualKey.Up: // Up
-                    pageTimerYesterdayOrTomorrow = true;
+                    pageTimerAction = PageAction.Yesterday;
                     ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();
@@ -1057,7 +1072,7 @@ namespace Timeline {
                     break;
                 case VirtualKey.Right: // Right
                 case VirtualKey.Down: // Down
-                    pageTimerYesterdayOrTomorrow = false;
+                    pageTimerAction = PageAction.Tomorrow;
                     ctsLoad.Cancel();
                     StatusLoading();
                     pageTimer.Stop();

@@ -181,7 +181,7 @@
     <value>切换显示模式：填充</value>
   </data>
   <data name="MsgLostProvider" xml:space="preserve">
-    <value>无数据或无法连接图源：{0}</value>
+    <value>加载失败</value>
   </data>
   <data name="MsgNoInternet" xml:space="preserve">
     <value>无网络连接</value>
@@ -710,5 +710,8 @@
   </data>
   <data name="Cate_all" xml:space="preserve">
     <value>全部</value>
+  </data>
+  <data name="ActionTry" xml:space="preserve">
+    <value>重试</value>
   </data>
 </root>

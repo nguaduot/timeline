@@ -92,29 +92,6 @@ namespace Timeline.Providers {
             foreach (var item in dicNew) {
                 dicHistory.Add(item.Key, item.Value);
             }
-            //if (ini.Cates.Count == 0 && !string.IsNullOrEmpty(ini.CateApi)) {
-            //    try {
-            //        HttpClient client = new HttpClient();
-            //        HttpResponseMessage res = await client.GetAsync(ini.CateApi, token);
-            //        string jsonData = await res.Content.ReadAsStringAsync();
-            //        //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-            //        CateApi api = JsonConvert.DeserializeObject<CateApi>(jsonData);
-            //        if (api.Status == 1 && api.Data != null) {
-            //            api.Data.Sort((a, b) => b.Score.CompareTo(a.Score));
-            //            ini.Cates.Clear();
-            //            foreach (CateApiData item in api.Data) {
-            //                ini.Cates.Add(new CateMeta {
-            //                    Id = item.Id,
-            //                    Name = item.Name
-            //                });
-            //            }
-            //        }
-            //    } catch (Exception e) {
-            //        // 情况1：任务被取消
-            //        // System.Threading.Tasks.TaskCanceledException: A task was canceled.
-            //        LogUtil.E("LoadData() " + e.Message);
-            //    }
-            //}
             return false;
         }
 

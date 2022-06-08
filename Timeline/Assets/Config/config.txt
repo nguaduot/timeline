@@ -1,4 +1,4 @@
-﻿; 拾光 / Timeline v5.4
+﻿; 拾光 / Timeline v5.5
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com

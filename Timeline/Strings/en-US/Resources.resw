@@ -181,7 +181,7 @@
     <value>Uniform to fill</value>
   </data>
   <data name="MsgLostProvider" xml:space="preserve">
-    <value>Connection failed: {0}</value>
+    <value>Connection failed</value>
   </data>
   <data name="MsgNoInternet" xml:space="preserve">
     <value>No internet</value>
@@ -710,5 +710,8 @@
   </data>
   <data name="Cate_all" xml:space="preserve">
     <value>All</value>
+  </data>
+  <data name="ACtionTry" xml:space="preserve">
+    <value>Try again</value>
   </data>
 </root>

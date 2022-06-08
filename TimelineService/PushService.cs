@@ -280,10 +280,11 @@ namespace TimelineService {
         private async Task<bool> LoadTimeline(bool setDesktopOrLock) {
             const string URL_API = "https://api.nguaduot.cn/timeline/today?client=timelinewallpaper";
             LogUtil.I("PushService.LoadTimeline() api url: " + URL_API);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(URL_API);
-            Match match = Regex.Match(jsonData, @"""imgurl"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(URL_API);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadTimeline() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
