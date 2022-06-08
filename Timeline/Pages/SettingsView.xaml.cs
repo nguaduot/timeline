@@ -55,7 +55,6 @@ namespace Timeline.Pages {
 
         private void Init() {
             TextApp.Text = resLoader.GetString("AppName") + " " + SysUtil.GetPkgVer(false);
-            RefreshProviderTitle();
 
             foreach (string item in BingIni.LANGS) {
                 listBingLang.Add(new CateMeta {
@@ -136,8 +135,10 @@ namespace Timeline.Pages {
             };
         }
 
-        public void BeforePaneOpen(Ini ini) {
+        public void PaneOpened(Ini ini) {
             this.ini = ini;
+
+            RefreshProviderExpander(ini.Provider);
 
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
@@ -164,19 +165,10 @@ namespace Timeline.Pages {
             TextThemeCur.Text = rb.Content.ToString();
             _ = RandomGlitter();
             ExpanderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
+        }
 
-            ExpanderBing.IsExpanded = BingIni.ID.Equals(ini.Provider);
-            ExpanderNasa.IsExpanded = NasaIni.ID.Equals(ini.Provider);
-            ExpanderOneplus.IsExpanded = OneplusIni.ID.Equals(ini.Provider);
-            ExpanderTimeline.IsExpanded = TimelineIni.ID.Equals(ini.Provider);
-            ExpanderHimawari8.IsExpanded = Himawari8Ini.ID.Equals(ini.Provider);
-            ExpanderYmyouli.IsExpanded = YmyouliIni.ID.Equals(ini.Provider);
-            ExpanderInfinity.IsExpanded = InfinityIni.ID.Equals(ini.Provider);
-            ExpanderOne.IsExpanded = OneIni.ID.Equals(ini.Provider);
-            ExpanderQingbz.IsExpanded = QingbzIni.ID.Equals(ini.Provider);
-            ExpanderObzhi.IsExpanded = ObzhiIni.ID.Equals(ini.Provider);
-            ExpanderWallhere.IsExpanded = WallhereIni.ID.Equals(ini.Provider);
-            ExpanderLsp.IsExpanded = LspIni.ID.Equals(ini.Provider);
+        public void PaneClosed() {
+            RefreshProviderExpander();
         }
 
         private async Task RandomGlitter() {
@@ -191,33 +183,55 @@ namespace Timeline.Pages {
             }
         }
 
-        private void RefreshProviderTitle(string providerId = null) {
+        private void RefreshProviderExpander(string providerId = null) {
             //string tagCheck = HttpUtility.HtmlDecode("&#128994;&#32;");
             string tagCheck = "● ";
+
+            ExpanderBing.IsExpanded = BingIni.ID.Equals(providerId);
             SettingsBingTitle.Text = (BingIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + BingIni.ID);
             SettingsBingDesc.Text = resLoader.GetString("Slogan_" + BingIni.ID);
-            SettingsBingTitle.Text = (BingIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + BingIni.ID);
-            SettingsBingDesc.Text = resLoader.GetString("Slogan_" + BingIni.ID);
+
+            ExpanderNasa.IsExpanded = NasaIni.ID.Equals(providerId);
             SettingsNasaTitle.Text = (NasaIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + NasaIni.ID);
             SettingsNasaDesc.Text = resLoader.GetString("Slogan_" + NasaIni.ID);
+
+            ExpanderOneplus.IsExpanded = OneplusIni.ID.Equals(providerId);
             SettingsOneplusTitle.Text = (OneplusIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneplusIni.ID);
             SettingsOneplusDesc.Text = resLoader.GetString("Slogan_" + OneplusIni.ID);
+
+            ExpanderTimeline.IsExpanded = TimelineIni.ID.Equals(providerId);
             SettingsTimelineTitle.Text = (TimelineIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + TimelineIni.ID);
             SettingsTimelineDesc.Text = resLoader.GetString("Slogan_" + TimelineIni.ID);
+
+            ExpanderHimawari8.IsExpanded = Himawari8Ini.ID.Equals(providerId);
             SettingsHimawari8Title.Text = (Himawari8Ini.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + Himawari8Ini.ID);
             SettingsHimawari8Desc.Text = resLoader.GetString("Slogan_" + Himawari8Ini.ID);
+
+            ExpanderYmyouli.IsExpanded = YmyouliIni.ID.Equals(providerId);
             SettingsYmyouliTitle.Text = (YmyouliIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + YmyouliIni.ID);
             SettingsYmyouliDesc.Text = resLoader.GetString("Slogan_" + YmyouliIni.ID);
+
+            ExpanderInfinity.IsExpanded = InfinityIni.ID.Equals(providerId);
             SettingsInfinityTitle.Text = (InfinityIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + InfinityIni.ID);
             SettingsInfinityDesc.Text = resLoader.GetString("Slogan_" + InfinityIni.ID);
+
+            ExpanderOne.IsExpanded = OneIni.ID.Equals(providerId);
             SettingsOneTitle.Text = (OneIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneIni.ID);
             SettingsOneDesc.Text = resLoader.GetString("Slogan_" + OneIni.ID);
+
+            ExpanderQingbz.IsExpanded = QingbzIni.ID.Equals(providerId);
             SettingsQingbzTitle.Text = (QingbzIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + QingbzIni.ID);
             SettingsQingbzDesc.Text = resLoader.GetString("Slogan_" + QingbzIni.ID);
+
+            ExpanderObzhi.IsExpanded = ObzhiIni.ID.Equals(providerId);
             SettingsObzhiTitle.Text = (ObzhiIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + ObzhiIni.ID);
             SettingsObzhiDesc.Text = resLoader.GetString("Slogan_" + ObzhiIni.ID);
+
+            ExpanderWallhere.IsExpanded = WallhereIni.ID.Equals(providerId);
             SettingsWallhereTitle.Text = (WallhereIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + WallhereIni.ID);
             SettingsWallhereDesc.Text = resLoader.GetString("Slogan_" + WallhereIni.ID);
+
+            ExpanderLsp.IsExpanded = LspIni.ID.Equals(providerId);
             SettingsLspTitle.Text = (LspIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + LspIni.ID);
             SettingsLspDesc.Text = resLoader.GetString("Slogan_" + LspIni.ID);
         }
@@ -237,8 +251,6 @@ namespace Timeline.Pages {
             foreach (CateMeta meta in bi.Cates) {
                 boxList.Add(meta);
             }
-            //box.SelectedItem = "nature";
-            //box.ItemsSource = boxList;
             box.SelectedIndex = boxList.Select(t => t.Id).ToList().IndexOf(bi.Cate);
         }
 
@@ -252,7 +264,7 @@ namespace Timeline.Pages {
                 });
             }
 
-            RefreshProviderTitle(providerId);
+            RefreshProviderExpander(providerId);
             switch (providerId) {
                 case TimelineIni.ID:
                     await RefreshProviderCate(BoxTimelineCate, listTimelineCate, ini.GetIni(providerId));

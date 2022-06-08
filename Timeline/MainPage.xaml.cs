@@ -936,8 +936,16 @@ namespace Timeline {
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            ViewSettings.BeforePaneOpen(ini);
+            //ViewSettings.BeforePaneOpen(ini);
             ViewSplit.IsPaneOpen = true;
+        }
+
+        private void ViewSplit_PaneOpened(SplitView sender, object args) {
+            ViewSettings.PaneOpened(ini);
+        }
+
+        private void ViewSplit_PaneClosed(SplitView sender, object args) {
+            ViewSettings.PaneClosed();
         }
 
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
@@ -1168,7 +1176,6 @@ namespace Timeline {
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.ProviderChanged || e.ProviderConfigChanged) {
-                Debug.WriteLine("ViewSettings_SettingsChanged");
                 _ = Refresh();
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
