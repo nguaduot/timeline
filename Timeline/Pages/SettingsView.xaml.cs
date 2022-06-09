@@ -160,11 +160,13 @@ namespace Timeline.Pages {
             //BoxLspCate.SelectedIndex = listLspCate.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Cate);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
 
+            ExpanderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
+
             RadioButton rb = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(c => ini.Theme.Equals(c?.Tag?.ToString()));
             rb.IsChecked = true;
             TextThemeCur.Text = rb.Content.ToString();
+
             _ = RandomGlitter();
-            ExpanderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void PaneClosed() {
@@ -174,12 +176,15 @@ namespace Timeline.Pages {
         private async Task RandomGlitter() {
             IList<string> glitter = await FileUtil.GetGlitterAsync();
             LogUtil.I("RandomGlitter() " + glitter.Count);
-            if (glitter.Count >= 2) {
+            if (glitter.Count >= 3) {
                 string glitter1 = glitter[new Random().Next(glitter.Count)];
                 glitter.Remove(glitter1);
+                SettingsCdnDesc.Text = glitter1;
                 string glitter2 = glitter[new Random().Next(glitter.Count)];
-                SettingsReviewDesc.Text = glitter1.Length > glitter2.Length ? glitter2 : glitter1;
-                SettingsThankDesc.Text = glitter1.Length > glitter2.Length ? glitter1 : glitter2;
+                SettingsReviewDesc.Text = glitter2;
+                glitter.Remove(glitter2);
+                string glitter3 = glitter[new Random().Next(glitter.Count)];
+                SettingsThankDesc.Text = glitter3;
             }
         }
 

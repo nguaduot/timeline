@@ -433,7 +433,7 @@
     <value>类别</value>
   </data>
   <data name="TextThank1.Text" xml:space="preserve">
-    <value>感谢酷安 @鱼离不开水 帮助设计主图标。</value>
+    <value>酷安 @鱼离不开水：帮助设计主图标</value>
   </data>
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
     <value>我要投稿</value>
@@ -640,7 +640,7 @@
     <value>已复制图片</value>
   </data>
   <data name="TextThank2.Text" xml:space="preserve">
-    <value>感谢 Bili.Uwp 开发者 @云之幻 指导解决闪退问题。</value>
+    <value>Bili.Uwp 开发者 @云之幻：提供代码指导</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
     <value>LSP</value>
@@ -713,5 +713,26 @@
   </data>
   <data name="ActionTry" xml:space="preserve">
     <value>重试</value>
+  </data>
+  <data name="TextSettingsOther.Text" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="TextThank3.Text" xml:space="preserve">
+    <value>微信公众号 @网罗灯下黑：发文推荐</value>
+  </data>
+  <data name="SettingsCdnDesc.Text" xml:space="preserve">
+    <value>我有一壶酒，足以慰风尘</value>
+  </data>
+  <data name="SettingsCdnTitle.Text" xml:space="preserve">
+    <value>寻求CDN赞助</value>
+  </data>
+  <data name="TextCdn0.Text" xml:space="preserve">
+    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您能提供赞助，请发</value>
+  </data>
+  <data name="TextCdn1.Text" xml:space="preserve">
+    <value>邮件</value>
+  </data>
+  <data name="TextCdn2.Text" xml:space="preserve">
+    <value>联系我。</value>
   </data>
 </root>

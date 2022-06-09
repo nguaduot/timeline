@@ -1092,6 +1092,59 @@
                         </Grid>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+
+                <TextBlock x:Uid="TextSettingsOther"
+                           Style="{StaticResource BodyTextBlockStyle}"
+                           Margin="0,24,0,0" />
+                <muxc:Expander ExpandDirection="Down"
+                               IsExpanded="False"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Margin="0,0,12,0"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEB51;" />
+                            <StackPanel Grid.Column="1"
+                                        Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock x:Uid="SettingsCdnTitle"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock x:Uid="SettingsCdnDesc"
+                                           Name="SettingsCdnDesc"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           MaxLines="1"
+                                           TextWrapping="WrapWholeWords" />
+                            </StackPanel>
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel Margin="28,0,0,0">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap"
+                                           Style="{StaticResource BodyTextBlockStyle}">
+                                    <Span xml:space="default">
+                                        <Run x:Uid="TextCdn0" />
+                                        <Hyperlink x:Uid="LinkEmail"
+                                                   UnderlineStyle="None">
+                                            <Run x:Uid="TextCdn1" />
+                                        </Hyperlink>
+                                        <Run x:Uid="TextCdn2" />
+                                    </Span>
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander ExpandDirection="Down"
                                IsExpanded="False"
                                HorizontalAlignment="Stretch"
@@ -1131,19 +1184,22 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
-                            <TextBlock TextWrapping="Wrap">
+                            <TextBlock TextWrapping="Wrap"
+                                       Style="{StaticResource BodyTextBlockStyle}">
                                 <Span><Run x:Uid="TextReview0" /><Hyperlink x:Uid="LinkReview"
                                                                         UnderlineStyle="None"><Run x:Uid="TextReview1" /></Hyperlink><Run x:Uid="TextReview2" /><Hyperlink x:Uid="LinkDonate"
                                                                                                                                                                            UnderlineStyle="None"
                                                                                                                                                                            Click="LinkDonate_Click"><Run x:Uid="TextReview3" /></Hyperlink><Run x:Uid="TextReview4" /></Span>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap"
+                                       Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">
                                 <Span><Run x:Uid="TextContatc0" /><Hyperlink x:Uid="LinkGithub"
                                                          UnderlineStyle="None"><Run x:Uid="TextContatc1" /></Hyperlink><Run x:Uid="TextContatc2" /><Hyperlink x:Uid="LinkEmail"
                                                                                                                                                               UnderlineStyle="None"><Run x:Uid="TextContatc3" /></Hyperlink><Run x:Uid="TextContatc4" /></Span>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap"
+                                       Style="{StaticResource BodyTextBlockStyle}"
                                        x:Uid="TextTranslate"
                                        Margin="0,8,0,0" />
                         </StackPanel>
@@ -1184,10 +1240,17 @@
                         <StackPanel Margin="28,0,0,0">
                             <StackPanel>
                                 <TextBlock x:Uid="TextThank1"
+                                           TextWrapping="Wrap"
                                            Style="{StaticResource BodyTextBlockStyle}" />
                             </StackPanel>
                             <StackPanel Margin="0,8,0,0">
                                 <TextBlock x:Uid="TextThank2"
+                                           TextWrapping="Wrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock x:Uid="TextThank3"
+                                           TextWrapping="Wrap"
                                            Style="{StaticResource BodyTextBlockStyle}" />
                             </StackPanel>
                         </StackPanel>
