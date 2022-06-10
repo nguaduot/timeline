@@ -23,7 +23,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.4.ini";
+        private const string FILE_INI = "timeline-5.5.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -214,6 +214,9 @@ namespace Timeline.Utils {
             ini.LockProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
+            _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int cache);
+            ini.Cache = cache;
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;
@@ -530,6 +533,24 @@ namespace Timeline.Utils {
             } catch (Exception e) {
                 LogUtil.E("LaunchUriAsync() " + e.Message);
             }
+        }
+
+        public static int ClearCache(Ini ini) {
+            int count_threshold = ini?.Cache ?? 1000; // 缓存量阈值
+            StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 缓存文件夹
+            try {
+                FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
+                Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
+                int count_clear = 0;
+                for (int i = 1000; i < files.Length; ++i) { // 删除超量图片
+                    files[i].Delete();
+                    count_clear++;
+                }
+                return count_clear;
+            } catch (Exception e) {
+                LogUtil.E("ClearCache() " + e.Message);
+            }
+            return -1;
         }
     }
 

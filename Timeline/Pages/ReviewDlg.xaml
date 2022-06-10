@@ -12,12 +12,21 @@
                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}">
 
     <StackPanel MaxWidth="280">
-        <!-- Note: don't put Hyperlink element start to the next line, otherwise unexpected whitespace will be add. -->
         <TextBlock TextWrapping="Wrap">
-                    <Span><Run x:Uid="TextReview0" /><Hyperlink x:Uid="LinkReview"
-                                                                UnderlineStyle="None"><Run x:Uid="TextReview1" /></Hyperlink><Run x:Uid="TextReview2" /><Hyperlink x:Uid="LinkDonate"
-                                                                                                                                                                   UnderlineStyle="None"
-                                                                                                                                                                   Click="LinkDonate_Click"><Run x:Uid="TextReview3" /></Hyperlink><Run x:Uid="TextReview4" /></Span>
+            <!-- Note: don't put Hyperlink element start to the next line, otherwise unexpected whitespace will be add. -->
+            <Span xml:space="default">
+                <Run x:Uid="TextReview0" />
+                <Hyperlink x:Uid="LinkReview"
+                           UnderlineStyle="None">
+                    <Run x:Uid="TextReview1" />
+                </Hyperlink>
+                <Run x:Uid="TextReview2" />
+                <Hyperlink x:Uid="LinkDonate"
+                           UnderlineStyle="None"
+                           Click="LinkDonate_Click">
+                    <Run x:Uid="TextReview3" />
+                </Hyperlink><Run x:Uid="TextReview4" />
+            </Span>
         </TextBlock>
     </StackPanel>
     

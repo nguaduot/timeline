@@ -44,6 +44,8 @@ namespace Timeline.Utils {
             get => theme;
         }
 
+        public int Cache { set; get; } = 1000;
+
         public int R18 { set; get; } = 0;
 
         public bool SetIni(string provider, BaseIni ini) {
@@ -66,7 +68,8 @@ namespace Timeline.Utils {
 
         override public string ToString() {
             string paras = Inis[provider].ToString();
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&r18={R18}" + (paras.Length > 0 ? "&" : "") + paras;
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&cache={Cache}&r18={R18}"
+                + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
 

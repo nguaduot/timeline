@@ -1186,22 +1186,38 @@
                         <StackPanel Margin="28,0,0,0">
                             <TextBlock TextWrapping="Wrap"
                                        Style="{StaticResource BodyTextBlockStyle}">
-                                <Span><Run x:Uid="TextReview0" /><Hyperlink x:Uid="LinkReview"
-                                                                        UnderlineStyle="None"><Run x:Uid="TextReview1" /></Hyperlink><Run x:Uid="TextReview2" /><Hyperlink x:Uid="LinkDonate"
-                                                                                                                                                                           UnderlineStyle="None"
-                                                                                                                                                                           Click="LinkDonate_Click"><Run x:Uid="TextReview3" /></Hyperlink><Run x:Uid="TextReview4" /></Span>
+                                <!-- Note: don't put Hyperlink element start to the next line, otherwise unexpected whitespace will be add. -->
+                                <Span xml:space="default">
+                                    <Run x:Uid="TextReview0" />
+                                    <Hyperlink x:Uid="LinkReview"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextReview1" />
+                                    </Hyperlink>
+                                    <Run x:Uid="TextReview2" />
+                                    <Hyperlink x:Uid="LinkDonate"
+                                               UnderlineStyle="None"
+                                               Click="LinkDonate_Click">
+                                        <Run x:Uid="TextReview3" />
+                                    </Hyperlink><Run x:Uid="TextReview4" />
+                                </Span>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">
-                                <Span><Run x:Uid="TextContatc0" /><Hyperlink x:Uid="LinkGithub"
-                                                         UnderlineStyle="None"><Run x:Uid="TextContatc1" /></Hyperlink><Run x:Uid="TextContatc2" /><Hyperlink x:Uid="LinkEmail"
-                                                                                                                                                              UnderlineStyle="None"><Run x:Uid="TextContatc3" /></Hyperlink><Run x:Uid="TextContatc4" /></Span>
+                                <Span xml:space="default">
+                                    <Run x:Uid="TextContatc0" />
+                                    <Hyperlink x:Uid="LinkGithub"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextContatc1" />
+                                    </Hyperlink>
+                                    <Run x:Uid="TextContatc2" />
+                                    <Hyperlink x:Uid="LinkEmail"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextContatc3" />
+                                    </Hyperlink>
+                                    <Run x:Uid="TextContatc4" />
+                                </Span>
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       x:Uid="TextTranslate"
-                                       Margin="0,8,0,0" />
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

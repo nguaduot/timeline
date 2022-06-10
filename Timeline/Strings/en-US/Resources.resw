@@ -253,7 +253,7 @@
     <value>Maybe next</value>
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
-    <value>If you like Timeline, rate it on </value>
+    <value>If you like Timeline, rate it on</value>
   </data>
   <data name="MenuProviderHimawari8.Text" xml:space="preserve">
     <value>Himawari-8 - Real-time earth</value>
@@ -280,19 +280,19 @@
     <value>ms-windows-store://review/?ProductId=9N7VHQ989BB7</value>
   </data>
   <data name="TextContatc0.Text" xml:space="preserve">
-    <value>Check out the project on </value>
+    <value>Check out the project on</value>
   </data>
   <data name="TextContatc1.Text" xml:space="preserve">
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value>. Any questions, please </value>
+    <value>. Any questions, please</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
     <value>email</value>
   </data>
   <data name="TextContatc4.Text" xml:space="preserve">
-    <value> me.</value>
+    <value>me.</value>
   </data>
   <data name="TextCopyright.Text" xml:space="preserve">
     <value>© 2021-2022 nguaduot. All rights reserved.</value>
@@ -301,7 +301,7 @@
     <value>Microsoft Store</value>
   </data>
   <data name="TextReview2.Text" xml:space="preserve">
-    <value>, or </value>
+    <value>, or</value>
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>Maybe next</value>
@@ -537,9 +537,6 @@
   <data name="TextTimelineContribute.Text" xml:space="preserve">
     <value>Share my works</value>
   </data>
-  <data name="TextTranslate.Text" xml:space="preserve">
-    <value>If you wish to provide translations for the project, please contact me. Thanks.</value>
-  </data>
   <data name="TextYmyouliDonate.Text" xml:space="preserve">
     <value>Buy me a coffee</value>
   </data>
@@ -721,7 +718,7 @@
     <value>Thank WeChat@网罗灯下黑 for article.</value>
   </data>
   <data name="SettingsCdnDesc.Text" xml:space="preserve">
-    <value>我有一壶酒，足以慰风尘</value>
+    <value>愿随夫子上天台，闲与仙人扫落花</value>
   </data>
   <data name="SettingsCdnTitle.Text" xml:space="preserve">
     <value>Seek CDN support</value>

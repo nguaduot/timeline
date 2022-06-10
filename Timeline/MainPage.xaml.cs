@@ -25,7 +25,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -45,6 +44,8 @@ namespace Timeline {
         private Meta meta = null;
         private bool r18 = false;
         private ReleaseApi release = null;
+        private int dosageLast = 0; // 上次所有图源24h图片用量
+        private int dosageProviderLast = 0; // 上次默认图源24h图片用量
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
 
@@ -57,10 +58,10 @@ namespace Timeline {
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
         private enum PageAction {
-            Focus,
-            Yesterday,
-            Tomorrow,
-            Target
+            Focus, // LoadFocusAsync
+            Yesterday, // LoadYesterdayAsync
+            Tomorrow, // LoadTomorrowAsync
+            Target // LoadTargetAsync
         }
 
         public MainPage() {
@@ -69,7 +70,7 @@ namespace Timeline {
             resLoader = ResourceLoader.GetForCurrentView();
             localSettings = ApplicationData.Current.LocalSettings;
             Init();
-            _ = LoadFocusAsync(ctsLoad.Token);
+            _ = LaunchAsync();
             _ = CheckLaunchAsync();
         }
 
@@ -100,11 +101,87 @@ namespace Timeline {
                 ini = await IniUtil.GetIniAsync();
             }).Wait();
             InitProvider();
+
+            // 在 WriteDoasage() 之前调用
+            dosageLast = ReadDosage();
+            dosageProviderLast = ReadDosage(ini.Provider);
+        }
+
+        private async Task LaunchAsync() {
+            // 在缓存可能被使用之前清理缓存
+            int count_clear = FileUtil.ClearCache(ini);
+            LogUtil.I("ClearCache() " + count_clear);
+            // 加载数据
+            await LoadFocusAsync(ctsLoad.Token);
+        }
+
+        private async Task CheckLaunchAsync() {
+            // 上传统计
+            await Api.StatsAsync(ini, dosageLast, dosageProviderLast);
+            int actions = (int)(localSettings.Values["Actions"] ?? 0);
+            localSettings.Values["Actions"] = ++actions;
+            // 检查R18提示
+            if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
+                ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
+                    resLoader.GetString("ActionContinue"), async () => {
+                        r18 = true;
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        await LoadFocusAsync(ctsLoad.Token);
+                    });
+                return;
+            } else {
+                r18 = true;
+            }
+            // 检查菜单提示
+            if (!localSettings.Values.ContainsKey("MenuLearned")) {
+                await Task.Delay(1000);
+                ShowToastI(resLoader.GetString("MsgWelcome"));
+                return;
+            }
+            // 检查任务栏固定提示
+            if (TaskbarManager.GetDefault().IsPinningAllowed && !await TaskbarManager.GetDefault().IsCurrentAppPinnedAsync()) {
+                int times = (int)(localSettings.Values["CheckPinTimes"] ?? 0);
+                localSettings.Values["CheckPinTimes"] = ++times;
+                if (times == 2) {
+                    await Task.Delay(1000);
+                    ShowToastI(resLoader.GetString("MsgPin"), null, resLoader.GetString("ActionPin"), async () => {
+                        await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
+                    });
+                    return;
+                }
+            }
+            // 检查评分提示
+            if (!localSettings.Values.ContainsKey("ReqReview") && actions >= 15) {
+                await Task.Delay(1000);
+                FlyoutMenu.Hide();
+                var action = await new ReviewDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                }.ShowAsync();
+                if (action == ContentDialogResult.Primary) {
+                    localSettings.Values["ReqReview"] = true;
+                    await Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+                } else { // 下次一定
+                    localSettings.Values.Remove("Actions");
+                }
+                return;
+            }
+            // 检查更新
+            release = await Api.CheckUpdateAsync();
+            if (!string.IsNullOrEmpty(release.Url)) {
+                await Task.Delay(1000);
+                ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
+                    CloseToast();
+                    await FileUtil.LaunchUriAsync(new Uri(release?.Url));
+                });
+            }
         }
 
         private async Task LoadFocusAsync(CancellationToken token) {
+            WriteDosage();
+            WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
-            _ = Api.StatsAsync(ini, res);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -128,6 +205,8 @@ namespace Timeline {
         }
 
         private async Task LoadYesterdayAsync(CancellationToken token) {
+            WriteDosage();
+            WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -156,6 +235,8 @@ namespace Timeline {
         }
 
         private async Task LoadTomorrowAsync(CancellationToken token) {
+            //WriteDosage();
+            //WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -183,6 +264,8 @@ namespace Timeline {
         }
 
         private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
+            WriteDosage();
+            WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni(), date);
             if (token.IsCancellationRequested) {
                 return;
@@ -213,6 +296,7 @@ namespace Timeline {
         }
 
         private async Task LoadTargetAsync(int index, CancellationToken token) {
+            WriteDosage();
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -376,7 +460,8 @@ namespace Timeline {
                 biUhd.DecodePixelHeight = (int)Math.Round(winW * meta.Dimen.Height / meta.Dimen.Width);
             }
             LogUtil.D("ShowImg() {0}x{1}, win logical: {2}x{3}, scale logical: {4}x{5}",
-                meta.Dimen.Width, meta.Dimen.Height, winW, winH, biUhd.DecodePixelWidth, biUhd.DecodePixelHeight);
+                meta.Dimen.Width, meta.Dimen.Height, (int)winW, (int)winH,
+                biUhd.DecodePixelWidth, biUhd.DecodePixelHeight);
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && !r18) {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.Absolute);
             } else if (meta.CacheUhd != null) {
@@ -585,67 +670,6 @@ namespace Timeline {
             ShowToastI(fillOn ? resLoader.GetString("MsgUniformToFill") : resLoader.GetString("MsgUniform"));
         }
 
-        private async Task CheckLaunchAsync() {
-            int actions = (int)(localSettings.Values["Actions"] ?? 0);
-            localSettings.Values["Actions"] = ++actions;
-            // 检查R18提示
-            if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
-                ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
-                    resLoader.GetString("ActionContinue"), async () => {
-                        r18 = true;
-                        ctsLoad.Cancel();
-                        StatusLoading();
-                        ctsLoad = new CancellationTokenSource();
-                        await LoadFocusAsync(ctsLoad.Token);
-                    });
-                return;
-            } else {
-                r18 = true;
-            }
-            // 检查菜单提示
-            if (!localSettings.Values.ContainsKey("MenuLearned")) {
-                await Task.Delay(1000);
-                ShowToastI(resLoader.GetString("MsgWelcome"));
-                return;
-            }
-            // 检查任务栏固定提示
-            if (TaskbarManager.GetDefault().IsPinningAllowed && !await TaskbarManager.GetDefault().IsCurrentAppPinnedAsync()) {
-                int times = (int)(localSettings.Values["CheckPinTimes"] ?? 0);
-                localSettings.Values["CheckPinTimes"] = ++times;
-                if (times == 2) {
-                    await Task.Delay(1000);
-                    ShowToastI(resLoader.GetString("MsgPin"), null, resLoader.GetString("ActionPin"), async () => {
-                        await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
-                    });
-                    return;
-                }
-            }
-            // 检查评分提示
-            if (!localSettings.Values.ContainsKey("ReqReview") && actions >= 15) {
-                await Task.Delay(1000);
-                FlyoutMenu.Hide();
-                var action = await new ReviewDlg {
-                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-                }.ShowAsync();
-                if (action == ContentDialogResult.Primary) {
-                    localSettings.Values["ReqReview"] = true;
-                    await Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
-                } else { // 下次一定
-                    localSettings.Values.Remove("Actions");
-                }
-                return;
-            }
-            // 检查更新
-            release = await Api.CheckUpdateAsync();
-            if (!string.IsNullOrEmpty(release.Url)) {
-                await Task.Delay(1000);
-                ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
-                    CloseToast();
-                    await FileUtil.LaunchUriAsync(new Uri(release?.Url));
-                });
-            }
-        }
-
         private void ShowFlyoutGo() {
             if (FlyoutGo.IsOpen) {
                 FlyoutGo.Hide();
@@ -754,6 +778,26 @@ namespace Timeline {
                 _ = builder.Register();
             }
             await _AppTrigger.RequestAsync();
+        }
+
+        private int ReadDosage(string provider = null) {
+            string key = "Dosage_" + (provider ?? "");
+            return localSettings.Values[key] is string dosage ? dosage.Split(",").Length : 0;
+        }
+
+        private void WriteDosage(string provider = null) {
+            string key = "Dosage_" + (provider ?? "");
+            string[] sec_old = localSettings.Values[key] is string dosage ? dosage.Split(",") : new string[0];
+            List<long> sec_new = new List<long>();
+            long sec_now = DateTime.Now.Ticks / 10000 / 1000;
+            foreach (string item in sec_old) {
+                long sec = long.Parse(item);
+                if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+                    sec_new.Add(sec);
+                }
+            }
+            sec_new.Add(sec_now);
+            localSettings.Values[key] = string.Join(",", sec_new.ToArray());
         }
 
         private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e) {
@@ -1130,15 +1174,11 @@ namespace Timeline {
                 case VirtualKey.Number5: // Ctrl + 5
                     await ShowFlyoutMarkCate();
                     break;
-                case VirtualKey.F10:
-                    if (sender.Modifiers == VirtualKeyModifiers.Shift) { // Shift + F10
-                        // TODO
-                    } else { // F10
-                        if (ViewSplit.IsPaneOpen) {
-                            ViewSplit.IsPaneOpen = false;
-                        } else {
-                            MenuSettings_Click(null, null);
-                        }
+                case VirtualKey.F10: // F10
+                    if (ViewSplit.IsPaneOpen) {
+                        ViewSplit.IsPaneOpen = false;
+                    } else {
+                        MenuSettings_Click(null, null);
                     }
                     break;
                 case VirtualKey.I: // Ctrl + I

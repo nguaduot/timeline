@@ -334,14 +334,12 @@ namespace Timeline.Providers {
                         bitmap = await decoder.GetSoftwareBitmapAsync(decoder.BitmapPixelFormat,
                             BitmapAlphaMode.Premultiplied, new BitmapTransform(),
                             ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage);
-                        if (token.IsCancellationRequested) {
-                            return meta;
-                        }
                         if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Gray8) {
                             bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Gray8);
                         }
-                        LogUtil.D("cost3: " + (int)((DateTime.Now.Ticks - start) / 10000));
-                        start = DateTime.Now.Ticks;
+                        if (token.IsCancellationRequested) {
+                            return meta;
+                        }
                         FaceDetector detector = await FaceDetector.CreateAsync();
                         IList<DetectedFace> faces = await detector.DetectFacesAsync(bitmap);
                         foreach (DetectedFace face in faces) {
@@ -350,7 +348,7 @@ namespace Timeline.Providers {
                                 Y = (int)(face.FaceBox.Y + face.FaceBox.Height / 2.0f)
                             });
                         }
-                        LogUtil.D("cost4: " + (int)((DateTime.Now.Ticks - start) / 10000));
+                        LogUtil.D("detect face cost: " + (int)((DateTime.Now.Ticks - start) / 10000));
                     }
                 } catch (Exception ex) {
                     LogUtil.E("Cache() " + ex.Message);

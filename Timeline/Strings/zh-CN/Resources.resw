@@ -253,7 +253,7 @@
     <value>下次一定</value>
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
-    <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，前往 </value>
+    <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，前往</value>
   </data>
   <data name="MenuProviderHimawari8.Text" xml:space="preserve">
     <value>向日葵8号 - 实时地球</value>
@@ -280,19 +280,19 @@
     <value>ms-windows-store://review/?ProductId=9N7VHQ989BB7</value>
   </data>
   <data name="TextContatc0.Text" xml:space="preserve">
-    <value>该项目已在 </value>
+    <value>该项目已在</value>
   </data>
   <data name="TextContatc1.Text" xml:space="preserve">
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value> 开源。若有任何疑问、想法或合作意向，可发 </value>
+    <value>开源。若有任何疑问、想法或合作意向，可发</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
     <value>邮件</value>
   </data>
   <data name="TextContatc4.Text" xml:space="preserve">
-    <value> 联系我。</value>
+    <value>联系我。</value>
   </data>
   <data name="TextCopyright.Text" xml:space="preserve">
     <value>© 2021-2022 nguaduot。保留所有权利。</value>
@@ -301,7 +301,7 @@
     <value>商店</value>
   </data>
   <data name="TextReview2.Text" xml:space="preserve">
-    <value> 给它一个评分或评价吧，或者 </value>
+    <value>给它一个评分或评价吧，或者</value>
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>下次一定</value>
@@ -534,9 +534,6 @@
   <data name="TextTimelineContribute.Text" xml:space="preserve">
     <value>分享摄影作品</value>
   </data>
-  <data name="TextTranslate.Text" xml:space="preserve">
-    <value>如果您愿意为「拾光」提供其他语言的翻译，请联系我，感谢。 </value>
-  </data>
   <data name="TextYmyouliDonate.Text" xml:space="preserve">
     <value>支持一下</value>
   </data>
@@ -721,7 +718,7 @@
     <value>微信公众号 @网罗灯下黑：发文推荐</value>
   </data>
   <data name="SettingsCdnDesc.Text" xml:space="preserve">
-    <value>我有一壶酒，足以慰风尘</value>
+    <value>愿随夫子上天台，闲与仙人扫落花</value>
   </data>
   <data name="SettingsCdnTitle.Text" xml:space="preserve">
     <value>寻求CDN赞助</value>

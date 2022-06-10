@@ -25,6 +25,8 @@ namespace TimelineService.Utils {
             get => theme;
         }
 
+        public int Cache { set; get; } = 1000;
+
         public int R18 { set; get; } = 0;
 
         public BingIni Bing { set; get; } = new BingIni();
@@ -134,7 +136,8 @@ namespace TimelineService.Utils {
             } else {
                 paras = Bing.ToString();
             }
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&r18={R18}" + (paras.Length > 0 ? "&" : "") + paras;
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&Cache={Cache}&r18={R18}"
+                + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
 

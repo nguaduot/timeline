@@ -12,7 +12,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.4.ini";
+        private const string FILE_INI = "timeline-5.5.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -40,6 +40,9 @@ namespace TimelineService.Utils {
             ini.LockProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
+            _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int cache);
+            ini.Cache = cache;
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;

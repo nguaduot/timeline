@@ -14,8 +14,11 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "api")]
         public string Api { set; get; }
 
-        [JsonProperty(PropertyName = "status")]
-        public int Status { set; get; }
+        [JsonProperty(PropertyName = "dosageapp")]
+        public int DosageApp { set; get; }
+
+        [JsonProperty(PropertyName = "dosageapi")]
+        public int DosageApi { set; get; }
 
         [JsonProperty(PropertyName = "os")]
         public string Os { set; get; }

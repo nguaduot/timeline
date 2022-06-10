@@ -4,21 +4,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using Timeline.Beans;
 using Windows.ApplicationModel;
-using Windows.Services.Store;
 using Windows.System.Profile;
 using Windows.System.UserProfile;
 
 namespace Timeline.Utils {
     public class Api {
-        //public const string URI_STORE = "ms-windows-store://pdp/?productid=9N7VHQ989BB7";
-
-        public static async Task StatsAsync(Ini ini, bool status) {
+        public static async Task StatsAsync(Ini ini, int dosageApp, int dosageApi) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
@@ -29,7 +25,8 @@ namespace Timeline.Utils {
                 Package = Package.Current.Id.FamilyName,
                 Version = SysUtil.GetPkgVer(false),
                 Api = ini?.ToString(),
-                Status = status ? 1 : 0,
+                DosageApp = dosageApp,
+                DosageApi = dosageApi,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = SysUtil.GetOsVer(),
                 Screen = String.Format("{0}x{1}", screen.Width, screen.Height),

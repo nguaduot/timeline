@@ -574,9 +574,6 @@
                 <KeyboardAccelerator Key="F10"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="F10"
-                                     Modifiers="Shift"
-                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="F12"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
