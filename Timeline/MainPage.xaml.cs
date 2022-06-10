@@ -337,7 +337,8 @@ namespace Timeline {
         private void InitProvider() {
             provider = ini.GenerateProvider();
 
-            MenuProviderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
+            MenuProviderLsp.Visibility = ini.R18 == 1 || MenuProviderLsp.Tag.Equals(ini.Provider)
+                ? Visibility.Visible : Visibility.Collapsed;
             MenuCurDesktop.Label = string.Format(resLoader.GetString("CurDesktop"), resLoader.GetString("Provider_" + ini.DesktopProvider));
             MenuCurLock.Label = string.Format(resLoader.GetString("CurLock"), resLoader.GetString("Provider_" + ini.LockProvider));
             if (string.IsNullOrEmpty(ini.DesktopProvider)) {
@@ -373,9 +374,11 @@ namespace Timeline {
                 }
             }
 
-            RadioMenuFlyoutItem item = FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>().FirstOrDefault(c => ini.Provider.Equals(c?.Tag?.ToString()));
-            if (item != null) {
-                item.IsChecked = true;
+            //RadioMenuFlyoutItem item = FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>().FirstOrDefault(c => ini.Provider.Equals(c?.Tag?.ToString()));
+            foreach (RadioMenuFlyoutItem item in FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>()) {
+                item.Text = String.Format("{0} - {1}", resLoader.GetString("Provider_" + item.Tag),
+                    resLoader.GetString("Slogan_" + item.Tag));
+                item.IsChecked = item.Tag.Equals(ini.Provider);
             }
         }
 

@@ -11,11 +11,11 @@ using System.Threading;
 using System.Globalization;
 
 namespace Timeline.Providers {
-    public class YmyouliProvider : BaseProvider {
+    public class WallhavenProvider : BaseProvider {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/ymyouli/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
         private Meta ParseBean(YmyouliApiData bean, string order) {
             Meta meta = new Meta {

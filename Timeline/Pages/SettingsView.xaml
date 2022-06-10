@@ -556,6 +556,82 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderWallhaven"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="wallhaven"
+                               Expanding="ExpanderProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0"
+                                        Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Name="SettingsWallhavenTitle"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Name="SettingsWallhavenDesc"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           MaxLines="1"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="WrapWholeWords" />
+                            </StackPanel>
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextWallhavenCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxWallhavenCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listWallhavenCate}"
+                                          SelectionChanged="BoxWallhavenCate_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextWallhavenOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxWallhavenOrder"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listWallhavenOrder}"
+                                          SelectionChanged="BoxWallhavenOrder_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderQingbz"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -649,82 +725,6 @@
                                         Name="BtnQingbzDonate"
                                         x:Uid="BtnQingbzDonate"
                                         Click="BtnQingbzDonate_Click" />
-                            </Grid>
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
-                <muxc:Expander Name="ExpanderObzhi"
-                               ExpandDirection="Down"
-                               IsExpanded="False"
-                               Tag="obzhi"
-                               Expanding="ExpanderProvider_Expanding"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch"
-                               Margin="0,8,0,0">
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"
-                                        Margin="0,12"
-                                        Orientation="Vertical">
-                                <TextBlock Name="SettingsObzhiTitle"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock Name="SettingsObzhiDesc"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           MaxLines="1"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="WrapWholeWords" />
-                            </StackPanel>
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE8F1;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextObzhiCate"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <ComboBox Name="BoxObzhiCate"
-                                          Grid.Column="2"
-                                          MinWidth="140"
-                                          ItemsSource="{x:Bind listObzhiCate}"
-                                          SelectionChanged="BoxObzhiCate_SelectionChanged" />
-                            </Grid>
-                            <Grid Margin="0,8,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE8CB;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextObzhiOrder"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <ComboBox Name="BoxObzhiOrder"
-                                          Grid.Column="2"
-                                          MinWidth="140"
-                                          ItemsSource="{x:Bind listObzhiOrder}"
-                                          SelectionChanged="BoxObzhiOrder_SelectionChanged" />
                             </Grid>
                         </StackPanel>
                     </muxc:Expander.Content>
@@ -1112,14 +1112,14 @@
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                       FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
-                                      Glyph="&#xEB51;" />
+                                      Glyph="&#xE753;" />
                             <StackPanel Grid.Column="1"
                                         Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock x:Uid="SettingsCdnTitle"
                                            Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock x:Uid="SettingsCdnDesc"
-                                           Name="SettingsCdnDesc"
+                                <TextBlock Name="SettingsCdnDesc"
+                                           x:Uid="Glitter"
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                            MaxLines="1"
@@ -1169,7 +1169,7 @@
                                 <TextBlock x:Uid="SettingsReviewTitle"
                                            Style="{StaticResource BodyTextBlockStyle}" />
                                 <TextBlock Name="SettingsReviewDesc"
-                                           x:Uid="SettingsReviewDesc"
+                                           x:Uid="Glitter"
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                            MaxLines="1"
@@ -1244,7 +1244,7 @@
                                 <TextBlock x:Uid="SettingsThankTitle"
                                            Style="{StaticResource BodyTextBlockStyle}" />
                                 <TextBlock Name="SettingsThankDesc"
-                                           x:Uid="SettingsThankDesc"
+                                           x:Uid="Glitter"
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                            MaxLines="1"

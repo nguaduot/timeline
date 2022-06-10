@@ -177,6 +177,7 @@
     <Compile Include="Providers\TimelineProvider.cs" />
     <Compile Include="Providers\LspProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
+    <Compile Include="Providers\WallhavenProvider.cs" />
     <Compile Include="Providers\YmyouliProvider.cs" />
     <Compile Include="Utils\Api.cs" />
     <Compile Include="Utils\Ini.cs" />

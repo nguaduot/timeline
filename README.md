@@ -2,7 +2,7 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.5-brightgreen)
+![developing](https://img.shields.io/badge/developing-v5.6-brightgreen)
 [![release](https://img.shields.io/badge/release-v5.4.220530-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
@@ -37,10 +37,10 @@
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari8.nict.go.jp/) - 实时地球
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源
++ [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net!
 + [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站
-+ [乌云壁纸](https://www.obzhi.com) - 高清壁纸站
-+ [WallHere](https://wallhere.com) - 世界著名的壁纸网站之一
-+ [Infinity](http://cn.infinitynewtab.com) - 精选壁纸
++ [WallHere](https://wallhere.com) - One of the best hd wallpapers site!
++ [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 
 *特别注明：三方图源均为来自网络，本应用无权且不提供商用授权，所以请勿用于商业用途，仅供学习交流。欢迎分享图源*
@@ -69,10 +69,10 @@
   + 一梦幽黎
     + `类别`：支持
     + `排序`：忽略，默认 `随机`
-  + 轻壁纸
+  + wallhaven
     + `类别`：支持
     + `排序`：忽略，默认 `随机`
-  + 乌云壁纸
+  + 轻壁纸
     + `类别`：支持
     + `排序`：忽略，默认 `随机`
   + WallHere

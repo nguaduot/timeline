@@ -52,20 +52,22 @@ namespace TimelineService {
                         done = await LoadOneplus(true);
                     } else if (TimelineIni.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadTimeline(true);
-                    } else if (YmyouliIni.GetId().Equals(ini.DesktopProvider)) {
-                        done = await LoadYmyouli(true);
-                    } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
-                        done = await LoadInfinity(true);
                     } else if (OneIni.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadOne(true);
-                    } else if (QingbzIni.GetId().Equals(ini.DesktopProvider)) {
-                        done = await LoadQingbz(true);
-                    } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
-                        done = await LoadObzhi(true);
                     } else if (Himawari8Ini.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadHimawari8(true);
+                    } else if (YmyouliIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadYmyouli(true);
+                    } else if (WallhavenIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadWallhaven(true);
+                    } else if (QingbzIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadQingbz(true);
                     } else if (WallhereIni.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadWallhere(true);
+                    } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadInfinity(true);
+                    } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
+                        done = await LoadObzhi(true);
                     } else if (LspIni.GetId().Equals(ini.DesktopProvider)) {
                         done = await LoadLsp(true);
                     }
@@ -86,20 +88,22 @@ namespace TimelineService {
                         done = await LoadOneplus(false);
                     } else if (TimelineIni.GetId().Equals(ini.LockProvider)) {
                         done = await LoadTimeline(false);
-                    } else if (YmyouliIni.GetId().Equals(ini.LockProvider)) {
-                        done = await LoadYmyouli(false);
-                    } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
-                        done = await LoadInfinity(false);
                     } else if (OneIni.GetId().Equals(ini.LockProvider)) {
                         done = await LoadOne(false);
-                    } else if (QingbzIni.GetId().Equals(ini.LockProvider)) {
-                        done = await LoadQingbz(false);
-                    } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
-                        done = await LoadObzhi(false);
                     } else if (Himawari8Ini.GetId().Equals(ini.LockProvider)) {
                         done = await LoadHimawari8(false);
+                    } else if (YmyouliIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadYmyouli(false);
+                    } else if (WallhavenIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadWallhaven(false);
+                    } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadInfinity(false);
+                    } else if (QingbzIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadQingbz(false);
                     } else if (WallhereIni.GetId().Equals(ini.LockProvider)) {
                         done = await LoadWallhere(false);
+                    } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
+                        done = await LoadObzhi(false);
                     } else if (LspIni.GetId().Equals(ini.LockProvider)) {
                         done = await LoadLsp(false);
                     }
@@ -289,29 +293,20 @@ namespace TimelineService {
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
-        private async Task<bool> LoadYmyouli(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/ymyouli/random?client=timelinewallpaper&cate={0}";
-            string urlApi = string.Format(URL_API, ini.Ymyouli.Cate);
-            LogUtil.I("PushService.LoadYmyouli() api url: " + urlApi);
-            HttpClient client = new HttpClient(new HttpClientHandler {
-                AllowAutoRedirect = false
-            });
-            HttpResponseMessage msg = await client.GetAsync(urlApi);
-            string urlUhd = msg.Headers.Location.AbsoluteUri;
-            LogUtil.I("PushService.LoadYmyouli() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock);
-        }
-
-        private async Task<bool> LoadInfinity(bool setDesktopOrLock) {
-            const string URL_API = "https://infinity-api.infinitynewtab.com/random-wallpaper?_={0}";
-            string urlApi = string.Format(URL_API,
-                (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds);
-            LogUtil.I("PushService.LoadInfinity() api url: " + urlApi);
+        private async Task<bool> LoadOne(bool setDesktopOrLock) {
+            const string URL_TOKEN = "http://m.wufazhuce.com/one";
+            const string URL_API = "http://m.wufazhuce.com/one/ajaxlist/0?_token={0}";
             HttpClient client = new HttpClient();
+            HttpResponseMessage msg = await client.GetAsync(URL_TOKEN); // cookie 无需手动取，自动包含
+            string htmlData = await msg.Content.ReadAsStringAsync();
+            Match match = Regex.Match(htmlData, @"One.token ?= ?[""'](.+?)[""']");
+            string token = match.Groups[1].Value;
+            string urlApi = string.Format(URL_API, token);
+            LogUtil.I("PushService.LoadOne() api url: " + urlApi);
             string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
-            string urlUhd = match.Groups[1].Value;
-            LogUtil.I("PushService.LoadInfinity() img url: " + urlUhd);
+            match = Regex.Match(jsonData, @"""img_url"": ?""(.+?)""");
+            string urlUhd = Regex.Unescape(match.Groups[1].Value); // 反转义
+            LogUtil.I("PushService.LoadOne() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
@@ -330,24 +325,29 @@ namespace TimelineService {
             return await SetWallpaper(urlUhd, setDesktopOrLock, ini.Himawari8.Offset, ini.Himawari8.Ratio);
         }
 
-        private async Task<bool> LoadOne(bool setDesktopOrLock) {
-            const string URL_TOKEN = "http://m.wufazhuce.com/one";
-            const string URL_API = "http://m.wufazhuce.com/one/ajaxlist/{0}?_token={1}";
-            HttpClient client = new HttpClient();
-            HttpResponseMessage msg = await client.GetAsync(URL_TOKEN); // cookie 无需手动取，自动包含
-            string htmlData = await msg.Content.ReadAsStringAsync();
-            Match match = Regex.Match(htmlData, @"One.token ?= ?[""'](.+?)[""']");
-            string token = match.Groups[1].Value;
-            string id = "0";
-            if ("random".Equals(ini.One.Order)) {
-                id = (3012 + new Random().Next((DateTime.Now - DateTime.Parse("2020-11-10")).Days)).ToString();
-            }
-            string urlApi = string.Format(URL_API, id, token);
-            LogUtil.I("PushService.LoadOne() api url: " + urlApi);
-            string jsonData = await client.GetStringAsync(urlApi);
-            match = Regex.Match(jsonData, @"""img_url"": ?""(.+?)""");
-            string urlUhd = Regex.Unescape(match.Groups[1].Value); // 反转义
-            LogUtil.I("PushService.LoadOne() img url: " + urlUhd);
+        private async Task<bool> LoadYmyouli(bool setDesktopOrLock) {
+            const string URL_API = "https://api.nguaduot.cn/ymyouli/random?client=timelinewallpaper&cate={0}";
+            string urlApi = string.Format(URL_API, ini.Ymyouli.Cate);
+            LogUtil.I("PushService.LoadYmyouli() api url: " + urlApi);
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
+            LogUtil.I("PushService.LoadYmyouli() img url: " + urlUhd);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
+        }
+
+        private async Task<bool> LoadWallhaven(bool setDesktopOrLock) {
+            const string URL_API = "https://api.nguaduot.cn/wallhaven/random?client=timelinewallpaper&cate={0}";
+            string urlApi = string.Format(URL_API, ini.Wallhaven.Cate);
+            LogUtil.I("PushService.LoadWallhaven() api url: " + urlApi);
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
+            LogUtil.I("PushService.LoadWallhaven() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
@@ -364,19 +364,6 @@ namespace TimelineService {
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 
-        private async Task<bool> LoadObzhi(bool setDesktopOrLock) {
-            const string URL_API = "https://api.nguaduot.cn/obzhi/random?client=timelinewallpaper&cate={0}";
-            string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
-            LogUtil.I("PushService.LoadObzhi() api url: " + urlApi);
-            HttpClient client = new HttpClient(new HttpClientHandler {
-                AllowAutoRedirect = false
-            });
-            HttpResponseMessage msg = await client.GetAsync(urlApi);
-            string urlUhd = msg.Headers.Location.AbsoluteUri;
-            LogUtil.I("PushService.LoadObzhi() img url: " + urlUhd);
-            return await SetWallpaper(urlUhd, setDesktopOrLock);
-        }
-
         private async Task<bool> LoadWallhere(bool setDesktopOrLock) {
             const string URL_API = "https://api.nguaduot.cn/wallhere/random?client=timelinewallpaper&cate={0}";
             string urlApi = string.Format(URL_API, ini.Wallhere.Cate);
@@ -387,6 +374,32 @@ namespace TimelineService {
             HttpResponseMessage msg = await client.GetAsync(urlApi);
             string urlUhd = msg.Headers.Location.AbsoluteUri;
             LogUtil.I("PushService.LoadWallhere() img url: " + urlUhd);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
+        }
+
+        private async Task<bool> LoadInfinity(bool setDesktopOrLock) {
+            const string URL_API = "https://infinity-api.infinitynewtab.com/random-wallpaper?_={0}";
+            string urlApi = string.Format(URL_API,
+                (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds);
+            LogUtil.I("PushService.LoadInfinity() api url: " + urlApi);
+            HttpClient client = new HttpClient();
+            string jsonData = await client.GetStringAsync(urlApi);
+            Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
+            string urlUhd = match.Groups[1].Value;
+            LogUtil.I("PushService.LoadInfinity() img url: " + urlUhd);
+            return await SetWallpaper(urlUhd, setDesktopOrLock);
+        }
+
+        private async Task<bool> LoadObzhi(bool setDesktopOrLock) {
+            const string URL_API = "https://api.nguaduot.cn/obzhi/random?client=timelinewallpaper&cate={0}";
+            string urlApi = string.Format(URL_API, ini.Qingbz.Cate);
+            LogUtil.I("PushService.LoadObzhi() api url: " + urlApi);
+            HttpClient client = new HttpClient(new HttpClientHandler {
+                AllowAutoRedirect = false
+            });
+            HttpResponseMessage msg = await client.GetAsync(urlApi);
+            string urlUhd = msg.Headers.Location.AbsoluteUri;
+            LogUtil.I("PushService.LoadObzhi() img url: " + urlUhd);
             return await SetWallpaper(urlUhd, setDesktopOrLock);
         }
 

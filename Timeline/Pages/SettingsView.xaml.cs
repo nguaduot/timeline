@@ -6,12 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Timeline.Beans;
-using Timeline.Providers;
 using Timeline.Utils;
 using Windows.ApplicationModel.Resources;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -30,16 +28,16 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listOneplusOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listOneOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listYmyouliCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listYmyouliOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listOneOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallhavenOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listObzhiCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listObzhiOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
@@ -98,8 +96,8 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            foreach (string item in ObzhiIni.ORDERS) {
-                listObzhiOrder.Add(new CateMeta {
+            foreach (string item in WallhavenIni.ORDERS) {
+                listWallhavenOrder.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Order_" + item)
                 });
@@ -143,24 +141,19 @@ namespace Timeline.Pages {
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
             BoxOneplusOrder.SelectedIndex = listOneplusOrder.Select(t => t.Id).ToList().IndexOf(((OneplusIni)ini.GetIni(OneplusIni.ID)).Order);
-            //BoxTimelineCate.SelectedIndex = listTimelineCate.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Cate);
             BoxTimelineOrder.SelectedIndex = listTimelineOrder.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Order);
+            BoxOneOrder.SelectedIndex = listOneOrder.Select(t => t.Id).ToList().IndexOf(((OneIni)ini.GetIni(OneIni.ID)).Order);
             BoxHimawari8Offset.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Offset;
             BoxHimawari8Ratio.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Ratio;
-            //BoxYmyouliCate.SelectedIndex = listYmyouliCate.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Cate);
             BoxYmyouliOrder.SelectedIndex = listYmyouliOrder.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Order);
-            BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
-            BoxOneOrder.SelectedIndex = listOneOrder.Select(t => t.Id).ToList().IndexOf(((OneIni)ini.GetIni(OneIni.ID)).Order);
-            //BoxQingbzCate.SelectedIndex = listQingbzCate.Select(t => t.Id).ToList().IndexOf(((QingbzIni)ini.GetIni(QingbzIni.ID)).Cate);
+            BoxWallhavenOrder.SelectedIndex = listWallhavenOrder.Select(t => t.Id).ToList().IndexOf(((WallhavenIni)ini.GetIni(WallhavenIni.ID)).Order);
             BoxQingbzOrder.SelectedIndex = listQingbzOrder.Select(t => t.Id).ToList().IndexOf(((QingbzIni)ini.GetIni(QingbzIni.ID)).Order);
-            //BoxObzhiCate.SelectedIndex = listObzhiCate.Select(t => t.Id).ToList().IndexOf(((ObzhiIni)ini.GetIni(ObzhiIni.ID)).Cate);
-            BoxObzhiOrder.SelectedIndex = listObzhiOrder.Select(t => t.Id).ToList().IndexOf(((ObzhiIni)ini.GetIni(ObzhiIni.ID)).Order);
-            //BoxWallhereCate.SelectedIndex = listWallhereCate.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Cate);
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
-            //BoxLspCate.SelectedIndex = listLspCate.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Cate);
+            BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
 
-            ExpanderLsp.Visibility = ini.R18 == 1 ? Visibility.Visible : Visibility.Collapsed;
+            ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
+                ? Visibility.Visible : Visibility.Collapsed;
 
             RadioButton rb = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(c => ini.Theme.Equals(c?.Tag?.ToString()));
             rb.IsChecked = true;
@@ -176,16 +169,16 @@ namespace Timeline.Pages {
         private async Task RandomGlitter() {
             IList<string> glitter = await FileUtil.GetGlitterAsync();
             LogUtil.I("RandomGlitter() " + glitter.Count);
-            if (glitter.Count >= 3) {
-                string glitter1 = glitter[new Random().Next(glitter.Count)];
-                glitter.Remove(glitter1);
-                SettingsCdnDesc.Text = glitter1;
-                string glitter2 = glitter[new Random().Next(glitter.Count)];
-                SettingsReviewDesc.Text = glitter2;
-                glitter.Remove(glitter2);
-                string glitter3 = glitter[new Random().Next(glitter.Count)];
-                SettingsThankDesc.Text = glitter3;
+            List<string> glitterRandom = new List<string>();
+            for (int i = 0; i < glitter.Count && i < 3; i++) {
+                string target = glitter[new Random().Next(glitter.Count)];
+                glitter.Remove(target);
+                glitterRandom.Add(target);
             }
+            glitterRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
+            SettingsReviewDesc.Text = glitterRandom[0];
+            SettingsThankDesc.Text = glitterRandom[1];
+            SettingsCdnDesc.Text = glitterRandom[2];
         }
 
         private void RefreshProviderExpander(string providerId = null) {
@@ -208,6 +201,10 @@ namespace Timeline.Pages {
             SettingsTimelineTitle.Text = (TimelineIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + TimelineIni.ID);
             SettingsTimelineDesc.Text = resLoader.GetString("Slogan_" + TimelineIni.ID);
 
+            ExpanderOne.IsExpanded = OneIni.ID.Equals(providerId);
+            SettingsOneTitle.Text = (OneIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneIni.ID);
+            SettingsOneDesc.Text = resLoader.GetString("Slogan_" + OneIni.ID);
+
             ExpanderHimawari8.IsExpanded = Himawari8Ini.ID.Equals(providerId);
             SettingsHimawari8Title.Text = (Himawari8Ini.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + Himawari8Ini.ID);
             SettingsHimawari8Desc.Text = resLoader.GetString("Slogan_" + Himawari8Ini.ID);
@@ -216,25 +213,21 @@ namespace Timeline.Pages {
             SettingsYmyouliTitle.Text = (YmyouliIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + YmyouliIni.ID);
             SettingsYmyouliDesc.Text = resLoader.GetString("Slogan_" + YmyouliIni.ID);
 
-            ExpanderInfinity.IsExpanded = InfinityIni.ID.Equals(providerId);
-            SettingsInfinityTitle.Text = (InfinityIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + InfinityIni.ID);
-            SettingsInfinityDesc.Text = resLoader.GetString("Slogan_" + InfinityIni.ID);
-
-            ExpanderOne.IsExpanded = OneIni.ID.Equals(providerId);
-            SettingsOneTitle.Text = (OneIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneIni.ID);
-            SettingsOneDesc.Text = resLoader.GetString("Slogan_" + OneIni.ID);
+            ExpanderWallhaven.IsExpanded = WallhavenIni.ID.Equals(providerId);
+            SettingsWallhavenTitle.Text = (WallhavenIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + WallhavenIni.ID);
+            SettingsWallhavenDesc.Text = resLoader.GetString("Slogan_" + WallhavenIni.ID);
 
             ExpanderQingbz.IsExpanded = QingbzIni.ID.Equals(providerId);
             SettingsQingbzTitle.Text = (QingbzIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + QingbzIni.ID);
             SettingsQingbzDesc.Text = resLoader.GetString("Slogan_" + QingbzIni.ID);
 
-            ExpanderObzhi.IsExpanded = ObzhiIni.ID.Equals(providerId);
-            SettingsObzhiTitle.Text = (ObzhiIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + ObzhiIni.ID);
-            SettingsObzhiDesc.Text = resLoader.GetString("Slogan_" + ObzhiIni.ID);
-
             ExpanderWallhere.IsExpanded = WallhereIni.ID.Equals(providerId);
             SettingsWallhereTitle.Text = (WallhereIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + WallhereIni.ID);
             SettingsWallhereDesc.Text = resLoader.GetString("Slogan_" + WallhereIni.ID);
+
+            ExpanderInfinity.IsExpanded = InfinityIni.ID.Equals(providerId);
+            SettingsInfinityTitle.Text = (InfinityIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + InfinityIni.ID);
+            SettingsInfinityDesc.Text = resLoader.GetString("Slogan_" + InfinityIni.ID);
 
             ExpanderLsp.IsExpanded = LspIni.ID.Equals(providerId);
             SettingsLspTitle.Text = (LspIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + LspIni.ID);
@@ -277,11 +270,11 @@ namespace Timeline.Pages {
                 case YmyouliIni.ID:
                     await RefreshProviderCate(BoxYmyouliCate, listYmyouliCate, ini.GetIni(providerId));
                     break;
+                case WallhavenIni.ID:
+                    await RefreshProviderCate(BoxWallhavenCate, listWallhavenCate, ini.GetIni(providerId));
+                    break;
                 case QingbzIni.ID:
                     await RefreshProviderCate(BoxQingbzCate, listQingbzCate, ini.GetIni(providerId));
-                    break;
-                case ObzhiIni.ID:
-                    await RefreshProviderCate(BoxObzhiCate, listObzhiCate, ini.GetIni(providerId));
                     break;
                 case WallhereIni.ID:
                     await RefreshProviderCate(BoxWallhereCate, listWallhereCate, ini.GetIni(providerId));
@@ -551,28 +544,28 @@ namespace Timeline.Pages {
             _ = Api.RankAsync(QingbzIni.ID, null, "donate");
         }
 
-        private async void BoxObzhiCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxWallhavenCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(ObzhiIni.ID);
+            BaseIni bi = ini.GetIni(WallhavenIni.ID);
             if (cate.Equals(bi.Cate)) {
                 return;
             }
             bi.Cate = cate;
-            await IniUtil.SaveObzhiCateAsync(bi.Cate);
+            await IniUtil.SaveWallhavenCateAsync(bi.Cate);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private async void BoxObzhiOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxWallhavenOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(ObzhiIni.ID);
+            BaseIni bi = ini.GetIni(WallhavenIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveObzhiOrderAsync(bi.Order);
+            await IniUtil.SaveWallhavenOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

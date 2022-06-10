@@ -9,13 +9,14 @@ namespace Timeline.Utils {
             { NasaIni.ID, new NasaIni() },
             { OneplusIni.ID, new OneplusIni() },
             { TimelineIni.ID, new TimelineIni() },
+            { OneIni.ID, new OneIni() },
             { Himawari8Ini.ID, new Himawari8Ini() },
             { YmyouliIni.ID, new YmyouliIni() },
-            { InfinityIni.ID, new InfinityIni() },
-            { OneIni.ID, new OneIni() },
+            { WallhavenIni.ID, new WallhavenIni() },
             { QingbzIni.ID, new QingbzIni() },
-            { ObzhiIni.ID, new ObzhiIni() },
             { WallhereIni.ID, new WallhereIni() },
+            { InfinityIni.ID, new InfinityIni() },
+            { ObzhiIni.ID, new ObzhiIni() },
             { LspIni.ID, new LspIni() }
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
@@ -228,6 +229,23 @@ namespace Timeline.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
     }
 
+    public class OneIni : BaseIni {
+        public const string ID = "one";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
+
+        public OneIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "date";
+        }
+
+        public override bool IsSequential() => "date".Equals(Order);
+
+        public override BaseProvider GenerateProvider() => new OneProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+    }
+
     public class Himawari8Ini : BaseIni {
         public const string ID = "himawari8";
         
@@ -276,36 +294,24 @@ namespace Timeline.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
-    public class InfinityIni : BaseIni {
-        public const string ID = "infinity";
-        public static readonly List<string> ORDERS = new List<string>() { "random", "score" };
+    public class WallhavenIni : BaseIni {
+        public const string ID = "wallhaven";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        //public static readonly List<string> CATE = new List<string>() { "", "acg", "specific", "concise",
+        //    "nature", "portrait", "game", "animal" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/wallhaven/cate?client=timelinewallpaper";
 
-        public InfinityIni() {
+        public WallhavenIni() {
             Id = ID;
             Orders = ORDERS;
             Order = "random";
         }
 
-        public override BaseProvider GenerateProvider() => new InfinityProvider { Id = this.Id };
+        public override string GetCateApi() => URL_API_CATE;
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
-    }
+        public override BaseProvider GenerateProvider() => new WallhavenProvider { Id = this.Id };
 
-    public class OneIni : BaseIni {
-        public const string ID = "one";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
-
-        public OneIni() {
-            Id = ID;
-            Orders = ORDERS;
-            Order = "date";
-        }
-
-        public override bool IsSequential() => "date".Equals(Order);
-
-        public override BaseProvider GenerateProvider() => new OneProvider { Id = this.Id };
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
     public class QingbzIni : BaseIni {
@@ -328,6 +334,41 @@ namespace Timeline.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 
+    public class WallhereIni : BaseIni {
+        public const string ID = "wallhere";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        //public static readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/wallhere/cate?client=timelinewallpaper";
+
+        public WallhereIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new WallhereProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+    }
+
+    public class InfinityIni : BaseIni {
+        public const string ID = "infinity";
+        public static readonly List<string> ORDERS = new List<string>() { "random", "score" };
+
+        public InfinityIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override BaseProvider GenerateProvider() => new InfinityProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+    }
+
+    // deprecated
     public class ObzhiIni : BaseIni {
         public const string ID = "obzhi";
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
@@ -344,25 +385,6 @@ namespace Timeline.Utils {
         public override string GetCateApi() => URL_API_CATE;
 
         public override BaseProvider GenerateProvider() => new ObzhiProvider { Id = this.Id };
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
-    }
-
-    public class WallhereIni : BaseIni {
-        public const string ID = "wallhere";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
-        //public static readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
-        public const string URL_API_CATE = "https://api.nguaduot.cn/wallhere/cate?client=timelinewallpaper";
-
-        public WallhereIni() {
-            Id = ID;
-            Orders = ORDERS;
-            Order = "random";
-        }
-
-        public override string GetCateApi() => URL_API_CATE;
-
-        public override BaseProvider GenerateProvider() => new WallhereProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }

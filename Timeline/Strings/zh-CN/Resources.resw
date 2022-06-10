@@ -138,24 +138,6 @@
   <data name="MenuProvider.Label" xml:space="preserve">
     <value>切换默认图源</value>
   </data>
-  <data name="MenuProviderBing.Text" xml:space="preserve">
-    <value>Microsoft Bing - 每天发现一个新地方</value>
-  </data>
-  <data name="MenuProviderInfinity.Text" xml:space="preserve">
-    <value>Infinity - 精选壁纸</value>
-  </data>
-  <data name="MenuProviderNasa.Text" xml:space="preserve">
-    <value>NASA - 每日天文一图</value>
-  </data>
-  <data name="MenuProviderOneplus.Text" xml:space="preserve">
-    <value>OnePlus - Shot on OnePlus</value>
-  </data>
-  <data name="MenuProviderTimeline.Text" xml:space="preserve">
-    <value>拾光 - 时光如歌，岁月如诗</value>
-  </data>
-  <data name="MenuProviderYmyouli.Text" xml:space="preserve">
-    <value>一梦幽黎 - 8K优质壁纸资源</value>
-  </data>
   <data name="MenuPushDesktop.Label" xml:space="preserve">
     <value>推送桌面背景</value>
   </data>
@@ -235,7 +217,7 @@
     <value>时光如歌，岁月如诗</value>
   </data>
   <data name="Slogan_infinity" xml:space="preserve">
-    <value>精选壁纸</value>
+    <value>精选高清壁纸</value>
   </data>
   <data name="Slogan_nasa" xml:space="preserve">
     <value>每日天文一图</value>
@@ -254,9 +236,6 @@
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
     <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，前往</value>
-  </data>
-  <data name="MenuProviderHimawari8.Text" xml:space="preserve">
-    <value>向日葵8号 - 实时地球</value>
   </data>
   <data name="Provider_himawari8" xml:space="preserve">
     <value>向日葵8号</value>
@@ -507,9 +486,6 @@
   <data name="Slogan_one" xml:space="preserve">
     <value>复杂世界里，一个就够了</value>
   </data>
-  <data name="MenuProviderOne.Text" xml:space="preserve">
-    <value>ONE · 一个 - 复杂世界里，一个就够了</value>
-  </data>
   <data name="TextOneOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
@@ -519,14 +495,8 @@
   <data name="BtnYmyouliDonate.Content" xml:space="preserve">
     <value>前往官网</value>
   </data>
-  <data name="SettingsReviewDesc.Text" xml:space="preserve">
-    <value>连雨不知春去，一晴方觉夏深</value>
-  </data>
   <data name="SettingsReviewTitle.Text" xml:space="preserve">
     <value>支持</value>
-  </data>
-  <data name="SettingsThankDesc.Text" xml:space="preserve">
-    <value>最是人间留不住，朱颜辞镜花辞树</value>
   </data>
   <data name="SettingsThankTitle.Text" xml:space="preserve">
     <value>致谢</value>
@@ -552,9 +522,6 @@
   <data name="BtnQingbzDonate.Content" xml:space="preserve">
     <value>前往官网</value>
   </data>
-  <data name="MenuProviderQingbz.Text" xml:space="preserve">
-    <value>轻壁纸 - 4K壁纸分享站</value>
-  </data>
   <data name="MsgCopiedMeta" xml:space="preserve">
     <value>已复制JSON</value>
   </data>
@@ -576,29 +543,23 @@
   <data name="UrlQingbz" xml:space="preserve">
     <value>https://bz.qinggongju.com/1159-2/</value>
   </data>
-  <data name="MenuProviderObzhi.Text" xml:space="preserve">
-    <value>乌云壁纸 - 高清壁纸站</value>
-  </data>
   <data name="Provider_obzhi" xml:space="preserve">
     <value>乌云壁纸</value>
   </data>
   <data name="Slogan_obzhi" xml:space="preserve">
     <value>高清壁纸站</value>
   </data>
-  <data name="TextObzhiCate.Text" xml:space="preserve">
+  <data name="TextWallhavenCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TextObzhiOrder.Text" xml:space="preserve">
+  <data name="TextWallhavenOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
   <data name="MsgYesterdayDesc" xml:space="preserve">
     <value>还可用向左键、鼠标滚轮或滑动来回顾</value>
   </data>
-  <data name="MenuProviderWallhere.Text" xml:space="preserve">
-    <value>WallHere - 世界著名的壁纸网站之一</value>
-  </data>
   <data name="Slogan_wallhere" xml:space="preserve">
-    <value>世界著名的壁纸网站之一</value>
+    <value>One of the best hd wallpapers site!</value>
   </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>类别</value>
@@ -650,9 +611,6 @@
   </data>
   <data name="TextLspOrder.Text" xml:space="preserve">
     <value>排序</value>
-  </data>
-  <data name="MenuProviderLsp.Text" xml:space="preserve">
-    <value>LSP - 不可描述</value>
   </data>
   <data name="ActionContinue" xml:space="preserve">
     <value>继续</value>
@@ -717,11 +675,14 @@
   <data name="TextThank3.Text" xml:space="preserve">
     <value>微信公众号 @网罗灯下黑：发文推荐</value>
   </data>
-  <data name="SettingsCdnDesc.Text" xml:space="preserve">
-    <value>愿随夫子上天台，闲与仙人扫落花</value>
+  <data name="Provider_wallhaven" xml:space="preserve">
+    <value>wallhaven</value>
   </data>
   <data name="SettingsCdnTitle.Text" xml:space="preserve">
     <value>寻求CDN赞助</value>
+  </data>
+  <data name="Slogan_wallhaven" xml:space="preserve">
+    <value>The best wallpapers on the Net!</value>
   </data>
   <data name="TextCdn0.Text" xml:space="preserve">
     <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您能提供赞助，请发</value>
@@ -731,5 +692,8 @@
   </data>
   <data name="TextCdn2.Text" xml:space="preserve">
     <value>联系我。</value>
+  </data>
+  <data name="Glitter.Text" xml:space="preserve">
+    <value>时光如歌，岁月如诗</value>
   </data>
 </root>

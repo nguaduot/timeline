@@ -23,7 +23,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.5.ini";
+        private const string FILE_INI = "timeline-5.6.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -44,7 +44,7 @@ namespace Timeline.Utils {
                 if (oldFiles.Length > 0) { // 继承设置
                     LogUtil.D("GenerateIniFileAsync() inherit: " + oldFiles[0].Name);
                     StringBuilder sb = new StringBuilder(1024);
-                    _ = GetPrivateProfileString("app", "provider", "bing", sb, 1024, oldFiles[0].FullName);
+                    _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "provider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
@@ -52,19 +52,9 @@ namespace Timeline.Utils {
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
+                    _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, oldFiles[0].FullName);
+                    _ = WritePrivateProfileString("app", "cache", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                    if (sb.ToString().Equals("0")) {
-                        _ = GetPrivateProfileString("ymyouli", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                        if (sb.ToString().Equals("0")) {
-                            _ = GetPrivateProfileString("qingbz", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                            if (sb.ToString().Equals("0")) {
-                                _ = GetPrivateProfileString("obzhi", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                                if (sb.ToString().Equals("0")) {
-                                    _ = GetPrivateProfileString("wallhere", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                                }
-                            }
-                        }
-                    }
                     _ = WritePrivateProfileString("app", "r18", sb.ToString(), iniFile.Path);
                 }
             }
@@ -99,99 +89,109 @@ namespace Timeline.Utils {
 
         public static async Task SaveBingLangAsync(string langCode) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("bing", "lang", langCode, iniFile.Path);
+            _ = WritePrivateProfileString(BingIni.ID, "lang", langCode, iniFile.Path);
         }
 
         public static async Task SaveNasaMirrorAsync(string mirror) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("nasa", "mirror", mirror, iniFile.Path);
+            _ = WritePrivateProfileString(NasaIni.ID, "mirror", mirror, iniFile.Path);
         }
 
         public static async Task SaveOneplusOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("oneplus", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(OneplusIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveTimelineOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("timeline", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(TimelineIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveTimelineCateAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("timeline", "cate", order, iniFile.Path);
+            _ = WritePrivateProfileString(TimelineIni.ID, "cate", order, iniFile.Path);
         }
 
         public static async Task SaveHimawari8OffsetAsync(float offset) {
             offset = offset < 0.01f ? 0.01f : (offset > 1 ? 1 : offset);
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("himawari8", "offset", offset.ToString("0.00"), iniFile.Path);
+            _ = WritePrivateProfileString(Himawari8Ini.ID, "offset", offset.ToString("0.00"), iniFile.Path);
         }
 
         public static async Task SaveHimawari8RatioAsync(float ratio) {
             ratio = ratio < 0.1f ? 0.1f : (ratio > 1 ? 1 : ratio);
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("himawari8", "ratio", ratio.ToString("0.00"), iniFile.Path);
+            _ = WritePrivateProfileString(Himawari8Ini.ID, "ratio", ratio.ToString("0.00"), iniFile.Path);
         }
 
         public static async Task SaveYmyouliOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("ymyouli", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(YmyouliIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveYmyouliCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("ymyouli", "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(YmyouliIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveInfinityOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("infinity", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(InfinityIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveOneOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("one", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(OneIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveQingbzOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("qingbz", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(QingbzIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveQingbzCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("qingbz", "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(QingbzIni.ID, "cate", cate, iniFile.Path);
         }
 
-        public static async Task SaveObzhiOrderAsync(string order) {
+        public static async Task SaveWallhavenOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("obzhi", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(WallhavenIni.ID, "order", order, iniFile.Path);
         }
 
-        public static async Task SaveObzhiCateAsync(string cate) {
+        public static async Task SaveWallhavenCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("obzhi", "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(WallhavenIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveWallhereOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("wallhere", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(WallhereIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveWallhereCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("wallhere", "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(WallhereIni.ID, "cate", cate, iniFile.Path);
+        }
+
+        public static async Task SaveObzhiOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(ObzhiIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveObzhiCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(ObzhiIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveLspOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("lsp", "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(LspIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveLspCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString("lsp", "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(LspIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task<StorageFile> GetIniPath() {
@@ -206,7 +206,7 @@ namespace Timeline.Utils {
                 return ini;
             }
             StringBuilder sb = new StringBuilder(1024);
-            _ = GetPrivateProfileString("app", "provider", "bing", sb, 1024, iniFile);
+            _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, iniFile);
             ini.Provider = sb.ToString();
             _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, iniFile);
             ini.DesktopProvider = sb.ToString();
@@ -220,151 +220,164 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;
-            _ = GetPrivateProfileString("bing", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(BingIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int desktopPeriod);
-            _ = GetPrivateProfileString("bing", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(BingIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int lockPeriod);
-            _ = GetPrivateProfileString("bing", "lang", "", sb, 1024, iniFile);
-            ini.SetIni("bing", new BingIni {
+            _ = GetPrivateProfileString(BingIni.ID, "lang", "", sb, 1024, iniFile);
+            ini.SetIni(BingIni.ID, new BingIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Lang = sb.ToString()
             });
-            _ = GetPrivateProfileString("nasa", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(NasaIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("nasa", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(NasaIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("nasa", "mirror", "", sb, 1024, iniFile);
-            ini.SetIni("nasa", new NasaIni {
+            _ = GetPrivateProfileString(NasaIni.ID, "mirror", "", sb, 1024, iniFile);
+            ini.SetIni(NasaIni.ID, new NasaIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Mirror = sb.ToString()
             });
-            _ = GetPrivateProfileString("oneplus", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(OneplusIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("oneplus", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(OneplusIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("oneplus", "order", "date", sb, 1024, iniFile);
-            ini.SetIni("oneplus", new OneplusIni {
+            _ = GetPrivateProfileString(OneplusIni.ID, "order", "date", sb, 1024, iniFile);
+            ini.SetIni(OneplusIni.ID, new OneplusIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Order = sb.ToString()
             });
-            _ = GetPrivateProfileString("timeline", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(TimelineIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("timeline", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(TimelineIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
             TimelineIni timelineIni = new TimelineIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod
             };
-            _ = GetPrivateProfileString("timeline", "order", "date", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(TimelineIni.ID, "order", "date", sb, 1024, iniFile);
             timelineIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("timeline", "cate", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(TimelineIni.ID, "cate", "", sb, 1024, iniFile);
             timelineIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString("timeline", "unauthorized", "0", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(TimelineIni.ID, "unauthorized", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int unauthorized);
             timelineIni.Unauthorized = unauthorized;
-            ini.SetIni("timeline", timelineIni);
-            _ = GetPrivateProfileString("ymyouli", "desktopperiod", "24", sb, 1024, iniFile);
+            ini.SetIni(TimelineIni.ID, timelineIni);
+            _ = GetPrivateProfileString(OneIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("ymyouli", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(OneIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            YmyouliIni ymyouliIni = new YmyouliIni {
+            _ = GetPrivateProfileString(OneIni.ID, "order", "date", sb, 1024, iniFile);
+            ini.SetIni(OneIni.ID, new OneIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
-            };
-            _ = GetPrivateProfileString("ymyouli", "order", "random", sb, 1024, iniFile);
-            ymyouliIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("ymyouli", "cate", "", sb, 1024, iniFile);
-            ymyouliIni.Cate = sb.ToString();
-            ini.SetIni("ymyouli", ymyouliIni);
-            _ = GetPrivateProfileString("himawari8", "desktopperiod", "1", sb, 1024, iniFile);
+                LockPeriod = lockPeriod,
+                Order = sb.ToString()
+            });
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "desktopperiod", "1", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("himawari8", "lockperiod", "2", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "lockperiod", "2", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("himawari8", "offset", "0.50", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "offset", "0.50", sb, 1024, iniFile);
             _ = float.TryParse(sb.ToString(), out float offset);
-            _ = GetPrivateProfileString("himawari8", "ratio", "0.50", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "ratio", "0.50", sb, 1024, iniFile);
             _ = float.TryParse(sb.ToString(), out float ratio);
-            ini.SetIni("himawari8", new Himawari8Ini {
+            ini.SetIni(Himawari8Ini.ID, new Himawari8Ini {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Offset = offset,
                 Ratio = ratio
             });
-            _ = GetPrivateProfileString("infinity", "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(YmyouliIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("infinity", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(YmyouliIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("infinity", "order", "random", sb, 1024, iniFile);
-            ini.SetIni("infinity", new InfinityIni {
+            YmyouliIni ymyouliIni = new YmyouliIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod,
-                Order = sb.ToString()
-            });
-            _ = GetPrivateProfileString("one", "desktopperiod", "24", sb, 1024, iniFile);
+                LockPeriod = lockPeriod
+            };
+            _ = GetPrivateProfileString(YmyouliIni.ID, "order", "random", sb, 1024, iniFile);
+            ymyouliIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(YmyouliIni.ID, "cate", "", sb, 1024, iniFile);
+            ymyouliIni.Cate = sb.ToString();
+            ini.SetIni(YmyouliIni.ID, ymyouliIni);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("one", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString("one", "order", "date", sb, 1024, iniFile);
-            ini.SetIni("one", new OneIni {
+            WallhavenIni wallhavenIni = new WallhavenIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod,
-                Order = sb.ToString()
-            });
-            _ = GetPrivateProfileString("qingbz", "desktopperiod", "24", sb, 1024, iniFile);
+                LockPeriod = lockPeriod
+            };
+            _ = GetPrivateProfileString(WallhavenIni.ID, "order", "random", sb, 1024, iniFile);
+            wallhavenIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
+            wallhavenIni.Cate = sb.ToString();
+            ini.SetIni(WallhavenIni.ID, wallhavenIni);
+            _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("qingbz", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(QingbzIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
             QingbzIni qingbzIni = new QingbzIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod
             };
-            _ = GetPrivateProfileString("qingbz", "order", "random", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(QingbzIni.ID, "order", "random", sb, 1024, iniFile);
             qingbzIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("qingbz", "cate", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(QingbzIni.ID, "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
-            ini.SetIni("qingbz", qingbzIni);
-            _ = GetPrivateProfileString("obzhi", "desktopperiod", "24", sb, 1024, iniFile);
+            ini.SetIni(QingbzIni.ID, qingbzIni);
+            _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("obzhi", "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out lockPeriod);
-            ObzhiIni obzhiIni = new ObzhiIni {
-                DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
-            };
-            _ = GetPrivateProfileString("obzhi", "order", "random", sb, 1024, iniFile);
-            obzhiIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("obzhi", "cate", "", sb, 1024, iniFile);
-            obzhiIni.Cate = sb.ToString();
-            ini.SetIni("obzhi", obzhiIni);
-            _ = GetPrivateProfileString("wallhere", "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("wallhere", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(WallhereIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
             WallhereIni wallhereIni = new WallhereIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod
             };
-            _ = GetPrivateProfileString("wallhere", "order", "random", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(WallhereIni.ID, "order", "random", sb, 1024, iniFile);
             wallhereIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("wallhere", "cate", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(WallhereIni.ID, "cate", "", sb, 1024, iniFile);
             wallhereIni.Cate = sb.ToString();
-            ini.SetIni("wallhere", wallhereIni);
-            _ = GetPrivateProfileString("lsp", "desktopperiod", "24", sb, 1024, iniFile);
+            ini.SetIni(wallhereIni.Id, wallhereIni);
+            _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString("lsp", "lockperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(InfinityIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(InfinityIni.ID, "order", "random", sb, 1024, iniFile);
+            ini.SetIni(InfinityIni.ID, new InfinityIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                Order = sb.ToString()
+            });
+            _ = GetPrivateProfileString(ObzhiIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(ObzhiIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            ObzhiIni obzhiIni = new ObzhiIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod
+            };
+            _ = GetPrivateProfileString(ObzhiIni.ID, "order", "random", sb, 1024, iniFile);
+            obzhiIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(ObzhiIni.ID, "cate", "", sb, 1024, iniFile);
+            obzhiIni.Cate = sb.ToString();
+            ini.SetIni(ObzhiIni.ID, obzhiIni);
+            _ = GetPrivateProfileString(LspIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(LspIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
             LspIni lspIni = new LspIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod
             };
-            _ = GetPrivateProfileString("lsp", "order", "random", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(LspIni.ID, "order", "random", sb, 1024, iniFile);
             lspIni.Order = sb.ToString();
-            _ = GetPrivateProfileString("lsp", "cate", "", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
-            ini.SetIni("lsp", lspIni);
+            ini.SetIni(LspIni.ID, lspIni);
             return ini;
         }
 

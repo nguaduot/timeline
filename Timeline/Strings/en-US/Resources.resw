@@ -138,24 +138,6 @@
   <data name="MenuProvider.Label" xml:space="preserve">
     <value>Provider</value>
   </data>
-  <data name="MenuProviderBing.Text" xml:space="preserve">
-    <value>Microsoft Bing - Explorer the world one photo at a time</value>
-  </data>
-  <data name="MenuProviderInfinity.Text" xml:space="preserve">
-    <value>Infinity - Pictures from all over the world</value>
-  </data>
-  <data name="MenuProviderNasa.Text" xml:space="preserve">
-    <value>NASA - Astronomy picture of the day</value>
-  </data>
-  <data name="MenuProviderOneplus.Text" xml:space="preserve">
-    <value>OnePlus - Shot on OnePlus</value>
-  </data>
-  <data name="MenuProviderTimeline.Text" xml:space="preserve">
-    <value>Timeline - One photo one story</value>
-  </data>
-  <data name="MenuProviderYmyouli.Text" xml:space="preserve">
-    <value>Ymyouli - 8K high-quality wallpapers</value>
-  </data>
   <data name="MenuPushDesktop.Label" xml:space="preserve">
     <value>Push desktop</value>
   </data>
@@ -235,7 +217,7 @@
     <value>One photo one story</value>
   </data>
   <data name="Slogan_infinity" xml:space="preserve">
-    <value>Pictures from all over the world</value>
+    <value>Selected HD Wallpaper</value>
   </data>
   <data name="Slogan_nasa" xml:space="preserve">
     <value>Astronomy picture of the day</value>
@@ -254,9 +236,6 @@
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
     <value>If you like Timeline, rate it on</value>
-  </data>
-  <data name="MenuProviderHimawari8.Text" xml:space="preserve">
-    <value>Himawari-8 - Real-time earth</value>
   </data>
   <data name="Provider_himawari8" xml:space="preserve">
     <value>Himawari-8</value>
@@ -454,7 +433,7 @@
     <value>WallHere</value>
   </data>
   <data name="Slogan_wallhere" xml:space="preserve">
-    <value>One of the best hd wallpapers site</value>
+    <value>One of the best hd wallpapers site!</value>
   </data>
   <data name="BoxContact.Header" xml:space="preserve">
     <value>Contact (Optional)</value>
@@ -510,9 +489,6 @@
   <data name="Slogan_one" xml:space="preserve">
     <value>ONE IS ALL</value>
   </data>
-  <data name="MenuProviderOne.Text" xml:space="preserve">
-    <value>ONE - ONE IS ALL</value>
-  </data>
   <data name="TextOneOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
@@ -522,14 +498,8 @@
   <data name="BtnYmyouliDonate.Content" xml:space="preserve">
     <value>Go</value>
   </data>
-  <data name="SettingsReviewDesc.Text" xml:space="preserve">
-    <value>连雨不知春去，一晴方觉夏深</value>
-  </data>
   <data name="SettingsReviewTitle.Text" xml:space="preserve">
     <value>Rate it</value>
-  </data>
-  <data name="SettingsThankDesc.Text" xml:space="preserve">
-    <value>最是人间留不住，朱颜辞镜花辞树</value>
   </data>
   <data name="SettingsThankTitle.Text" xml:space="preserve">
     <value>Thanks</value>
@@ -555,9 +525,6 @@
   <data name="BtnQingbzDonate.Content" xml:space="preserve">
     <value>Go</value>
   </data>
-  <data name="MenuProviderQingbz.Text" xml:space="preserve">
-    <value>轻壁纸 - 4K壁纸分享站</value>
-  </data>
   <data name="MsgCopiedMeta" xml:space="preserve">
     <value>Json copied.</value>
   </data>
@@ -576,19 +543,16 @@
   <data name="TextQingbzOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
-  <data name="MenuProviderObzhi.Text" xml:space="preserve">
-    <value>乌云壁纸 - 高清壁纸站</value>
-  </data>
   <data name="Provider_obzhi" xml:space="preserve">
     <value>乌云壁纸</value>
   </data>
   <data name="Slogan_obzhi" xml:space="preserve">
     <value>高清壁纸站</value>
   </data>
-  <data name="TextObzhiCate.Text" xml:space="preserve">
+  <data name="TextWallhavenCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="TextObzhiOrder.Text" xml:space="preserve">
+  <data name="TextWallhavenOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
   <data name="UrlQingbz" xml:space="preserve">
@@ -596,9 +560,6 @@
   </data>
   <data name="MsgYesterdayDesc" xml:space="preserve">
     <value>Use LEFT or WHEEL to look back.</value>
-  </data>
-  <data name="MenuProviderWallhere.Text" xml:space="preserve">
-    <value>WallHere - One of the best hd wallpapers site</value>
   </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>Category</value>
@@ -650,9 +611,6 @@
   </data>
   <data name="TextLspOrder.Text" xml:space="preserve">
     <value>Order</value>
-  </data>
-  <data name="MenuProviderLsp.Text" xml:space="preserve">
-    <value>LSP - R18</value>
   </data>
   <data name="ActionContinue" xml:space="preserve">
     <value>Continue</value>
@@ -717,11 +675,14 @@
   <data name="TextThank3.Text" xml:space="preserve">
     <value>Thank WeChat@网罗灯下黑 for article.</value>
   </data>
-  <data name="SettingsCdnDesc.Text" xml:space="preserve">
-    <value>愿随夫子上天台，闲与仙人扫落花</value>
+  <data name="Provider_wallhaven" xml:space="preserve">
+    <value>wallhaven</value>
   </data>
   <data name="SettingsCdnTitle.Text" xml:space="preserve">
     <value>Seek CDN support</value>
+  </data>
+  <data name="Slogan_wallhaven" xml:space="preserve">
+    <value>The best wallpapers on the Net!</value>
   </data>
   <data name="TextCdn0.Text" xml:space="preserve">
     <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您能提供赞助，请发 </value>
@@ -731,5 +692,8 @@
   </data>
   <data name="TextCdn2.Text" xml:space="preserve">
     <value> 联系我。</value>
+  </data>
+  <data name="Glitter.Text" xml:space="preserve">
+    <value>时光如歌，岁月如诗</value>
   </data>
 </root>
