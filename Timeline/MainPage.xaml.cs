@@ -21,6 +21,7 @@ using Windows.System;
 using Windows.System.UserProfile;
 using Windows.UI.Core;
 using Windows.UI.Shell;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -44,8 +45,6 @@ namespace Timeline {
         private Meta meta = null;
         private bool r18 = false;
         private ReleaseApi release = null;
-        private int dosageLast = 0; // 上次所有图源24h图片用量
-        private int dosageProviderLast = 0; // 上次默认图源24h图片用量
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
 
@@ -101,26 +100,26 @@ namespace Timeline {
                 ini = await IniUtil.GetIniAsync();
             }).Wait();
             InitProvider();
-
-            // 在 WriteDoasage() 之前调用
-            dosageLast = ReadDosage();
-            dosageProviderLast = ReadDosage(ini.Provider);
         }
 
         private async Task LaunchAsync() {
+            // 上传统计
+            Dictionary<string, int> dosage = await FileUtil.ReadDosage();
+            await Api.StatsAsync(ini, dosage.GetValueOrDefault("all", 0), dosage.GetValueOrDefault(ini.Provider, 0));
             // 在缓存可能被使用之前清理缓存
-            int count_clear = FileUtil.ClearCache(ini);
-            LogUtil.I("ClearCache() " + count_clear);
-            // 加载数据
+            FileUtil.ClearCache(ini);
+            // 初始化任务栏右键菜单
+            //await InitJumpList();
+            // 确保推送服务一直运行
+            await RegServiceAsync();
+            // 开始加载数据
             await LoadFocusAsync(ctsLoad.Token);
         }
 
         private async Task CheckLaunchAsync() {
-            // 上传统计
-            await Api.StatsAsync(ini, dosageLast, dosageProviderLast);
+            // 检查R18提示
             int actions = (int)(localSettings.Values["Actions"] ?? 0);
             localSettings.Values["Actions"] = ++actions;
-            // 检查R18提示
             if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
@@ -179,8 +178,7 @@ namespace Timeline {
         }
 
         private async Task LoadFocusAsync(CancellationToken token) {
-            WriteDosage();
-            WriteDosage(ini.Provider);
+            await FileUtil.WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -205,8 +203,7 @@ namespace Timeline {
         }
 
         private async Task LoadYesterdayAsync(CancellationToken token) {
-            WriteDosage();
-            WriteDosage(ini.Provider);
+            await FileUtil.WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -235,8 +232,7 @@ namespace Timeline {
         }
 
         private async Task LoadTomorrowAsync(CancellationToken token) {
-            //WriteDosage();
-            //WriteDosage(ini.Provider);
+            //await FileUtil.WriteDosage(ini.Provider);
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -264,8 +260,7 @@ namespace Timeline {
         }
 
         private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
-            WriteDosage();
-            WriteDosage(ini.Provider);
+            await FileUtil.WriteDosage();
             bool res = await provider.LoadData(token, ini.GetIni(), date);
             if (token.IsCancellationRequested) {
                 return;
@@ -296,7 +291,7 @@ namespace Timeline {
         }
 
         private async Task LoadTargetAsync(int index, CancellationToken token) {
-            WriteDosage();
+            await FileUtil.WriteDosage();
             bool res = await provider.LoadData(token, ini.GetIni());
             if (token.IsCancellationRequested) {
                 return;
@@ -323,10 +318,22 @@ namespace Timeline {
             }
         }
 
-        private async Task Refresh() {
+        private async Task Refresh(bool doNotToastLsp = false) {
             ini = await IniUtil.GetIniAsync();
             InitProvider();
-            ShowToastI(string.Format(resLoader.GetString("MsgRefresh"), resLoader.GetString("Provider_" + provider.Id)));
+            if (!doNotToastLsp && ini.Provider.Equals(MenuProviderLsp.Tag)) { // 防社死
+                r18 = false;
+                ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
+                    resLoader.GetString("ActionContinue"), async () => {
+                        r18 = true;
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        await LoadFocusAsync(ctsLoad.Token);
+                    });
+            } else {
+                ShowToastI(string.Format(resLoader.GetString("MsgRefresh"), resLoader.GetString("Provider_" + provider.Id)));
+            }
 
             ctsLoad.Cancel();
             StatusLoading();
@@ -364,14 +371,6 @@ namespace Timeline {
                 MenuPushLockIcon.Visibility = Visibility.Collapsed;
                 MenuCurLockIcon.Visibility = Visibility.Visible;
                 MenuCurLock.Visibility = Visibility.Visible;
-            }
-            if (string.IsNullOrEmpty(ini.DesktopProvider) && string.IsNullOrEmpty(ini.LockProvider)) {
-                UnregService();
-            } else if (!ini.Provider.Equals(MenuProviderLsp.Tag)) {
-                _ = RegServiceAsync();
-                if (ini.DesktopProvider.Equals(ini.Provider) || ini.LockProvider.Equals(ini.Provider)) {
-                    _ = RunServiceNowAsync(); // 用户浏览图源与推送图源一致，立即推送一次
-                }
             }
 
             //RadioMenuFlyoutItem item = FlyoutProvider.Items.Cast<RadioMenuFlyoutItem>().FirstOrDefault(c => ini.Provider.Equals(c?.Tag?.ToString()));
@@ -702,8 +701,8 @@ namespace Timeline {
             if (bi.Cates.Count == 0) {
                 return;
             }
-            MenuFlyoutItemBase item1 = FlyoutMarkCate.Items[0];
-            MenuFlyoutItemBase item2 = FlyoutMarkCate.Items[1];
+            MenuFlyoutItemBase item1 = FlyoutMarkCate.Items[0]; // 标题行
+            MenuFlyoutItemBase item2 = FlyoutMarkCate.Items[1]; // 分隔线
             FlyoutMarkCate.Items.Clear();
             FlyoutMarkCate.Items.Add(item1);
             FlyoutMarkCate.Items.Add(item2);
@@ -712,6 +711,7 @@ namespace Timeline {
                     Text = cate.Name,
                     Tag = cate.Id
                 };
+                item.IsEnabled = string.IsNullOrEmpty(cate.Name) || !cate.Name.Equals(meta.Cate);
                 item.Click += MenuMarkCate_Click;
                 FlyoutMarkCate.Items.Add(item);
             }
@@ -721,18 +721,17 @@ namespace Timeline {
         }
 
         private async Task<bool> RegServiceAsync() {
-            BackgroundAccessStatus reqStatus = await BackgroundExecutionManager.RequestAccessAsync();
-            LogUtil.D("RegService() RequestAccessAsync " + reqStatus);
-            if (reqStatus != BackgroundAccessStatus.AlwaysAllowed
-                && reqStatus != BackgroundAccessStatus.AllowedSubjectToSystemPolicy) {
-                ShowToastE(resLoader.GetString("TitleErrPush"));
-                return false;
-            }
             if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(BG_TASK_NAME_TIMER))) {
-                LogUtil.W("RegService() service registered already");
+                LogUtil.W("RegServiceAsync() exists True");
                 return true;
             }
-
+            BackgroundAccessStatus reqStatus = await BackgroundExecutionManager.RequestAccessAsync();
+            LogUtil.D("RegServiceAsync() RequestAccessAsync " + reqStatus);
+            if (reqStatus != BackgroundAccessStatus.AlwaysAllowed
+                && reqStatus != BackgroundAccessStatus.AllowedSubjectToSystemPolicy) {
+                ShowToastE(resLoader.GetString("MsgErrService"));
+                return false;
+            }
             BackgroundTaskBuilder builder = new BackgroundTaskBuilder {
                 Name = BG_TASK_NAME_TIMER,
                 TaskEntryPoint = typeof(PushService).FullName
@@ -742,66 +741,76 @@ namespace Timeline {
             // 触发任务的先决条件
             builder.AddCondition(new SystemCondition(SystemConditionType.SessionConnected)); // Internet 必须连接
             _ = builder.Register();
-
-            LogUtil.D("RegService() service registered");
             return true;
         }
 
-        private void UnregService() {
-            foreach (var ta in BackgroundTaskRegistration.AllTasks) {
-                if (ta.Value.Name == BG_TASK_NAME_TIMER) {
-                    ta.Value.Unregister(true);
-                    LogUtil.D("UnregService() service BG_TASK_NAME_TIMER unregistered");
-                } else if (ta.Value.Name == BG_TASK_NAME) {
-                    ta.Value.Unregister(true);
-                    LogUtil.D("UnregService() service BG_TASK_NAME unregistered");
-                }
-            }
-        }
+        //private void UnregService() {
+        //    foreach (var ta in BackgroundTaskRegistration.AllTasks) {
+        //        if (ta.Value.Name == BG_TASK_NAME_TIMER) {
+        //            ta.Value.Unregister(true);
+        //            LogUtil.D("UnregService() service BG_TASK_NAME_TIMER unregistered");
+        //        } else if (ta.Value.Name == BG_TASK_NAME) {
+        //            ta.Value.Unregister(true);
+        //            LogUtil.D("UnregService() service BG_TASK_NAME unregistered");
+        //        }
+        //    }
+        //}
 
         private async Task RunServiceNowAsync() {
-            LogUtil.D("RunServiceNow()");
-
-            ApplicationTrigger _AppTrigger = null;
+            ApplicationTrigger trigger = null;
             foreach (var task in BackgroundTaskRegistration.AllTasks) {
                 if (task.Value.Name == BG_TASK_NAME) { // 已注册
-                    _AppTrigger = (task.Value as BackgroundTaskRegistration).Trigger as ApplicationTrigger;
+                    trigger = (task.Value as BackgroundTaskRegistration).Trigger as ApplicationTrigger;
                     break;
                 }
             }
-            if (_AppTrigger == null) { // 后台任务从未注册过
-                _AppTrigger = new ApplicationTrigger();
+            LogUtil.I("RunServiceNowAsync() exists " + (trigger != null));
+            if (trigger == null) { // 后台任务从未注册过
+                trigger = new ApplicationTrigger();
 
                 BackgroundTaskBuilder builder = new BackgroundTaskBuilder {
                     Name = BG_TASK_NAME,
                     TaskEntryPoint = typeof(PushService).FullName
                 };
-                builder.SetTrigger(_AppTrigger);
+                builder.SetTrigger(trigger);
                 builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
                 _ = builder.Register();
             }
-            await _AppTrigger.RequestAsync();
+            ApplicationTriggerResult res = await trigger.RequestAsync();
         }
 
-        private int ReadDosage(string provider = null) {
-            string key = "Dosage_" + (provider ?? "");
-            return localSettings.Values[key] is string dosage ? dosage.Split(",").Length : 0;
+        private void Mark(string action, string desc) {
+            markTimerMeta = meta;
+            markTimerAction = action;
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), desc), null,
+                resLoader.GetString("ActionUndo"), () => {
+                    CloseToast();
+                    _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+                });
+            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
         }
 
-        private void WriteDosage(string provider = null) {
-            string key = "Dosage_" + (provider ?? "");
-            string[] sec_old = localSettings.Values[key] is string dosage ? dosage.Split(",") : new string[0];
-            List<long> sec_new = new List<long>();
-            long sec_now = DateTime.Now.Ticks / 10000 / 1000;
-            foreach (string item in sec_old) {
-                long sec = long.Parse(item);
-                if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
-                    sec_new.Add(sec);
-                }
-            }
-            sec_new.Add(sec_now);
-            localSettings.Values[key] = string.Join(",", sec_new.ToArray());
-        }
+        //private async Task InitJumpList() {
+        //    if (!JumpList.IsSupported()) {
+        //        return;
+        //    }
+        //    JumpList list = await JumpList.LoadCurrentAsync();
+        //    if (list.Items.Count > 0) { // 已初始化
+        //        return;
+        //    }
+        //    //list.SystemGroupKind = JumpListSystemGroupKind.None;
+        //    //Debug.WriteLine(list.Items.Count);
+        //    //list.Items.Clear();
+        //    JumpListItem itemPushDesktop = JumpListItem.CreateWithArguments("pushdesktop", resLoader.GetString("JumpPushDesktop"));
+        //    itemPushDesktop.Logo = new Uri("ms-appx://Assets/Square44x44Logo.png");
+        //    //itemPushDesktop.GroupName = "push";
+        //    list.Items.Add(itemPushDesktop);
+        //    JumpListItem itemPushLock = JumpListItem.CreateWithArguments("pushlock", resLoader.GetString("JumpPushLock"));
+        //    //itemPushLock.GroupName = "push";
+        //    list.Items.Add(itemPushLock);
+        //    await list.SaveAsync();
+        //    LogUtil.I("InitJumpList() done");
+        //}
 
         private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e) {
             if (resizeTimer == null) {
@@ -833,7 +842,7 @@ namespace Timeline {
 
         private async void MenuSetDesktop_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
+            if (ini.Provider.Equals(MenuProviderLsp.Tag)) { // 防社死
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
                     await SetWallpaperAsync(meta, true);
@@ -849,7 +858,7 @@ namespace Timeline {
 
         private async void MenuSetLock_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
+            if (ini.Provider.Equals(MenuProviderLsp.Tag)) { // 防社死
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
                         await SetWallpaperAsync(meta, false);
@@ -876,14 +885,7 @@ namespace Timeline {
         }
 
         private void MenuMark_Click(object sender, RoutedEventArgs e) {
-            markTimerMeta = meta;
-            markTimerAction = (sender as MenuFlyoutItem).Tag as string;
-            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
-                resLoader.GetString("ActionUndo"), () => {
-                CloseToast();
-                _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
-            });
-            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
+            Mark((sender as MenuFlyoutItem).Tag as string, (sender as MenuFlyoutItem).Text);
         }
 
         private void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
@@ -904,7 +906,7 @@ namespace Timeline {
 
         private async void MenuPush_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-
+            // 刷新推送菜单项
             AppBarButton menuCheck = sender as AppBarButton;
             if (MenuPushDesktop.Tag.Equals(menuCheck.Tag)) {
                 if (MenuPushDesktopIcon.Visibility == Visibility.Visible) {
@@ -930,7 +932,7 @@ namespace Timeline {
                 MenuCurLockIcon.Visibility = Visibility.Collapsed;
                 MenuCurLock.Visibility = Visibility.Collapsed;
             }
-
+            // 保存推送设置
             if (MenuCurDesktopIcon.Visibility == Visibility.Collapsed) {
                 ini.DesktopProvider = MenuPushDesktopIcon.Visibility == Visibility.Visible ? provider.Id : "";
                 await IniUtil.SaveDesktopProviderAsync(ini.DesktopProvider);
@@ -939,35 +941,27 @@ namespace Timeline {
                 ini.LockProvider = MenuPushLockIcon.Visibility == Visibility.Visible ? provider.Id : "";
                 await IniUtil.SaveLockProviderAsync(ini.LockProvider);
             }
-
-            if (string.IsNullOrEmpty(ini.DesktopProvider) && string.IsNullOrEmpty(ini.LockProvider)) {
-                UnregService();
-            } else {
-                await RegServiceAsync();
-                if ((MenuPushDesktop.Tag.Equals(menuCheck.Tag) && MenuPushDesktopIcon.Visibility == Visibility.Visible)
-                    || (MenuPushLock.Tag.Equals(menuCheck.Tag) && MenuPushLockIcon.Visibility == Visibility.Visible)) {
-                    await RunServiceNowAsync(); // 用户浏览图源与推送图源一致，立即推送一次
-                }
+            // 立即推送一次
+            if ((MenuPushDesktop.Tag.Equals(menuCheck.Tag) && MenuPushDesktopIcon.Visibility == Visibility.Visible)
+                || (MenuPushLock.Tag.Equals(menuCheck.Tag) && MenuPushLockIcon.Visibility == Visibility.Visible)) {
+                await RunServiceNowAsync();
             }
-
+            // 显示推送状态
             if (MenuPushDesktop.Tag.Equals(menuCheck.Tag)) {
                 if (MenuPushDesktopIcon.Visibility == Visibility.Visible) {
                     ShowToastS(resLoader.GetString("MsgPushDesktopOn"));
                 } else {
                     ShowToastW(resLoader.GetString("MsgPushDesktopOff"));
                 }
-            }
-            if (MenuCurDesktop.Tag.Equals(menuCheck.Tag)) {
+            } else if (MenuCurDesktop.Tag.Equals(menuCheck.Tag)) {
                 ShowToastW(resLoader.GetString("MsgPushDesktopOff"));
-            }
-            if (MenuPushLock.Tag.Equals(menuCheck.Tag)) {
+            } else if (MenuPushLock.Tag.Equals(menuCheck.Tag)) {
                 if (MenuPushLockIcon.Visibility == Visibility.Visible) {
                     ShowToastS(resLoader.GetString("MsgPushLockOn"));
                 } else {
                     ShowToastW(resLoader.GetString("MsgPushLockOff"));
                 }
-            }
-            if (MenuCurLock.Tag.Equals(menuCheck.Tag)) {
+            } else if (MenuCurLock.Tag.Equals(menuCheck.Tag)) {
                 ShowToastW(resLoader.GetString("MsgPushLockOff"));
             }
         }
@@ -987,12 +981,8 @@ namespace Timeline {
             ViewSplit.IsPaneOpen = true;
         }
 
-        private void ViewSplit_PaneOpened(SplitView sender, object args) {
-            ViewSettings.PaneOpened(ini);
-        }
-
-        private void ViewSplit_PaneClosed(SplitView sender, object args) {
-            ViewSettings.PaneClosed();
+        private async void ViewSplit_PaneOpened(SplitView sender, object args) {
+            await ViewSettings.NotifyPaneOpened(ini);
         }
 
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
@@ -1175,6 +1165,9 @@ namespace Timeline {
                     ShowFlyoutGo();
                     break;
                 case VirtualKey.Number5: // Ctrl + 5
+                    Mark("r22", resLoader.GetString("MarkR22"));
+                    break;
+                case VirtualKey.Number6: // Ctrl + 6
                     await ShowFlyoutMarkCate();
                     break;
                 case VirtualKey.F10: // F10
@@ -1219,7 +1212,7 @@ namespace Timeline {
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.ProviderChanged || e.ProviderConfigChanged) {
-                _ = Refresh();
+                _ = Refresh(e.DoNotToastLsp);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
                 ElementTheme theme = ThemeUtil.ParseTheme(ini.Theme);

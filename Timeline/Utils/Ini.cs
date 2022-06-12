@@ -393,7 +393,7 @@ namespace Timeline.Utils {
         public const string ID = "lsp";
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
         //public static readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
-        public const string URL_API_CATE = "https://api.nguaduot.cn/lsp/cate?client=timelinewallpaper";
+        public const string URL_API_CATE = "https://api.nguaduot.cn/lsp/cate?client=timelinewallpaper&r22={0}";
 
         public LspIni() {
             Id = ID;
@@ -401,10 +401,12 @@ namespace Timeline.Utils {
             Order = "random";
         }
 
-        public override string GetCateApi() => URL_API_CATE;
+        public int R22 { set; get; } = 0;
+
+        public override string GetCateApi() => string.Format(URL_API_CATE, R22);
 
         public override BaseProvider GenerateProvider() => new LspProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r22={R22}";
     }
 }

@@ -194,6 +194,11 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(LspIni.ID, "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveLspR22Async(int r22) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(LspIni.ID, "r22", r22.ToString(), iniFile.Path);
+        }
+
         public static async Task<StorageFile> GetIniPath() {
             return await GenerateIniFileAsync();
         }
@@ -377,6 +382,9 @@ namespace Timeline.Utils {
             lspIni.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(LspIni.ID, "r22", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int r22);
+            lspIni.R22 = r22;
             ini.SetIni(LspIni.ID, lspIni);
             return ini;
         }
@@ -514,6 +522,79 @@ namespace Timeline.Utils {
             }
         }
 
+        public static async Task<Dictionary<string, int>> ReadDosage() {
+            // 读取所有图源24h图片用量
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile file = await folder.CreateFileAsync("dosage.json", CreationCollisionOption.OpenIfExists);
+                string content = await FileIO.ReadTextAsync(file);
+                Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(content) ?? new Dictionary<string, string>();
+                foreach (string k in dic.Keys) {
+                    res[k] = string.IsNullOrEmpty(dic[k]) ? 0 : dic[k].Split(",").Length;
+                }
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("ReadDosage() " + e.Message);
+            }
+            return res;
+
+            //string key = "Dosage_" + (provider ?? "");
+            //return localSettings.Values[key] is string dosage ? dosage.Split(",").Length : 0;
+        }
+
+        public static async Task WriteDosage(string provider = null) {
+            // 刷新所有图源近24h图片用量
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile file = await folder.CreateFileAsync("dosage.json", CreationCollisionOption.OpenIfExists);
+                string content = await FileIO.ReadTextAsync(file);
+                Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(content) ?? new Dictionary<string, string>();
+                string[] sec_old = dic.ContainsKey("all") ? dic["all"].Split(",") : new string[0];
+                List<long> sec_new = new List<long>();
+                long sec_now = DateTime.Now.Ticks / 10000 / 1000;
+                foreach (string item in sec_old) {
+                    long sec = long.Parse(item);
+                    if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+                        sec_new.Add(sec);
+                    }
+                }
+                sec_new.Add(sec_now);
+                dic["all"] = string.Join(",", sec_new.ToArray());
+                if (!string.IsNullOrEmpty(provider)) {
+                    sec_old = dic.ContainsKey(provider) ? dic[provider].Split(",") : new string[0];
+                    sec_new = new List<long>();
+                    foreach (string item in sec_old) {
+                        long sec = long.Parse(item);
+                        if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+                            sec_new.Add(sec);
+                        }
+                    }
+                    sec_new.Add(sec_now);
+                    dic[provider] = string.Join(",", sec_new.ToArray());
+                }
+                await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(dic));
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("WriteDosage() " + e.Message);
+            }
+
+            //string key = "dosage_" + (provider ?? "");
+            //string[] sec_old = localSettings.Values[key] is string dosage ? dosage.Split(",") : new string[0];
+            //List<long> sec_new = new List<long>();
+            //long sec_now = DateTime.Now.Ticks / 10000 / 1000;
+            //foreach (string item in sec_old) {
+            //    long sec = long.Parse(item);
+            //    if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+            //        sec_new.Add(sec);
+            //    }
+            //}
+            //sec_new.Add(sec_now);
+            //localSettings.Values[key] = string.Join(",", sec_new.ToArray());
+        }
+
         public static async Task<StorageFolder> GetLogFolder() {
             return await ApplicationData.Current.LocalFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
         }
@@ -548,7 +629,7 @@ namespace Timeline.Utils {
             }
         }
 
-        public static int ClearCache(Ini ini) {
+        public static void ClearCache(Ini ini) {
             int count_threshold = ini?.Cache ?? 1000; // 缓存量阈值
             StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 缓存文件夹
             try {
@@ -559,11 +640,10 @@ namespace Timeline.Utils {
                     files[i].Delete();
                     count_clear++;
                 }
-                return count_clear;
+                LogUtil.I("ClearCache() " + count_clear);
             } catch (Exception e) {
                 LogUtil.E("ClearCache() " + e.Message);
             }
-            return -1;
         }
     }
 

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Timeline</RootNamespace>
     <AssemblyName>Timeline</AssemblyName>
-    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
@@ -146,6 +146,7 @@
     <Compile Include="Beans\StatsApiReq.cs" />
     <Compile Include="Beans\TimelineApi.cs" />
     <Compile Include="Beans\LspApi.cs" />
+    <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -302,12 +303,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\en-US\Resources.resw">
+    <PRIResource Include="Strings\en-us\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\Resources.resw">
+    <PRIResource Include="Strings\zh-cn\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
   </ItemGroup>

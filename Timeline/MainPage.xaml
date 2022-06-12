@@ -314,16 +314,16 @@
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuMarkR18"
-                            Tag="r18"
+            <MenuFlyoutItem x:Uid="MenuMark404"
+                            Tag="404"
                             Click="MenuMark_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Number3"
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuMark404"
-                            Tag="404"
+            <MenuFlyoutItem x:Uid="MenuMarkR18"
+                            Tag="r18"
                             Click="MenuMark_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Number4"
@@ -368,9 +368,9 @@
                                       Tag="infinity"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
+                                      Tag="lsp"
                                       Click="MenuProvider_Click"
                                       Visibility="Collapsed"
-                                      Tag="lsp"
                                       GroupName="Provider" />
         </MenuFlyout>
 
@@ -404,7 +404,6 @@
     <SplitView Name="ViewSplit"
                IsPaneOpen="False"
                DisplayMode="Overlay"
-               PaneClosed="ViewSplit_PaneClosed"
                PaneOpened="ViewSplit_PaneOpened"
                PaneBackground="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                OpenPaneLength="360">
@@ -452,7 +451,7 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-            <!-- win10 隐藏菜单分隔条，显示突兀 -->
+            <!-- win10 菜单分隔条显示突兀，隐藏处理 -->
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
@@ -547,6 +546,9 @@
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number5"
                                      Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Number6"
+                                     Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="F10"
                                      Modifiers="None"

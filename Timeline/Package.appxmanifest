@@ -9,7 +9,7 @@
   <Identity
     Name="54311Bysyk.forWindows11"
     Publisher="CN=nguaduot"
-    Version="5.6.161.0" />
+    Version="5.6.165.0" />
 
   <mp:PhoneIdentity PhoneProductId="72089c04-a7cf-4ca7-9710-a5a83ac78b21" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -37,7 +37,13 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="ms-resource:AppDesc"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="ms-resource:AppNameShort">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape"/>

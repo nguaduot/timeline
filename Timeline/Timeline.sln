@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timeline", "Timeline.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimelineService", "..\TimelineService\TimelineService.csproj", "{883B65DE-B6F3-4A78-8BF1-BD7A61303B09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimelineTile", "..\TimelineTile\TimelineTile.csproj", "{76D4BC99-89AD-4E77-8758-71EBA6582BDA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,26 +71,6 @@ Global
 		{883B65DE-B6F3-4A78-8BF1-BD7A61303B09}.Release|x64.Build.0 = Release|x64
 		{883B65DE-B6F3-4A78-8BF1-BD7A61303B09}.Release|x86.ActiveCfg = Release|x86
 		{883B65DE-B6F3-4A78-8BF1-BD7A61303B09}.Release|x86.Build.0 = Release|x86
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|ARM.ActiveCfg = Debug|ARM
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|ARM.Build.0 = Debug|ARM
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|ARM64.Build.0 = Debug|ARM64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|x64.ActiveCfg = Debug|x64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|x64.Build.0 = Debug|x64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|x86.ActiveCfg = Debug|x86
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Debug|x86.Build.0 = Debug|x86
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|ARM.ActiveCfg = Release|ARM
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|ARM.Build.0 = Release|ARM
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|ARM64.ActiveCfg = Release|ARM64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|ARM64.Build.0 = Release|ARM64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|x64.ActiveCfg = Release|x64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|x64.Build.0 = Release|x64
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|x86.ActiveCfg = Release|x86
-		{76D4BC99-89AD-4E77-8758-71EBA6582BDA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

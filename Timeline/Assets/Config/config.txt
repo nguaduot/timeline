@@ -264,3 +264,6 @@ cate=
 ; cate=            类别：全部（默认）
 ; cate=acg         类别：纸片
 ; cate=photograph  类别：摄影
+
+r22=0
+; r22={n}  R22内容：0或1（默认为0，不含R22内容）

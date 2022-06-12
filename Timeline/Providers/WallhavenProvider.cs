@@ -8,7 +8,6 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
-using System.Globalization;
 
 namespace Timeline.Providers {
     public class WallhavenProvider : BaseProvider {
@@ -17,7 +16,7 @@ namespace Timeline.Providers {
 
         private const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
-        private Meta ParseBean(YmyouliApiData bean, string order) {
+        private Meta ParseBean(WallhavenApiData bean, string order) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
@@ -25,10 +24,11 @@ namespace Timeline.Providers {
                 Title = bean.Title,
                 Story = bean.Story,
                 Cate = bean.CateName,
+                Src = bean.SrcUrl,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {
-                meta.Copyright = "© " + bean.Copyright;
+                meta.Copyright = "@" + bean.Copyright;
             }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
@@ -48,19 +48,19 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, ini, date);
 
-            string urlApi = string.Format(URL_API, ((YmyouliIni)ini).Cate, ((YmyouliIni)ini).Order, ++pageIndex);
+            string urlApi = string.Format(URL_API, ((WallhavenIni)ini).Cate, ((WallhavenIni)ini).Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
                 HttpResponseMessage res = await client.GetAsync(urlApi, token);
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+                WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (YmyouliApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ((YmyouliIni)ini).Order));
+                foreach (WallhavenApiData item in api.Data) {
+                    metasAdd.Add(ParseBean(item, ((WallhavenIni)ini).Order));
                 }
-                if ("date".Equals(((YmyouliIni)ini).Order) || "score".Equals(((YmyouliIni)ini).Order)) { // 有序排列
+                if ("date".Equals(((WallhavenIni)ini).Order) || "score".Equals(((WallhavenIni)ini).Order)) { // 有序排列
                     SortMetas(metasAdd);
                 } else {
                     AppendMetas(metasAdd);

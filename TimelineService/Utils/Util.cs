@@ -1,9 +1,14 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Serilog;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.Foundation;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -171,6 +176,9 @@ namespace TimelineService.Utils {
             ini.Lsp.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "cate", "", sb, 1024, iniFile);
             ini.Lsp.Cate = sb.ToString();
+            _ = GetPrivateProfileString(LspIni.GetId(), "r22", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int r22);
+            ini.Lsp.R22 = r22;
             return ini;
         }
     }
@@ -195,6 +203,31 @@ namespace TimelineService.Utils {
             return $"{major}.{minor}.{build}.{revision}";
         }
 
+        public static int GetOsVerMajor() {
+            // Win11：10.0.22000.194
+            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+            ulong major = (version & 0xFFFF000000000000L) >> 48;
+            ulong minor = (version & 0x0000FFFF00000000L) >> 32;
+            ulong build = (version & 0x00000000FFFF0000L) >> 16;
+            ulong revision = (version & 0x000000000000FFFFL);
+            if (major > 10) {
+                return 11;
+            } else if (major == 10) {
+                if (minor > 0) {
+                    return 11;
+                } else if (minor == 0) {
+                    if (build > 22000) {
+                        return 11;
+                    } else if (build == 22000) {
+                        if (revision >= 194) {
+                            return 11;
+                        }
+                    }
+                }
+            }
+            return 10;
+        }
+
         public static string GetDevice() {
             var deviceInfo = new EasClientDeviceInformation();
             if (deviceInfo.SystemSku.Length > 0) {
@@ -213,6 +246,75 @@ namespace TimelineService.Utils {
                 return dataReader.ReadGuid().ToString();
             }
             return "";
+        }
+    }
+
+    public sealed class FileUtil {
+        public static IAsyncOperation<IReadOnlyDictionary<string, int>> ReadDosage() {
+            return ReadDosage_Impl().AsAsyncOperation();
+        }
+
+        public static IAsyncOperation<bool> WriteDosage(string provider) {
+            return WriteDosage_Impl(provider).AsAsyncOperation();
+        }
+
+        private static async Task<IReadOnlyDictionary<string, int>> ReadDosage_Impl() {
+            // 读取所有图源24h图片用量
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile file = await folder.CreateFileAsync("dosage.json", CreationCollisionOption.OpenIfExists);
+                string content = await FileIO.ReadTextAsync(file);
+                Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(content) ?? new Dictionary<string, string>();
+                foreach (string k in dic.Keys) {
+                    res[k] = string.IsNullOrEmpty(dic[k]) ? 0 : dic[k].Split(",").Length;
+                }
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("ReadDosage() " + e.Message);
+            }
+            return res;
+        }
+
+        private static async Task<bool> WriteDosage_Impl(string provider) {
+            // 刷新所有图源近24h图片用量
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("count",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile file = await folder.CreateFileAsync("dosage.json", CreationCollisionOption.OpenIfExists);
+                string content = await FileIO.ReadTextAsync(file);
+                Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(content) ?? new Dictionary<string, string>();
+                string[] sec_old = dic.ContainsKey("all") ? dic["all"].Split(",") : new string[0];
+                List<long> sec_new = new List<long>();
+                long sec_now = DateTime.Now.Ticks / 10000 / 1000;
+                foreach (string item in sec_old) {
+                    long sec = long.Parse(item);
+                    if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+                        sec_new.Add(sec);
+                    }
+                }
+                sec_new.Add(sec_now);
+                dic["all"] = string.Join(",", sec_new.ToArray());
+                if (!string.IsNullOrEmpty(provider)) {
+                    sec_old = dic.ContainsKey(provider) ? dic[provider].Split(",") : new string[0];
+                    sec_new = new List<long>();
+                    foreach (string item in sec_old) {
+                        long sec = long.Parse(item);
+                        if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
+                            sec_new.Add(sec);
+                        }
+                    }
+                    sec_new.Add(sec_now);
+                    dic[provider] = string.Join(",", sec_new.ToArray());
+                }
+                await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(dic));
+                return true;
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("WriteDosage() " + e.Message);
+            }
+            return false;
         }
     }
 

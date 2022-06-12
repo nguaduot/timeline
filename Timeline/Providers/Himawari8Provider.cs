@@ -151,7 +151,7 @@ namespace Timeline.Providers {
 
             meta.CacheUhd = await ApplicationData.Current.TemporaryFolder
                 .CreateFileAsync(Id + "-" + meta.Id + tag + meta.Format, CreationCollisionOption.OpenIfExists);
-            await target.SaveAsync(meta.CacheUhd.Path, CanvasBitmapFileFormat.Png);
+            await target.SaveAsync(meta.CacheUhd.Path, CanvasBitmapFileFormat.Png, 1.0f);
             return meta;
         }
     }

@@ -144,7 +144,7 @@ namespace TimelineService.Utils {
             } else {
                 paras = Bing.ToString();
             }
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&Cache={Cache}&r18={R18}"
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&cache={Cache}&r18={R18}"
                 + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
@@ -519,6 +519,8 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
+        public int R22 { set; get; } = 0;
+
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -531,7 +533,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r22={R22}";
 
         public static string GetId() => "lsp";
     }

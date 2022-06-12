@@ -685,7 +685,7 @@
     <value>The best wallpapers on the Net!</value>
   </data>
   <data name="TextCdn0.Text" xml:space="preserve">
-    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您能提供赞助，请发</value>
+    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您愿意提供赞助，可发</value>
   </data>
   <data name="TextCdn1.Text" xml:space="preserve">
     <value>邮件</value>
@@ -695,5 +695,20 @@
   </data>
   <data name="Glitter.Text" xml:space="preserve">
     <value>时光如歌，岁月如诗</value>
+  </data>
+  <data name="JumpPushDesktop" xml:space="preserve">
+    <value>推送桌面背景</value>
+  </data>
+  <data name="JumpPushLock" xml:space="preserve">
+    <value>推送锁屏背景</value>
+  </data>
+  <data name="MarkR22" xml:space="preserve">
+    <value>该图为R22内容</value>
+  </data>
+  <data name="MsgErrService" xml:space="preserve">
+    <value>无法启动推送服务</value>
+  </data>
+  <data name="TextLspR22.Text" xml:space="preserve">
+    <value>贤者模式</value>
   </data>
 </root>

@@ -12,11 +12,11 @@ using Windows.System.UserProfile;
 
 namespace TimelineService.Utils {
     public sealed class Api {
-        public static IAsyncOperation<bool> Stats(Ini ini, bool status) {
-            return Stats_Impl(ini, status).AsAsyncOperation();
+        public static IAsyncOperation<bool> Stats(Ini ini, int dosageApp, int dosageApi, string screen) {
+            return Stats_Impl(ini, dosageApp, dosageApi, screen).AsAsyncOperation();
         }
 
-        private static async Task<bool> Stats_Impl(Ini ini, bool status) {
+        private static async Task<bool> Stats_Impl(Ini ini, int dosageApp, int dosageApi, string screen) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
@@ -24,11 +24,13 @@ namespace TimelineService.Utils {
             StatsApiReq req = new StatsApiReq {
                 App = "TimelineService",
                 Package = "TWPushService.winmd",
-                Version = "5.4", // TODO
+                Version = "5.6", // TODO
                 Api = ini?.ToString(),
-                Status = status ? 1 : 0,
+                DosageApp = dosageApp,
+                DosageApi = dosageApi,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = VerUtil.GetOsVer(),
+                Screen = screen,
                 Device = VerUtil.GetDevice(),
                 DeviceId = VerUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion

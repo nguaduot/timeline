@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Timeline.Beans;
 using Timeline.Utils;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.UI.Xaml;
@@ -40,6 +41,8 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
+
+        private List<string> glitters = new List<string>();
 
         private DispatcherTimer himawari8OffsetTimer = null;
         private DispatcherTimer himawari8RatioTimer = null;
@@ -133,11 +136,12 @@ namespace Timeline.Pages {
             };
         }
 
-        public void PaneOpened(Ini ini) {
+        public async Task NotifyPaneOpened(Ini ini) {
             this.ini = ini;
-
-            RefreshProviderExpander(ini.Provider);
-
+            // 控制图源“LSP”可见性
+            ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
+                ? Visibility.Visible : Visibility.Collapsed;
+            // 刷新“图源”组设置项
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
             BoxOneplusOrder.SelectedIndex = listOneplusOrder.Select(t => t.Id).ToList().IndexOf(((OneplusIni)ini.GetIni(OneplusIni.ID)).Order);
@@ -151,95 +155,27 @@ namespace Timeline.Pages {
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
-
-            ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
-                ? Visibility.Visible : Visibility.Collapsed;
-
-            RadioButton rb = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(c => ini.Theme.Equals(c?.Tag?.ToString()));
-            rb.IsChecked = true;
-            TextThemeCur.Text = rb.Content.ToString();
-
-            _ = RandomGlitter();
-        }
-
-        public void PaneClosed() {
-            RefreshProviderExpander();
-        }
-
-        private async Task RandomGlitter() {
-            IList<string> glitter = await FileUtil.GetGlitterAsync();
-            LogUtil.I("RandomGlitter() " + glitter.Count);
-            List<string> glitterRandom = new List<string>();
-            for (int i = 0; i < glitter.Count && i < 3; i++) {
-                string target = glitter[new Random().Next(glitter.Count)];
-                glitter.Remove(target);
-                glitterRandom.Add(target);
+            ToggleLspR22.IsOn = ((LspIni)ini.GetIni(LspIni.ID)).R22 == 1;
+            // 刷新主题设置
+            RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
+            rbTheme.IsChecked = true;
+            TextThemeCur.Text = rbTheme.Content.ToString();
+            // 刷新“其他”组 Expander 随机一文
+            await RandomGlitter();
+            // 展开当前图源 Expander
+            foreach (var item in ViewSettings.Children) {
+                if (item is Expander expander && expander.Tag != null && expander.Tag.Equals(ini.Provider)) {
+                    expander.IsExpanded = true;
+                }
             }
-            glitterRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
-            SettingsReviewDesc.Text = glitterRandom[0];
-            SettingsThankDesc.Text = glitterRandom[1];
-            SettingsCdnDesc.Text = glitterRandom[2];
         }
 
-        private void RefreshProviderExpander(string providerId = null) {
-            //string tagCheck = HttpUtility.HtmlDecode("&#128994;&#32;");
-            string tagCheck = "● ";
-
-            ExpanderBing.IsExpanded = BingIni.ID.Equals(providerId);
-            SettingsBingTitle.Text = (BingIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + BingIni.ID);
-            SettingsBingDesc.Text = resLoader.GetString("Slogan_" + BingIni.ID);
-
-            ExpanderNasa.IsExpanded = NasaIni.ID.Equals(providerId);
-            SettingsNasaTitle.Text = (NasaIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + NasaIni.ID);
-            SettingsNasaDesc.Text = resLoader.GetString("Slogan_" + NasaIni.ID);
-
-            ExpanderOneplus.IsExpanded = OneplusIni.ID.Equals(providerId);
-            SettingsOneplusTitle.Text = (OneplusIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneplusIni.ID);
-            SettingsOneplusDesc.Text = resLoader.GetString("Slogan_" + OneplusIni.ID);
-
-            ExpanderTimeline.IsExpanded = TimelineIni.ID.Equals(providerId);
-            SettingsTimelineTitle.Text = (TimelineIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + TimelineIni.ID);
-            SettingsTimelineDesc.Text = resLoader.GetString("Slogan_" + TimelineIni.ID);
-
-            ExpanderOne.IsExpanded = OneIni.ID.Equals(providerId);
-            SettingsOneTitle.Text = (OneIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + OneIni.ID);
-            SettingsOneDesc.Text = resLoader.GetString("Slogan_" + OneIni.ID);
-
-            ExpanderHimawari8.IsExpanded = Himawari8Ini.ID.Equals(providerId);
-            SettingsHimawari8Title.Text = (Himawari8Ini.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + Himawari8Ini.ID);
-            SettingsHimawari8Desc.Text = resLoader.GetString("Slogan_" + Himawari8Ini.ID);
-
-            ExpanderYmyouli.IsExpanded = YmyouliIni.ID.Equals(providerId);
-            SettingsYmyouliTitle.Text = (YmyouliIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + YmyouliIni.ID);
-            SettingsYmyouliDesc.Text = resLoader.GetString("Slogan_" + YmyouliIni.ID);
-
-            ExpanderWallhaven.IsExpanded = WallhavenIni.ID.Equals(providerId);
-            SettingsWallhavenTitle.Text = (WallhavenIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + WallhavenIni.ID);
-            SettingsWallhavenDesc.Text = resLoader.GetString("Slogan_" + WallhavenIni.ID);
-
-            ExpanderQingbz.IsExpanded = QingbzIni.ID.Equals(providerId);
-            SettingsQingbzTitle.Text = (QingbzIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + QingbzIni.ID);
-            SettingsQingbzDesc.Text = resLoader.GetString("Slogan_" + QingbzIni.ID);
-
-            ExpanderWallhere.IsExpanded = WallhereIni.ID.Equals(providerId);
-            SettingsWallhereTitle.Text = (WallhereIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + WallhereIni.ID);
-            SettingsWallhereDesc.Text = resLoader.GetString("Slogan_" + WallhereIni.ID);
-
-            ExpanderInfinity.IsExpanded = InfinityIni.ID.Equals(providerId);
-            SettingsInfinityTitle.Text = (InfinityIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + InfinityIni.ID);
-            SettingsInfinityDesc.Text = resLoader.GetString("Slogan_" + InfinityIni.ID);
-
-            ExpanderLsp.IsExpanded = LspIni.ID.Equals(providerId);
-            SettingsLspTitle.Text = (LspIni.ID.Equals(providerId) ? tagCheck : "") + resLoader.GetString("Provider_" + LspIni.ID);
-            SettingsLspDesc.Text = resLoader.GetString("Slogan_" + LspIni.ID);
-        }
-
-        private async Task RefreshProviderCate(ComboBox box, ObservableCollection<CateMeta> boxList, BaseIni bi) {
-            if (boxList.Count > 0) {
+        private async Task RefreshCate(ComboBox boxCate, BaseIni bi) {
+            ObservableCollection<CateMeta> boxCateList = boxCate.ItemsSource as ObservableCollection<CateMeta>;
+            if (boxCateList.Count > 0) {
                 return;
             }
-            boxList.Clear();
-            boxList.Add(new CateMeta {
+            boxCateList.Add(new CateMeta {
                 Id = "",
                 Name = resLoader.GetString("Cate_all")
             });
@@ -247,13 +183,31 @@ namespace Timeline.Pages {
                 bi.Cates = await Api.CateAsync(bi.GetCateApi());
             }
             foreach (CateMeta meta in bi.Cates) {
-                boxList.Add(meta);
+                boxCateList.Add(meta);
             }
-            box.SelectedIndex = boxList.Select(t => t.Id).ToList().IndexOf(bi.Cate);
+            boxCate.SelectedIndex = boxCateList.Select(t => t.Id).ToList().IndexOf(bi.Cate);
         }
 
-        private async void ExpanderProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
-            string providerId = sender.Tag as string;
+        private async Task RefreshExpander(Expander expanderTarget, bool loadCate) {
+            // 刷新标题（标记为当前图源）、折叠非目标图源 Expander
+            foreach (var item in ViewSettings.Children) {
+                if (item is Expander expander && expander.Tag != null) {
+                    FontIcon icon = ((expander.Header as Grid).Children[0] as FontIcon);
+                    icon.Visibility = expander == expanderTarget ? Visibility.Visible : Visibility.Collapsed;
+                    if (expander != expanderTarget && expander.IsExpanded) {
+                        expander.IsExpanded = false;
+                    }
+                }
+            }
+            // 刷新图源类别设置项
+            long start = DateTime.Now.Ticks;
+            string providerId = expanderTarget.Tag as string;
+            Task taskCate = null;
+            if (loadCate) {
+                ComboBox boxCate = ((expanderTarget.Content as StackPanel).Children[0] as Grid).Children[2] as ComboBox;
+                taskCate = RefreshCate(boxCate, ini.GetIni(providerId));
+            }
+            // 保存配置&回调
             if (!ini.Provider.Equals(providerId)) {
                 ini.Provider = providerId;
                 await IniUtil.SaveProviderAsync(providerId);
@@ -261,28 +215,38 @@ namespace Timeline.Pages {
                     ProviderChanged = true
                 });
             }
-
-            RefreshProviderExpander(providerId);
-            switch (providerId) {
-                case TimelineIni.ID:
-                    await RefreshProviderCate(BoxTimelineCate, listTimelineCate, ini.GetIni(providerId));
-                    break;
-                case YmyouliIni.ID:
-                    await RefreshProviderCate(BoxYmyouliCate, listYmyouliCate, ini.GetIni(providerId));
-                    break;
-                case WallhavenIni.ID:
-                    await RefreshProviderCate(BoxWallhavenCate, listWallhavenCate, ini.GetIni(providerId));
-                    break;
-                case QingbzIni.ID:
-                    await RefreshProviderCate(BoxQingbzCate, listQingbzCate, ini.GetIni(providerId));
-                    break;
-                case WallhereIni.ID:
-                    await RefreshProviderCate(BoxWallhereCate, listWallhereCate, ini.GetIni(providerId));
-                    break;
-                case LspIni.ID:
-                    await RefreshProviderCate(BoxLspCate, listLspCate, ini.GetIni(providerId));
-                    break;
+            // 滚动至合适位置
+            await Task.Delay(Math.Max(400 - (int)(DateTime.Now.Ticks - start) / 10000, 0));
+            Point position = expanderTarget.TransformToVisual(ViewSettings).TransformPoint(new Point(0, 0));
+            ScrollSettings.ChangeView(0, position.Y, 1, false);
+            if (taskCate != null) {
+                await taskCate;
             }
+        }
+
+        private async Task RandomGlitter() {
+            if (glitters.Count == 0) {
+                glitters.AddRange(await FileUtil.GetGlitterAsync());
+            }
+            LogUtil.I("RandomGlitter() " + glitters.Count);
+            List<string> glittersRandom = new List<string>();
+            for (int i = 0; i < glitters.Count && i < 3; i++) {
+                string target = glitters[new Random().Next(glitters.Count)];
+                glitters.Remove(target);
+                glittersRandom.Add(target);
+            }
+            glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
+            SettingsReviewDesc.Text = glittersRandom[0];
+            SettingsThankDesc.Text = glittersRandom[1];
+            SettingsCdnDesc.Text = glittersRandom[2];
+        }
+
+        private async void ExpanderStaticProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
+            await RefreshExpander(sender, false);
+        }
+
+        private async void ExpanderDynamicProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
+            await RefreshExpander(sender, true);
         }
 
         private async void RbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -610,7 +574,8 @@ namespace Timeline.Pages {
             await IniUtil.SaveLspCateAsync(bi.Cate);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
+                ProviderConfigChanged = true,
+                DoNotToastLsp = true
             });
         }
 
@@ -624,8 +589,41 @@ namespace Timeline.Pages {
             await IniUtil.SaveLspOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
+                ProviderConfigChanged = true,
+                DoNotToastLsp = true
             });
+        }
+
+        private async void ToggleLspR22_Toggled(object sender, RoutedEventArgs e) {
+            int r22 = (sender as ToggleSwitch).IsOn ? 1 : 0;
+            string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
+            LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
+            if (bi.R22 == r22) {
+                return;
+            }
+            bi.R22 = r22;
+            await IniUtil.SaveLspR22Async(bi.R22);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true,
+                DoNotToastLsp = bi.R22 == 0
+            });
+        }
+
+        public string GenerateProviderTitle(object tag) {
+            // 生成图源 Expander 标题
+            return resLoader.GetString("Provider_" + tag);
+        }
+
+        public string GenerateProviderDesc(object tag) {
+            // 生成图源 Expander 描述
+            return resLoader.GetString("Slogan_" + tag);
+        }
+
+        public string GenerateProviderIcon(bool expanded) {
+            // 无聊：根据图源 Expander 展开状态显示不同的图标
+            // 注意，XAML：&#xE899; C#：\uE899
+            return expanded ? "\uE899" : "\uE76E";
         }
     }
 
@@ -633,6 +631,8 @@ namespace Timeline.Pages {
         public bool ProviderChanged { get; set; }
 
         public bool ProviderConfigChanged { get; set; }
+
+        public bool DoNotToastLsp { get; set; }
 
         public bool ThemeChanged { get; set; }
     }
