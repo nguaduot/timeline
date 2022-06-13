@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.6-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.4.220530-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v5.7-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.6.220613-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -22,7 +22,7 @@
   
   在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。
 
-  如无法顺利安装，请参考：#I5AQTO
+  如无法顺利安装，请参考：[Issues #I5AQTO](https://gitee.com/nguaduot/timeline/issues/I5AQTO)
 
 ## 图源
 
