@@ -776,7 +776,7 @@ namespace Timeline {
                 builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
                 _ = builder.Register();
             }
-            ApplicationTriggerResult res = await trigger.RequestAsync();
+            await trigger.RequestAsync();
         }
 
         private void Mark(string action, string desc) {
@@ -1164,10 +1164,10 @@ namespace Timeline {
                 case VirtualKey.G: // Ctrl + G
                     ShowFlyoutGo();
                     break;
-                case VirtualKey.Number5: // Ctrl + 5
+                case VirtualKey.Number6: // Ctrl + 5
                     Mark("r22", resLoader.GetString("MarkR22"));
                     break;
-                case VirtualKey.Number6: // Ctrl + 6
+                case VirtualKey.Number0: // 0
                     await ShowFlyoutMarkCate();
                     break;
                 case VirtualKey.F10: // F10

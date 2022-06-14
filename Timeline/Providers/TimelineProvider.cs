@@ -50,7 +50,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
                 return true;
@@ -59,11 +59,12 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
+            TimelineIni ini = bi as TimelineIni;
             nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(URL_API, ((TimelineIni)ini).Cate,
-                nextPage.ToString("yyyyMMdd"), ((TimelineIni)ini).Order, ((TimelineIni)ini).Unauthorized);
+            string urlApi = string.Format(URL_API, ini.Cate,
+                nextPage.ToString("yyyyMMdd"), ini.Order, ini.Unauthorized);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -73,14 +74,14 @@ namespace Timeline.Providers {
                 TimelineApi api = JsonConvert.DeserializeObject<TimelineApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (TimelineApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ((TimelineIni)ini).Order));
+                    metasAdd.Add(ParseBean(item, ini.Order));
                 }
-                if ("date".Equals(((TimelineIni)ini).Order) || "score".Equals(((TimelineIni)ini).Order)) { // 有序排列
+                if ("date".Equals(ini.Order) || "score".Equals(ini.Order)) { // 有序排列
                     SortMetas(metasAdd);
                 } else {
                     AppendMetas(metasAdd);
                 }
-                nextPage = "date".Equals(((TimelineIni)ini).Order)
+                nextPage = "date".Equals(ini.Order)
                     ? nextPage.AddDays(-api.Data.Count) : nextPage;
             } catch (Exception e) {
                 // 情况1：任务被取消

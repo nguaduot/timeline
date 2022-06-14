@@ -34,7 +34,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多
             if (indexFocus < metas.Count - 1) {
                 return true;
@@ -43,9 +43,9 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
-            string urlApi = string.Format(URL_API, ((ObzhiIni)ini).Cate, ((ObzhiIni)ini).Order, ++pageIndex);
+            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -55,9 +55,9 @@ namespace Timeline.Providers {
                 ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (ObzhiApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ((ObzhiIni)ini).Order));
+                    metasAdd.Add(ParseBean(item, bi.Order));
                 }
-                if ("date".Equals(((ObzhiIni)ini).Order) || "score".Equals(((ObzhiIni)ini).Order)) { // 有序排列
+                if ("date".Equals(bi.Order) || "score".Equals(bi.Order)) { // 有序排列
                     SortMetas(metasAdd);
                 } else {
                     AppendMetas(metasAdd);

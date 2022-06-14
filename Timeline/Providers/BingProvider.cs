@@ -84,7 +84,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             // 已无更多数据
             if (pageIndex >= URL_API_PAGES.Length - 1) {
                 return true;
@@ -100,11 +100,12 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
+            BingIni ini = bi as BingIni;
             string urlApi = URL_API_PAGES[++pageIndex];
-            if (((BingIni)ini).Lang.Length > 0) {
-                urlApi += "&setmkt=" + ((BingIni)ini).Lang;
+            if (ini.Lang.Length > 0) {
+                urlApi += "&setmkt=" + ini.Lang;
             }
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {

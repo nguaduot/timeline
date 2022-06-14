@@ -622,22 +622,22 @@
     <value>当前索引：{0}</value>
   </data>
   <data name="MenuMark404.Text" xml:space="preserve">
-    <value>该图无法显示</value>
+    <value>无法显示</value>
   </data>
   <data name="MenuMarkCateHint.Text" xml:space="preserve">
     <value>标记分类为...</value>
   </data>
   <data name="MenuMarkDirty.Text" xml:space="preserve">
-    <value>该图含水印</value>
+    <value>含水印</value>
   </data>
   <data name="MenuMarkDislike.Text" xml:space="preserve">
-    <value>我不喜欢该图</value>
+    <value>我不喜欢</value>
   </data>
   <data name="MenuMarkHint.Text" xml:space="preserve">
     <value>标记为...</value>
   </data>
   <data name="MenuMarkR18.Text" xml:space="preserve">
-    <value>该图为R18内容</value>
+    <value>有色气</value>
   </data>
   <data name="MsgLsp" xml:space="preserve">
     <value>请注意场合，是否继续？</value>
@@ -703,12 +703,15 @@
     <value>推送锁屏背景</value>
   </data>
   <data name="MarkR22" xml:space="preserve">
-    <value>该图为R22内容</value>
+    <value>含R22内容</value>
   </data>
   <data name="MsgErrService" xml:space="preserve">
     <value>无法启动推送服务</value>
   </data>
   <data name="TextLspR22.Text" xml:space="preserve">
     <value>贤者模式</value>
+  </data>
+  <data name="MenuMarkCate.Text" xml:space="preserve">
+    <value>分类有误</value>
   </data>
 </root>

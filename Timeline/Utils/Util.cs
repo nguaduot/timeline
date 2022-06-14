@@ -320,6 +320,8 @@ namespace Timeline.Utils {
             wallhavenIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
             wallhavenIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(WallhavenIni.ID, "api", "", sb, 1024, iniFile);
+            wallhavenIni.Api = sb.ToString();
             ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -382,6 +384,8 @@ namespace Timeline.Utils {
             lspIni.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(LspIni.ID, "api", "", sb, 1024, iniFile);
+            lspIni.Api = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "r22", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r22);
             lspIni.R22 = r22;

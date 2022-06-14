@@ -33,7 +33,7 @@ namespace Timeline.Providers {
         private readonly Queue<DownloadOperation> activeDownloads = new Queue<DownloadOperation>();
 
         // 缓存图片量
-        private static int POOL_CACHE = 5;
+        private const int POOL_CACHE = 5;
 
         protected void AppendMetas(List<Meta> metasAdd) {
             List<string> list = metas.Select(t => t.Id).ToList();
@@ -86,7 +86,7 @@ namespace Timeline.Providers {
             AppendMetas(metasAdd);
         }
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             dicHistory.Clear();
             Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
             foreach (var item in dicNew) {

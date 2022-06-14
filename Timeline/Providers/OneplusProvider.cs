@@ -45,7 +45,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
@@ -57,10 +57,10 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
-            string sort = "score".Equals(((OneplusIni)ini).Order) ? "2" : ("view".Equals(((OneplusIni)ini).Order) ? "3" : "1");
+            string sort = "score".Equals(bi.Order) ? "2" : ("view".Equals(bi.Order) ? "3" : "1");
             OneplusRequest request = new OneplusRequest {
                 PageSize = PAGE_SIZE, // 不限
                 CurrentPage = ++pageIndex,
@@ -82,7 +82,7 @@ namespace Timeline.Providers {
                 foreach (OneplusApiItem item in api.Items) {
                     metasAdd.Add(ParseBean(item));
                 }
-                if ("date".Equals(((OneplusIni)ini).Order)) { // 按时序倒序排列
+                if ("date".Equals(bi.Order)) { // 按时序倒序排列
                     SortMetas(metasAdd);
                 } else {
                     RandomMetas(metasAdd);

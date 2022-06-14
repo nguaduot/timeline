@@ -632,6 +632,7 @@ namespace Timeline.Pages {
 
         public bool ProviderConfigChanged { get; set; }
 
+        // 刷新时默认检测LSP图源并提示
         public bool DoNotToastLsp { get; set; }
 
         public bool ThemeChanged { get; set; }

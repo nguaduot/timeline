@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Timeline.Providers {
@@ -44,7 +43,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
             if (indexFocus < metas.Count - 1) {
                 return true;
@@ -53,9 +52,9 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
-            string urlApi = "score".Equals(((InfinityIni)ini).Order) ? String.Format(URL_API, ++pageIndex)
+            string urlApi = "score".Equals(bi.Order) ? String.Format(URL_API, ++pageIndex)
                 : string.Format(URL_API_RANDOM, DateUtil.CurrentTimeMillis());
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
@@ -64,7 +63,7 @@ namespace Timeline.Providers {
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 List<Meta> metasAdd = new List<Meta>();
-                if ("score".Equals(((InfinityIni)ini).Order)) {
+                if ("score".Equals(bi.Order)) {
                     InfinityApi2 api = JsonConvert.DeserializeObject<InfinityApi2>(jsonData);
                     foreach (InfinityApiData item in api.Data.List) {
                         metasAdd.Add(ParseBean(item));

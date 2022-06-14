@@ -59,7 +59,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
@@ -71,7 +71,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
             if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
                 try {
@@ -95,7 +95,7 @@ namespace Timeline.Providers {
                 return metas.Count > 0;
             }
 
-            if ("random".Equals(((OneIni)ini).Order)) {
+            if ("random".Equals(bi.Order)) {
                 nextPage = (3012 + new Random().Next((DateTime.Now - DateTime.Parse("2020-11-10")).Days)).ToString();
             } else {
                 nextPage = metas.Count > 0 ? metas[metas.Count - 1].Id : "0";
@@ -117,7 +117,7 @@ namespace Timeline.Providers {
                 foreach (OneApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item));
                 }
-                if ("date".Equals(((OneIni)ini).Order)) { // 按时序倒序排列
+                if ("date".Equals(bi.Order)) { // 按时序倒序排列
                     SortMetas(metasAdd);
                 } else {
                     RandomMetas(metasAdd);

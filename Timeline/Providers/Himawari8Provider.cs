@@ -46,9 +46,10 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni ini, DateTime date = new DateTime()) {
-            offsetEarth = ((Himawari8Ini)ini).Offset;
-            ratioEarth = ((Himawari8Ini)ini).Ratio;
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+            Himawari8Ini ini = bi as Himawari8Ini;
+            offsetEarth = ini.Offset;
+            ratioEarth = ini.Ratio;
             // 无需加载更多
             if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
                 return true;
@@ -57,7 +58,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, ini, date);
+            await base.LoadData(token, bi, date);
 
             if (date.Ticks > 0) { // 指定时间
                 metas.Clear();

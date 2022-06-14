@@ -183,7 +183,7 @@ namespace TimelineService.Utils {
         }
     }
 
-    public sealed class VerUtil {
+    public sealed class SysUtil {
         public static string GetPkgVer(bool forShort) {
             if (forShort) {
                 return string.Format("{0}.{1}",

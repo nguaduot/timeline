@@ -24,15 +24,15 @@ namespace TimelineService.Utils {
             StatsApiReq req = new StatsApiReq {
                 App = "TimelineService",
                 Package = "TWPushService.winmd",
-                Version = "5.6", // TODO
+                Version = SysUtil.GetPkgVer(false),
                 Api = ini?.ToString(),
                 DosageApp = dosageApp,
                 DosageApi = dosageApi,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
-                OsVersion = VerUtil.GetOsVer(),
+                OsVersion = SysUtil.GetOsVer(),
                 Screen = screen,
-                Device = VerUtil.GetDevice(),
-                DeviceId = VerUtil.GetDeviceId(),
+                Device = SysUtil.GetDevice(),
+                DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };
             try {

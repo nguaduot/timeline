@@ -306,19 +306,27 @@
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuMarkDirty"
-                            Tag="dirty"
+            <MenuFlyoutItem x:Uid="MenuMark404"
+                            Tag="404"
                             Click="MenuMark_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Number2"
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuMark404"
-                            Tag="404"
+            <MenuFlyoutItem x:Uid="MenuMarkCate"
+                            Tag="cate"
                             Click="MenuMark_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Number3"
+                                         Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuMarkDirty"
+                            Tag="dirty"
+                            Click="MenuMark_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Number4"
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
@@ -326,7 +334,7 @@
                             Tag="r18"
                             Click="MenuMark_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="Number4"
+                    <KeyboardAccelerator Key="Number5"
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
@@ -544,10 +552,10 @@
                 <KeyboardAccelerator Key="G"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number5"
+                <KeyboardAccelerator Key="Number6"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number6"
+                <KeyboardAccelerator Key="Number0"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="F10"

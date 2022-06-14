@@ -622,28 +622,28 @@
     <value>Current: {0}</value>
   </data>
   <data name="MenuMark404.Text" xml:space="preserve">
-    <value>Mark as 404</value>
+    <value>404</value>
   </data>
   <data name="MenuMarkCateHint.Text" xml:space="preserve">
     <value>Mark as category...</value>
   </data>
   <data name="MenuMarkDirty.Text" xml:space="preserve">
-    <value>Mark as watermark</value>
+    <value>Watermark</value>
   </data>
   <data name="MenuMarkDislike.Text" xml:space="preserve">
-    <value>Mark as waste</value>
+    <value>Dislike</value>
   </data>
   <data name="MenuMarkHint.Text" xml:space="preserve">
     <value>Mark as...</value>
   </data>
   <data name="MenuMarkR18.Text" xml:space="preserve">
-    <value>Mark as R18</value>
+    <value>R18</value>
   </data>
   <data name="MsgLsp" xml:space="preserve">
     <value>Think about where you are.</value>
   </data>
   <data name="MsgMarked" xml:space="preserve">
-    <value>Submitted: {0}</value>
+    <value>Marked: {0}</value>
   </data>
   <data name="BoxHimawari8Ratio.PlaceholderText" xml:space="preserve">
     <value>0~1.00</value>
@@ -703,12 +703,15 @@
     <value>Push lock screen</value>
   </data>
   <data name="MarkR22" xml:space="preserve">
-    <value>Mark as R22</value>
+    <value>R22</value>
   </data>
   <data name="MsgErrService" xml:space="preserve">
     <value>Failed to run push service.</value>
   </data>
   <data name="TextLspR22.Text" xml:space="preserve">
     <value>Contains R22</value>
+  </data>
+  <data name="MenuMarkCate.Text" xml:space="preserve">
+    <value>Wrong category</value>
   </data>
 </root>

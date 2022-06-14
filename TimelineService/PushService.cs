@@ -133,7 +133,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> CheckTileNecessaryAsync() {
-            if (VerUtil.GetOsVerMajor() != 10) { // 检查 Win10
+            if (SysUtil.GetOsVerMajor() != 10) { // 检查 Win10
                 return false;
             }
             AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];

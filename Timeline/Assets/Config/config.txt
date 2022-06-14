@@ -1,4 +1,4 @@
-﻿; 拾光 / Timeline v5.6
+﻿; 拾光 / Timeline v5.7
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -168,7 +168,9 @@ order=random
 ; order=random  排序：随机（默认）
 
 cate=
-; cate=              类别：全部（默认）
+; cate=            类别：全部（默认）
+; cate=acg         类别：ACG
+; cate=photograph  类别：摄影
 
 [qingbz]
 

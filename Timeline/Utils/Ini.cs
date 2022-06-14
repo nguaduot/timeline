@@ -114,6 +114,8 @@ namespace Timeline.Utils {
             get => cate;
         }
 
+        public string Api { set; get; } // 管理员用途
+
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
             get => desktopPeriod;
