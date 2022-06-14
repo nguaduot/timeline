@@ -14,7 +14,7 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&order={0}&cate={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
         private Meta ParseBean(WallhereApiData bean, string order) {
             Meta meta = new Meta {
@@ -47,7 +47,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, date);
 
-            string urlApi = string.Format(URL_API, bi.Order, bi.Cate, ++pageIndex);
+            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

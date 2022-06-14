@@ -16,7 +16,7 @@ namespace Timeline.Providers {
 
         // 自建图源
         // https://github.com/nguaduot/TimelineApi
-        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&enddate={1}&order={2}&unauthorized={3}";
+        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&order={1}&enddate={2}&unauthorized={3}";
         
         private Meta ParseBean(TimelineApiData bean, string order) {
             Meta meta = new Meta {
@@ -63,8 +63,7 @@ namespace Timeline.Providers {
 
             TimelineIni ini = bi as TimelineIni;
             nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(URL_API, ini.Cate,
-                nextPage.ToString("yyyyMMdd"), ini.Order, ini.Unauthorized);
+            string urlApi = string.Format(URL_API, ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
