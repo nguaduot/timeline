@@ -47,6 +47,7 @@ namespace Timeline {
         private ReleaseApi release = null;
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
+        private bool providerLspR22On = false;
 
         private DispatcherTimer resizeTimer = null;
         private DispatcherTimer pageTimer;
@@ -171,7 +172,6 @@ namespace Timeline {
             if (!string.IsNullOrEmpty(release.Url)) {
                 await Task.Delay(1000);
                 ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
-                    CloseToast();
                     await FileUtil.LaunchUriAsync(new Uri(release?.Url));
                 });
             }
@@ -318,10 +318,12 @@ namespace Timeline {
             }
         }
 
-        private async Task Refresh(bool doNotToastLsp = false) {
+        private async Task Refresh(bool safeForWork) {
+            providerLspR22On = (ini.GetIni(LspIni.ID) as LspIni).R22; // 重置前保存状态
             ini = await IniUtil.GetIniAsync();
+            (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置前恢复状态
             InitProvider();
-            if (!doNotToastLsp && ini.Provider.Equals(MenuProviderLsp.Tag)) { // 防社死
+            if (ini.Provider.Equals(MenuProviderLsp.Tag) && (!r18 || safeForWork)) { // 防社死
                 r18 = false;
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
@@ -606,7 +608,6 @@ namespace Timeline {
                 resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionGo"), async () => {
-                    CloseToast();
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
                         CreationCollisionOption.OpenIfExists), file);
                 });
@@ -779,17 +780,6 @@ namespace Timeline {
             await trigger.RequestAsync();
         }
 
-        private void Mark(string action, string desc) {
-            markTimerMeta = meta;
-            markTimerAction = action;
-            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), desc), null,
-                resLoader.GetString("ActionUndo"), () => {
-                    CloseToast();
-                    _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
-                });
-            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
-        }
-
         //private async Task InitJumpList() {
         //    if (!JumpList.IsSupported()) {
         //        return;
@@ -884,19 +874,24 @@ namespace Timeline {
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
 
-        private void MenuMark_Click(object sender, RoutedEventArgs e) {
-            Mark((sender as MenuFlyoutItem).Tag as string, (sender as MenuFlyoutItem).Text);
+        private async void MenuMark_Click(object sender, RoutedEventArgs e) {
+            markTimerMeta = meta;
+            markTimerAction = (sender as MenuFlyoutItem).Tag as string;
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
+                resLoader.GetString("ActionUndo"), async () => {
+                    await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+                });
+            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
         }
 
-        private void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
+        private async void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
             markTimerMeta = meta;
             markTimerAction = "cate";
             ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
-                resLoader.GetString("ActionUndo"), () => {
-                    CloseToast();
-                    _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+                resLoader.GetString("ActionUndo"), async () => {
+                    await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
                 });
-            _ = Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, (sender as MenuFlyoutItem).Tag as string);
+            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, (sender as MenuFlyoutItem).Tag as string);
         }
 
         private void FlyoutMark_Closed(object sender, object e) {
@@ -972,7 +967,7 @@ namespace Timeline {
 
             string providerIdNew = ((RadioMenuFlyoutItem)sender).Tag.ToString();
             await IniUtil.SaveProviderAsync(providerIdNew);
-            await Refresh();
+            await Refresh(true);
         }
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e) {
@@ -1157,15 +1152,12 @@ namespace Timeline {
                 case VirtualKey.F5: // F5
                 case VirtualKey.R: // Ctrl + R
                     FlyoutMenu.Hide();
-                    await Refresh();
+                    await Refresh(true);
                     break;
                 case VirtualKey.F3: // F3
                 case VirtualKey.F: // Ctrl + F
                 case VirtualKey.G: // Ctrl + G
                     ShowFlyoutGo();
-                    break;
-                case VirtualKey.Number6: // Ctrl + 5
-                    Mark("r22", resLoader.GetString("MarkR22"));
                     break;
                 case VirtualKey.Number0: // 0
                     await ShowFlyoutMarkCate();
@@ -1211,8 +1203,10 @@ namespace Timeline {
         }
 
         private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
-            if (e.ProviderChanged || e.ProviderConfigChanged) {
-                _ = Refresh(e.DoNotToastLsp);
+            if (e.ProviderChanged) {
+                _ = Refresh(true);
+            } else if (e.ProviderConfigChanged) {
+                _ = Refresh(false);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
                 ElementTheme theme = ThemeUtil.ParseTheme(ini.Theme);
@@ -1235,18 +1229,22 @@ namespace Timeline {
             }
         }
 
-        private async void ViewSettings_ContributeChanged(object sender, EventArgs e) {
-            ContributeDlg dlg = new ContributeDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-            };
-            var res = await dlg.ShowAsync();
-            if (res == ContentDialogResult.Primary) {
-                ContributeApiReq req = dlg.GetContent();
-                bool status = await Api.ContributeAsync(req);
-                if (status) {
-                    ShowToastS(resLoader.GetString("MsgContribute1"));
-                } else {
-                    ShowToastW(resLoader.GetString("MsgContribute0"));
+        private async void ViewSettings_DlgChanged(object sender, DlgEventArgs e) {
+            if (e.TimelineContributeChanged) {
+                ContributeDlg dlg = new ContributeDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                };
+                var res = await dlg.ShowAsync();
+                if (res == ContentDialogResult.Primary) {
+                    ShowToastI(resLoader.GetString("MsgContribute"));
+                }
+            } else if (e.LspR22Changed != null) {
+                R22Dlg dlg = new R22Dlg(e.LspR22Changed.Comment) {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                };
+                var res = await dlg.ShowAsync();
+                if (res == ContentDialogResult.Primary) {
+                    ShowToastI(resLoader.GetString("MsgR22Auth"));
                 }
             }
         }

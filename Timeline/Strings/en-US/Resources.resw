@@ -477,10 +477,7 @@
   <data name="ActionClose" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="MsgContribute0" xml:space="preserve">
-    <value>Failed to contribute.</value>
-  </data>
-  <data name="MsgContribute1" xml:space="preserve">
+  <data name="MsgContribute" xml:space="preserve">
     <value>Contributed. Thanks.</value>
   </data>
   <data name="Provider_one" xml:space="preserve">
@@ -711,7 +708,37 @@
   <data name="TextLspR22.Text" xml:space="preserve">
     <value>Contains R22</value>
   </data>
+  <data name="BoxR22Code.Header" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="DlgR22.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DlgR22.PrimaryButtonText" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="DlgR22.Title" xml:space="preserve">
+    <value>Contains R22</value>
+  </data>
   <data name="MenuMarkCate.Text" xml:space="preserve">
     <value>Wrong category</value>
+  </data>
+  <data name="MsgR22Auth" xml:space="preserve">
+    <value>Please wait for auditing.</value>
+  </data>
+  <data name="TextR22Code0.Text" xml:space="preserve">
+    <value>贤者模式含R22内容，请先申请授权。若管理员长时间未同意，可</value>
+  </data>
+  <data name="TextR22Code1.Text" xml:space="preserve">
+    <value>发邮件</value>
+  </data>
+  <data name="TextR22Code2.Text" xml:space="preserve">
+    <value>或</value>
+  </data>
+  <data name="TextR22Code3.Text" xml:space="preserve">
+    <value>扫码赞助</value>
+  </data>
+  <data name="TextR22Code4.Text" xml:space="preserve">
+    <value>提醒管理员（注明暗号）。</value>
   </data>
 </root>

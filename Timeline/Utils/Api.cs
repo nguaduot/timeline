@@ -89,7 +89,7 @@ namespace Timeline.Utils {
                 HttpClient client = new HttpClient();
                 HttpResponseMessage res = await client.GetAsync(urlApi);
                 string jsonData = await res.Content.ReadAsStringAsync();
-                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                LogUtil.D("CateAsync(): " + jsonData.Trim());
                 CateApi api = JsonConvert.DeserializeObject<CateApi>(jsonData);
                 api.Data.Sort((a, b) => b.Score.CompareTo(a.Score));
                 foreach (CateApiData item in api.Data) {
@@ -104,7 +104,7 @@ namespace Timeline.Utils {
             return data;
         }
 
-        public static async Task<bool> ContributeAsync(ContributeApiReq req) {
+        public static async Task<bool> TimelineContributeAsync(ContributeApiReq req) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
@@ -118,12 +118,30 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                LogUtil.D("Contribute() " + jsonData.Trim());
+                LogUtil.D("TimelineContributeAsync() " + jsonData.Trim());
                 return jsonData.Contains(@"""status"":1");
             } catch (Exception e) {
-                LogUtil.E("Contribute() " + e.Message);
+                LogUtil.E("TimelineContributeAsync() " + e.Message);
             }
             return false;
+        }
+
+        public static async Task<R22AuthApiData> LspR22AuthAsync(string comment = null) {
+            if (!NetworkInterface.GetIsNetworkAvailable()) {
+                return new R22AuthApiData();
+            }
+            const string URL_API = "https://api.nguaduot.cn/lsp/auth?deviceid={0}&comment={1}";
+            string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(), comment ?? "");
+            try {
+                HttpClient client = new HttpClient();
+                string jsonData = await client.GetStringAsync(urlApi);
+                LogUtil.D("LspR22AuthAsync(): " + jsonData.Trim());
+                R22AuthApi api = JsonConvert.DeserializeObject<R22AuthApi>(jsonData);
+                return api.Data ?? new R22AuthApiData();
+            } catch (Exception e) {
+                LogUtil.E("LspR22AuthAsync() " + e.Message);
+            }
+            return new R22AuthApiData();
         }
 
         public static async Task CrashAsync(Exception e) {

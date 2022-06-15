@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Controls;
 namespace Timeline.Pages {
     public sealed partial class SettingsView : UserControl {
         public event EventHandler<SettingsEventArgs> SettingsChanged;
-        public event EventHandler<EventArgs> ContributeChanged;
+        public event EventHandler<DlgEventArgs> DlgChanged;
 
         private Ini ini = new Ini();
 
@@ -138,9 +138,8 @@ namespace Timeline.Pages {
 
         public async Task NotifyPaneOpened(Ini ini) {
             this.ini = ini;
-            // 控制图源“LSP”可见性
-            ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
-                ? Visibility.Visible : Visibility.Collapsed;
+            // 控制图源“LSP”是否可用
+            ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
             // 刷新“图源”组设置项
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
@@ -155,7 +154,9 @@ namespace Timeline.Pages {
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
-            ToggleLspR22.IsOn = ((LspIni)ini.GetIni(LspIni.ID)).R22 == 1;
+            //ToggleLspR22.Toggled -= ToggleLspR22_Toggled;
+            //ToggleLspR22.IsOn = ((LspIni)ini.GetIni(LspIni.ID)).R22 == 1;
+            //ToggleLspR22.Toggled += ToggleLspR22_Toggled;
             // 刷新主题设置
             RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
             rbTheme.IsChecked = true;
@@ -216,7 +217,7 @@ namespace Timeline.Pages {
                 });
             }
             // 滚动至合适位置
-            await Task.Delay(Math.Max(400 - (int)(DateTime.Now.Ticks - start) / 10000, 0));
+            await Task.Delay(Math.Max(300 - (int)(DateTime.Now.Ticks - start) / 10000, 0));
             Point position = expanderTarget.TransformToVisual(ViewSettings).TransformPoint(new Point(0, 0));
             ScrollSettings.ChangeView(0, position.Y, 1, false);
             if (taskCate != null) {
@@ -361,7 +362,9 @@ namespace Timeline.Pages {
         }
 
         private void BtnTimelineContribute_Click(object sender, RoutedEventArgs e) {
-            ContributeChanged?.Invoke(this, new EventArgs());
+            DlgChanged?.Invoke(this, new DlgEventArgs {
+                TimelineContributeChanged = true
+            });
         }
 
         private async void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
@@ -574,8 +577,7 @@ namespace Timeline.Pages {
             await IniUtil.SaveLspCateAsync(bi.Cate);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true,
-                DoNotToastLsp = true
+                ProviderConfigChanged = true
             });
         }
 
@@ -589,24 +591,29 @@ namespace Timeline.Pages {
             await IniUtil.SaveLspOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true,
-                DoNotToastLsp = true
+                ProviderConfigChanged = true
             });
         }
 
         private async void ToggleLspR22_Toggled(object sender, RoutedEventArgs e) {
-            int r22 = (sender as ToggleSwitch).IsOn ? 1 : 0;
-            string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
-            LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
-            if (bi.R22 == r22) {
-                return;
+            Debug.WriteLine("ToggleLspR22_Toggled() " + ToggleLspR22.IsOn);
+            if (ToggleLspR22.IsOn) {
+                R22AuthApiData data = await Api.LspR22AuthAsync();
+                if (data.R22 == 0) { // 未获授权
+                    ToggleLspR22.Toggled -= ToggleLspR22_Toggled;
+                    ToggleLspR22.IsOn = false;
+                    ToggleLspR22.Toggled += ToggleLspR22_Toggled;
+                    DlgChanged?.Invoke(this, new DlgEventArgs {
+                        LspR22Changed = data
+                    });
+                    return;
+                }
             }
-            bi.R22 = r22;
-            await IniUtil.SaveLspR22Async(bi.R22);
-            await IniUtil.SaveProviderAsync(bi.Id);
+
+            LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
+            bi.R22 = ToggleLspR22.IsOn;
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true,
-                DoNotToastLsp = bi.R22 == 0
+                ProviderConfigChanged = true
             });
         }
 
@@ -632,9 +639,12 @@ namespace Timeline.Pages {
 
         public bool ProviderConfigChanged { get; set; }
 
-        // 刷新时默认检测LSP图源并提示
-        public bool DoNotToastLsp { get; set; }
-
         public bool ThemeChanged { get; set; }
+    }
+
+    public class DlgEventArgs : EventArgs {
+        public bool TimelineContributeChanged { get; set; }
+
+        public R22AuthApiData LspR22Changed { get; set; }
     }
 }

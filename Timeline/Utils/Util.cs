@@ -194,11 +194,6 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(LspIni.ID, "cate", cate, iniFile.Path);
         }
 
-        public static async Task SaveLspR22Async(int r22) {
-            StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(LspIni.ID, "r22", r22.ToString(), iniFile.Path);
-        }
-
         public static async Task<StorageFile> GetIniPath() {
             return await GenerateIniFileAsync();
         }
@@ -386,9 +381,6 @@ namespace Timeline.Utils {
             lspIni.Cate = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "api", "", sb, 1024, iniFile);
             lspIni.Api = sb.ToString();
-            _ = GetPrivateProfileString(LspIni.ID, "r22", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int r22);
-            lspIni.R22 = r22;
             ini.SetIni(LspIni.ID, lspIni);
             return ini;
         }

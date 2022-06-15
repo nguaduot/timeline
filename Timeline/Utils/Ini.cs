@@ -403,12 +403,12 @@ namespace Timeline.Utils {
             Order = "random";
         }
 
-        public int R22 { set; get; } = 0;
+        public bool R22 { set; get; }
 
         public override string GetCateApi() => string.Format(URL_API_CATE, R22);
 
         public override BaseProvider GenerateProvider() => new LspProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&r22={R22}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
     }
 }

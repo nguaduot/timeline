@@ -937,7 +937,7 @@
                 <muxc:Expander Name="ExpanderLsp"
                                ExpandDirection="Down"
                                IsExpanded="False"
-                               Visibility="Collapsed"
+                               IsEnabled="False"
                                Tag="lsp"
                                Expanding="ExpanderDynamicProvider_Expanding"
                                HorizontalAlignment="Stretch"

@@ -33,6 +33,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "reldate")]
         public string RelDate { set; get; }
 
+        // R22
+        [JsonProperty(PropertyName = "r22")]
+        public int R22 { set; get; }
+
         // 热度分
         [JsonProperty(PropertyName = "score")]
         public float Score { set; get; }

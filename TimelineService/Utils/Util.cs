@@ -176,9 +176,6 @@ namespace TimelineService.Utils {
             ini.Lsp.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "cate", "", sb, 1024, iniFile);
             ini.Lsp.Cate = sb.ToString();
-            _ = GetPrivateProfileString(LspIni.GetId(), "r22", "0", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int r22);
-            ini.Lsp.R22 = r22;
             return ini;
         }
     }

@@ -129,6 +129,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Beans\R22AuthApi.cs" />
     <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\BingApi.cs" />
     <Compile Include="Beans\ContributeApiReq.cs" />
@@ -159,6 +160,9 @@
       <DependentUpon>DonateDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OsVerTrigger.cs" />
+    <Compile Include="Pages\R22Dlg.xaml.cs">
+      <DependentUpon>R22Dlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReviewDlg.xaml.cs">
       <DependentUpon>ReviewDlg.xaml</DependentUpon>
     </Compile>
@@ -266,6 +270,10 @@
     <Page Include="Pages\DonateDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\R22Dlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ReviewDlg.xaml">
       <Generator>MSBuild:Compile</Generator>

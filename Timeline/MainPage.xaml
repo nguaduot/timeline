@@ -480,7 +480,7 @@
         <SplitView.Pane>
             <local:SettingsView x:Name="ViewSettings"
                                 SettingsChanged="ViewSettings_SettingsChanged"
-                                ContributeChanged="ViewSettings_ContributeChanged" />
+                                DlgChanged="ViewSettings_DlgChanged" />
         </SplitView.Pane>
 
         <!-- 避免浮出菜单无法呼出：Background="Transparent"-->
@@ -550,9 +550,6 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="G"
-                                     Modifiers="Control"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="Number6"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number0"

@@ -26,6 +26,9 @@ namespace Timeline.Providers {
                 Cate = bean.CateName,
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
+            if (bean.R22 != 0) {
+                meta.Title = "🚫 " + meta.Title;
+            }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
             }
@@ -48,7 +51,8 @@ namespace Timeline.Providers {
             await base.LoadData(token, bi, date);
 
             LspIni ini = bi as LspIni;
-            string urlApi = string.Format(URL_API, bi.Cate, ini.Order, ++pageIndex, ini.R22);
+            string urlApi = string.Format(string.IsNullOrEmpty(ini.Api) ? URL_API : ini.Api,
+                bi.Cate, ini.Order, ++pageIndex, ini.R22 ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
