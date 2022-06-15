@@ -60,6 +60,9 @@ namespace Timeline.Providers {
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+                if (api.Status != 1) {
+                    return false;
+                }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (LspApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, ini.Order));
@@ -69,13 +72,13 @@ namespace Timeline.Providers {
                 } else {
                     AppendMetas(metasAdd);
                 }
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-
-            return metas.Count > 0;
+            return false;
         }
     }
 }

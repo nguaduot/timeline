@@ -47,7 +47,8 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, date);
 
-            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex);
+            string urlApi = string.Format(string.IsNullOrEmpty(bi.Api) ? URL_API : bi.Api,
+                bi.Cate, bi.Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -55,6 +56,9 @@ namespace Timeline.Providers {
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                if (api.Status != 1) {
+                    return false;
+                }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (WallhereApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, bi.Order));
@@ -64,13 +68,13 @@ namespace Timeline.Providers {
                 } else {
                     AppendMetas(metasAdd);
                 }
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-
-            return metas.Count > 0;
+            return false;
         }
     }
 }

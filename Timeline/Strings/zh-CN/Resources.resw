@@ -723,6 +723,9 @@
   <data name="MenuMarkCate.Text" xml:space="preserve">
     <value>分类有误</value>
   </data>
+  <data name="MsgProviderEmpty" xml:space="preserve">
+    <value>图库为空</value>
+  </data>
   <data name="MsgR22Auth" xml:space="preserve">
     <value>申请中，请等待审核</value>
   </data>
@@ -733,12 +736,9 @@
     <value>发邮件</value>
   </data>
   <data name="TextR22Code2.Text" xml:space="preserve">
-    <value>或</value>
-  </data>
-  <data name="TextR22Code3.Text" xml:space="preserve">
-    <value>扫码赞助</value>
-  </data>
-  <data name="TextR22Code4.Text" xml:space="preserve">
     <value>提醒管理员（注明暗号）。</value>
+  </data>
+  <data name="TextR22Risk.Text" xml:space="preserve">
+    <value>注：申请授权即表示同意不会非法传播R22内容，且自行承担风险。</value>
   </data>
 </root>

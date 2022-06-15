@@ -119,13 +119,13 @@ namespace Timeline.Providers {
                     metasAdd.Add(ParseBean(img));
                 }
                 SortMetas(metasAdd); // 按时序倒序排列
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-
-            return metas.Count > 0;
+            return false;
         }
     }
 }

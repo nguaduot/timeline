@@ -22,14 +22,12 @@
                     <Run x:Uid="TextR22Code1" />
                 </Hyperlink>
                 <Run x:Uid="TextR22Code2" />
-                <Hyperlink x:Uid="LinkDonate"
-                           UnderlineStyle="None"
-                           Click="LinkDonate_Click">
-                    <Run x:Uid="TextR22Code3" />
-                </Hyperlink>
-                <Run x:Uid="TextR22Code4" />
             </Span>
         </TextBlock>
+        <TextBlock x:Uid="TextR22Risk"
+                   Foreground="OrangeRed"
+                   TextWrapping="Wrap"
+                   Margin="0,8,0,0" />
         <TextBox Name="BoxR22Code"
                  x:Uid="BoxR22Code"
                  TextChanged="BoxR22Code_TextChanged"

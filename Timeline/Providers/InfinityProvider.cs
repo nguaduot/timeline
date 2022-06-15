@@ -76,13 +76,13 @@ namespace Timeline.Providers {
                     }
                     AppendMetas(metasAdd);
                 }
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-
-            return metas.Count > 0;
+            return false;
         }
     }
 }

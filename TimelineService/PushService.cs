@@ -112,10 +112,10 @@ namespace TimelineService {
                 LogUtil.W("CheckDesktopNecessary() not supported");
                 return false;
             }
-            if (pushNow && ini.DesktopProvider.Equals(ini.Provider)) { // 立即运行一次
-                return true;
+            if (pushNow) { // 立即运行一次
+                return ini.DesktopProvider.Equals(ini.Provider);
             }
-            return localSettings.Values.ContainsKey(tagDesktop);
+            return !localSettings.Values.ContainsKey(tagDesktop);
         }
 
         private bool CheckLockNecessary() {
@@ -126,10 +126,10 @@ namespace TimelineService {
                 LogUtil.W("CheckLockNecessary() not supported");
                 return false;
             }
-            if (pushNow && ini.LockProvider.Equals(ini.Provider)) { // 立即运行一次
-                return true;
+            if (pushNow) { // 立即运行一次
+                return ini.LockProvider.Equals(ini.Provider);
             }
-            return localSettings.Values.ContainsKey(tagLock);
+            return !localSettings.Values.ContainsKey(tagLock);
         }
 
         private async Task<bool> CheckTileNecessaryAsync() {
@@ -143,7 +143,7 @@ namespace TimelineService {
             if (pushNow) { // 立即运行一次
                 return true;
             }
-            return localSettings.Values.ContainsKey(tagTile);
+            return !localSettings.Values.ContainsKey(tagTile);
         }
 
         private async Task<bool> PushDesktopAsync() {

@@ -63,6 +63,11 @@ namespace Timeline {
             Tomorrow, // LoadTomorrowAsync
             Target // LoadTargetAsync
         }
+        private enum LoadStatus {
+            Empty,
+            Error,
+            NoInternet
+        }
 
         public MainPage() {
             this.InitializeComponent();
@@ -183,18 +188,13 @@ namespace Timeline {
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (!res) {
-                LogUtil.E("LoadFocusAsync() failed to load data");
-                StatusError();
-                return;
-            }
-
             meta = await provider.Focus();
             LogUtil.D("LoadFocusAsync() " + meta);
             if (meta == null) {
-                StatusError();
+                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
             }
+
             ShowText(meta);
             Meta metaCache = await provider.CacheAsync(meta, token);
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
@@ -208,16 +208,10 @@ namespace Timeline {
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (!res) {
-                LogUtil.E("LoadYesterdayAsync() failed to load data");
-                StatusError();
-                return;
-            }
-
             meta = await provider.Yesterday();
             LogUtil.D("LoadYesterdayAsync() " + meta);
             if (meta == null) {
-                StatusError();
+                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
             }
             ShowText(meta);
@@ -237,16 +231,10 @@ namespace Timeline {
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (!res) {
-                LogUtil.E("LoadTomorrowAsync() failed to load data");
-                StatusError();
-                return;
-            }
-
             meta = provider.Tomorrow();
             LogUtil.D("LoadTomorrowAsync() " + meta);
             if (meta == null) {
-                StatusError();
+                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
             }
             ShowText(meta);
@@ -265,19 +253,13 @@ namespace Timeline {
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (!res) {
-                LogUtil.E("LoadTargetAsync() failed to load data");
-                StatusError();
-                return;
-            }
-
             meta = provider.Target(date);
             if (meta == null) { // 跳转至最早
                 meta = provider.Index(99999);
             }
             LogUtil.D("LoadTargetAsync() " + meta);
             if (meta == null) {
-                StatusError();
+                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
             }
             ShowText(meta);
@@ -296,16 +278,10 @@ namespace Timeline {
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (!res) {
-                LogUtil.E("LoadEndAsync() failed to load data");
-                StatusError();
-                return;
-            }
-
             meta = provider.Index(index);
             LogUtil.D("LoadEndAsync() " + meta);
             if (meta == null) {
-                StatusError();
+                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
             }
             ShowText(meta);
@@ -531,7 +507,7 @@ namespace Timeline {
             ProgressLoading.Visibility = ViewStory.Visibility;
         }
 
-        private void StatusError() {
+        private void StatusError(LoadStatus status) {
             ImgUhd.Opacity = 0;
 
             TextTitle.Text = resLoader.GetString("AppDesc");
@@ -552,18 +528,34 @@ namespace Timeline {
             MenuFillOn.IsEnabled = false;
             MenuFillOff.IsEnabled = false;
 
-            string title = null;
-            string msg = resLoader.GetString("MsgNoInternet");
-            if (NetworkInterface.GetIsNetworkAvailable()) {
-                title = resLoader.GetString("Provider_" + provider.Id);
-                msg = resLoader.GetString("MsgLostProvider");
+            switch (status) {
+                case LoadStatus.Empty:
+                    ShowToastW(resLoader.GetString("MsgProviderEmpty"), resLoader.GetString("Provider_" + provider.Id),
+                        resLoader.GetString("ActionTry"), () => {
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        _ = LoadFocusAsync(ctsLoad.Token);
+                    });
+                    break;
+                case LoadStatus.Error:
+                    ShowToastE(resLoader.GetString("MsgLostProvider"), resLoader.GetString("Provider_" + provider.Id),
+                        resLoader.GetString("ActionTry"), () => {
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        _ = LoadFocusAsync(ctsLoad.Token);
+                    });
+                    break;
+                case LoadStatus.NoInternet:
+                    ShowToastE(resLoader.GetString("MsgNoInternet"), null, resLoader.GetString("ActionTry"), () => {
+                        ctsLoad.Cancel();
+                        StatusLoading();
+                        ctsLoad = new CancellationTokenSource();
+                        _ = LoadFocusAsync(ctsLoad.Token);
+                    });
+                    break;
             }
-            ShowToastE(msg, title, resLoader.GetString("ActionTry"), () => {
-                ctsLoad.Cancel();
-                StatusLoading();
-                ctsLoad = new CancellationTokenSource();
-                _ = LoadFocusAsync(ctsLoad.Token);
-            });
         }
 
         private async Task SetWallpaperAsync(Meta meta, bool setDesktopOrLock) {

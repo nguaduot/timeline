@@ -472,6 +472,8 @@
                                 Value="Collapsed" />
                         <Setter Target="Separator3.Visibility"
                                 Value="Collapsed" />
+                        <!--<Setter Target="FlyoutProvider.Placement"
+                                Value="RightEdgeAlignedTop" />-->
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

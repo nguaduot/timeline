@@ -93,8 +93,7 @@ namespace Timeline.Providers {
                 metasAdd.Add(meta);
                 SortMetas(metasAdd);
             }
-
-            return metas.Count > 0;
+            return true;
         }
 
         public override async Task<Meta> CacheAsync(Meta meta, CancellationToken token) {

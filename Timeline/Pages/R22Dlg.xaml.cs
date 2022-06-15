@@ -26,14 +26,6 @@ namespace Timeline.Pages {
             this.IsPrimaryButtonEnabled = BoxR22Code.Text.Trim().Length > 0;
         }
 
-        private async void LinkDonate_Click(object sender, RoutedEventArgs e) {
-            this.Hide();
-            Ini ini = await IniUtil.GetIniAsync();
-            _ = new DonateDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-            }.ShowAsync();
-        }
-
         private void BoxR22Code_TextChanged(object sender, TextChangedEventArgs e) {
             this.IsPrimaryButtonEnabled = BoxR22Code.Text.Trim().Length > 0;
         }

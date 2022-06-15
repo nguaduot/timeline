@@ -63,7 +63,8 @@ namespace Timeline.Providers {
 
             TimelineIni ini = bi as TimelineIni;
             nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(URL_API, ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
+            string urlApi = string.Format(string.IsNullOrEmpty(bi.Api) ? URL_API : bi.Api,
+                ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -71,6 +72,9 @@ namespace Timeline.Providers {
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 TimelineApi api = JsonConvert.DeserializeObject<TimelineApi>(jsonData);
+                if (api.Status != 1) {
+                    return false;
+                }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (TimelineApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, ini.Order));
@@ -82,12 +86,13 @@ namespace Timeline.Providers {
                 }
                 nextPage = "date".Equals(ini.Order)
                     ? nextPage.AddDays(-api.Data.Count) : nextPage;
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-            return metas.Count > 0;
+            return false;
         }
     }
 }

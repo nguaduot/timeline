@@ -83,12 +83,13 @@ namespace Timeline.Providers {
                 }
                 SortMetas(metasAdd); // 按时序倒序排列
                 nextPage = nextPage.AddDays(-PAGE_SIZE);
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-            return metas.Count > 0;
+            return false;
         }
     }
 
@@ -182,13 +183,13 @@ namespace Timeline.Providers {
                     ParseBean(htmlData)
                 };
                 SortMetas(metasAdd); // 按时序倒序排列
+                return true;
             } catch (Exception e) {
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);
             }
-
-            return metas.Count > 0;
+            return false;
         }
     }
 }
