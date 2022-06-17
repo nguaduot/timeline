@@ -17,12 +17,16 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "deviceid")]
         public string DeviceId { set; get; }
 
-        // 授权结果
-        [JsonProperty(PropertyName = "r22")]
-        public int R22 { set; get; }
-
         // 暗号
         [JsonProperty(PropertyName = "comment")]
         public string Comment { set; get; }
+
+        // 管理员回复
+        [JsonProperty(PropertyName = "remark")]
+        public string Remark { set; get; }
+
+        // 授权结果
+        [JsonProperty(PropertyName = "r22")]
+        public int R22 { set; get; }
     }
 }

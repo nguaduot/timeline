@@ -29,6 +29,8 @@ namespace Timeline.Providers {
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "@" + bean.Copyright;
+            } else if (!string.IsNullOrEmpty(bean.SrcUrl)) {
+                meta.Copyright = bean.SrcUrl.Replace("https://", "");
             }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {

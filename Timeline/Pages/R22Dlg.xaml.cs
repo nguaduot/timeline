@@ -19,11 +19,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Timeline.Pages {
     public sealed partial class R22Dlg : ContentDialog {
-        public R22Dlg(string comment) {
+        public R22Dlg(string comment, string answer) {
             this.InitializeComponent();
 
             BoxR22Code.Text = comment ?? "";
             this.IsPrimaryButtonEnabled = BoxR22Code.Text.Trim().Length > 0;
+            BoxR22Answer.Text = answer ?? "";
+            BoxR22Answer.Visibility = BoxR22Answer.Text.Trim().Length > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void BoxR22Code_TextChanged(object sender, TextChangedEventArgs e) {

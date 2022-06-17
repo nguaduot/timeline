@@ -8,7 +8,6 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
-using System.Globalization;
 
 namespace Timeline.Providers {
     public class YmyouliProvider : BaseProvider {

@@ -265,10 +265,10 @@
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value>开源。若有任何疑问、想法或合作意向，可发</value>
+    <value>开源。若有任何疑问、想法或合作意向，可</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
-    <value>邮件</value>
+    <value>发邮件</value>
   </data>
   <data name="TextContatc4.Text" xml:space="preserve">
     <value>联系我。</value>
@@ -493,7 +493,7 @@
     <value>前往官网</value>
   </data>
   <data name="SettingsReviewTitle.Text" xml:space="preserve">
-    <value>支持</value>
+    <value>反馈</value>
   </data>
   <data name="SettingsThankTitle.Text" xml:space="preserve">
     <value>致谢</value>
@@ -682,10 +682,10 @@
     <value>The best wallpapers on the Net!</value>
   </data>
   <data name="TextCdn0.Text" xml:space="preserve">
-    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您愿意提供赞助，可发</value>
+    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您愿意提供赞助，可</value>
   </data>
   <data name="TextCdn1.Text" xml:space="preserve">
-    <value>邮件</value>
+    <value>发邮件</value>
   </data>
   <data name="TextCdn2.Text" xml:space="preserve">
     <value>联系我。</value>
@@ -740,5 +740,17 @@
   </data>
   <data name="TextR22Risk.Text" xml:space="preserve">
     <value>注：申请授权即表示同意不会非法传播R22内容，且自行承担风险。</value>
+  </data>
+  <data name="Provider_local" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="Slogan_local" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="BoxR22Answer.Header" xml:space="preserve">
+    <value>管理员回复</value>
+  </data>
+  <data name="TextLocalOrder.Text" xml:space="preserve">
+    <value>排序</value>
   </data>
 </root>

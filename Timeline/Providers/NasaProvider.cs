@@ -109,8 +109,10 @@ namespace Timeline.Providers {
             }
         }
 
-        private Meta ParseBean(string htmlData) {
-            Meta meta = new Meta();
+        private Meta ParseBean(string srcUrl, string htmlData) {
+            Meta meta = new Meta {
+                Src = srcUrl
+            };
             Match match = Regex.Match(htmlData, @"contentid ?= ?""(.+?)"";");
             if (match.Success) {
                 meta.Id = match.Groups[1].Value;
@@ -180,7 +182,7 @@ namespace Timeline.Providers {
                 HttpResponseMessage res = await client.GetAsync(url, token);
                 string htmlData = await res.Content.ReadAsStringAsync();
                 List<Meta> metasAdd = new List<Meta> {
-                    ParseBean(htmlData)
+                    ParseBean(url, htmlData)
                 };
                 SortMetas(metasAdd); // 按时序倒序排列
                 return true;

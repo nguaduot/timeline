@@ -15,6 +15,7 @@ using System.Threading;
 using Windows.Storage.Streams;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Windows.ApplicationModel;
 
 namespace Timeline.Providers {
     public class BaseProvider {
@@ -262,29 +263,36 @@ namespace Timeline.Providers {
                 if (fileProperties.Size > 0) { // 已缓存过
                     m.CacheUhd = cacheFile;
                     LogUtil.D("Cache() cached from disk: " + cacheFile.Path);
-                } else if (m.Uhd != null && m.Do == null) { // 开始缓存
-                    LogUtil.D("Cache() cache from network: " + m.Uhd);
-                    foreach (DownloadOperation o in historyDownloads) { // 从历史中恢复任务
-                        if (m.Uhd.Equals(o.RequestedUri)) {
-                            m.Do = o;
-                            break;
+                } else if (m.Uhd != null) {
+                    Uri uriUhd = new Uri(m.Uhd);
+                    if (uriUhd.IsFile) { // 开始复制
+                        StorageFile srcFile = await StorageFile.GetFileFromPathAsync(m.Uhd);
+                        await srcFile.CopyAndReplaceAsync(cacheFile);
+                        meta.CacheUhd = cacheFile;
+                    } else if (m.Do == null) { // 开始缓存
+                        LogUtil.D("Cache() cache from network: " + m.Uhd);
+                        foreach (DownloadOperation o in historyDownloads) { // 从历史中恢复任务
+                            if (m.Uhd.Equals(o.RequestedUri)) {
+                                m.Do = o;
+                                break;
+                            }
                         }
-                    }
-                    if (m.Do == null) { // 新建下载任务
-                        //try {
-                            m.Do = downloader.CreateDownload(new Uri(m.Uhd), cacheFile);
+                        if (m.Do == null) { // 新建下载任务
+                            //try {
+                            m.Do = downloader.CreateDownload(uriUhd, cacheFile);
                             _ = m.Do.StartAsync();
-                        //} catch (Exception e) {
-                        //    LogUtil.E("Cache() " + e.Message);
-                        //}
-                    }
-                    if (activeDownloads.Count >= 5) { // 暂停缓存池之外的任务
-                        DownloadOperation o = activeDownloads.Dequeue();
-                        if (o.Progress.Status == BackgroundTransferStatus.Running) {
-                            o.Pause();
+                            //} catch (Exception e) {
+                            //    LogUtil.E("Cache() " + e.Message);
+                            //}
                         }
+                        if (activeDownloads.Count >= 5) { // 暂停缓存池之外的任务
+                            DownloadOperation o = activeDownloads.Dequeue();
+                            if (o.Progress.Status == BackgroundTransferStatus.Running) {
+                                o.Pause();
+                            }
+                        }
+                        activeDownloads.Enqueue(m.Do);
                     }
-                    activeDownloads.Enqueue(m.Do);
                 }
             }
             // 等待当前任务下载完成
@@ -359,10 +367,11 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public async Task<StorageFile> DownloadAsync(Meta meta, string appName, string provider) {
+        public async Task<StorageFile> DownloadAsync(Meta meta, string provider) {
             if (meta?.CacheUhd == null) {
                 return null;
             }
+            string appName = AppInfo.Current.DisplayInfo.DisplayName;
             try {
                 StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(appName,
                     CreationCollisionOption.OpenIfExists);

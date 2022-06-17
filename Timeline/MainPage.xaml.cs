@@ -14,6 +14,7 @@ using Timeline.Pages;
 using Timeline.Providers;
 using Timeline.Utils;
 using TimelineService;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
@@ -21,7 +22,6 @@ using Windows.System;
 using Windows.System.UserProfile;
 using Windows.UI.Core;
 using Windows.UI.Shell;
-using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -402,8 +402,7 @@ namespace Timeline {
             if (meta.CacheUhd != null) {
                 // 显示与图片文件相关的信息
                 string source = resLoader.GetString("Provider_" + provider.Id) + (meta.Cate != null ? (" · " + meta.Cate) : "");
-                string fileSize = FileUtil.ConvertFileSize(File.Exists(meta.CacheUhd.Path)
-                    ? new FileInfo(meta.CacheUhd.Path).Length : 0);
+                string fileSize = FileUtil.ConvertFileSize((long)((await meta.CacheUhd.GetBasicPropertiesAsync()).Size));
                 TextDetailProperties.Text = string.Format("{0} / {1}x{2}, {3}",
                     source, meta.Dimen.Width, meta.Dimen.Height, fileSize);
                 TextDetailProperties.Visibility = Visibility.Visible;
@@ -443,11 +442,11 @@ namespace Timeline {
                 meta.Dimen.Width, meta.Dimen.Height, (int)winW, (int)winH,
                 biUhd.DecodePixelWidth, biUhd.DecodePixelHeight);
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && !r18) {
-                biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.Absolute);
+                biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             } else if (meta.CacheUhd != null) {
-                biUhd.UriSource = new Uri(meta.CacheUhd.Path, UriKind.Absolute);
+                biUhd.UriSource = new Uri(meta.CacheUhd.Path, UriKind.RelativeOrAbsolute);
             } else {
-                biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.Absolute);
+                biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             }
         }
 
@@ -596,11 +595,10 @@ namespace Timeline {
 
         private async Task DownloadAsync() {
             ShowToastI(resLoader.GetString("MsgSave"));
-            StorageFile file = await provider.DownloadAsync(meta, resLoader.GetString("AppNameShort"),
-                resLoader.GetString("Provider_" + provider.Id));
+            StorageFile file = await provider.DownloadAsync(meta, resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionGo"), async () => {
-                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists), file);
                 });
             } else {
@@ -1151,7 +1149,7 @@ namespace Timeline {
                 case VirtualKey.G: // Ctrl + G
                     ShowFlyoutGo();
                     break;
-                case VirtualKey.Number0: // 0
+                case VirtualKey.Number0: // Ctrl + 0 / 0
                     await ShowFlyoutMarkCate();
                     break;
                 case VirtualKey.F10: // F10
@@ -1165,7 +1163,7 @@ namespace Timeline {
                     await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
                     break;
                 case VirtualKey.O: // Ctrl + O
-                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
+                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists));
                     break;
                 case VirtualKey.F12: // F12
@@ -1194,11 +1192,12 @@ namespace Timeline {
             AnimeSettings.Begin();
         }
 
-        private void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
+        private async void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.ProviderChanged) {
-                _ = Refresh(true);
+                await Refresh(true);
             } else if (e.ProviderConfigChanged) {
-                _ = Refresh(false);
+                await Refresh(false);
+                await ViewSettings.NotifyPaneOpened(ini);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
                 ElementTheme theme = ThemeUtil.ParseTheme(ini.Theme);
@@ -1231,7 +1230,7 @@ namespace Timeline {
                     ShowToastI(resLoader.GetString("MsgContribute"));
                 }
             } else if (e.LspR22Changed != null) {
-                R22Dlg dlg = new R22Dlg(e.LspR22Changed.Comment) {
+                R22Dlg dlg = new R22Dlg(e.LspR22Changed.Comment, e.LspR22Changed.Remark) {
                     RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
                 };
                 var res = await dlg.ShowAsync();

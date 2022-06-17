@@ -183,6 +183,7 @@
     <Compile Include="Providers\LspProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
     <Compile Include="Providers\WallhavenProvider.cs" />
+    <Compile Include="Providers\LocalProvider.cs" />
     <Compile Include="Providers\YmyouliProvider.cs" />
     <Compile Include="Utils\Api.cs" />
     <Compile Include="Utils\Ini.cs" />
@@ -286,7 +287,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.13</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.1</Version>

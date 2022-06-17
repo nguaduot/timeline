@@ -175,6 +175,8 @@ namespace TimelineService {
                 res = await LoadObzhiAsync(Action.Desktop);
             } else if (LspIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadLspAsync(Action.Desktop);
+            } else if (LocalIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadLocalAsync(Action.Desktop);
             }
             if (res) {
                 localSettings.Values[tagDesktop] = (int)(localSettings.Values[tagDesktop] ?? 0) + 1;
@@ -212,6 +214,8 @@ namespace TimelineService {
                 res = await LoadObzhiAsync(Action.Lock);
             } else if (LspIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadLspAsync(Action.Lock);
+            } else if (LocalIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadLocalAsync(Action.Lock);
             }
             if (res) {
                 localSettings.Values[tagLock] = (int)(localSettings.Values[tagLock] ?? 0) + 1;
@@ -249,6 +253,8 @@ namespace TimelineService {
                 res = await LoadObzhiAsync(Action.Tile);
             } else if (LspIni.GetId().Equals(ini.Provider)) {
                 res = await LoadLspAsync(Action.Tile);
+            } else if (LocalIni.GetId().Equals(ini.Provider)) {
+                res = await LoadLocalAsync(Action.Tile);
             }
             if (res) {
                 localSettings.Values[tagTile] = (int)(localSettings.Values[tagTile] ?? 0) + 1;
@@ -331,17 +337,23 @@ namespace TimelineService {
             }
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(cacheName, CreationCollisionOption.ReplaceExisting);
             if (string.IsNullOrEmpty(urlImg)) {
-                LogUtil.E("SetWallpaper() invalid url");
+                LogUtil.E("DownloadImgAsync() invalid url");
                 return file;
             }
-
-            BackgroundDownloader downloader = new BackgroundDownloader();
-            DownloadOperation operation = downloader.CreateDownload(new Uri(urlImg), file);
-            DownloadOperation resOperation = await operation.StartAsync().AsTask();
-            if (resOperation.Progress.Status != BackgroundTransferStatus.Completed) {
-                LogUtil.E("SetWallpaper() download error");
-                return file;
+            Uri uriImg = new Uri(urlImg);
+            if (uriImg.IsFile) {
+                StorageFile srcFile = await StorageFile.GetFileFromPathAsync(urlImg);
+                await srcFile.CopyAndReplaceAsync(file);
+            } else {
+                BackgroundDownloader downloader = new BackgroundDownloader();
+                DownloadOperation operation = downloader.CreateDownload(uriImg, file);
+                DownloadOperation resOperation = await operation.StartAsync().AsTask();
+                if (resOperation.Progress.Status != BackgroundTransferStatus.Completed) {
+                    LogUtil.E("DownloadImgAsync() download error");
+                    return file;
+                }
             }
+            
             if (offset >= 0 && ratio >= 0) {
                 CanvasDevice device = CanvasDevice.GetSharedDevice();
                 CanvasBitmap bitmap = null;
@@ -389,7 +401,7 @@ namespace TimelineService {
             BingApi bing = JsonConvert.DeserializeObject<BingApi>(jsonData);
             if (action == Action.Tile) {
                 string urlThumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, bing.Images[0].UrlBase);
-                LogUtil.I("LoadBing() img url: " + urlThumb);
+                LogUtil.I("LoadBing() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bing.Images[0].UrlBase);
@@ -418,7 +430,7 @@ namespace TimelineService {
                         break;
                     }
                 }
-                LogUtil.I("LoadNasa() img url: " + urlThumb);
+                LogUtil.I("LoadNasa() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 string urlUhd = null;
@@ -456,7 +468,7 @@ namespace TimelineService {
             OneplusApi oneplusApi = JsonConvert.DeserializeObject<OneplusApi>(jsonData);
             if (action == Action.Tile) {
                 string urlThumb = oneplusApi.Items[0].PhotoUrl.Replace(".jpg", "_400_0.jpg");
-                LogUtil.I("LoadBing() img url: " + urlThumb);
+                LogUtil.I("LoadBing() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 string urlUhd = oneplusApi.Items[0].PhotoUrl;
@@ -479,7 +491,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(URL_API);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadTimeline() img url: " + urlThumb);
+                LogUtil.I("LoadTimeline() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/timeline/today?client=timelinewallpaper";
@@ -560,7 +572,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadYmyouli() img url: " + urlThumb);
+                LogUtil.I("LoadYmyouli() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/ymyouli/random?client=timelinewallpaper&cate={0}";
@@ -591,7 +603,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadWallhaven() img url: " + urlThumb);
+                LogUtil.I("LoadWallhaven() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/wallhaven/random?client=timelinewallpaper&cate={0}";
@@ -622,7 +634,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadQingbz() img url: " + urlThumb);
+                LogUtil.I("LoadQingbz() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/qingbz/random?client=timelinewallpaper&cate={0}";
@@ -653,7 +665,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadWallhere() img url: " + urlThumb);
+                LogUtil.I("LoadWallhere() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/wallhere/random?client=timelinewallpaper&cate={0}";
@@ -684,7 +696,7 @@ namespace TimelineService {
             if (action == Action.Tile) {
                 Match match = Regex.Match(jsonData, @"""smallSrc"": ?""(.+?)""");
                 string urlThumb = match.Groups[1].Value;
-                LogUtil.I("LoadObzhi() img url: " + urlThumb);
+                LogUtil.I("LoadObzhi() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
@@ -709,7 +721,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadObzhi() img url: " + urlThumb);
+                LogUtil.I("LoadObzhi() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/obzhi/random?client=timelinewallpaper&cate={0}";
@@ -740,7 +752,7 @@ namespace TimelineService {
                 });
                 HttpResponseMessage msg = await client.GetAsync(urlApi);
                 string urlThumb = msg.Headers.Location.AbsoluteUri;
-                LogUtil.I("LoadLsp() img url: " + urlThumb);
+                LogUtil.I("LoadLsp() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
                 const string URL_API = "https://api.nguaduot.cn/lsp/random?client=timelinewallpaper&cate={0}";
@@ -753,6 +765,40 @@ namespace TimelineService {
                 string urlUhd = msg.Headers.Location.AbsoluteUri;
                 LogUtil.I("LoadLsp() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                if (action == Action.Lock) {
+                    return await SetLockBackground(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadLocalAsync(Action action) {
+            if (action == Action.Tile) {
+                //StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
+                //    CreationCollisionOption.OpenIfExists);
+                //IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync();
+                //StorageFile fileImg = imgFiles[new Random().Next(imgFiles.Count)];
+                //StorageItemThumbnail urlThumb = await fileImg.GetThumbnailAsync(ThumbnailMode.PicturesView);
+                //LogUtil.I("LoadLocalAsync() thumb file: " + urlThumb);
+                //return SetTileBg();
+                return false;
+            } else {
+                StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
+                    CreationCollisionOption.OpenIfExists);
+                List<StorageFile> srcFiles = new List<StorageFile>();
+                foreach (StorageFile file in await folder.GetFilesAsync()) {
+                    if (file.ContentType.StartsWith("image")) {
+                        srcFiles.Add(file);
+                    }
+                }
+                if (srcFiles.Count == 0) {
+                    return false;
+                }
+                StorageFile fileSrc = srcFiles[new Random().Next(srcFiles.Count)];
+                LogUtil.I("LoadLocalAsync() img file: " + fileSrc.Path);
+                StorageFile fileImg = await DownloadImgAsync(fileSrc.Path, action);
+                
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {

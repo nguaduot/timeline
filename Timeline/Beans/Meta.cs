@@ -78,7 +78,7 @@ namespace Timeline.Beans {
         public double SortFactor { set; get; }
 
         public bool IsValid() {
-            return !string.IsNullOrEmpty(Id) && Date != null && Uhd != null;
+            return !string.IsNullOrEmpty(Id) && Uhd != null;
         }
 
         public string GetTitleOrCaption() {

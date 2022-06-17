@@ -23,7 +23,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.6.ini";
+        private const string FILE_INI = "timeline-5.7.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -36,7 +36,7 @@ namespace Timeline.Utils {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             StorageFile iniFile = await folder.TryGetItemAsync(FILE_INI) as StorageFile;
             if (iniFile == null) { // 生成初始配置文件
-                FileInfo[] oldFiles = new DirectoryInfo(folder.Path).GetFiles("*.ini");
+                FileInfo[] oldFiles = new DirectoryInfo(folder.Path).GetFiles("*.ini", SearchOption.TopDirectoryOnly);
                 Array.Sort(oldFiles, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime));
                 StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\config.txt");
                 iniFile = await configFile.CopyAsync(folder, FILE_INI, NameCollisionOption.ReplaceExisting);
@@ -192,6 +192,11 @@ namespace Timeline.Utils {
         public static async Task SaveLspCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LspIni.ID, "cate", cate, iniFile.Path);
+        }
+
+        public static async Task SaveLocalOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(LocalIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task<StorageFile> GetIniPath() {
@@ -392,6 +397,17 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(LspIni.ID, "api", "", sb, 1024, iniFile);
             lspIni.Api = sb.ToString();
             ini.SetIni(LspIni.ID, lspIni);
+            _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            LocalIni localIni = new LocalIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod
+            };
+            _ = GetPrivateProfileString(LocalIni.ID, "order", "random", sb, 1024, iniFile);
+            localIni.Order = sb.ToString();
+            ini.SetIni(LocalIni.ID, localIni);
             return ini;
         }
 

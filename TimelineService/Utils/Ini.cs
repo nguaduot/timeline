@@ -5,7 +5,7 @@ namespace TimelineService.Utils {
         private readonly HashSet<string> PROVIDER = new HashSet<string>() {
             BingIni.GetId(), NasaIni.GetId(), OneplusIni.GetId(), TimelineIni.GetId(), OneIni.GetId(),
             Himawari8Ini.GetId(), YmyouliIni.GetId(), WallhavenIni.GetId(), QingbzIni.GetId(),
-            WallhereIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(), LspIni.GetId()
+            WallhereIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(), LspIni.GetId(), LocalIni.GetId()
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
 
@@ -55,6 +55,8 @@ namespace TimelineService.Utils {
 
         public LspIni Lsp { set; get; } = new LspIni();
 
+        public LocalIni Local { set; get; } = new LocalIni();
+
         public int GetDesktopPeriod(string provider) {
             if (NasaIni.GetId().Equals(provider)) {
                 return Nasa.DesktopPeriod;
@@ -80,6 +82,8 @@ namespace TimelineService.Utils {
                 return Obzhi.DesktopPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
                 return Lsp.DesktopPeriod;
+            } else if (LocalIni.GetId().Equals(provider)) {
+                return Local.DesktopPeriod;
             } else {
                 return Bing.DesktopPeriod;
             }
@@ -110,6 +114,8 @@ namespace TimelineService.Utils {
                 return Obzhi.LockPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
                 return Lsp.LockPeriod;
+            } else if (LocalIni.GetId().Equals(provider)) {
+                return Local.LockPeriod;
             } else {
                 return Bing.LockPeriod;
             }
@@ -141,6 +147,8 @@ namespace TimelineService.Utils {
                 paras = Obzhi.ToString();
             } else if (LspIni.GetId().Equals(provider)) {
                 paras = Lsp.ToString();
+            } else if (LocalIni.GetId().Equals(provider)) {
+                paras = Local.ToString();
             } else {
                 paras = Bing.ToString();
             }
@@ -534,5 +542,31 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "lsp";
+    }
+
+    public sealed class LocalIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+
+        public static string GetId() => "local";
     }
 }

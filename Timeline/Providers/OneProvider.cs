@@ -32,7 +32,8 @@ namespace Timeline.Providers {
                 Thumb = bean.ImgUrl,
                 Title = bean.Title,
                 Story = bean.Content,
-                Copyright = bean.PictureAuthor
+                Copyright = bean.PictureAuthor,
+                Src = bean.Url
             };
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";

@@ -33,6 +33,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "text_authors")]
         public string TextAuthors { set; get; }
 
+        // 平台发布链接
+        [JsonProperty(PropertyName = "url")]
+        public string Url { set; get; }
+
         // 日期：yyyy / MM / dd
         [JsonProperty(PropertyName = "date")]
         public string Date { set; get; }

@@ -336,6 +336,8 @@
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Number5"
                                          Modifiers="Control" />
+                    <KeyboardAccelerator Key="Number5"
+                                         Modifiers="None" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
         </MenuFlyout>
@@ -378,6 +380,10 @@
             <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
                                       Tag="lsp"
                                       Click="MenuProvider_Click"
+                                      Visibility="Collapsed"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="local"
                                       Visibility="Collapsed"
                                       GroupName="Provider" />
         </MenuFlyout>
@@ -552,6 +558,9 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="G"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Number0"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number0"

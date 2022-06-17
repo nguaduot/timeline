@@ -41,6 +41,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listLocalOrder = new ObservableCollection<CateMeta>();
 
         private List<string> glitters = new List<string>();
 
@@ -117,6 +118,12 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
+            foreach (string item in LocalIni.ORDERS) {
+                listLocalOrder.Add(new CateMeta {
+                    Id = item,
+                    Name = resLoader.GetString("Order_" + item)
+                });
+            }
 
             BoxHimawari8Offset.NumberFormatter = new DecimalFormatter {
                 IntegerDigits = 1,
@@ -154,9 +161,7 @@ namespace Timeline.Pages {
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
-            //ToggleLspR22.Toggled -= ToggleLspR22_Toggled;
-            //ToggleLspR22.IsOn = ((LspIni)ini.GetIni(LspIni.ID)).R22 == 1;
-            //ToggleLspR22.Toggled += ToggleLspR22_Toggled;
+            BoxLocalOrder.SelectedIndex = listLocalOrder.Select(t => t.Id).ToList().IndexOf(((LocalIni)ini.GetIni(LocalIni.ID)).Order);
             // 刷新主题设置
             RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
             rbTheme.IsChecked = true;
@@ -293,7 +298,7 @@ namespace Timeline.Pages {
 
         private async void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string lang = (e.AddedItems[0] as CateMeta).Id;
-            BingIni bi = (BingIni)ini.GetIni(BingIni.ID);
+            BingIni bi = ini.GetIni(BingIni.ID) as BingIni;
             if (lang.Equals(bi.Lang)) {
                 return;
             }
@@ -307,7 +312,7 @@ namespace Timeline.Pages {
 
         private async void ToggleNasaMirror_Toggled(object sender, RoutedEventArgs e) {
             string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
-            NasaIni bi = (NasaIni)ini.GetIni(NasaIni.ID);
+            NasaIni bi = ini.GetIni(NasaIni.ID) as NasaIni;
             if (mirror.Equals(bi.Mirror)) {
                 return;
             }
@@ -379,7 +384,7 @@ namespace Timeline.Pages {
                 himawari8OffsetTimer.Tick += async (sender2, e2) => {
                     himawari8OffsetTimer.Stop();
                     float offset = (float)BoxHimawari8Offset.Value;
-                    Himawari8Ini bi = (Himawari8Ini)ini.GetIni(Himawari8Ini.ID);
+                    Himawari8Ini bi = ini.GetIni(Himawari8Ini.ID) as Himawari8Ini;
                     if (Math.Abs(offset - bi.Offset) < 0.01f) {
                         return;
                     }
@@ -401,7 +406,7 @@ namespace Timeline.Pages {
                 himawari8RatioTimer.Tick += async (sender2, e2) => {
                     himawari8RatioTimer.Stop();
                     float ratio = (float)BoxHimawari8Ratio.Value;
-                    Himawari8Ini bi = (Himawari8Ini)ini.GetIni(Himawari8Ini.ID);
+                    Himawari8Ini bi = ini.GetIni(Himawari8Ini.ID) as Himawari8Ini;
                     if (Math.Abs(ratio - bi.Ratio) < 0.01f) {
                         return;
                     }
@@ -596,7 +601,6 @@ namespace Timeline.Pages {
         }
 
         private async void ToggleLspR22_Toggled(object sender, RoutedEventArgs e) {
-            Debug.WriteLine("ToggleLspR22_Toggled() " + ToggleLspR22.IsOn);
             if (ToggleLspR22.IsOn) {
                 R22AuthApiData data = await Api.LspR22AuthAsync();
                 if (data.R22 == 0) { // 未获授权
@@ -610,8 +614,22 @@ namespace Timeline.Pages {
                 }
             }
 
-            LspIni bi = (LspIni)ini.GetIni(LspIni.ID);
+            LspIni bi = ini.GetIni(LspIni.ID) as LspIni;
             bi.R22 = ToggleLspR22.IsOn;
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxLocalOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string order = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(LocalIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveLocalOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });

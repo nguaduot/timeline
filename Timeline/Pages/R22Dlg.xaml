@@ -30,8 +30,16 @@
                    Margin="0,8,0,0" />
         <TextBox Name="BoxR22Code"
                  x:Uid="BoxR22Code"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
                  TextChanged="BoxR22Code_TextChanged"
                  Margin="0,12,0,0" />
+        <TextBox Name="BoxR22Answer"
+                 x:Uid="BoxR22Answer"
+                 Visibility="Collapsed"
+                 IsEnabled="False"
+                 TextWrapping="Wrap"
+                 Margin="0,8,0,0" />
     </StackPanel>
 
 </ContentDialog>
