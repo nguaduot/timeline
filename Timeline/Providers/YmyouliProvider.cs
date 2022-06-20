@@ -47,8 +47,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, date);
 
-            string urlApi = string.Format(string.IsNullOrEmpty(bi.Api) ? URL_API : bi.Api,
-                bi.Cate, bi.Order, ++pageIndex);
+            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

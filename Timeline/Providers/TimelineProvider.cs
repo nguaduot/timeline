@@ -63,8 +63,7 @@ namespace Timeline.Providers {
 
             TimelineIni ini = bi as TimelineIni;
             nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(string.IsNullOrEmpty(bi.Api) ? URL_API : bi.Api,
-                ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
+            string urlApi = string.Format(URL_API, ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

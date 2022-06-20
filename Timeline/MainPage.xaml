@@ -6,7 +6,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Page.Resources>
@@ -384,7 +383,6 @@
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="local"
-                                      Visibility="Collapsed"
                                       GroupName="Provider" />
         </MenuFlyout>
 
@@ -497,7 +495,8 @@
                        Name="ViewMain"
                        Tapped="ViewMain_Tapped"
                        DoubleTapped="ViewMain_DoubleTapped"
-                       ManipulationMode="TranslateX,TranslateY"
+                       ManipulationMode="TranslateX"
+                       ManipulationDelta="ViewMain_ManipulationDelta"
                        ManipulationCompleted="ViewMain_ManipulationCompleted"
                        PointerWheelChanged="ViewMain_PointerWheelChanged"
                        ContextFlyout="{x:Bind FlyoutMenu}">
@@ -580,29 +579,38 @@
                                      Invoked="KeyInvoked" />
             </RelativePanel.KeyboardAccelerators>
 
-            <Image Name="ImgUhd"
-                   Opacity="0"
-                   Scale="1.014,1.014,1.014"
-                   Stretch="UniformToFill"
-                   ImageOpened="ImgUhd_ImageOpened"
-                   ImageFailed="ImgUhd_ImageFailed"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   RelativePanel.AlignHorizontalCenterWithPanel="True"
-                   RelativePanel.AlignVerticalCenterWithPanel="True">
-                <Image.OpacityTransition>
-                    <ScalarTransition Duration="0:0:0.4" />
-                </Image.OpacityTransition>
-                <Image.ScaleTransition>
-                    <Vector3Transition Duration="0:0:0.4" />
-                </Image.ScaleTransition>
-            </Image>
+            <RelativePanel Name="ImgUhdPointer"
+                           RelativePanel.AlignHorizontalCenterWithPanel="True"
+                           RelativePanel.AlignVerticalCenterWithPanel="True">
+
+                <Image Name="ImgUhd"
+                       Opacity="0"
+                       Scale="1.014,1.014,1.014"
+                       Stretch="UniformToFill"
+                       ImageOpened="ImgUhd_ImageOpened"
+                       ImageFailed="ImgUhd_ImageFailed"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <Image.OpacityTransition>
+                        <ScalarTransition Duration="0:0:0.4" />
+                    </Image.OpacityTransition>
+                    <Image.ScaleTransition>
+                        <Vector3Transition Duration="0:0:0.4" />
+                    </Image.ScaleTransition>
+                </Image>
+
+            </RelativePanel>
 
             <!-- 避免指针事件无响应：Background="Transparent"-->
             <!-- 不响应滑动事件：ManipulationMode="None" -->
             <RelativePanel Name="ViewBarPointer"
                            Background="Transparent"
-                           ManipulationMode="None"
+                           ManipulationMode="TranslateX"
+                           ManipulationStarted="ViewBarPointer_ManipulationStarted"
+                           ManipulationDelta="ViewBarPointer_ManipulationDelta"
+                           ManipulationCompleted="ViewBarPointer_ManipulationCompleted"
                            ContextRequested="ViewBarPointer_ContextRequested"
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignRightWithPanel="False"
@@ -661,10 +669,9 @@
                                    Margin="0,8,0,0"
                                    Visibility="Collapsed"
                                    TextWrapping="NoWrap"
-                                   PointerEntered="TextDetailCopyright_PointerEntered"
-                                   PointerExited="TextDetailCopyright_PointerExited"
                                    Tapped="TextDetailCopyright_Tapped"
-                                   TextTrimming="CharacterEllipsis" />
+                                   TextTrimming="CharacterEllipsis">
+                        </TextBlock>
                         <TextBlock Name="TextDetailDate"
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    TextWrapping="NoWrap"

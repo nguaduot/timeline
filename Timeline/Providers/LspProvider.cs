@@ -14,7 +14,7 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}&r22={3}";
+        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}&r22={3}&unaudited={4}";
         
         private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
@@ -51,8 +51,8 @@ namespace Timeline.Providers {
             await base.LoadData(token, bi, date);
 
             LspIni ini = bi as LspIni;
-            string urlApi = string.Format(string.IsNullOrEmpty(ini.Api) ? URL_API : ini.Api,
-                bi.Cate, ini.Order, ++pageIndex, ini.R22 ? SysUtil.GetDeviceId() : "");
+            string urlApi = string.Format(URL_API, bi.Cate, ini.Order, ++pageIndex,
+                ini.R22 ? SysUtil.GetDeviceId() : "", ini.Unaudited ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

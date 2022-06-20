@@ -23,7 +23,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.7.ini";
+        private const string FILE_INI = "timeline-5.8.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -270,8 +270,6 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(TimelineIni.ID, "unauthorized", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int unauthorized);
             timelineIni.Unauthorized = unauthorized;
-            _ = GetPrivateProfileString(TimelineIni.ID, "api", "", sb, 1024, iniFile);
-            timelineIni.Api = sb.ToString();
             ini.SetIni(TimelineIni.ID, timelineIni);
             _ = GetPrivateProfileString(OneIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -309,8 +307,6 @@ namespace Timeline.Utils {
             ymyouliIni.Order = sb.ToString();
             _ = GetPrivateProfileString(YmyouliIni.ID, "cate", "", sb, 1024, iniFile);
             ymyouliIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(YmyouliIni.ID, "api", "", sb, 1024, iniFile);
-            ymyouliIni.Api = sb.ToString();
             ini.SetIni(YmyouliIni.ID, ymyouliIni);
             _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -324,8 +320,8 @@ namespace Timeline.Utils {
             wallhavenIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
             wallhavenIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhavenIni.ID, "api", "", sb, 1024, iniFile);
-            wallhavenIni.Api = sb.ToString();
+            _ = GetPrivateProfileString(WallhavenIni.ID, "unaudited", "0", sb, 1024, iniFile);
+            wallhavenIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -339,8 +335,8 @@ namespace Timeline.Utils {
             qingbzIni.Order = sb.ToString();
             _ = GetPrivateProfileString(QingbzIni.ID, "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(QingbzIni.ID, "api", "", sb, 1024, iniFile);
-            qingbzIni.Api = sb.ToString();
+            _ = GetPrivateProfileString(QingbzIni.ID, "unaudited", "0", sb, 1024, iniFile);
+            qingbzIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(QingbzIni.ID, qingbzIni);
             _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -354,8 +350,8 @@ namespace Timeline.Utils {
             wallhereIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhereIni.ID, "cate", "", sb, 1024, iniFile);
             wallhereIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhereIni.ID, "api", "", sb, 1024, iniFile);
-            wallhereIni.Api = sb.ToString();
+            _ = GetPrivateProfileString(WallhereIni.ID, "unaudited", "0", sb, 1024, iniFile);
+            wallhereIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(wallhereIni.Id, wallhereIni);
             _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -379,8 +375,6 @@ namespace Timeline.Utils {
             obzhiIni.Order = sb.ToString();
             _ = GetPrivateProfileString(ObzhiIni.ID, "cate", "", sb, 1024, iniFile);
             obzhiIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(ObzhiIni.ID, "api", "", sb, 1024, iniFile);
-            obzhiIni.Api = sb.ToString();
             ini.SetIni(ObzhiIni.ID, obzhiIni);
             _ = GetPrivateProfileString(LspIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -394,8 +388,8 @@ namespace Timeline.Utils {
             lspIni.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(LspIni.ID, "api", "", sb, 1024, iniFile);
-            lspIni.Api = sb.ToString();
+            _ = GetPrivateProfileString(LspIni.ID, "unaudited", "0", sb, 1024, iniFile);
+            lspIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(LspIni.ID, lspIni);
             _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);

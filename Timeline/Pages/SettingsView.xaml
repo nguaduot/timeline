@@ -1042,7 +1042,6 @@
                 <muxc:Expander Name="ExpanderLocal"
                                ExpandDirection="Down"
                                IsExpanded="False"
-                               Visibility="Collapsed"
                                Tag="local"
                                Expanding="ExpanderStaticProvider_Expanding"
                                HorizontalAlignment="Stretch"
@@ -1075,28 +1074,53 @@
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE8CB;" />
-                            <TextBlock Grid.Column="1"
-                                       x:Uid="TextLocalOrder"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <ComboBox Name="BoxLocalOrder"
-                                      Grid.Column="2"
-                                      MinWidth="140"
-                                      ItemsSource="{x:Bind listLocalOrder}"
-                                      SelectionChanged="BoxLocalOrder_SelectionChanged" />
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextLocalOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxLocalOrder"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listLocalOrder}"
+                                          SelectionChanged="BoxLocalOrder_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE838;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextLocalFolder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnLocalFolder"
+                                        x:Uid="BtnLocalFolder"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Click="BtnLocalFolder_Click" />
+                            </Grid>
+                        </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
 
@@ -1291,19 +1315,17 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
-                            <StackPanel>
-                                <TextBlock TextWrapping="WrapWholeWords"
-                                           Style="{StaticResource BodyTextBlockStyle}">
+                            <TextBlock TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}">
                                     <Span xml:space="default">
-                                        <Run x:Uid="TextCdn0" />
-                                        <Hyperlink x:Uid="LinkEmail"
-                                                   UnderlineStyle="None">
-                                            <Run x:Uid="TextCdn1" />
-                                        </Hyperlink>
-                                        <Run x:Uid="TextCdn2" />
-                                    </Span>
-                                </TextBlock>
-                            </StackPanel>
+                                    <Run x:Uid="TextCdn0" />
+                                    <Hyperlink x:Uid="LinkEmail"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextCdn1" />
+                                    </Hyperlink>
+                                    <Run x:Uid="TextCdn2" />
+                                </Span>
+                            </TextBlock>
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
@@ -1415,21 +1437,17 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
-                            <StackPanel>
-                                <TextBlock x:Uid="TextThank1"
-                                           TextWrapping="WrapWholeWords"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
-                                <TextBlock x:Uid="TextThank2"
-                                           TextWrapping="WrapWholeWords"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
-                                <TextBlock x:Uid="TextThank3"
-                                           TextWrapping="WrapWholeWords"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                            </StackPanel>
+                            <TextBlock x:Uid="TextThank1"
+                                       TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                            <TextBlock x:Uid="TextThank2"
+                                       TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0" />
+                            <TextBlock x:Uid="TextThank3"
+                                       TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0" />
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

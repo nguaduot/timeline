@@ -96,8 +96,8 @@ namespace Timeline.Providers {
             return true;
         }
 
-        public override async Task<Meta> CacheAsync(Meta meta, CancellationToken token) {
-            await base.CacheAsync(meta, token);
+        public override async Task<Meta> CacheAsync(Meta meta, bool calFacePos, CancellationToken token) {
+            await base.CacheAsync(meta, calFacePos, token);
             if (meta?.CacheUhd == null) {
                 return null;
             }

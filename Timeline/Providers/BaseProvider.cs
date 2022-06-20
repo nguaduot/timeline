@@ -13,8 +13,6 @@ using System.Linq;
 using Windows.Media.FaceAnalysis;
 using System.Threading;
 using Windows.Storage.Streams;
-using System.Net.Http;
-using Newtonsoft.Json;
 using Windows.ApplicationModel;
 
 namespace Timeline.Providers {
@@ -80,7 +78,7 @@ namespace Timeline.Providers {
             Random random = new Random();
             foreach (Meta meta in metasAdd) {
                 dicHistory.TryGetValue(meta.Id, out int times);
-                meta.SortFactor = random.NextDouble() + (times / 10.0 > 0.9 ? 0.9 : times / 10.0);
+                meta.SortFactor = random.NextDouble() + Math.Min(times / 10.0, 0.9);
             }
             // 升序排列，已阅图降低出现在前排的概率
             metasAdd.Sort((m1, m2) => m1.SortFactor.CompareTo(m2.SortFactor));
@@ -238,7 +236,7 @@ namespace Timeline.Providers {
             return null;
         }
 
-        public virtual async Task<Meta> CacheAsync(Meta meta, CancellationToken token) {
+        public virtual async Task<Meta> CacheAsync(Meta meta, bool calFacePos, CancellationToken token) {
             LogUtil.D("Cache() " + meta?.Id);
             int index = -1;
             for (int i = 0; i < metas.Count; i++) { // 定位索引以便缓存多个
@@ -331,7 +329,7 @@ namespace Timeline.Providers {
                 return meta;
             }
             // 检测人脸位置（耗时较长）
-            if (meta.FacePos == null && meta.CacheUhd != null && FaceDetector.IsSupported) {
+            if (calFacePos && meta.FacePos == null && meta.CacheUhd != null && FaceDetector.IsSupported) {
                 long start = DateTime.Now.Ticks;
                 meta.FacePos = new List<Point>();
                 SoftwareBitmap bitmap = null;

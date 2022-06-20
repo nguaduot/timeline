@@ -750,6 +750,12 @@
   <data name="BoxR22Answer.Header" xml:space="preserve">
     <value>Answer from admin</value>
   </data>
+  <data name="BtnLocalFolder.Content" xml:space="preserve">
+    <value>Go</value>
+  </data>
+  <data name="TextLocalFolder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
   <data name="TextLocalOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>

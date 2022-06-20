@@ -43,13 +43,14 @@ namespace Timeline {
         private Ini ini;
         private BaseProvider provider;
         private Meta meta = null;
-        private bool r18 = false;
         private ReleaseApi release = null;
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
-        private bool providerLspR22On = false;
+        private bool providerLspHintOn = true; // LSP图源提示
+        private bool providerLspR22On = false; // LSP图源贤者模式开启
+        private bool autoStoryPos = true; // 自动调整图文区贴靠位置（需检测图像人脸位置）
 
-        private DispatcherTimer resizeTimer = null;
+        private DispatcherTimer resizeTimer;
         private DispatcherTimer pageTimer;
         private PageAction pageTimerAction = PageAction.Yesterday;
         private Meta markTimerMeta = null;
@@ -64,9 +65,7 @@ namespace Timeline {
             Target // LoadTargetAsync
         }
         private enum LoadStatus {
-            Empty,
-            Error,
-            NoInternet
+            Empty, Error, NoInternet
         }
 
         public MainPage() {
@@ -85,6 +84,11 @@ namespace Timeline {
 
             TextTitle.Text = resLoader.GetString("AppDesc");
 
+            resizeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1400) };
+            resizeTimer.Tick += (sender2, e2) => {
+                resizeTimer.Stop();
+                ReDecodeImg();
+            };
             pageTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(240) };
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
@@ -129,15 +133,13 @@ namespace Timeline {
             if (ini.Provider.Equals(MenuProviderLsp.Tag)) {
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
-                        r18 = true;
+                        providerLspHintOn = false;
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
                         await LoadFocusAsync(ctsLoad.Token);
                     });
                 return;
-            } else {
-                r18 = true;
             }
             // 检查菜单提示
             if (!localSettings.Values.ContainsKey("MenuLearned")) {
@@ -196,7 +198,7 @@ namespace Timeline {
             }
 
             ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, token);
+            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
             if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
                 await ShowImg(meta, token);
             }
@@ -215,7 +217,7 @@ namespace Timeline {
                 return;
             }
             ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, token);
+            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
             if (token.IsCancellationRequested) {
                 LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
                 return;
@@ -238,7 +240,7 @@ namespace Timeline {
                 return;
             }
             ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, token);
+            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -263,7 +265,7 @@ namespace Timeline {
                 return;
             }
             ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, token);
+            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -285,7 +287,7 @@ namespace Timeline {
                 return;
             }
             ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, token);
+            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -294,16 +296,15 @@ namespace Timeline {
             }
         }
 
-        private async Task Refresh(bool safeForWork) {
+        private async Task Refresh() {
             providerLspR22On = (ini.GetIni(LspIni.ID) as LspIni).R22; // 重置前保存状态
             ini = await IniUtil.GetIniAsync();
             (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置前恢复状态
             InitProvider();
-            if (ini.Provider.Equals(MenuProviderLsp.Tag) && (!r18 || safeForWork)) { // 防社死
-                r18 = false;
+            if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) { // 防社死
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
                     resLoader.GetString("ActionContinue"), async () => {
-                        r18 = true;
+                        providerLspHintOn = false;
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
@@ -383,6 +384,7 @@ namespace Timeline {
             TextDetailStory.Visibility = TextDetailStory.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             // 版权所有 / 作者
             TextDetailCopyright.Text = meta.Copyright ?? "";
+            TextDetailCopyright.Text += TextDetailCopyright.Text.Length > 0 && !string.IsNullOrEmpty(meta.Src) ? " 🌐" : "";
             TextDetailCopyright.Visibility = TextDetailCopyright.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             // 日期
             TextDetailDate.Text = meta.Date.Ticks > 0 ? meta.Date.ToLongDateString() : "";
@@ -407,15 +409,9 @@ namespace Timeline {
                     source, meta.Dimen.Width, meta.Dimen.Height, fileSize);
                 TextDetailProperties.Visibility = Visibility.Visible;
                 // 根据人脸识别优化组件放置位置
-                bool faceLeft = meta.ExistsFaceAndAllLeft();
-                RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !faceLeft);
-                RelativePanel.SetAlignRightWithPanel(ViewBarPointer, faceLeft);
-                RelativePanel.SetAlignLeftWithPanel(Info, !faceLeft);
-                RelativePanel.SetAlignRightWithPanel(Info, faceLeft);
-                RelativePanel.SetAlignLeftWithPanel(AnchorGo, faceLeft);
-                RelativePanel.SetAlignRightWithPanel(AnchorGo, !faceLeft);
-                RelativePanel.SetAlignLeftWithPanel(AnchorCate, faceLeft);
-                RelativePanel.SetAlignRightWithPanel(AnchorCate, !faceLeft);
+                if (autoStoryPos) {
+                    adjustStoryPos(meta.ExistsFaceAndAllLeft());
+                }
             }
 
             // 等待图片消失动画完成，保持连贯
@@ -441,7 +437,7 @@ namespace Timeline {
             LogUtil.D("ShowImg() {0}x{1}, win logical: {2}x{3}, scale logical: {4}x{5}",
                 meta.Dimen.Width, meta.Dimen.Height, (int)winW, (int)winH,
                 biUhd.DecodePixelWidth, biUhd.DecodePixelHeight);
-            if (ini.Provider.Equals(MenuProviderLsp.Tag) && !r18) {
+            if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             } else if (meta.CacheUhd != null) {
                 biUhd.UriSource = new Uri(meta.CacheUhd.Path, UriKind.RelativeOrAbsolute);
@@ -471,6 +467,17 @@ namespace Timeline {
             }
             LogUtil.D("ReDecodeImg() {0}x{1}, win logical: {2}x{3}, scale logical: {4}x{5}",
                 bi.PixelWidth, bi.PixelHeight, winW, winH, bi.DecodePixelWidth, bi.DecodePixelHeight);
+        }
+
+        private void adjustStoryPos(bool right) {
+            RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !right);
+            RelativePanel.SetAlignRightWithPanel(ViewBarPointer, right);
+            RelativePanel.SetAlignLeftWithPanel(Info, !right);
+            RelativePanel.SetAlignRightWithPanel(Info, right);
+            RelativePanel.SetAlignLeftWithPanel(AnchorGo, right);
+            RelativePanel.SetAlignRightWithPanel(AnchorGo, !right);
+            RelativePanel.SetAlignLeftWithPanel(AnchorCate, right);
+            RelativePanel.SetAlignRightWithPanel(AnchorCate, !right);
         }
 
         private void StatusLoading() {
@@ -793,13 +800,6 @@ namespace Timeline {
         //}
 
         private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e) {
-            if (resizeTimer == null) {
-                resizeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
-                resizeTimer.Tick += (sender2, e2) => {
-                    resizeTimer.Stop();
-                    ReDecodeImg();
-                };
-            }
             resizeTimer.Stop();
             resizeTimer.Start();
         }
@@ -957,7 +957,7 @@ namespace Timeline {
 
             string providerIdNew = ((RadioMenuFlyoutItem)sender).Tag.ToString();
             await IniUtil.SaveProviderAsync(providerIdNew);
-            await Refresh(true);
+            await Refresh();
         }
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e) {
@@ -986,18 +986,6 @@ namespace Timeline {
             }
         }
 
-        private void TextDetailCopyright_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            if (!string.IsNullOrEmpty(meta?.Src) && !TextDetailCopyright.Text.EndsWith(" 🌐")) {
-                TextDetailCopyright.Text += " 🌐";
-            }
-        }
-
-        private void TextDetailCopyright_PointerExited(object sender, PointerRoutedEventArgs e) {
-            if (TextDetailCopyright.Text.EndsWith(" 🌐")) {
-                TextDetailCopyright.Text = TextDetailCopyright.Text.Replace(" 🌐", "");
-            }
-        }
-
         private void BtnInfoLink_Click(object sender, RoutedEventArgs e) {
             InfoLink?.Invoke();
         }
@@ -1005,7 +993,7 @@ namespace Timeline {
         private void ViewBarPointer_PointerEntered(object sender, PointerRoutedEventArgs e) {
             ProgressLoading.Visibility = Visibility.Visible;
             ViewStory.Visibility = Visibility.Visible;
-            CloseToast();
+            //CloseToast();
         }
 
         private void ViewBarPointer_PointerExited(object sender, PointerRoutedEventArgs e) {
@@ -1013,7 +1001,44 @@ namespace Timeline {
                 ProgressLoading.Visibility = Visibility.Collapsed;
             }
             ViewStory.Visibility = Visibility.Collapsed;
-            CloseToast();
+            //CloseToast();
+        }
+
+        private void ViewBarPointer_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e) {
+            e.Handled = true;
+            //ViewBarPointer.PointerEntered -= ViewBarPointer_PointerEntered;
+            ViewBarPointer.PointerExited -= ViewBarPointer_PointerExited;
+        }
+
+        private void ViewBarPointer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
+            e.Handled = true;
+            // 响应拖动，暗示可调整图文区位置
+            if (!(ViewBarPointer.RenderTransform is TranslateTransform transfrom)) {
+                transfrom = new TranslateTransform();
+                ViewBarPointer.RenderTransform = transfrom;
+            }
+            if (transfrom.X + e.Delta.Translation.X > 12) {
+                transfrom.X = 12;
+            } else if (transfrom.X + e.Delta.Translation.X < -12) {
+                transfrom.X = -12;
+            } else {
+                transfrom.X += e.Delta.Translation.X;
+            }
+        }
+
+        private void ViewBarPointer_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e) {
+            e.Handled = true;
+            // 响应UI复位
+            //ViewBarPointer.PointerEntered += ViewBarPointer_PointerEntered;
+            ViewBarPointer.PointerExited += ViewBarPointer_PointerExited;
+            if (ViewBarPointer.RenderTransform is TranslateTransform transfrom) {
+                transfrom.X = 0;
+            }
+            // 调整组件放置位置
+            if (Math.Abs(e.Cumulative.Translation.X) > 100) {
+                autoStoryPos = false; // 关闭自动调位（同时不再检测图像人脸位置）
+                adjustStoryPos(e.Cumulative.Translation.X > 100);
+            }
         }
 
         private void ViewBarPointer_ContextRequested(UIElement sender, ContextRequestedEventArgs args) {
@@ -1062,19 +1087,39 @@ namespace Timeline {
             ToggleFullscreenMode();
         }
 
-        private void ViewMain_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e) {
-            if (Math.Abs(e.Cumulative.Translation.X) <= 100 && Math.Abs(e.Cumulative.Translation.Y) <= 100) {
-                return;
+        private void ViewMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
+            // 响应滑动，暗示可滑动翻页
+            if (!(ImgUhdPointer.RenderTransform is TranslateTransform transfrom)) {
+                transfrom = new TranslateTransform();
+                ImgUhdPointer.RenderTransform = transfrom;
             }
-            pageTimerAction = e.Cumulative.Translation.X < -100 || e.Cumulative.Translation.Y < -100 ? PageAction.Yesterday : PageAction.Tomorrow;
-            e.Handled = true;
+            if (transfrom.X + e.Delta.Translation.X > 12) {
+                transfrom.X = 12;
+            } else if (transfrom.X + e.Delta.Translation.X < -12) {
+                transfrom.X = -12;
+            } else {
+                transfrom.X += e.Delta.Translation.X;
+            }
+        }
 
-            CloseToast();
+        private void ViewMain_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e) {
+            //e.Handled = true;
+            // 响应UI复位
+            if (ImgUhdPointer.RenderTransform is TranslateTransform transfrom) {
+                transfrom.X = 0;
+                transfrom.Y = 0;
+            }
+            // 翻页
+            if (Math.Abs(e.Cumulative.Translation.X) > 100) {
+                pageTimerAction = e.Cumulative.Translation.X < -100 ? PageAction.Yesterday : PageAction.Tomorrow;
 
-            ctsLoad.Cancel();
-            StatusLoading();
-            pageTimer.Stop();
-            pageTimer.Start();
+                CloseToast();
+
+                ctsLoad.Cancel();
+                StatusLoading();
+                pageTimer.Stop();
+                pageTimer.Start();
+            }
         }
 
         private void ViewMain_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
@@ -1094,6 +1139,9 @@ namespace Timeline {
             switch (sender.Key) {
                 case VirtualKey.Left: // Left
                 case VirtualKey.Up: // Up
+                    if (FlyoutMarkCate.IsOpen) { // 避免误操作
+                        break;
+                    }
                     pageTimerAction = PageAction.Yesterday;
                     ctsLoad.Cancel();
                     StatusLoading();
@@ -1102,6 +1150,9 @@ namespace Timeline {
                     break;
                 case VirtualKey.Right: // Right
                 case VirtualKey.Down: // Down
+                    if (FlyoutMarkCate.IsOpen) { // 避免误操作
+                        break;
+                    }
                     pageTimerAction = PageAction.Tomorrow;
                     ctsLoad.Cancel();
                     StatusLoading();
@@ -1142,7 +1193,7 @@ namespace Timeline {
                 case VirtualKey.F5: // F5
                 case VirtualKey.R: // Ctrl + R
                     FlyoutMenu.Hide();
-                    await Refresh(true);
+                    await Refresh();
                     break;
                 case VirtualKey.F3: // F3
                 case VirtualKey.F: // Ctrl + F
@@ -1194,9 +1245,9 @@ namespace Timeline {
 
         private async void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
             if (e.ProviderChanged) {
-                await Refresh(true);
+                await Refresh();
             } else if (e.ProviderConfigChanged) {
-                await Refresh(false);
+                await Refresh();
                 await ViewSettings.NotifyPaneOpened(ini);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG

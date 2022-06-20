@@ -14,7 +14,7 @@ namespace Timeline.Providers {
         // 页数据索引（从1开始）（用于按需加载）
         private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
+        private const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}&unaudited={3}";
         
         private Meta ParseBean(QingbzApiData bean, string order) {
             Meta meta = new Meta {
@@ -48,8 +48,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, date);
 
-            string urlApi = string.Format(string.IsNullOrEmpty(bi.Api) ? URL_API : bi.Api,
-                bi.Cate, bi.Order, ++pageIndex);
+            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex, bi.Unaudited ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

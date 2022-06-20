@@ -745,10 +745,16 @@
     <value>本地</value>
   </data>
   <data name="Slogan_local" xml:space="preserve">
-    <value>本地</value>
+    <value>本地图库</value>
   </data>
   <data name="BoxR22Answer.Header" xml:space="preserve">
     <value>管理员回复</value>
+  </data>
+  <data name="BtnLocalFolder.Content" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="TextLocalFolder.Text" xml:space="preserve">
+    <value>数据源</value>
   </data>
   <data name="TextLocalOrder.Text" xml:space="preserve">
     <value>排序</value>

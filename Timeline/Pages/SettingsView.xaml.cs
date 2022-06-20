@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Timeline.Beans;
 using Timeline.Utils;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
@@ -633,6 +634,11 @@ namespace Timeline.Pages {
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
+        }
+
+        private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
+                CreationCollisionOption.OpenIfExists));
         }
 
         public string GenerateProviderTitle(object tag) {
