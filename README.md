@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.8-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.7.220615-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v5.9-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.8.220620-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -42,6 +42,9 @@
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site!
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
+
+本地图源：
++ 本地 - 本地图库
 
 *特别注明：三方图源均为来自网络，本应用无权且不提供商用授权，所以请勿用于商业用途，仅供学习交流。欢迎分享图源*
 
@@ -82,6 +85,8 @@
     + `排序`：忽略，默认 `随机`
   + LSP
     + `类别`：支持
+    + `排序`：忽略，默认 `随机`
+  + 本地
     + `排序`：忽略，默认 `随机`
 
 ## 快捷键
