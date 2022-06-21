@@ -148,7 +148,7 @@
     <value>关闭推送</value>
   </data>
   <data name="MenuSave.Label" xml:space="preserve">
-    <value>收藏</value>
+    <value>添加收藏</value>
   </data>
   <data name="MenuSetDesktop.Label" xml:space="preserve">
     <value>用作桌面背景</value>

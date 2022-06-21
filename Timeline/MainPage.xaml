@@ -160,7 +160,7 @@
                     </FontIcon>
                 </AppBarButton.Icon>
                 <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="S"
+                    <KeyboardAccelerator Key="D"
                                          Modifiers="Control" />
                 </AppBarButton.KeyboardAccelerators>
             </AppBarButton>

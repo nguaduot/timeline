@@ -1,4 +1,4 @@
-; 拾光 / Timeline v5.8
+; 拾光 / Timeline v5.9
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -67,7 +67,7 @@ lang=
 ; lang=en-us  语言代码：英文
 ; lang=ja-jp  语言代码：日语
 ; lang=de-de  语言代码：德语
-; lang=fr-fr  语言代码：法国
+; lang=fr-fr  语言代码：法语
 
 [nasa]
 
