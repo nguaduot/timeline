@@ -589,7 +589,7 @@
     <value>Look back</value>
   </data>
   <data name="MsgSave" xml:space="preserve">
-    <value>Saving</value>
+    <value>Saving...</value>
   </data>
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>Image copied.</value>
@@ -742,7 +742,7 @@
     <value>声明：申请授权即表示同意不会非法传播R22内容，且自行承担风险。</value>
   </data>
   <data name="Provider_local" xml:space="preserve">
-    <value>Local</value>
+    <value>Local folder</value>
   </data>
   <data name="Slogan_local" xml:space="preserve">
     <value>Local folder</value>

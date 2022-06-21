@@ -38,17 +38,30 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, date);
 
-            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                CreationCollisionOption.OpenIfExists);
+            LocalIni ini = bi as LocalIni;
+            StorageFolder folder = null;
+            if (!string.IsNullOrEmpty(ini.Folder)) {
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Folder, CreationCollisionOption.OpenIfExists);
+                } catch (Exception e) {
+                    LogUtil.E("LoadData() " + e.Message);
+                }
+            }
+            if (folder == null) {
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+                } catch (Exception e) {
+                    LogUtil.E("LoadData() " + e.Message);
+                }
+            }
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
             List<Meta> metasAdd = new List<Meta>();
             for (int i = 0; i < imgFiles.Count; ++i) {
-                Debug.WriteLine(imgFiles[i].ContentType);
                 if (imgFiles[i].ContentType.StartsWith("image")) {
                     metasAdd.Add(await ParseBean(imgFiles[i], imgFiles.Count - i));
                 }
             }
-            if ("random".Equals(bi.Order)) { // 随机排列
+            if ("random".Equals(ini.Order)) { // 随机排列
                 RandomMetas(metasAdd);
             } else {
                 SortMetas(metasAdd);

@@ -9,7 +9,7 @@
   <Identity
     Name="54311Bysyk.forWindows11"
     Publisher="CN=nguaduot"
-    Version="5.8.173.0" />
+    Version="5.9.173.0" />
 
   <mp:PhoneIdentity PhoneProductId="72089c04-a7cf-4ca7-9710-a5a83ac78b21" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

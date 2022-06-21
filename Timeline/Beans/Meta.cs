@@ -77,6 +77,9 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "sortFactor", NullValueHandling = NullValueHandling.Ignore)]
         public double SortFactor { set; get; }
 
+        [JsonProperty(PropertyName = "favorite", NullValueHandling = NullValueHandling.Ignore)]
+        public bool Favorite { set; get; }
+
         public bool IsValid() {
             return !string.IsNullOrEmpty(Id) && Uhd != null;
         }

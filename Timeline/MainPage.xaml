@@ -153,7 +153,7 @@
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconSave"
                               FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE896;">
+                              Glyph="&#xE734;">
                         <FontIcon.RenderTransform>
                             <TranslateTransform X="0" />
                         </FontIcon.RenderTransform>
@@ -343,6 +343,9 @@
 
         <MenuFlyout x:Key="FlyoutProvider"
                     x:Name="FlyoutProvider">
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="local"
+                                      GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Tag="bing"
                                       Click="MenuProvider_Click"
                                       GroupName="Provider" />
@@ -381,9 +384,6 @@
                                       Click="MenuProvider_Click"
                                       Visibility="Collapsed"
                                       GroupName="Provider" />
-            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
-                                      Tag="local"
-                                      GroupName="Provider" />
         </MenuFlyout>
 
         <MenuFlyout x:Key="FlyoutMarkCate"
@@ -415,8 +415,8 @@
 
     <SplitView Name="ViewSplit"
                IsPaneOpen="False"
-               DisplayMode="Overlay"
                PaneOpened="ViewSplit_PaneOpened"
+               DisplayMode="Overlay"
                PaneBackground="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                OpenPaneLength="360">
 
@@ -427,12 +427,8 @@
                         <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ViewSplit.DisplayMode"
-                                Value="Overlay" />
                         <Setter Target="ViewSplit.OpenPaneLength"
                                 Value="420" />
-                        <Setter Target="ViewSplit.PaneBackground"
-                                Value="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" />
                         <Setter Target="ViewBar.Margin"
                                 Value="24" />
                         <Setter Target="ViewBar.Padding"
@@ -456,8 +452,6 @@
                     <VisualState.Setters>
                         <Setter Target="ViewSplit.DisplayMode"
                                 Value="Inline" />
-                        <Setter Target="ViewSplit.OpenPaneLength"
-                                Value="420" />
                         <Setter Target="ViewSplit.PaneBackground"
                                 Value="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" />
                     </VisualState.Setters>

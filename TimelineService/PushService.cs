@@ -398,13 +398,13 @@ namespace TimelineService {
             LogUtil.I("LoadBing() api url: " + URL_API);
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(URL_API);
-            BingApi bing = JsonConvert.DeserializeObject<BingApi>(jsonData);
+            BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
             if (action == Action.Tile) {
-                string urlThumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, bing.Images[0].UrlBase);
+                string urlThumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBing() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
-                string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bing.Images[0].UrlBase);
+                string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBing() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
@@ -594,26 +594,18 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhavenAsync(Action action) {
+            const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&cate={0}&order={1}";
+            string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
+            LogUtil.I("LoadWallhaven() api url: " + urlApi);
+            HttpClient client = new HttpClient();
+            string jsonData = await client.GetStringAsync(urlApi);
+            WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
             if (action == Action.Tile) {
-                const string URL_API = "https://api.nguaduot.cn/wallhaven/random?client=timelinewallpaper&cate={0}&thumb=1";
-                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate);
-                LogUtil.I("LoadWallhaven() api url: " + urlApi);
-                HttpClient client = new HttpClient(new HttpClientHandler {
-                    AllowAutoRedirect = false
-                });
-                HttpResponseMessage msg = await client.GetAsync(urlApi);
-                string urlThumb = msg.Headers.Location.AbsoluteUri;
+                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
                 LogUtil.I("LoadWallhaven() thumb url: " + urlThumb);
                 return SetTileBg(urlThumb);
             } else {
-                const string URL_API = "https://api.nguaduot.cn/wallhaven/random?client=timelinewallpaper&cate={0}";
-                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate);
-                LogUtil.I("LoadWallhaven() api url: " + urlApi);
-                HttpClient client = new HttpClient(new HttpClientHandler {
-                    AllowAutoRedirect = false
-                });
-                HttpResponseMessage msg = await client.GetAsync(urlApi);
-                string urlUhd = msg.Headers.Location.AbsoluteUri;
+                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
                 LogUtil.I("LoadWallhaven() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
@@ -774,7 +766,7 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadLocalAsync(Action action) {
-            if (action == Action.Tile) {
+            if (action == Action.Tile) { // TODO
                 //StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                 //    CreationCollisionOption.OpenIfExists);
                 //IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync();
@@ -784,8 +776,17 @@ namespace TimelineService {
                 //return SetTileBg();
                 return false;
             } else {
-                StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                    CreationCollisionOption.OpenIfExists);
+                StorageFolder folder = null;
+                if (!string.IsNullOrEmpty(ini.Local.Folder)) {
+                    try {
+                        folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Local.Folder, CreationCollisionOption.OpenIfExists);
+                    } catch (Exception e) {
+                        LogUtil.E("LoadData() " + e.Message);
+                    }
+                }
+                if (folder == null) {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+                }
                 List<StorageFile> srcFiles = new List<StorageFile>();
                 foreach (StorageFile file in await folder.GetFilesAsync()) {
                     if (file.ContentType.StartsWith("image")) {

@@ -157,6 +157,38 @@ namespace TimelineService.Utils {
         }
     }
 
+    public sealed class LocalIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        private string folder = "";
+        public string Folder {
+            set => folder = value != null && !value.Contains("/") && !value.Contains("\\") ? value : "";
+            get => folder;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+
+        public static string GetId() => "local";
+    }
+
     public sealed class BingIni {
         private readonly HashSet<string> LANG = new HashSet<string>() { "", "zh-cn", "en-us", "ja-jp", "de-de", "fr-fr" };
 
@@ -542,31 +574,5 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "lsp";
-    }
-
-    public sealed class LocalIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "random" };
-
-        private string order = "random";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
-            get => order;
-        }
-
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => desktopPeriod;
-        }
-
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => lockPeriod;
-        }
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
-
-        public static string GetId() => "local";
     }
 }

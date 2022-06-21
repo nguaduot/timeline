@@ -135,6 +135,26 @@ namespace Timeline.Utils {
         public virtual BaseProvider GenerateProvider() => new BaseProvider();
     }
 
+    public class LocalIni : BaseIni {
+        public const string ID = "local";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
+        private string folder = ""; // 非null
+
+        public LocalIni() {
+            Id = ID;
+            Orders = ORDERS;
+        }
+
+        public string Folder {
+            set => folder = value != null && !value.Contains("/") && !value.Contains("\\") ? value : "";
+            get => folder;
+        }
+
+        public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+    }
+
     public class BingIni : BaseIni {
         public const string ID = "bing";
         public static readonly List<string> LANGS = new List<string>() { "", "zh-cn", "en-us", "ja-jp", "de-de", "fr-fr" };
@@ -411,19 +431,5 @@ namespace Timeline.Utils {
         public override BaseProvider GenerateProvider() => new LspProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
-    }
-
-    public class LocalIni : BaseIni {
-        public const string ID = "local";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
-
-        public LocalIni() {
-            Id = ID;
-            Orders = ORDERS;
-        }
-
-        public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
     }
 }

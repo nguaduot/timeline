@@ -126,6 +126,13 @@
     <Compile Include="Beans\NasaApiItem.cs" />
     <Compile Include="Beans\OneplusApi.cs" />
     <Compile Include="Beans\StatsApiReq.cs" />
+    <Compile Include="Beans\TimelineApi.cs" />
+    <Compile Include="Beans\QingbzApi.cs" />
+    <Compile Include="Beans\LspApi.cs" />
+    <Compile Include="Beans\ObzhiApi.cs" />
+    <Compile Include="Beans\WallhereApi.cs" />
+    <Compile Include="Beans\YmyouliApi.cs" />
+    <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushService.cs" />
     <Compile Include="Utils\Api.cs" />

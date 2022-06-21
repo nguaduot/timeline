@@ -49,6 +49,90 @@
                         Padding="12,0,12,24">
                 <TextBlock x:Uid="TextSettingsProvider"
                            Style="{StaticResource BodyTextBlockStyle}" />
+                <muxc:Expander Name="ExpanderLocal"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="local"
+                               Expanding="ExpanderStaticProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Margin="0,0,12,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderLocal.IsExpanded), Mode=OneWay}" />
+                            <StackPanel Grid.Column="1"
+                                        Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderLocal.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderLocal.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextLocalOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxLocalOrder"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listLocalOrder}"
+                                          SelectionChanged="BoxLocalOrder_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE838;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextLocalFolder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnLocalFolder"
+                                        x:Uid="BtnLocalFolder"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Click="BtnLocalFolder_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderBing"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -1039,90 +1123,6 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
-                <muxc:Expander Name="ExpanderLocal"
-                               ExpandDirection="Down"
-                               IsExpanded="False"
-                               Tag="local"
-                               Expanding="ExpanderStaticProvider_Expanding"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch"
-                               Margin="0,8,0,0">
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderLocal.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
-                                        Orientation="Vertical">
-                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderLocal.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderLocal.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            </StackPanel>
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE8CB;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextLocalOrder"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <ComboBox Name="BoxLocalOrder"
-                                          Grid.Column="2"
-                                          MinWidth="140"
-                                          ItemsSource="{x:Bind listLocalOrder}"
-                                          SelectionChanged="BoxLocalOrder_SelectionChanged" />
-                            </Grid>
-                            <Grid Margin="0,8,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE838;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextLocalFolder"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <Button Grid.Column="2"
-                                        Name="BtnLocalFolder"
-                                        x:Uid="BtnLocalFolder"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Click="BtnLocalFolder_Click" />
-                            </Grid>
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
 
                 <TextBlock x:Uid="TextSettingsGeneral"
                            Style="{StaticResource BodyTextBlockStyle}"
@@ -1196,7 +1196,7 @@
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                       FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
-                                      Glyph="&#xE838;" />
+                                      Glyph="&#xE728;" />
                             <StackPanel Grid.Column="1"
                                         Margin="0,12"
                                         Orientation="Vertical">

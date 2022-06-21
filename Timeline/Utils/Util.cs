@@ -23,7 +23,7 @@ using Windows.UI.Xaml;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.8.ini";
+        private const string FILE_INI = "timeline-5.9.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -211,6 +211,21 @@ namespace Timeline.Utils {
                 return ini;
             }
             StringBuilder sb = new StringBuilder(1024);
+            _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int desktopPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int lockPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
+            Debug.WriteLine(sb.ToString());
+            LocalIni localIni = new LocalIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                Folder = sb.ToString()
+            };
+            ini.SetIni(LocalIni.ID, localIni);
+            _ = GetPrivateProfileString(LocalIni.ID, "order", "random", sb, 1024, iniFile);
+            localIni.Order = sb.ToString();
+            ini.SetIni(LocalIni.ID, localIni);
             _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, iniFile);
             ini.Provider = sb.ToString();
             _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, iniFile);
@@ -226,9 +241,9 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;
             _ = GetPrivateProfileString(BingIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int desktopPeriod);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(BingIni.ID, "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int lockPeriod);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
             _ = GetPrivateProfileString(BingIni.ID, "lang", "", sb, 1024, iniFile);
             ini.SetIni(BingIni.ID, new BingIni {
                 DesktopPeriod = desktopPeriod,
@@ -391,17 +406,6 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(LspIni.ID, "unaudited", "0", sb, 1024, iniFile);
             lspIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(LspIni.ID, lspIni);
-            _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out lockPeriod);
-            LocalIni localIni = new LocalIni {
-                DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
-            };
-            _ = GetPrivateProfileString(LocalIni.ID, "order", "random", sb, 1024, iniFile);
-            localIni.Order = sb.ToString();
-            ini.SetIni(LocalIni.ID, localIni);
             return ini;
         }
 
@@ -504,7 +508,7 @@ namespace Timeline.Utils {
             try {
                 StorageFile file = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\glitter.txt");
                 if (file != null) {
-                    return await FileIO.ReadLinesAsync(file);
+                    return await FileIO.ReadLinesAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
                 }
             } catch (Exception e) {
                 LogUtil.E("GetGlitterAsync() " + e.Message);

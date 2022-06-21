@@ -17,7 +17,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.8.ini";
+        private const string FILE_INI = "timeline-5.9.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -51,8 +51,18 @@ namespace TimelineService.Utils {
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;
-            _ = GetPrivateProfileString(BingIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(LocalIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int period);
+            ini.Local.DesktopPeriod = period;
+            _ = GetPrivateProfileString(LocalIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
+            ini.Local.LockPeriod = period;
+            _ = GetPrivateProfileString(LocalIni.GetId(), "folder", "", sb, 1024, iniFile);
+            ini.Local.Folder = sb.ToString();
+            _ = GetPrivateProfileString(LocalIni.GetId(), "order", "random", sb, 1024, iniFile);
+            ini.Local.Order = sb.ToString();
+            _ = GetPrivateProfileString(BingIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
             ini.Bing.DesktopPeriod = period;
             _ = GetPrivateProfileString(BingIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
@@ -176,14 +186,6 @@ namespace TimelineService.Utils {
             ini.Lsp.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "cate", "", sb, 1024, iniFile);
             ini.Lsp.Cate = sb.ToString();
-            _ = GetPrivateProfileString(LocalIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out period);
-            ini.Local.DesktopPeriod = period;
-            _ = GetPrivateProfileString(LocalIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out period);
-            ini.Local.LockPeriod = period;
-            _ = GetPrivateProfileString(LocalIni.GetId(), "order", "random", sb, 1024, iniFile);
-            ini.Local.Order = sb.ToString();
             return ini;
         }
     }

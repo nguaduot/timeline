@@ -148,7 +148,7 @@
     <value>关闭推送</value>
   </data>
   <data name="MenuSave.Label" xml:space="preserve">
-    <value>保存</value>
+    <value>收藏</value>
   </data>
   <data name="MenuSetDesktop.Label" xml:space="preserve">
     <value>用作桌面背景</value>
@@ -172,10 +172,10 @@
     <value>无后台权限</value>
   </data>
   <data name="MsgSave0" xml:space="preserve">
-    <value>保存失败</value>
+    <value>收藏失败</value>
   </data>
   <data name="MsgSave1" xml:space="preserve">
-    <value>已保存至「图片」库</value>
+    <value>已收藏</value>
   </data>
   <data name="MsgSetDesktop0" xml:space="preserve">
     <value>设为桌面背景失败</value>
@@ -379,13 +379,13 @@
     <value>前往</value>
   </data>
   <data name="SettingsSaveDesc.Text" xml:space="preserve">
-    <value>查看已保存的图片</value>
+    <value>查看已收藏的图片</value>
   </data>
   <data name="SettingsSaveTitle.Text" xml:space="preserve">
-    <value>图片保存位置</value>
+    <value>我的收藏</value>
   </data>
   <data name="TextCache.Text" xml:space="preserve">
-    <value>图片缓存位置</value>
+    <value>查看已缓存的图片</value>
   </data>
   <data name="TextHimawari8Offset.Text" xml:space="preserve">
     <value>地球位置</value>
@@ -589,7 +589,7 @@
     <value>回顾</value>
   </data>
   <data name="MsgSave" xml:space="preserve">
-    <value>正在保存原图</value>
+    <value>正在收藏</value>
   </data>
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>已复制图片</value>
@@ -742,10 +742,10 @@
     <value>注：申请授权即表示同意不会非法传播R22内容，且自行承担风险。</value>
   </data>
   <data name="Provider_local" xml:space="preserve">
-    <value>本地</value>
+    <value>本地图库</value>
   </data>
   <data name="Slogan_local" xml:space="preserve">
-    <value>本地图库</value>
+    <value>我的精选</value>
   </data>
   <data name="BoxR22Answer.Header" xml:space="preserve">
     <value>管理员回复</value>

@@ -604,6 +604,7 @@ namespace Timeline {
             ShowToastI(resLoader.GetString("MsgSave"));
             StorageFile file = await provider.DownloadAsync(meta, resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
+                meta.Favorite = true;
                 ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionGo"), async () => {
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists), file);
@@ -1070,6 +1071,7 @@ namespace Timeline {
         }
 
         private void FlyoutMenu_Opened(object sender, object e) {
+            IconSave.Glyph = meta != null && meta.Favorite ? "\uE735" : "\uE734";
             localSettings.Values["MenuLearned"] = true;
             CloseToast();
         }
