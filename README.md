@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v5.9-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.8.220620-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v6.0-brightgreen)
+[![release](https://img.shields.io/badge/release-v5.9.220622-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -112,7 +112,7 @@
 + 标记“含水印”：`Ctrl` + `4`
 + 标记“有色气”：`Ctrl` + `5`
 + 标记分类：`Ctrl` + `0`
-+ 打开图片保存位置：`Ctrl` + `O`
++ 我的收藏：`Ctrl` + `O`
 + 打开配置文件：`Ctrl` + `I`
 + 打开日志位置：`F12`
 
@@ -125,7 +125,7 @@
 
 + 如何解锁 `LSP` 图源？
   + `Ctrl` + `I` 打开配置文件（或右键菜单点击“**设置**”图标，导航至“**常规**”组，展开“**配置文件**”，点击“**打开**”）
-  + 找到 `[app]` 块，将 `r18` 参数值修改为 `1`，保存，重新打开应用，图源列表中将出现 `LSP`
+  + 找到 `[app]` 块，将 `r18` 参数值修改为 `1`，保存，重新打开应用，图源列表中 `LSP` 将变为可用
 
 ## 更新日志
 
