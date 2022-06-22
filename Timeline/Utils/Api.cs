@@ -183,7 +183,7 @@ namespace Timeline.Utils {
             try {
                 HttpClient client = new HttpClient();
                 string jsonData = await client.GetStringAsync(urlApi);
-                LogUtil.D("CheckUpdateAsync() " + jsonData.Trim());
+                //LogUtil.D("CheckUpdateAsync() " + jsonData.Trim());
                 AppstatsApi api = JsonConvert.DeserializeObject<AppstatsApi>(jsonData);
                 if (api.Status != 1) {
                     return res;

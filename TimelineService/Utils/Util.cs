@@ -59,8 +59,6 @@ namespace TimelineService.Utils {
             ini.Local.LockPeriod = period;
             _ = GetPrivateProfileString(LocalIni.GetId(), "folder", "", sb, 1024, iniFile);
             ini.Local.Folder = sb.ToString();
-            _ = GetPrivateProfileString(LocalIni.GetId(), "order", "random", sb, 1024, iniFile);
-            ini.Local.Order = sb.ToString();
             _ = GetPrivateProfileString(BingIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Bing.DesktopPeriod = period;

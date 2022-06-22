@@ -1,33 +1,34 @@
 ﻿using Timeline.Beans;
 using Timeline.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
-using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.Storage;
 using Windows.ApplicationModel;
-using System.IO;
 using Windows.Storage.FileProperties;
 
 namespace Timeline.Providers {
     public class LocalProvider : BaseProvider {        
         private async Task<Meta> ParseBean(StorageFile file, int index) {
             Meta meta = new Meta {
-                Id = file.GetHashCode().ToString(),
                 Uhd = file.Path,
                 Thumb = file.Path,
-                Format = "." + file.Name.Split(".")[1],
-                SortFactor = index
+                Format = file.FileType,
             };
-            string folderName = (await file.GetParentAsync()).Name;
-            meta.Title = string.Format("{0} #{1}", folderName, index);
             BasicProperties properties = await file.GetBasicPropertiesAsync();
+            if (file.Name.Contains(".")) {
+                meta.Id = properties.Size + "-" + file.Name.Replace(file.FileType, "");
+                meta.Format = file.FileType;
+            } else {
+                // file.FileType == "."
+                meta.Id = properties.Size + "-" + file.Name;
+            }
             meta.Date = properties.ItemDate.DateTime;
             meta.SortFactor = properties.ItemDate.Ticks;
+            string folderName = (await file.GetParentAsync()).Name;
+            meta.Title = string.Format("{0} #{1}", folderName, index); // 创建日期升序
             return meta;
         }
 
@@ -54,18 +55,16 @@ namespace Timeline.Providers {
                     LogUtil.E("LoadData() " + e.Message);
                 }
             }
+            LogUtil.D("LoadData() provider folder: " + folder.Path);
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
+            LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
             List<Meta> metasAdd = new List<Meta>();
             for (int i = 0; i < imgFiles.Count; ++i) {
                 if (imgFiles[i].ContentType.StartsWith("image")) {
                     metasAdd.Add(await ParseBean(imgFiles[i], imgFiles.Count - i));
                 }
             }
-            if ("random".Equals(ini.Order)) { // 随机排列
-                RandomMetas(metasAdd);
-            } else {
-                SortMetas(metasAdd);
-            }
+            RandomMetas(metasAdd);
             return true;
         }
     }

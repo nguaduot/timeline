@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Timeline.Beans;
 using Timeline.Providers;
 
 namespace Timeline.Utils {
     public class Ini {
         private readonly Dictionary<string, BaseIni> Inis = new Dictionary<string, BaseIni>() {
+            { LocalIni.ID, new LocalIni() },
             { BingIni.ID, new BingIni() },
             { NasaIni.ID, new NasaIni() },
             { OneplusIni.ID, new OneplusIni() },
@@ -17,8 +19,7 @@ namespace Timeline.Utils {
             { WallhereIni.ID, new WallhereIni() },
             { InfinityIni.ID, new InfinityIni() },
             { ObzhiIni.ID, new ObzhiIni() },
-            { LspIni.ID, new LspIni() },
-            { LocalIni.ID, new LocalIni() }
+            { LspIni.ID, new LspIni() }
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
         private string provider = BingIni.ID;
@@ -137,22 +138,20 @@ namespace Timeline.Utils {
 
     public class LocalIni : BaseIni {
         public const string ID = "local";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
         private string folder = ""; // 非null
 
         public LocalIni() {
             Id = ID;
-            Orders = ORDERS;
         }
 
         public string Folder {
-            set => folder = value != null && !value.Contains("/") && !value.Contains("\\") ? value : "";
+            set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
             get => folder;
         }
 
         public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&folder={Folder}";
     }
 
     public class BingIni : BaseIni {

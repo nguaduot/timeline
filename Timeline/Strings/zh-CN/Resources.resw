@@ -682,7 +682,7 @@
     <value>The best wallpapers on the Net!</value>
   </data>
   <data name="TextCdn0.Text" xml:space="preserve">
-    <value>「拾光」部分图源载图缓慢，迫切需要国内CDN加速服务，如果您愿意提供赞助，可</value>
+    <value>如果您愿意为「拾光」提供国内CDN加速服务或赞助，可</value>
   </data>
   <data name="TextCdn1.Text" xml:space="preserve">
     <value>发邮件</value>
@@ -756,7 +756,7 @@
   <data name="TextLocalFolder.Text" xml:space="preserve">
     <value>数据源</value>
   </data>
-  <data name="TextLocalOrder.Text" xml:space="preserve">
-    <value>排序</value>
+  <data name="ActionView" xml:space="preserve">
+    <value>查看</value>
   </data>
 </root>

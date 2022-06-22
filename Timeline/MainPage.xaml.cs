@@ -605,7 +605,7 @@ namespace Timeline {
             StorageFile file = await provider.DownloadAsync(meta, resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 meta.Favorite = true;
-                ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionGo"), async () => {
+                ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionView"), async () => {
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists), file);
                 });
@@ -1223,26 +1223,6 @@ namespace Timeline {
                     await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
                     break;
             }
-        }
-
-        private void AnimeYesterday1_Completed(object sender, object e) {
-            AnimeYesterday2.Begin();
-        }
-
-        private void MenuSave_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeSave.Begin();
-        }
-
-        private void MenuMark_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeMark.Begin();
-        }
-
-        private void MenuFillOff_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeFillOff.Begin();
-        }
-
-        private void MenuSettings_PointerEntered(object sender, PointerRoutedEventArgs e) {
-            AnimeSettings.Begin();
         }
 
         private async void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {

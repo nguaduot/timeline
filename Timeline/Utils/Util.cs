@@ -216,16 +216,11 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int lockPeriod);
             _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
-            Debug.WriteLine(sb.ToString());
-            LocalIni localIni = new LocalIni {
+            ini.SetIni(LocalIni.ID, new LocalIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Folder = sb.ToString()
-            };
-            ini.SetIni(LocalIni.ID, localIni);
-            _ = GetPrivateProfileString(LocalIni.ID, "order", "random", sb, 1024, iniFile);
-            localIni.Order = sb.ToString();
-            ini.SetIni(LocalIni.ID, localIni);
+            });
             _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, iniFile);
             ini.Provider = sb.ToString();
             _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, iniFile);

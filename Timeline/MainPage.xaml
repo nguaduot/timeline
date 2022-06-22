@@ -11,7 +11,7 @@
     <Page.Resources>
 
         <Storyboard x:Name="AnimeYesterday1"
-                    Completed="AnimeYesterday1_Completed">
+                    Completed="{x:Bind AnimeYesterday2.Begin}">
             <DoubleAnimation Duration="0:0:0.3"
                              From="0"
                              To="-16"
@@ -42,6 +42,18 @@
                              To="1"
                              Storyboard.TargetProperty="Opacity"
                              Storyboard.TargetName="IconYesterday" />
+        </Storyboard>
+        <Storyboard x:Name="AnimeYesterday"
+                    AutoReverse="True">
+            <DoubleAnimation Duration="0:0:0.1"
+                             From="0"
+                             To="-3"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.X)"
+                             Storyboard.TargetName="IconYesterday">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
         </Storyboard>
         <Storyboard x:Name="AnimeSettings">
             <DoubleAnimation Duration="0:0:0.6"
@@ -98,6 +110,7 @@
                                Opened="FlyoutMenu_Opened">
             <AppBarButton Name="MenuYesterday"
                           x:Uid="MenuYesterday"
+                          PointerEntered="{x:Bind AnimeYesterday.Begin}"
                           Click="MenuYesterday_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconYesterday"
@@ -128,7 +141,7 @@
             </AppBarButton>
             <AppBarButton Name="MenuFillOff"
                           x:Uid="MenuFillOff"
-                          PointerEntered="MenuFillOff_PointerEntered"
+                          PointerEntered="{x:Bind AnimeFillOff.Begin}"
                           Click="MenuFill_Click">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -148,7 +161,7 @@
             <AppBarButton Name="MenuSave"
                           x:Uid="MenuSave"
                           IsEnabled="False"
-                          PointerEntered="MenuSave_PointerEntered"
+                          PointerEntered="{x:Bind AnimeSave.Begin}"
                           Click="MenuSave_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconSave"
@@ -168,7 +181,7 @@
                           x:Uid="MenuMark"
                           IsEnabled="False"
                           Flyout="{StaticResource FlyoutMark}"
-                          PointerEntered="MenuMark_PointerEntered">
+                          PointerEntered="{x:Bind AnimeMark.Begin}">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconMark"
                               FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -181,7 +194,7 @@
             </AppBarButton>
             <AppBarButton Name="MenuSettings"
                           x:Uid="MenuSettings"
-                          PointerEntered="MenuSettings_PointerEntered"
+                          PointerEntered="{x:Bind AnimeSettings.Begin}"
                           Click="MenuSettings_Click">
                 <AppBarButton.Icon>
                     <FontIcon x:Name="IconSettings"

@@ -42,7 +42,6 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listLocalOrder = new ObservableCollection<CateMeta>();
 
         private List<string> glitters = new List<string>();
 
@@ -119,12 +118,6 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
-            foreach (string item in LocalIni.ORDERS) {
-                listLocalOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
 
             BoxHimawari8Offset.NumberFormatter = new DecimalFormatter {
                 IntegerDigits = 1,
@@ -162,7 +155,6 @@ namespace Timeline.Pages {
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
-            BoxLocalOrder.SelectedIndex = listLocalOrder.Select(t => t.Id).ToList().IndexOf(((LocalIni)ini.GetIni(LocalIni.ID)).Order);
             // 刷新主题设置
             RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
             rbTheme.IsChecked = true;
@@ -622,23 +614,20 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxLocalOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(LocalIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveLocalOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
         private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                CreationCollisionOption.OpenIfExists));
+            LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
+            StorageFolder folder = null;
+            if (!string.IsNullOrEmpty(bi.Folder)) {
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(bi.Folder, CreationCollisionOption.OpenIfExists);
+                } catch (Exception ex) {
+                    LogUtil.E("BtnLocalFolder_Click() " + ex.Message);
+                }
+            }
+            if (folder == null) {
+                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+            }
+            await FileUtil.LaunchFolderAsync(folder);
         }
 
         public string GenerateProviderTitle(object tag) {
