@@ -41,13 +41,12 @@ namespace Timeline.Providers {
                 meta.Video = bean.Url;
                 meta.Thumb = bean.ThumbnailUrl;
             }*/
-            if (!string.IsNullOrEmpty(bean.Date)) {
-                //DateTime.TryParseExact(bean.Date, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
-                if (DateTime.TryParse(bean.Date, out DateTime date)) { // 无效日期则该条数据会被剔除
-                    meta.Date = date;
-                }
+            //DateTime.TryParseExact(bean.Date, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
+            if (DateTime.TryParse(bean.Date, out DateTime date)) { // 无效日期则该条数据会被剔除
+                meta.Date = date;
                 meta.SortFactor = meta.Date.Ticks;
                 meta.Id = bean.MediaType + meta.Date.ToString("yyyyMMdd");
+                meta.Src = String.Format("https://apod.nasa.gov/apod/ap{0}.html", meta.Date.ToString("yyMMdd"));
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright.Replace("\n", "").Replace(" Music:", "");
@@ -142,8 +141,8 @@ namespace Timeline.Providers {
                 //DateTime.TryParseExact(match.Groups[1].Value, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
                 if (DateTime.TryParse(match.Groups[1].Value, out DateTime date)) { // 无效日期则该条数据会被剔除
                     meta.Date = date;
+                    meta.SortFactor = meta.Date.Ticks;
                 }
-                meta.SortFactor = meta.Date.Ticks;
             }
             return meta;
         }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Timeline.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;

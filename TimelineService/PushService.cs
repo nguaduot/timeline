@@ -37,9 +37,7 @@ namespace TimelineService {
         private bool pushNow = false; // 立即运行一次
 
         private enum Action {
-            Desktop,
-            Lock,
-            Tile
+            Desktop, Lock, Tile
         }
 
         public async void Run(IBackgroundTaskInstance taskInstance) {
