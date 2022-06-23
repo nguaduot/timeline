@@ -205,7 +205,6 @@ namespace Timeline.Utils {
 
         public static Ini GetIni() {
             string iniFile = GetIniFile();
-            LogUtil.D("GetIni() " + FILE_INI);
             Ini ini = new Ini();
             if (iniFile == null) { // 尚未初始化
                 return ini;
@@ -405,6 +404,7 @@ namespace Timeline.Utils {
         }
 
         public static async Task<Ini> GetIniAsync() {
+            LogUtil.D("GetIniAsync() " + FILE_INI);
             _ = await GenerateIniFileAsync();
             return GetIni();
         }
@@ -651,7 +651,7 @@ namespace Timeline.Utils {
                 FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
                 Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
                 int count_clear = 0;
-                for (int i = 1000; i < files.Length; ++i) { // 删除超量图片
+                for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
                     files[i].Delete();
                     count_clear++;
                 }

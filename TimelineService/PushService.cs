@@ -393,6 +393,49 @@ namespace TimelineService {
             return file;
         }
 
+        private async Task<bool> LoadLocalAsync(Action action) {
+            StorageFolder folder = null;
+            if (!string.IsNullOrEmpty(ini.Local.Folder)) {
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Local.Folder, CreationCollisionOption.OpenIfExists);
+                } catch (Exception e) {
+                    LogUtil.E("LoadLocalAsync() " + e.Message);
+                }
+            }
+            if (folder == null) {
+                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
+                    CreationCollisionOption.OpenIfExists);
+            }
+            List<StorageFile> srcFiles = new List<StorageFile>();
+            foreach (StorageFile file in await folder.GetFilesAsync()) {
+                if (file.ContentType.StartsWith("image")) {
+                    srcFiles.Add(file);
+                }
+            }
+            StorageFile fileSrc = srcFiles[new Random().Next(srcFiles.Count)];
+            LogUtil.I("LoadLocalAsync() img file: " + fileSrc.Path);
+            if (action == Action.Tile) {
+                // 生成缩略图
+                // TODO：无法保持原图比例
+                StorageFile fileThumb = await ApplicationData.Current.LocalFolder.CreateFileAsync("tile",
+                    CreationCollisionOption.ReplaceExisting);
+                StorageItemThumbnail thumb = await fileSrc.GetThumbnailAsync(ThumbnailMode.PicturesView);
+                Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(Convert.ToUInt32(thumb.Size));
+                using (var stream = await fileThumb.OpenAsync(FileAccessMode.ReadWrite)) {
+                    await stream.WriteAsync(await thumb.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None));
+                }
+                LogUtil.I("LoadLocalAsync() thumb file: " + fileThumb.Path);
+                return SetTileBg(fileThumb.Path);
+            } else {
+                StorageFile fileImg = await DownloadImgAsync(fileSrc.Path, action);
+                if (action == Action.Lock) {
+                    return await SetLockBackground(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
         private async Task<bool> LoadBingAsync(Action action) {
             const string URL_API_HOST = "https://global.bing.com";
             const string URL_API = URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx=0&n=1";
@@ -718,47 +761,6 @@ namespace TimelineService {
                 string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
                 LogUtil.I("LoadLspAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
-                if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
-                } else {
-                    return await SetDesktopBgAsync(fileImg);
-                }
-            }
-        }
-
-        private async Task<bool> LoadLocalAsync(Action action) {
-            StorageFolder folder = null;
-            if (!string.IsNullOrEmpty(ini.Local.Folder)) {
-                try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Local.Folder, CreationCollisionOption.OpenIfExists);
-                } catch (Exception e) {
-                    LogUtil.E("LoadLocalAsync() " + e.Message);
-                }
-            }
-            if (folder == null) {
-                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                    CreationCollisionOption.OpenIfExists);
-            }
-            List<StorageFile> srcFiles = new List<StorageFile>();
-            foreach (StorageFile file in await folder.GetFilesAsync()) {
-                if (file.ContentType.StartsWith("image")) {
-                    srcFiles.Add(file);
-                }
-            }
-            StorageFile fileSrc = srcFiles[new Random().Next(srcFiles.Count)];
-            LogUtil.I("LoadLocalAsync() img file: " + fileSrc.Path);
-            if (action == Action.Tile) {
-                StorageFile fileThumb = await ApplicationData.Current.LocalFolder.CreateFileAsync("tile",
-                    CreationCollisionOption.ReplaceExisting);
-                StorageItemThumbnail thumb = await fileSrc.GetThumbnailAsync(ThumbnailMode.PicturesView);
-                Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(Convert.ToUInt32(thumb.Size));
-                using (var stream = await fileThumb.OpenAsync(FileAccessMode.ReadWrite)) {
-                    await stream.WriteAsync(await thumb.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None));
-                }
-                LogUtil.I("LoadLocalAsync() thumb file: " + fileThumb.Path);
-                return SetTileBg(fileThumb.Path);
-            } else {
-                StorageFile fileImg = await DownloadImgAsync(fileSrc.Path, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {

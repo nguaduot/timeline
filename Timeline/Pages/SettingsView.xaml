@@ -60,18 +60,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderLocal.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderLocal.Tag)}"
                                            TextWrapping="NoWrap"
@@ -81,6 +75,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopLocal"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockLocal"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -122,18 +142,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderBing.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderBing.Tag)}"
                                            Style="{StaticResource BodyTextBlockStyle}"
@@ -143,6 +157,32 @@
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                            TextWrapping="NoWrap" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopBing"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockBing"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -158,7 +198,8 @@
                                       FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE909;" />
-                            <TextBlock Grid.Column="1" x:Uid="TextBingLang"
+                            <TextBlock Grid.Column="1"
+                                       x:Uid="TextBingLang"
                                        VerticalAlignment="Center"
                                        Style="{StaticResource BodyTextBlockStyle}" />
                             <ComboBox Name="BoxBingLang"
@@ -180,18 +221,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderNasa.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderNasa.Tag)}"
                                            TextWrapping="NoWrap"
@@ -201,6 +236,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopNasa"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockNasa"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -238,18 +299,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderOneplus.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderOneplus.Tag)}"
                                            TextWrapping="NoWrap"
@@ -259,6 +314,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopOneplus"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockOneplus"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -297,18 +378,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderTimeline.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderTimeline.Tag)}"
                                            TextWrapping="NoWrap"
@@ -318,6 +393,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopTimeline"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockTimeline"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -422,18 +523,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderOne.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderOne.Tag)}"
                                            TextWrapping="NoWrap"
@@ -443,6 +538,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopOne"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockOne"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -481,18 +602,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderHimawari8.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderHimawari8.Tag)}"
                                            TextWrapping="NoWrap"
@@ -502,6 +617,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopHimawari8"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockHimawari8"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -574,18 +715,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderYmyouli.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderYmyouli.Tag)}"
                                            TextWrapping="NoWrap"
@@ -595,6 +730,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopYmyouli"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockYmyouli"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -678,18 +839,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderWallhaven.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhaven.Tag)}"
                                            TextWrapping="NoWrap"
@@ -699,6 +854,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopWallhaven"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockWallhaven"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -761,18 +942,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderQingbz.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderQingbz.Tag)}"
                                            TextWrapping="NoWrap"
@@ -782,6 +957,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopQingbz"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockQingbz"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -865,18 +1066,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderWallhere.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhere.Tag)}"
                                            TextWrapping="NoWrap"
@@ -886,6 +1081,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopWallhere"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockWallhere"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -948,18 +1169,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderInfinity.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderInfinity.Tag)}"
                                            TextWrapping="NoWrap"
@@ -969,6 +1184,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopInfinity"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockInfinity"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -1008,18 +1249,12 @@
                     <muxc:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="{x:Bind GenerateProviderIcon(ExpanderLsp.IsExpanded), Mode=OneWay}" />
-                            <StackPanel Grid.Column="1"
-                                        Margin="0,12"
+                            <StackPanel Margin="0,12"
                                         Orientation="Vertical">
                                 <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderLsp.Tag)}"
                                            TextWrapping="NoWrap"
@@ -1029,6 +1264,32 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Name="IconPushDesktopLsp"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Name="IconPushLockLsp"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
@@ -1088,7 +1349,7 @@
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                           FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
-                                          Glyph="&#xF439;" />
+                                          Glyph="&#xF140;" />
                                 <TextBlock Grid.Column="1"
                                            x:Uid="TextLspR22"
                                            VerticalAlignment="Center"

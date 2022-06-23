@@ -42,7 +42,7 @@ namespace Timeline {
 
         private Ini ini;
         private BaseProvider provider;
-        private Meta meta = null;
+        private Meta meta;
         private ReleaseApi release = null;
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
@@ -296,10 +296,12 @@ namespace Timeline {
             }
         }
 
-        private async Task Refresh() {
-            providerLspR22On = (ini.GetIni(LspIni.ID) as LspIni).R22; // 重置前保存状态
-            ini = await IniUtil.GetIniAsync();
-            (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置前恢复状态
+        private async Task Refresh(bool reloadIni) {
+            if (reloadIni) {
+                providerLspR22On = (ini.GetIni(LspIni.ID) as LspIni).R22; // 重置前保存状态
+                ini = await IniUtil.GetIniAsync();
+                (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置前恢复状态
+            }
             InitProvider();
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) { // 防社死
                 ShowToastW(resLoader.GetString("MsgLsp"), resLoader.GetString("Provider_" + MenuProviderLsp.Tag),
@@ -323,8 +325,13 @@ namespace Timeline {
         private void InitProvider() {
             provider = ini.GenerateProvider();
 
+            // 图源为“本地图库”时禁用标记功能
+            MenuMark.IsEnabled = !LocalIni.ID.Equals(ini.Provider);
+
+            // 未启用“r18”且未强制启用“LSP”时禁用图源列表中的“LSP”
             MenuProviderLsp.Visibility = ini.R18 == 1 || MenuProviderLsp.Tag.Equals(ini.Provider)
                 ? Visibility.Visible : Visibility.Collapsed;
+
             MenuCurDesktop.Label = string.Format(resLoader.GetString("CurDesktop"), resLoader.GetString("Provider_" + ini.DesktopProvider));
             MenuCurLock.Label = string.Format(resLoader.GetString("CurLock"), resLoader.GetString("Provider_" + ini.LockProvider));
             if (string.IsNullOrEmpty(ini.DesktopProvider)) {
@@ -491,6 +498,12 @@ namespace Timeline {
                 ProgressLoading.ShowError = false;
                 ProgressLoading.Visibility = Visibility.Visible;
             }
+
+            MenuSetDesktop.IsEnabled = false;
+            MenuSetLock.IsEnabled = false;
+            MenuSave.IsEnabled = false;
+            MenuFillOn.IsEnabled = false;
+            MenuFillOff.IsEnabled = false;
         }
 
         private void StatusEnjoy() {
@@ -500,8 +513,7 @@ namespace Timeline {
             
             MenuSetDesktop.IsEnabled = true;
             MenuSetLock.IsEnabled = true;
-            MenuSave.IsEnabled = true;
-            MenuMark.IsEnabled = true;
+            MenuSave.IsEnabled = !LocalIni.ID.Equals(ini.Provider); // 图源为“本地图库”时禁用收藏功能
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
 
@@ -530,7 +542,6 @@ namespace Timeline {
             MenuSetDesktop.IsEnabled = false;
             MenuSetLock.IsEnabled = false;
             MenuSave.IsEnabled = false;
-            MenuMark.IsEnabled = false;
             MenuFillOn.IsEnabled = false;
             MenuFillOff.IsEnabled = false;
 
@@ -892,6 +903,7 @@ namespace Timeline {
 
         private async void MenuPush_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
+            ViewSplit.IsPaneOpen = false;
             // 刷新推送菜单项
             AppBarButton menuCheck = sender as AppBarButton;
             if (MenuPushDesktop.Tag.Equals(menuCheck.Tag)) {
@@ -956,9 +968,9 @@ namespace Timeline {
             FlyoutMenu.Hide();
             ViewSplit.IsPaneOpen = false;
 
-            string providerIdNew = ((RadioMenuFlyoutItem)sender).Tag.ToString();
-            await IniUtil.SaveProviderAsync(providerIdNew);
-            await Refresh();
+            ini.Provider = (sender as RadioMenuFlyoutItem).Tag.ToString();
+            await IniUtil.SaveProviderAsync(ini.Provider);
+            await Refresh(false);
         }
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e) {
@@ -1195,7 +1207,7 @@ namespace Timeline {
                 case VirtualKey.F5: // F5
                 case VirtualKey.R: // Ctrl + R
                     FlyoutMenu.Hide();
-                    await Refresh();
+                    await Refresh(true);
                     break;
                 case VirtualKey.F3: // F3
                 case VirtualKey.F: // Ctrl + F
@@ -1226,11 +1238,14 @@ namespace Timeline {
         }
 
         private async void ViewSettings_SettingsChanged(object sender, SettingsEventArgs e) {
-            if (e.ProviderChanged) {
-                await Refresh();
-            } else if (e.ProviderConfigChanged) {
-                await Refresh();
-                await ViewSettings.NotifyPaneOpened(ini);
+            //if (e.ProviderChanged) {
+            //    await Refresh(false);
+            //} else if (e.ProviderConfigChanged) {
+            //    await Refresh(false);
+            //    await ViewSettings.NotifyPaneOpened(ini);
+            //}
+            if (e.ProviderChanged || e.ProviderConfigChanged) {
+                await Refresh(false);
             }
             if (e.ThemeChanged) { // 修复 muxc:CommandBarFlyout.SecondaryCommands 子元素无法响应随主题改变的BUG
                 ElementTheme theme = ThemeUtil.ParseTheme(ini.Theme);

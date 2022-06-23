@@ -66,6 +66,19 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="AnimeFillOn"
+                    AutoReverse="True">
+            <DoubleAnimation Duration="0:0:0.2"
+                             From="1.0"
+                             To="1.1"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                             Storyboard.TargetName="IconFillOn" />
+            <DoubleAnimation Duration="0:0:0.2"
+                             From="1.0"
+                             To="1.1"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                             Storyboard.TargetName="IconFillOn" />
+        </Storyboard>
         <Storyboard x:Name="AnimeFillOff"
                     AutoReverse="True">
             <DoubleAnimation Duration="0:0:0.2"
@@ -128,11 +141,18 @@
             </AppBarButton>
             <AppBarButton Name="MenuFillOn"
                           x:Uid="MenuFillOn"
+                          PointerEntered="{x:Bind AnimeFillOn.Begin}"
                           Visibility="Collapsed"
                           Click="MenuFill_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE740;" />
+                    <FontIcon x:Name="IconFillOn"
+                              FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE740;">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform CenterX="12"
+                                            CenterY="12" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </AppBarButton.Icon>
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Space"
@@ -218,7 +238,7 @@
                               Click="MenuSetDesktop_Click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xE7F7;" />
+                                  Glyph="&#xE70A;" />
                     </AppBarButton.Icon>
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Key="B"

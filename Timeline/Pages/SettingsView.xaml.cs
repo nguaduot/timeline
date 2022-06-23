@@ -26,6 +26,9 @@ namespace Timeline.Pages {
 
         private readonly ResourceLoader resLoader;
 
+        Dictionary<string, FontIcon> dicPushDesktop;
+        Dictionary<string, FontIcon> dicPushLock;
+
         ObservableCollection<CateMeta> listBingLang = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listOneplusOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
@@ -135,6 +138,37 @@ namespace Timeline.Pages {
                     RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp
                 }
             };
+
+            dicPushDesktop = new Dictionary<string, FontIcon> {
+                { LocalIni.ID, IconPushDesktopLocal },
+                { BingIni.ID, IconPushDesktopBing },
+                { NasaIni.ID, IconPushDesktopNasa },
+                { OneplusIni.ID, IconPushDesktopOneplus },
+                { TimelineIni.ID, IconPushDesktopTimeline },
+                { OneIni.ID, IconPushDesktopOne },
+                { Himawari8Ini.ID, IconPushDesktopHimawari8 },
+                { YmyouliIni.ID, IconPushDesktopYmyouli },
+                { WallhavenIni.ID, IconPushDesktopWallhaven },
+                { QingbzIni.ID, IconPushDesktopQingbz },
+                { WallhereIni.ID, IconPushDesktopWallhere },
+                { InfinityIni.ID, IconPushDesktopInfinity },
+                { LspIni.ID, IconPushDesktopLsp }
+            };
+            dicPushLock = new Dictionary<string, FontIcon> {
+                { LocalIni.ID, IconPushLockLocal },
+                { BingIni.ID, IconPushLockBing },
+                { NasaIni.ID, IconPushLockNasa },
+                { OneplusIni.ID, IconPushLockOneplus },
+                { TimelineIni.ID, IconPushLockTimeline },
+                { OneIni.ID, IconPushLockOne },
+                { Himawari8Ini.ID, IconPushLockHimawari8 },
+                { YmyouliIni.ID, IconPushLockYmyouli },
+                { WallhavenIni.ID, IconPushLockWallhaven },
+                { QingbzIni.ID, IconPushLockQingbz },
+                { WallhereIni.ID, IconPushLockWallhere },
+                { InfinityIni.ID, IconPushLockInfinity },
+                { LspIni.ID, IconPushLockLsp }
+            };
         }
 
         public async Task NotifyPaneOpened(Ini ini) {
@@ -155,6 +189,13 @@ namespace Timeline.Pages {
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
+            // 刷新推送指示图标
+            foreach (string id in dicPushDesktop.Keys) {
+                dicPushDesktop[id].Visibility = id.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
+            }
+            foreach (string id in dicPushLock.Keys) {
+                dicPushLock[id].Visibility = id.Equals(ini.LockProvider) ? Visibility.Visible : Visibility.Collapsed;
+            }
             // 刷新主题设置
             RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
             rbTheme.IsChecked = true;
@@ -191,7 +232,7 @@ namespace Timeline.Pages {
             // 刷新标题（标记为当前图源）、折叠非目标图源 Expander
             foreach (var item in ViewSettings.Children) {
                 if (item is Expander expander && expander.Tag != null) {
-                    FontIcon icon = ((expander.Header as Grid).Children[0] as FontIcon);
+                    FontIcon icon = ((expander.Header as Grid).Children[1] as FontIcon);
                     icon.Visibility = expander == expanderTarget ? Visibility.Visible : Visibility.Collapsed;
                     if (expander != expanderTarget && expander.IsExpanded) {
                         expander.IsExpanded = false;
@@ -630,21 +671,31 @@ namespace Timeline.Pages {
             await FileUtil.LaunchFolderAsync(folder);
         }
 
-        public string GenerateProviderTitle(object tag) {
+        private string GenerateProviderTitle(object tag) {
             // 生成图源 Expander 标题
             return resLoader.GetString("Provider_" + tag);
         }
 
-        public string GenerateProviderDesc(object tag) {
+        private string GenerateProviderDesc(object tag) {
             // 生成图源 Expander 描述
             return resLoader.GetString("Slogan_" + tag);
         }
 
-        public string GenerateProviderIcon(bool expanded) {
-            // 无聊：根据图源 Expander 展开状态显示不同的图标
-            // 注意，XAML：&#xE899; C#：\uE899
-            return expanded ? "\uE899" : "\uE76E";
-        }
+        //private string GenerateProviderIcon(bool expanded) {
+        //    // 无聊：根据图源 Expander 展开状态显示不同的图标
+        //    // 注意，XAML：&#xE899; C#：\uE899
+        //    return expanded ? "\uE899" : "\uE76E";
+        //}
+
+        //private string GeneratePushDesktopIcon(object tag) {
+        //    Debug.WriteLine("GeneratePushDesktopIcon() " + ini.DesktopProvider);
+        //    return tag.Equals(ini.DesktopProvider) ? "\uE7F7" : "";
+        //}
+
+        //private string GeneratePushLockIcon(object tag) {
+        //    Debug.WriteLine("GeneratePushLockIcon() " + ini.LockProvider);
+        //    return tag.Equals(ini.LockProvider) ? "\uEE3F" : "";
+        //}
     }
 
     public class SettingsEventArgs : EventArgs {
