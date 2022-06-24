@@ -6,7 +6,7 @@ namespace TimelineService.Utils {
         private readonly HashSet<string> PROVIDER = new HashSet<string>() {
             LocalIni.GetId(), BingIni.GetId(), NasaIni.GetId(), OneplusIni.GetId(), TimelineIni.GetId(),
             OneIni.GetId(), Himawari8Ini.GetId(), YmyouliIni.GetId(), WallhavenIni.GetId(), QingbzIni.GetId(),
-            WallhereIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(), LspIni.GetId()
+            WallhereIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(), GluttonIni.GetId(), LspIni.GetId()
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
 
@@ -56,6 +56,8 @@ namespace TimelineService.Utils {
 
         public ObzhiIni Obzhi { set; get; } = new ObzhiIni();
 
+        public GluttonIni Glutton { set; get; } = new GluttonIni();
+
         public LspIni Lsp { set; get; } = new LspIni();
 
         public int GetDesktopPeriod(string provider) {
@@ -83,6 +85,8 @@ namespace TimelineService.Utils {
                 return Infinity.DesktopPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 return Obzhi.DesktopPeriod;
+            } else if (GluttonIni.GetId().Equals(provider)) {
+                return Glutton.DesktopPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
                 return Lsp.DesktopPeriod;
             } else {
@@ -115,6 +119,8 @@ namespace TimelineService.Utils {
                 return Infinity.LockPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 return Obzhi.LockPeriod;
+            } else if (GluttonIni.GetId().Equals(provider)) {
+                return Glutton.LockPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
                 return Lsp.LockPeriod;
             } else {
@@ -148,6 +154,8 @@ namespace TimelineService.Utils {
                 paras = Infinity.ToString();
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 paras = Obzhi.ToString();
+            } else if (GluttonIni.GetId().Equals(provider)) {
+                paras = Glutton.ToString();
             } else if (LspIni.GetId().Equals(provider)) {
                 paras = Lsp.ToString();
             } else {
@@ -535,6 +543,32 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
 
         public static string GetId() => "obzhi";
+    }
+
+    public sealed class GluttonIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "score", "random" };
+
+        private string order = "score";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "score";
+            get => order;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+
+        public static string GetId() => "glutton";
     }
 
     public sealed class LspIni {

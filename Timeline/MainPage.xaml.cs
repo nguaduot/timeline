@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
@@ -168,7 +167,8 @@ namespace Timeline {
                 }.ShowAsync();
                 if (action == ContentDialogResult.Primary) {
                     localSettings.Values["ReqReview"] = true;
-                    await Launcher.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+                } else if (action == ContentDialogResult.Secondary) {
+                    localSettings.Values["ReqReview"] = true;
                 } else { // 下次一定
                     localSettings.Values.Remove("Actions");
                 }
@@ -811,6 +811,20 @@ namespace Timeline {
         //    LogUtil.I("InitJumpList() done");
         //}
 
+        private void SwitchProvider(bool forward) {
+            for (int i = 0; i < FlyoutProvider.Items.Count; i++) {
+                if ((FlyoutProvider.Items[i] as RadioMenuFlyoutItem).IsChecked) {
+                    int next;
+                    do {
+                        next = forward ? (++i % FlyoutProvider.Items.Count)
+                            : (FlyoutProvider.Items.Count + --i) % FlyoutProvider.Items.Count;
+                    } while (!FlyoutProvider.Items[next].IsEnabled || FlyoutProvider.Items[next].Visibility == Visibility.Collapsed);
+                    MenuProvider_Click(FlyoutProvider.Items[next], null);
+                    break;
+                }
+            }
+        }
+
         private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e) {
             resizeTimer.Stop();
             resizeTimer.Start();
@@ -1231,8 +1245,18 @@ namespace Timeline {
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists));
                     break;
+                case VirtualKey.W: // Ctrl + W
+                    Application.Current.Exit();
+                    break;
                 case VirtualKey.F12: // F12
                     await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
+                    break;
+                case VirtualKey.Tab:
+                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + Tab
+                        SwitchProvider(true); // 切换下个图源
+                    } else { // Shift + Ctrl + Tab
+                        SwitchProvider(false); // 切换上个图源
+                    }
                     break;
             }
         }

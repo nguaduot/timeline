@@ -131,6 +131,7 @@
     <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\ObzhiApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />
+    <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

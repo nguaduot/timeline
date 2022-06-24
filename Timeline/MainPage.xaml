@@ -604,6 +604,15 @@
                 <KeyboardAccelerator Key="O"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="W"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Tab"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Tab"
+                                     Modifiers="Shift,Control"
+                                     Invoked="KeyInvoked" />
             </RelativePanel.KeyboardAccelerators>
 
             <RelativePanel Name="ImgUhdPointer"

@@ -7,7 +7,9 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                mc:Ignorable="d"
                x:Uid="DlgReview"
-               DefaultButton="Primary"
+               DefaultButton="Close"
+               PrimaryButtonClick="Dlg_PrimaryButtonClick"
+               SecondaryButtonClick="Dlg_SecondaryButtonClick"
                Style="{StaticResource DefaultContentDialogStyle}"
                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}">
 
@@ -21,11 +23,18 @@
                     <Run x:Uid="TextReview1" />
                 </Hyperlink>
                 <Run x:Uid="TextReview2" />
+            </Span>
+        </TextBlock>
+        <TextBlock TextWrapping="WrapWholeWords"
+                   Margin="0,8,0,0">
+            <Span xml:space="default">
+                <Run x:Uid="TextDonate0" />
                 <Hyperlink x:Uid="LinkDonate"
                            UnderlineStyle="None"
                            Click="LinkDonate_Click">
-                    <Run x:Uid="TextReview3" />
-                </Hyperlink><Run x:Uid="TextReview4" />
+                    <Run x:Uid="TextDonate1" />
+                </Hyperlink>
+                <Run x:Uid="TextDonate2" />
             </Span>
         </TextBlock>
     </StackPanel>

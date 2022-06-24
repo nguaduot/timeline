@@ -270,7 +270,7 @@ namespace Timeline.Pages {
             }
             LogUtil.I("RandomGlitter() " + glitters.Count);
             List<string> glittersRandom = new List<string>();
-            for (int i = 0; i < glitters.Count && i < 3; i++) {
+            for (int i = 0; i < glitters.Count && i < 2; i++) {
                 string target = glitters[new Random().Next(glitters.Count)];
                 glitters.Remove(target);
                 glittersRandom.Add(target);
@@ -278,7 +278,6 @@ namespace Timeline.Pages {
             glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
             SettingsReviewDesc.Text = glittersRandom[0];
             SettingsThankDesc.Text = glittersRandom[1];
-            SettingsCdnDesc.Text = glittersRandom[2];
         }
 
         private async void ExpanderStaticProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
@@ -486,7 +485,6 @@ namespace Timeline.Pages {
 
         private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
-            _ = Api.RankAsync(YmyouliIni.ID, null, "donate");
         }
 
         private async void BoxInfinityOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -547,7 +545,6 @@ namespace Timeline.Pages {
 
         private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
-            _ = Api.RankAsync(QingbzIni.ID, null, "donate");
         }
 
         private async void BoxWallhavenCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -669,6 +666,10 @@ namespace Timeline.Pages {
                 folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
             }
             await FileUtil.LaunchFolderAsync(folder);
+        }
+
+        private void BtnLocalGlutton_Click(object sender, RoutedEventArgs e) {
+            // TODO
         }
 
         private string GenerateProviderTitle(object tag) {

@@ -174,6 +174,14 @@ namespace TimelineService.Utils {
             ini.Obzhi.Order = sb.ToString();
             _ = GetPrivateProfileString(ObzhiIni.GetId(), "cate", "", sb, 1024, iniFile);
             ini.Obzhi.Cate = sb.ToString();
+            _ = GetPrivateProfileString(GluttonIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
+            ini.Glutton.DesktopPeriod = period;
+            _ = GetPrivateProfileString(GluttonIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out period);
+            ini.Glutton.LockPeriod = period;
+            _ = GetPrivateProfileString(GluttonIni.GetId(), "order", "score", sb, 1024, iniFile);
+            ini.Glutton.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Lsp.DesktopPeriod = period;
@@ -242,6 +250,11 @@ namespace TimelineService.Utils {
                 deviceInfo.SystemProductName);
         }
 
+        public static string GetDeviceName() {
+            var deviceInfo = new EasClientDeviceInformation();
+            return deviceInfo.FriendlyName;
+        }
+
         public static string GetDeviceId() {
             SystemIdentificationInfo systemId = SystemIdentification.GetSystemIdForPublisher();
             // Make sure this device can generate the IDs
@@ -261,6 +274,14 @@ namespace TimelineService.Utils {
 
         public static IAsyncOperation<bool> WriteDosage(string provider) {
             return WriteDosage_Impl(provider).AsAsyncOperation();
+        }
+
+        public static IAsyncOperation<string> ReadProviderCache(string provider, string cate, string order) {
+            return ReadProviderCache_Impl(provider, cate, order).AsAsyncOperation();
+        }
+
+        public static IAsyncOperation<bool> WriteProviderCache(string provider, string cate, string order, string data) {
+            return WriteProviderCache_Impl(provider, cate, order, data).AsAsyncOperation();
         }
 
         private static async Task<IReadOnlyDictionary<string, int>> ReadDosage_Impl() {
@@ -314,6 +335,35 @@ namespace TimelineService.Utils {
                     dic[provider] = string.Join(",", sec_new.ToArray());
                 }
                 await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(dic));
+                return true;
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("WriteDosage() " + e.Message);
+            }
+            return false;
+        }
+
+        private static async Task<string> ReadProviderCache_Impl(string provider, string cate, string order) {
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
+                    CreationCollisionOption.OpenIfExists);
+                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", cate ?? "", order ?? "", DateTime.Now.ToString("yyyyMMdd"));
+                StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+                return await FileIO.ReadTextAsync(file);
+            } catch (Exception e) {
+                Debug.WriteLine(e);
+                LogUtil.E("WriteDosage() " + e.Message);
+            }
+            return null;
+        }
+
+        private static async Task<bool> WriteProviderCache_Impl(string provider, string cate, string order, string data) {
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
+                    CreationCollisionOption.OpenIfExists);
+                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", cate ?? "", order ?? "", DateTime.Now.ToString("yyyyMMdd"));
+                StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+                await FileIO.WriteTextAsync(file, data);
                 return true;
             } catch (Exception e) {
                 Debug.WriteLine(e);

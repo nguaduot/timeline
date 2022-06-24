@@ -31,6 +31,7 @@ namespace Timeline.Utils {
                 OsVersion = SysUtil.GetOsVer(),
                 Screen = String.Format("{0}x{1}", screen.Width, screen.Height),
                 Device = SysUtil.GetDevice(),
+                DeviceName = SysUtil.GetDeviceName(),
                 DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };

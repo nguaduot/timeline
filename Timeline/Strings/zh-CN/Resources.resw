@@ -235,7 +235,7 @@
     <value>下次一定</value>
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
-    <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，前往</value>
+    <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，不妨前往</value>
   </data>
   <data name="Provider_himawari8" xml:space="preserve">
     <value>向日葵8号</value>
@@ -265,7 +265,7 @@
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value>开源。若有任何疑问、想法或合作意向，可</value>
+    <value>开源。如果您愿意为「拾光」提供国内CDN加速服务，或有其他想法、合作意向，可</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
     <value>发邮件</value>
@@ -280,7 +280,7 @@
     <value>商店</value>
   </data>
   <data name="TextReview2.Text" xml:space="preserve">
-    <value>给它一个评分或评价吧，或者</value>
+    <value>给它一个评分。</value>
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>下次一定</value>
@@ -300,11 +300,11 @@
   <data name="LinkGithub.ToolTipService.ToolTip" xml:space="preserve">
     <value>https://gitee.com/nguaduot/timeline</value>
   </data>
-  <data name="TextReview3.Text" xml:space="preserve">
+  <data name="TextDonate1.Text" xml:space="preserve">
     <value>扫码赞助</value>
   </data>
-  <data name="TextReview4.Text" xml:space="preserve">
-    <value>，所有捐赠都将用来维护本项目以及提升积极性。(●'◡'●)</value>
+  <data name="TextDonate2.Text" xml:space="preserve">
+    <value>任意金额，所有赞助都将用来维护本项目以及提升积极性。(●'◡'●)</value>
   </data>
   <data name="BoxGo.Header" xml:space="preserve">
     <value>跳转</value>
@@ -421,7 +421,7 @@
     <value>链接</value>
   </data>
   <data name="DlgReview.PrimaryButtonText" xml:space="preserve">
-    <value>前往评分</value>
+    <value>评分</value>
   </data>
   <data name="MsgRefresh" xml:space="preserve">
     <value>当前图源：{0}</value>
@@ -493,7 +493,7 @@
     <value>前往官网</value>
   </data>
   <data name="SettingsReviewTitle.Text" xml:space="preserve">
-    <value>反馈</value>
+    <value>加鸡腿</value>
   </data>
   <data name="SettingsThankTitle.Text" xml:space="preserve">
     <value>致谢</value>
@@ -681,15 +681,6 @@
   <data name="Slogan_wallhaven" xml:space="preserve">
     <value>The best wallpapers on the Net!</value>
   </data>
-  <data name="TextCdn0.Text" xml:space="preserve">
-    <value>如果您愿意为「拾光」提供国内CDN加速服务或赞助，可</value>
-  </data>
-  <data name="TextCdn1.Text" xml:space="preserve">
-    <value>发邮件</value>
-  </data>
-  <data name="TextCdn2.Text" xml:space="preserve">
-    <value>联系我。</value>
-  </data>
   <data name="Glitter.Text" xml:space="preserve">
     <value>时光如歌，岁月如诗</value>
   </data>
@@ -751,12 +742,33 @@
     <value>管理员回复</value>
   </data>
   <data name="BtnLocalFolder.Content" xml:space="preserve">
-    <value>管理</value>
+    <value>前往</value>
   </data>
   <data name="TextLocalFolder.Text" xml:space="preserve">
-    <value>数据源</value>
+    <value>整理图库</value>
   </data>
   <data name="ActionView" xml:space="preserve">
     <value>查看</value>
+  </data>
+  <data name="BtnLocalGlutton.Content" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="DlgReview.SecondaryButtonText" xml:space="preserve">
+    <value>赞助</value>
+  </data>
+  <data name="DlgReview.Title" xml:space="preserve">
+    <value>加鸡腿</value>
+  </data>
+  <data name="Provider_glutton" xml:space="preserve">
+    <value>贪吃鬼</value>
+  </data>
+  <data name="Slogan_glutton" xml:space="preserve">
+    <value>贪吃鬼</value>
+  </data>
+  <data name="TextDonate0.Text" xml:space="preserve">
+    <value>「拾光」为非盈利性项目，迫于服务器等成本压力，开通了赞助渠道，如果您有稳定的收入，可以</value>
+  </data>
+  <data name="TextLocalGlutton.Text" xml:space="preserve">
+    <value>为我推荐</value>
   </data>
 </root>

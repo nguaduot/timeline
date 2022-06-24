@@ -385,6 +385,16 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(ObzhiIni.ID, "cate", "", sb, 1024, iniFile);
             obzhiIni.Cate = sb.ToString();
             ini.SetIni(ObzhiIni.ID, obzhiIni);
+            _ = GetPrivateProfileString(GluttonIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(GluttonIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(GluttonIni.ID, "order", "score", sb, 1024, iniFile);
+            ini.SetIni(GluttonIni.ID, new GluttonIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                Order = sb.ToString()
+            });
             _ = GetPrivateProfileString(LspIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(LspIni.ID, "lockperiod", "24", sb, 1024, iniFile);
@@ -689,6 +699,11 @@ namespace Timeline.Utils {
             }
             return string.Format("{0}_{1}", deviceInfo.SystemManufacturer,
                 deviceInfo.SystemProductName);
+        }
+
+        public static string GetDeviceName() {
+            var deviceInfo = new EasClientDeviceInformation();
+            return deviceInfo.FriendlyName;
         }
 
         public static string GetDeviceId() {

@@ -19,6 +19,7 @@ namespace Timeline.Utils {
             { WallhereIni.ID, new WallhereIni() },
             { InfinityIni.ID, new InfinityIni() },
             { ObzhiIni.ID, new ObzhiIni() },
+            { GluttonIni.ID, new GluttonIni() },
             { LspIni.ID, new LspIni() }
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
@@ -409,6 +410,21 @@ namespace Timeline.Utils {
         public override BaseProvider GenerateProvider() => new ObzhiProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+    }
+
+    public class GluttonIni : BaseIni {
+        public const string ID = "glutton";
+        public static readonly List<string> ORDERS = new List<string>() { "score", "random" };
+
+        public GluttonIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "score";
+        }
+
+        public override BaseProvider GenerateProvider() => new GluttonProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
     }
 
     public class LspIni : BaseIni {

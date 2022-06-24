@@ -148,6 +148,7 @@
     <Compile Include="Beans\TimelineApi.cs" />
     <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />
+    <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -181,6 +182,7 @@
     <Compile Include="Providers\QingbzProvider.cs" />
     <Compile Include="Providers\TimelineProvider.cs" />
     <Compile Include="Providers\LspProvider.cs" />
+    <Compile Include="Providers\GluttonProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
     <Compile Include="Providers\WallhavenProvider.cs" />
     <Compile Include="Providers\LocalProvider.cs" />

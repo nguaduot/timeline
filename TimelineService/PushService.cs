@@ -30,7 +30,7 @@ namespace TimelineService {
         private Ini ini;
         private int periodDesktop = 24;
         private int periodLock = 24;
-        private int periodTile = 4;
+        private int periodTile = 2;
         private string tagDesktop; // 免重复推送桌面背景标记
         private string tagLock; // 免重复推送锁屏背景标记
         private string tagTile; // 免重复推送磁贴背景标记
@@ -148,7 +148,9 @@ namespace TimelineService {
         private async Task<bool> PushDesktopAsync() {
             await FileUtil.WriteDosage(ini.DesktopProvider);
             bool res = false;
-            if (BingIni.GetId().Equals(ini.DesktopProvider)) {
+            if (LocalIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadLocalAsync(Action.Desktop);
+            } else if (BingIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadBingAsync(Action.Desktop);
             } else if (NasaIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadNasaAsync(Action.Desktop);
@@ -172,10 +174,10 @@ namespace TimelineService {
                 res = await LoadInfinityAsync(Action.Desktop);
             } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadObzhiAsync(Action.Desktop);
+            } else if (GluttonIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadGluttonAsync(Action.Desktop);
             } else if (LspIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadLspAsync(Action.Desktop);
-            } else if (LocalIni.GetId().Equals(ini.DesktopProvider)) {
-                res = await LoadLocalAsync(Action.Desktop);
             }
             if (res) {
                 localSettings.Values[tagDesktop] = (int)(localSettings.Values[tagDesktop] ?? 0) + 1;
@@ -187,7 +189,9 @@ namespace TimelineService {
         private async Task<bool> PushLockAsync() {
             await FileUtil.WriteDosage(ini.LockProvider);
             bool res = false;
-            if (BingIni.GetId().Equals(ini.LockProvider)) {
+            if (LocalIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadLocalAsync(Action.Lock);
+            } else if (BingIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadBingAsync(Action.Lock);
             } else if (NasaIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadNasaAsync(Action.Lock);
@@ -211,10 +215,10 @@ namespace TimelineService {
                 res = await LoadInfinityAsync(Action.Lock);
             } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadObzhiAsync(Action.Lock);
+            } else if (GluttonIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadGluttonAsync(Action.Desktop);
             } else if (LspIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadLspAsync(Action.Lock);
-            } else if (LocalIni.GetId().Equals(ini.LockProvider)) {
-                res = await LoadLocalAsync(Action.Lock);
             }
             if (res) {
                 localSettings.Values[tagLock] = (int)(localSettings.Values[tagLock] ?? 0) + 1;
@@ -226,7 +230,9 @@ namespace TimelineService {
         private async Task<bool> PushTileAsync() {
             await FileUtil.WriteDosage(ini.Provider);
             bool res = false;
-            if (BingIni.GetId().Equals(ini.Provider)) {
+            if (LocalIni.GetId().Equals(ini.Provider)) {
+                res = await LoadLocalAsync(Action.Tile);
+            } else if (BingIni.GetId().Equals(ini.Provider)) {
                 res = await LoadBingAsync(Action.Tile);
             } else if (NasaIni.GetId().Equals(ini.Provider)) {
                 res = await LoadNasaAsync(Action.Tile);
@@ -250,10 +256,10 @@ namespace TimelineService {
                 res = await LoadInfinityAsync(Action.Tile);
             } else if (ObzhiIni.GetId().Equals(ini.Provider)) {
                 res = await LoadObzhiAsync(Action.Tile);
+            } else if (GluttonIni.GetId().Equals(ini.Provider)) {
+                res = await LoadGluttonAsync(Action.Tile);
             } else if (LspIni.GetId().Equals(ini.Provider)) {
                 res = await LoadLspAsync(Action.Tile);
-            } else if (LocalIni.GetId().Equals(ini.Provider)) {
-                res = await LoadLocalAsync(Action.Tile);
             }
             if (res) {
                 localSettings.Values[tagTile] = (int)(localSettings.Values[tagTile] ?? 0) + 1;
@@ -525,19 +531,30 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadTimelineAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate=&order=date";
-            LogUtil.I("LoadTimelineAsync() api url: " + URL_API);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(URL_API);
-            TimelineApi api = JsonConvert.DeserializeObject<TimelineApi>(jsonData);
+            TimelineApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(TimelineIni.GetId(), "", "date");
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
+                    LogUtil.I("LoadTimelineAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadTimelineAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate=&order=date";
+                LogUtil.I("LoadTimelineAsync() api url: " + URL_API);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(URL_API);
+                data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
+                await FileUtil.WriteProviderCache(TimelineIni.GetId(), "", "date", jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[0].ThumbUrl;
-                LogUtil.I("LoadTimelineAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadTimelineAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[0].ImgUrl;
-                LogUtil.I("LoadTimelineAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadTimelineAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -598,20 +615,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadYmyouliAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/ymyouli/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Ymyouli.Cate, ini.Ymyouli.Order);
-            LogUtil.I("LoadYmyouliAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+            YmyouliApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Cate, ini.Ymyouli.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadYmyouliAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadYmyouliAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/ymyouli/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Ymyouli.Cate, ini.Ymyouli.Order);
+                LogUtil.I("LoadYmyouliAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Cate, ini.Ymyouli.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadYmyouliAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadYmyouliAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadYmyouliAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadYmyouliAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -621,20 +651,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhavenAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
-            LogUtil.I("LoadWallhaven() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+            WallhavenApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadWallhaven() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadWallhaven() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
+                LogUtil.I("LoadWallhaven() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadWallhaven() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadWallhaven() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadWallhaven() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadWallhaven() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -644,20 +687,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadQingbzAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Qingbz.Cate, ini.Qingbz.Order);
-            LogUtil.I("LoadQingbzAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
+            QingbzApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadQingbzAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadQingbzAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Qingbz.Cate, ini.Qingbz.Order);
+                LogUtil.I("LoadQingbzAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadQingbzAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadQingbzAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadQingbzAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadQingbzAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -667,20 +723,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhereAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Wallhere.Cate, ini.Wallhere.Order);
-            LogUtil.I("LoadWallhereAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+            WallhereApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadWallhereAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadWallhereAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Wallhere.Cate, ini.Wallhere.Order);
+                LogUtil.I("LoadWallhereAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadWallhereAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadWallhereAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadWallhereAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadWallhereAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -722,20 +791,79 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadObzhiAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Obzhi.Cate, ini.Obzhi.Order);
-            LogUtil.I("LoadObzhiAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+            ObzhiApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(ObzhiIni.GetId(), ini.Obzhi.Cate, ini.Obzhi.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadObzhiAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadObzhiAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Obzhi.Cate, ini.Obzhi.Order);
+                LogUtil.I("LoadObzhiAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(ObzhiIni.GetId(), ini.Obzhi.Cate, ini.Obzhi.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadObzhiAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadObzhiAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadObzhiAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadObzhiAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBackground(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadGluttonAsync(Action action) {
+            GluttonApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(GluttonIni.GetId(), "", ini.Glutton.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadGluttonAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadGluttonAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/glutton/v2?client=timelinewallpaper&order={0}";
+                string urlApi = string.Format(URL_API, ini.Glutton.Order);
+                LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(ObzhiIni.GetId(), "", ini.Glutton.Order, jsonData);
+            }
+            if (action == Action.Tile) {
+                // 生成缩略图
+                // TODO：无法保持原图比例
+                StorageFile fileSrc = await DownloadImgAsync(data.ImgUrl, action);
+                StorageFile fileThumb = await ApplicationData.Current.LocalFolder.CreateFileAsync("tile",
+                    CreationCollisionOption.ReplaceExisting);
+                StorageItemThumbnail thumb = await fileSrc.GetThumbnailAsync(ThumbnailMode.PicturesView);
+                Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(Convert.ToUInt32(thumb.Size));
+                using (var stream = await fileThumb.OpenAsync(FileAccessMode.ReadWrite)) {
+                    await stream.WriteAsync(await thumb.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None));
+                }
+                LogUtil.I("LoadGluttonAsync() thumb url: " + fileThumb.Path);
+                return SetTileBg(fileThumb.Path);
+            } else {
+                LogUtil.I("LoadGluttonAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -745,20 +873,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadLspAsync(Action action) {
-            const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}";
-            string urlApi = string.Format(URL_API, ini.Lsp.Cate, ini.Lsp.Order);
-            LogUtil.I("LoadLspAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+            LspApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(LspIni.GetId(), ini.Lsp.Cate, ini.Lsp.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadLspAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadLspAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Lsp.Cate, ini.Lsp.Order);
+                LogUtil.I("LoadLspAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(LspIni.GetId(), ini.Lsp.Cate, ini.Lsp.Order, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = api.Data[new Random().Next(api.Data.Count)].ThumbUrl;
-                LogUtil.I("LoadLspAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadLspAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = api.Data[new Random().Next(api.Data.Count)].ImgUrl;
-                LogUtil.I("LoadLspAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadLspAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {

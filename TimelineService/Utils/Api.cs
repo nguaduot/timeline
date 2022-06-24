@@ -32,6 +32,7 @@ namespace TimelineService.Utils {
                 OsVersion = SysUtil.GetOsVer(),
                 Screen = screen,
                 Device = SysUtil.GetDevice(),
+                DeviceName = SysUtil.GetDeviceName(),
                 DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };

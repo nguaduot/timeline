@@ -32,6 +32,9 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "device")]
         public string Device { set; get; }
 
+        [JsonProperty(PropertyName = "devicename")]
+        public string DeviceName { set; get; }
+
         [JsonProperty(PropertyName = "deviceid")]
         public string DeviceId { set; get; }
 

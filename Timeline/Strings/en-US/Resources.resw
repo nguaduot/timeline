@@ -234,9 +234,6 @@
   <data name="DlgReview.CloseButtonText" xml:space="preserve">
     <value>Maybe next</value>
   </data>
-  <data name="TextReview0.Text" xml:space="preserve">
-    <value>If you like Timeline, rate it on</value>
-  </data>
   <data name="Provider_himawari8" xml:space="preserve">
     <value>Himawari-8</value>
   </data>
@@ -258,29 +255,8 @@
   <data name="LinkReview.NavigateUri" xml:space="preserve">
     <value>ms-windows-store://review/?ProductId=9N7VHQ989BB7</value>
   </data>
-  <data name="TextContatc0.Text" xml:space="preserve">
-    <value>Check out the project on</value>
-  </data>
-  <data name="TextContatc1.Text" xml:space="preserve">
-    <value>Gitee</value>
-  </data>
-  <data name="TextContatc2.Text" xml:space="preserve">
-    <value>. Any questions, please</value>
-  </data>
-  <data name="TextContatc3.Text" xml:space="preserve">
-    <value>email</value>
-  </data>
-  <data name="TextContatc4.Text" xml:space="preserve">
-    <value>me.</value>
-  </data>
   <data name="TextCopyright.Text" xml:space="preserve">
     <value>© 2021-2022 nguaduot. All rights reserved.</value>
-  </data>
-  <data name="TextReview1.Text" xml:space="preserve">
-    <value>Microsoft Store</value>
-  </data>
-  <data name="TextReview2.Text" xml:space="preserve">
-    <value>, or</value>
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>Maybe next</value>
@@ -299,12 +275,6 @@
   </data>
   <data name="LinkGithub.ToolTipService.ToolTip" xml:space="preserve">
     <value>https://gitee.com/nguaduot/timeline</value>
-  </data>
-  <data name="TextReview3.Text" xml:space="preserve">
-    <value>buy me a coffee</value>
-  </data>
-  <data name="TextReview4.Text" xml:space="preserve">
-    <value>. (●'◡'●)</value>
   </data>
   <data name="BingLang_" xml:space="preserve">
     <value>Auto</value>
@@ -681,15 +651,6 @@
   <data name="Slogan_wallhaven" xml:space="preserve">
     <value>The best wallpapers on the Net!</value>
   </data>
-  <data name="TextCdn0.Text" xml:space="preserve">
-    <value>如果您愿意为「拾光」提供国内CDN加速服务或赞助，可</value>
-  </data>
-  <data name="TextCdn1.Text" xml:space="preserve">
-    <value>邮件</value>
-  </data>
-  <data name="TextCdn2.Text" xml:space="preserve">
-    <value> 联系我。</value>
-  </data>
   <data name="Glitter.Text" xml:space="preserve">
     <value>时光如歌，岁月如诗</value>
   </data>
@@ -758,5 +719,53 @@
   </data>
   <data name="ActionView" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="BtnLocalGlutton.Content" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="DlgReview.SecondaryButtonText" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="Provider_glutton" xml:space="preserve">
+    <value>Glutton</value>
+  </data>
+  <data name="Slogan_glutton" xml:space="preserve">
+    <value>Glutton</value>
+  </data>
+  <data name="TextContatc0.Text" xml:space="preserve">
+    <value>该项目已在</value>
+  </data>
+  <data name="TextContatc1.Text" xml:space="preserve">
+    <value>Gitee</value>
+  </data>
+  <data name="TextContatc2.Text" xml:space="preserve">
+    <value>开源。如果您愿意为「拾光」提供国内CDN加速服务，或有其他想法、合作意向，可</value>
+  </data>
+  <data name="TextContatc3.Text" xml:space="preserve">
+    <value>发邮件</value>
+  </data>
+  <data name="TextContatc4.Text" xml:space="preserve">
+    <value>联系我。</value>
+  </data>
+  <data name="TextDonate0.Text" xml:space="preserve">
+    <value>「拾光」为非盈利性项目，迫于服务器等成本压力，开通了赞助渠道，如果您有稳定的收入，可以</value>
+  </data>
+  <data name="TextDonate1.Text" xml:space="preserve">
+    <value>扫码赞助</value>
+  </data>
+  <data name="TextDonate2.Text" xml:space="preserve">
+    <value>任意金额，所有赞助都将用来维护本项目以及提升积极性。(●'◡'●)</value>
+  </data>
+  <data name="TextLocalGlutton.Text" xml:space="preserve">
+    <value>Recommend for me</value>
+  </data>
+  <data name="TextReview0.Text" xml:space="preserve">
+    <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，不妨前往</value>
+  </data>
+  <data name="TextReview1.Text" xml:space="preserve">
+    <value>商店</value>
+  </data>
+  <data name="TextReview2.Text" xml:space="preserve">
+    <value>给它一个评分。</value>
   </data>
 </root>

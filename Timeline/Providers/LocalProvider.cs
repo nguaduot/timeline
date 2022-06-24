@@ -33,8 +33,8 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
-            // 现有数据未浏览完，无需加载更多
-            if (indexFocus < metas.Count - 1) {
+            // 已加载过无需加载
+            if (metas.Count > 0) {
                 return true;
             }
             await base.LoadData(token, bi, date);
