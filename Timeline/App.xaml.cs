@@ -4,7 +4,6 @@ using Timeline.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -110,12 +109,16 @@ namespace Timeline {
 
         private void OptimizeSize() {
             // 保存显示器分辨率
-            System.Drawing.Size screen = SysUtil.GetMonitorPhysicalPixels();
-            ApplicationData.Current.LocalSettings.Values["Screen"] = (long)((screen.Width << 16) + screen.Height);
+            Windows.Foundation.Size pysical = SysUtil.GetMonitorPixels(false);
+            ApplicationData.Current.LocalSettings.Values["Screen"] = (long)(((int)pysical.Width << 16) + (int)pysical.Height);
             // 调整窗口尺寸
             if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("OptimizeSize")) {
                 ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
-                ApplicationView.PreferredLaunchViewSize = new Size(960, 600);
+                Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(false);
+                if (logic.Width == 0) {
+                    logic = new Windows.Foundation.Size(1920, 1080);
+                }
+                ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(logic.Width * 2 / 3, logic.Height * 2 / 3);
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
             }
@@ -123,10 +126,10 @@ namespace Timeline {
 
         private void TransTitleBar() {
             // https://docs.microsoft.com/zh-cn/windows/apps/design/style/acrylic#extend-acrylic-into-the-title-bar
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; // 内容扩展至标题栏
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            titleBar.ButtonBackgroundColor = Colors.Transparent; // 标题栏透明
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent; // 窗口失焦后仍保持标题栏透明
         }
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) {

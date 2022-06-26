@@ -464,32 +464,33 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadNasaAsync(Action action) {
-            string urlApi = string.Format("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&thumbs=True&start_date={0}&end_date={1}",
-                DateTime.UtcNow.AddHours(-4).AddDays(-6).ToString("yyyy-MM-dd"), DateTime.UtcNow.AddHours(-4).ToString("yyyy-MM-dd"));
-            LogUtil.I("LoadNasaAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            IList<NasaApiItem> items = JsonConvert.DeserializeObject<IList<NasaApiItem>>(jsonData);
+            NasaApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(NasaIni.GetId(), ini.Nasa.Order, ini.Nasa.Mirror);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadNasaAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadNasaAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper&order={0}&mirror={1}";
+                string urlApi = string.Format(URL_API, ini.Nasa.Order, ini.Nasa.Mirror);
+                LogUtil.I("LoadNasaAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(NasaIni.GetId(), ini.Nasa.Order, ini.Nasa.Mirror, jsonData);
+            }
             if (action == Action.Tile) {
-                string urlThumb = null;
-                for (int i = items.Count - 1; i >= 0; --i) { // 取最近日期
-                    if ("image".Equals(items[i].MediaType)) {
-                        urlThumb = items[i].Url;
-                        break;
-                    }
-                }
-                LogUtil.I("LoadNasaAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                LogUtil.I("LoadNasaAsync() thumb url: " + data.ThumbUrl);
+                return SetTileBg(data.ThumbUrl);
             } else {
-                string urlUhd = null;
-                for (int i = items.Count - 1; i >= 0; --i) { // 取最近日期
-                    if ("image".Equals(items[i].MediaType)) {
-                        urlUhd = items[i].HdUrl;
-                        break;
-                    }
-                }
-                LogUtil.I("LoadNasaAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                LogUtil.I("LoadNasaAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -846,7 +847,7 @@ namespace TimelineService {
                 jsonData = await client.GetStringAsync(urlApi);
                 GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(ObzhiIni.GetId(), "", ini.Glutton.Order, jsonData);
+                await FileUtil.WriteProviderCache(GluttonIni.GetId(), "", ini.Glutton.Order, jsonData);
             }
             if (action == Action.Tile) {
                 // 生成缩略图

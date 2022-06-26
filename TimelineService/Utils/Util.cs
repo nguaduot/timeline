@@ -17,7 +17,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.9.ini";
+        private const string FILE_INI = "timeline-6.0.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -73,6 +73,8 @@ namespace TimelineService.Utils {
             _ = GetPrivateProfileString(NasaIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Nasa.LockPeriod = period;
+            _ = GetPrivateProfileString(NasaIni.GetId(), "order", "date", sb, 1024, iniFile);
+            ini.Nasa.Order = sb.ToString();
             _ = GetPrivateProfileString(NasaIni.GetId(), "mirror", "", sb, 1024, iniFile);
             ini.Nasa.Mirror = sb.ToString();
             _ = GetPrivateProfileString(OneplusIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
@@ -276,12 +278,12 @@ namespace TimelineService.Utils {
             return WriteDosage_Impl(provider).AsAsyncOperation();
         }
 
-        public static IAsyncOperation<string> ReadProviderCache(string provider, string cate, string order) {
-            return ReadProviderCache_Impl(provider, cate, order).AsAsyncOperation();
+        public static IAsyncOperation<string> ReadProviderCache(string provider, string p1, string p2) {
+            return ReadProviderCache_Impl(provider, p1, p2).AsAsyncOperation();
         }
 
-        public static IAsyncOperation<bool> WriteProviderCache(string provider, string cate, string order, string data) {
-            return WriteProviderCache_Impl(provider, cate, order, data).AsAsyncOperation();
+        public static IAsyncOperation<bool> WriteProviderCache(string provider, string p1, string p2, string data) {
+            return WriteProviderCache_Impl(provider, p1, p2, data).AsAsyncOperation();
         }
 
         private static async Task<IReadOnlyDictionary<string, int>> ReadDosage_Impl() {
@@ -343,11 +345,11 @@ namespace TimelineService.Utils {
             return false;
         }
 
-        private static async Task<string> ReadProviderCache_Impl(string provider, string cate, string order) {
+        private static async Task<string> ReadProviderCache_Impl(string provider, string p1, string p2) {
             try {
                 StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
                     CreationCollisionOption.OpenIfExists);
-                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", cate ?? "", order ?? "", DateTime.Now.ToString("yyyyMMdd"));
+                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", p1 ?? "", p2 ?? "", DateTime.Now.ToString("yyyyMMdd"));
                 StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
                 return await FileIO.ReadTextAsync(file);
             } catch (Exception e) {
@@ -357,11 +359,11 @@ namespace TimelineService.Utils {
             return null;
         }
 
-        private static async Task<bool> WriteProviderCache_Impl(string provider, string cate, string order, string data) {
+        private static async Task<bool> WriteProviderCache_Impl(string provider, string p1, string p2, string data) {
             try {
                 StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
                     CreationCollisionOption.OpenIfExists);
-                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", cate ?? "", order ?? "", DateTime.Now.ToString("yyyyMMdd"));
+                string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", p1 ?? "", p2 ?? "", DateTime.Now.ToString("yyyyMMdd"));
                 StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
                 await FileIO.WriteTextAsync(file, data);
                 return true;

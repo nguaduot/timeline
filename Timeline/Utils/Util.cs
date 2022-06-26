@@ -3,7 +3,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,11 +18,12 @@ using Windows.Storage.Streams;
 using Windows.System;
 using Windows.System.Profile;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-5.9.ini";
+        private const string FILE_INI = "timeline-6.0.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -90,6 +90,11 @@ namespace Timeline.Utils {
         public static async Task SaveBingLangAsync(string langCode) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(BingIni.ID, "lang", langCode, iniFile.Path);
+        }
+
+        public static async Task SaveNasaOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(NasaIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task SaveNasaMirrorAsync(string mirror) {
@@ -248,12 +253,18 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(NasaIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString(NasaIni.ID, "mirror", "", sb, 1024, iniFile);
-            ini.SetIni(NasaIni.ID, new NasaIni {
+            NasaIni nasaIni = new NasaIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 Mirror = sb.ToString()
-            });
+            };
+            _ = GetPrivateProfileString(NasaIni.ID, "order", "date", sb, 1024, iniFile);
+            nasaIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(NasaIni.ID, "mirror", "", sb, 1024, iniFile);
+            nasaIni.Mirror = sb.ToString();
+            _ = GetPrivateProfileString(NasaIni.ID, "unaudited", "0", sb, 1024, iniFile);
+            nasaIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
+            ini.SetIni(NasaIni.ID, nasaIni);
             _ = GetPrivateProfileString(OneplusIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(OneplusIni.ID, "lockperiod", "24", sb, 1024, iniFile);
@@ -717,14 +728,18 @@ namespace Timeline.Utils {
             return "";
         }
 
-        public static Size GetMonitorPhysicalPixels() {
+        public static Windows.Foundation.Size GetMonitorPixels(bool logic) {
             try {
                 DisplayInformation info = DisplayInformation.GetForCurrentView();
-                return new Size((int)info.ScreenWidthInRawPixels, (int)info.ScreenHeightInRawPixels);
+                if (logic) {
+                    return new Windows.Foundation.Size(info.ScreenWidthInRawPixels / info.RawPixelsPerViewPixel,
+                        info.ScreenHeightInRawPixels / info.RawPixelsPerViewPixel);
+                }
+                return new Windows.Foundation.Size(info.ScreenWidthInRawPixels, info.ScreenHeightInRawPixels);
             } catch (Exception e) {
-                LogUtil.E("GetMonitorSize() " + e.Message);
+                LogUtil.E("GetMonitorPhysicalPixels() " + e.Message);
             }
-            return new Size();
+            return new Windows.Foundation.Size(); // do not use IsEmpty to check empty
         }
     }
 
@@ -770,6 +785,36 @@ namespace Timeline.Utils {
             pkg.SetBitmap(RandomAccessStreamReference.CreateFromFile(imgFile));
             Clipboard.SetContent(pkg);
             return true;
+        }
+    }
+
+    public static class ImgUtil {
+        public static int[] Resize(double boxW, double boxH, double imgW, double imgH, Stretch stretch) {
+            int[] res = new int[2];
+            if (stretch == Stretch.UniformToFill) { // 填充模式
+                if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等高（不使用 Round() 或 Floor()，会导致闪烁）
+                    res[1] = (int)Math.Ceiling(boxH);
+                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH);
+                } else { // 图片比窗口窄，缩放至与窗口等宽
+                    res[0] = (int)Math.Ceiling(boxW);
+                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW);
+                }
+            } else if (stretch == Stretch.Uniform) { // 全图模式
+                if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等宽
+                    res[0] = (int)Math.Ceiling(boxW);
+                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW);
+                } else { // 图片比窗口窄，缩放至与窗口等高
+                    res[1] = (int)Math.Ceiling(boxH);
+                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH);
+                }
+            } else if (stretch == Stretch.Fill) { // 拉伸模式
+                res[0] = (int)Math.Ceiling(boxW);
+                res[1] = (int)Math.Ceiling(boxH);
+            } else { // 原图模式
+                res[0] = (int)Math.Ceiling(imgW);
+                res[1] = (int)Math.Ceiling(imgH);
+            }
+            return res;
         }
     }
 

@@ -8,7 +8,6 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Timeline.Utils;
 using Windows.Graphics.Imaging;
-using System.Drawing;
 using System.Linq;
 using Windows.Media.FaceAnalysis;
 using System.Threading;
@@ -315,11 +314,11 @@ namespace Timeline.Providers {
                 }
             }
             // 获取图片尺寸（耗时短）
-            if (meta.Dimen.IsEmpty && meta.CacheUhd != null) {
+            if (meta.Dimen.Width == 0 && meta.CacheUhd != null) {
                 try {
                     using (IRandomAccessStream stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
                         BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                        meta.Dimen = new Size((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                        meta.Dimen = new Windows.Foundation.Size(decoder.PixelWidth, decoder.PixelHeight);
                     }
                 } catch (Exception e) {
                     LogUtil.E("Cache() " + e.Message);
@@ -331,7 +330,7 @@ namespace Timeline.Providers {
             // 检测人脸位置（耗时较长）
             if (calFacePos && meta.FacePos == null && meta.CacheUhd != null && FaceDetector.IsSupported) {
                 long start = DateTime.Now.Ticks;
-                meta.FacePos = new List<Point>();
+                meta.FacePos = new List<Windows.Foundation.Point>();
                 SoftwareBitmap bitmap = null;
                 try {
                     using (IRandomAccessStream stream = await meta.CacheUhd.OpenAsync(FileAccessMode.Read)) {
@@ -349,9 +348,9 @@ namespace Timeline.Providers {
                         FaceDetector detector = await FaceDetector.CreateAsync();
                         IList<DetectedFace> faces = await detector.DetectFacesAsync(bitmap);
                         foreach (DetectedFace face in faces) {
-                            meta.FacePos.Add(new Point {
-                                X = (int)(face.FaceBox.X + face.FaceBox.Width / 2.0f),
-                                Y = (int)(face.FaceBox.Y + face.FaceBox.Height / 2.0f)
+                            meta.FacePos.Add(new Windows.Foundation.Point {
+                                X = face.FaceBox.X + face.FaceBox.Width / 2.0f,
+                                Y = face.FaceBox.Y + face.FaceBox.Height / 2.0f
                             });
                         }
                         LogUtil.D("detect face cost: " + (int)((DateTime.Now.Ticks - start) / 10000));

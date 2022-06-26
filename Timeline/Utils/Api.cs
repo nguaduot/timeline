@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -19,7 +18,7 @@ namespace Timeline.Utils {
                 return;
             }
             const string URL_API = "https://api.nguaduot.cn/appstats";
-            Size screen = SysUtil.GetMonitorPhysicalPixels();
+            Windows.Foundation.Size screen = SysUtil.GetMonitorPixels(false);
             StatsApiReq req = new StatsApiReq {
                 App = Package.Current.DisplayName, // 不会随语言改变
                 Package = Package.Current.Id.FamilyName,
@@ -29,7 +28,7 @@ namespace Timeline.Utils {
                 DosageApi = dosageApi,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = SysUtil.GetOsVer(),
-                Screen = String.Format("{0}x{1}", screen.Width, screen.Height),
+                Screen = String.Format("{0}x{1}", (int)screen.Width, (int)screen.Height),
                 Device = SysUtil.GetDevice(),
                 DeviceName = SysUtil.GetDeviceName(),
                 DeviceId = SysUtil.GetDeviceId(),

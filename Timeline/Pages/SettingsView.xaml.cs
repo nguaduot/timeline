@@ -26,10 +26,11 @@ namespace Timeline.Pages {
 
         private readonly ResourceLoader resLoader;
 
-        Dictionary<string, FontIcon> dicPushDesktop;
-        Dictionary<string, FontIcon> dicPushLock;
+        //Dictionary<string, FontIcon> dicPushDesktop;
+        //Dictionary<string, FontIcon> dicPushLock;
 
         ObservableCollection<CateMeta> listBingLang = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listNasaOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listOneplusOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineOrder = new ObservableCollection<CateMeta>();
@@ -65,6 +66,12 @@ namespace Timeline.Pages {
                 listBingLang.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("BingLang_" + item)
+                });
+            }
+            foreach (string item in NasaIni.ORDERS) {
+                listNasaOrder.Add(new CateMeta {
+                    Id = item,
+                    Name = resLoader.GetString("Order_" + item)
                 });
             }
             foreach (string item in OneplusIni.ORDERS) {
@@ -139,36 +146,36 @@ namespace Timeline.Pages {
                 }
             };
 
-            dicPushDesktop = new Dictionary<string, FontIcon> {
-                { LocalIni.ID, IconPushDesktopLocal },
-                { BingIni.ID, IconPushDesktopBing },
-                { NasaIni.ID, IconPushDesktopNasa },
-                { OneplusIni.ID, IconPushDesktopOneplus },
-                { TimelineIni.ID, IconPushDesktopTimeline },
-                { OneIni.ID, IconPushDesktopOne },
-                { Himawari8Ini.ID, IconPushDesktopHimawari8 },
-                { YmyouliIni.ID, IconPushDesktopYmyouli },
-                { WallhavenIni.ID, IconPushDesktopWallhaven },
-                { QingbzIni.ID, IconPushDesktopQingbz },
-                { WallhereIni.ID, IconPushDesktopWallhere },
-                { InfinityIni.ID, IconPushDesktopInfinity },
-                { LspIni.ID, IconPushDesktopLsp }
-            };
-            dicPushLock = new Dictionary<string, FontIcon> {
-                { LocalIni.ID, IconPushLockLocal },
-                { BingIni.ID, IconPushLockBing },
-                { NasaIni.ID, IconPushLockNasa },
-                { OneplusIni.ID, IconPushLockOneplus },
-                { TimelineIni.ID, IconPushLockTimeline },
-                { OneIni.ID, IconPushLockOne },
-                { Himawari8Ini.ID, IconPushLockHimawari8 },
-                { YmyouliIni.ID, IconPushLockYmyouli },
-                { WallhavenIni.ID, IconPushLockWallhaven },
-                { QingbzIni.ID, IconPushLockQingbz },
-                { WallhereIni.ID, IconPushLockWallhere },
-                { InfinityIni.ID, IconPushLockInfinity },
-                { LspIni.ID, IconPushLockLsp }
-            };
+            //dicPushDesktop = new Dictionary<string, FontIcon> {
+            //    { LocalIni.ID, IconPushDesktopLocal },
+            //    { BingIni.ID, IconPushDesktopBing },
+            //    { NasaIni.ID, IconPushDesktopNasa },
+            //    { OneplusIni.ID, IconPushDesktopOneplus },
+            //    { TimelineIni.ID, IconPushDesktopTimeline },
+            //    { OneIni.ID, IconPushDesktopOne },
+            //    { Himawari8Ini.ID, IconPushDesktopHimawari8 },
+            //    { YmyouliIni.ID, IconPushDesktopYmyouli },
+            //    { WallhavenIni.ID, IconPushDesktopWallhaven },
+            //    { QingbzIni.ID, IconPushDesktopQingbz },
+            //    { WallhereIni.ID, IconPushDesktopWallhere },
+            //    { InfinityIni.ID, IconPushDesktopInfinity },
+            //    { LspIni.ID, IconPushDesktopLsp }
+            //};
+            //dicPushLock = new Dictionary<string, FontIcon> {
+            //    { LocalIni.ID, IconPushLockLocal },
+            //    { BingIni.ID, IconPushLockBing },
+            //    { NasaIni.ID, IconPushLockNasa },
+            //    { OneplusIni.ID, IconPushLockOneplus },
+            //    { TimelineIni.ID, IconPushLockTimeline },
+            //    { OneIni.ID, IconPushLockOne },
+            //    { Himawari8Ini.ID, IconPushLockHimawari8 },
+            //    { YmyouliIni.ID, IconPushLockYmyouli },
+            //    { WallhavenIni.ID, IconPushLockWallhaven },
+            //    { QingbzIni.ID, IconPushLockQingbz },
+            //    { WallhereIni.ID, IconPushLockWallhere },
+            //    { InfinityIni.ID, IconPushLockInfinity },
+            //    { LspIni.ID, IconPushLockLsp }
+            //};
         }
 
         public async Task NotifyPaneOpened(Ini ini) {
@@ -177,6 +184,7 @@ namespace Timeline.Pages {
             ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
             // 刷新“图源”组设置项
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
+            BoxNasaOrder.SelectedIndex = listNasaOrder.Select(t => t.Id).ToList().IndexOf(((NasaIni)ini.GetIni(NasaIni.ID)).Order);
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
             BoxOneplusOrder.SelectedIndex = listOneplusOrder.Select(t => t.Id).ToList().IndexOf(((OneplusIni)ini.GetIni(OneplusIni.ID)).Order);
             BoxTimelineOrder.SelectedIndex = listTimelineOrder.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Order);
@@ -190,12 +198,12 @@ namespace Timeline.Pages {
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
             // 刷新推送指示图标
-            foreach (string id in dicPushDesktop.Keys) {
-                dicPushDesktop[id].Visibility = id.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
-            }
-            foreach (string id in dicPushLock.Keys) {
-                dicPushLock[id].Visibility = id.Equals(ini.LockProvider) ? Visibility.Visible : Visibility.Collapsed;
-            }
+            //foreach (string id in dicPushDesktop.Keys) {
+            //    dicPushDesktop[id].Visibility = id.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
+            //}
+            //foreach (string id in dicPushLock.Keys) {
+            //    dicPushLock[id].Visibility = id.Equals(ini.LockProvider) ? Visibility.Visible : Visibility.Collapsed;
+            //}
             // 刷新主题设置
             RadioButton rbTheme = RbTheme.Items.Cast<RadioButton>().FirstOrDefault(rb => ini.Theme.Equals(rb.Tag));
             rbTheme.IsChecked = true;
@@ -203,10 +211,24 @@ namespace Timeline.Pages {
             // 刷新“其他”组 Expander 随机一文
             await RandomGlitter();
             // 展开当前图源 Expander
+            Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
-                if (item is Expander expander && expander.Tag != null && expander.Tag.Equals(ini.Provider)) {
-                    expander.IsExpanded = true;
+                if (item is Expander expander && expander.Tag != null) { // 图源 Expander
+                    // 刷新指示图标
+                    UIElementCollection icons = (expander.Header as Grid).Children;
+                    (icons[1] as FontIcon).Visibility = expander.Tag.Equals(ini.Provider) ? Visibility.Visible : Visibility.Collapsed;
+                    (icons[2] as FontIcon).Visibility = expander.Tag.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
+                    (icons[3] as FontIcon).Visibility = expander.Tag.Equals(ini.LockProvider) ? Visibility.Visible : Visibility.Collapsed;
+                    // 折叠非目标图源
+                    if (expander.Tag.Equals(ini.Provider)) {
+                        expanderFocus = expander;
+                    } else {
+                        expander.IsExpanded = false;
+                    }
                 }
+            }
+            if (expanderFocus != null) {
+                expanderFocus.IsExpanded = true;
             }
         }
 
@@ -281,10 +303,12 @@ namespace Timeline.Pages {
         }
 
         private async void ExpanderStaticProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
+            // 无需请求分类接口
             await RefreshExpander(sender, false);
         }
 
         private async void ExpanderDynamicProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
+            // 需请求分类接口
             await RefreshExpander(sender, true);
         }
 
@@ -337,6 +361,20 @@ namespace Timeline.Pages {
             }
             bi.Lang = lang;
             await IniUtil.SaveBingLangAsync(bi.Lang);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxNasaOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string order = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(NasaIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveNasaOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

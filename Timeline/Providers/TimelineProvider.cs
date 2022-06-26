@@ -83,8 +83,7 @@ namespace Timeline.Providers {
                 } else {
                     AppendMetas(metasAdd);
                 }
-                nextPage = "date".Equals(ini.Order)
-                    ? nextPage.AddDays(-api.Data.Count) : nextPage;
+                nextPage = "date".Equals(ini.Order) ? nextPage.AddDays(-api.Data.Count) : nextPage;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

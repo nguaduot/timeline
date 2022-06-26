@@ -145,6 +145,7 @@
     <Compile Include="Beans\RankApiReq.cs" />
     <Compile Include="Beans\ReleaseApi.cs" />
     <Compile Include="Beans\StatsApiReq.cs" />
+    <Compile Include="Beans\NasaApi.cs" />
     <Compile Include="Beans\TimelineApi.cs" />
     <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />

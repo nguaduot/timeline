@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
@@ -60,7 +59,7 @@ namespace Timeline.Beans {
         // 原图尺寸（默认：0,0）
         [JsonConverter(typeof(SizeConverter))]
         [JsonProperty(PropertyName = "dimen", NullValueHandling = NullValueHandling.Ignore)]
-        public Size Dimen { set; get; }
+        public Windows.Foundation.Size Dimen { set; get; }
 
         // 原图本地缓存文件
         [JsonConverter(typeof(FileConverter))]
@@ -72,7 +71,7 @@ namespace Timeline.Beans {
 
         // 人脸位置（默认为null未检测，空则为已检测无人脸，多个则为多个人脸）
         [JsonProperty(PropertyName = "facePos", NullValueHandling = NullValueHandling.Ignore)]
-        public List<Point> FacePos { set; get; }
+        public List<Windows.Foundation.Point> FacePos { set; get; }
 
         [JsonProperty(PropertyName = "sortFactor", NullValueHandling = NullValueHandling.Ignore)]
         public double SortFactor { set; get; }
@@ -89,11 +88,11 @@ namespace Timeline.Beans {
         }
 
         public bool ExistsFaceAndAllLeft() {
-            if (FacePos == null || FacePos.Count == 0 || Dimen.IsEmpty) {
+            if (FacePos == null || FacePos.Count == 0 || Dimen.Width == 0) {
                 return false;
             }
-            foreach (Point point in FacePos) {
-                if (point.X * 1.0 / Dimen.Width >= 0.5) {
+            foreach (Windows.Foundation.Point point in FacePos) {
+                if (point.X / Dimen.Width >= 0.5) {
                     return false;
                 }
             }
@@ -127,7 +126,7 @@ namespace Timeline.Beans {
 
     public class SizeConverter : JsonConverter {
         public override bool CanConvert(Type objectType) {
-            return objectType == typeof(Size);
+            return objectType == typeof(Windows.Foundation.Size);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
@@ -135,7 +134,8 @@ namespace Timeline.Beans {
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            writer.WriteValue(String.Format("{0}x{1}", ((Size)value).Width, ((Size)value).Height));
+            writer.WriteValue(String.Format("{0}x{1}", (int)((Windows.Foundation.Size)value).Width,
+                (int)((Windows.Foundation.Size)value).Height));
         }
     }
 }

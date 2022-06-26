@@ -217,7 +217,14 @@ namespace TimelineService.Utils {
     }
 
     public sealed class NasaIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
         private readonly HashSet<string> MIRROR = new HashSet<string>() { "", "bjp" };
+
+        private string order = "date";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "date";
+            get => order;
+        }
 
         private string mirror = "";
         public string Mirror {
@@ -237,7 +244,7 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&mirror={Mirror}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&mirror={Mirror}";
 
         public static string GetId() => "nasa";
     }

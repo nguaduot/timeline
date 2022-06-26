@@ -182,11 +182,14 @@ namespace Timeline.Utils {
 
     public class NasaIni : BaseIni {
         public const string ID = "nasa";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
         public static readonly List<string> MIRRORS = new List<string>() { "", "bjp" };
         private string mirror = ""; // 非null
 
         public NasaIni() {
             Id = ID;
+            Orders = ORDERS;
+            Order = "date";
         }
 
         public List<string> Mirrors {
@@ -198,18 +201,11 @@ namespace Timeline.Utils {
             get => mirror;
         }
 
-        public override bool IsSequential() => string.IsNullOrEmpty(mirror);
+        public override bool IsSequential() => "date".Equals(Order);
 
-        public override BaseProvider GenerateProvider() {
-            switch (mirror) {
-                case "bjp":
-                    return new NasabjpProvider { Id = this.Id };
-                default:
-                    return new NasaProvider { Id = this.Id };
-            }
-        }
+        public override BaseProvider GenerateProvider() => new NasaProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&mirror={Mirror}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&mirror={Mirror}";
     }
 
     public class OneplusIni : BaseIni {

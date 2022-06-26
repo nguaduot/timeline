@@ -9,7 +9,6 @@ using Timeline.Utils;
 using Microsoft.Graphics.Canvas;
 using Windows.UI;
 using Windows.Storage;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.ApplicationModel;
@@ -108,8 +107,8 @@ namespace Timeline.Providers {
             }
             StorageFile cacheUhd = meta.CacheUhd;
             meta.CacheUhd = null;
-            meta.Dimen = new Size();
-            meta.FacePos = new List<Point>();
+            meta.Dimen = new Windows.Foundation.Size();
+            meta.FacePos = new List<Windows.Foundation.Point>();
             if (token.IsCancellationRequested) {
                 return meta;
             }
@@ -124,12 +123,12 @@ namespace Timeline.Providers {
             }
 
             // 获取显示器分辨率
-            Size monitorSize = SysUtil.GetMonitorPhysicalPixels();
+            Windows.Foundation.Size monitorSize = SysUtil.GetMonitorPixels(false);
             if (monitorSize.IsEmpty) {
-                monitorSize = new Size(1920, 1080);
+                monitorSize = new Windows.Foundation.Size(1920, 1080);
             }
             // 根据地球大小参数计算画布大小
-            float canvasW, canvasH;
+            double canvasW, canvasH;
             if (monitorSize.Width > monitorSize.Height) {
                 canvasH = bitmap.SizeInPixels.Height / ratioEarth;
                 canvasW = canvasH / monitorSize.Height * monitorSize.Width;
@@ -137,13 +136,13 @@ namespace Timeline.Providers {
                 canvasW = bitmap.SizeInPixels.Width / ratioEarth;
                 canvasH = canvasW / monitorSize.Width * monitorSize.Height;
             }
-            meta.Dimen = new Size((int)canvasW, (int)canvasH);
+            meta.Dimen = new Windows.Foundation.Size(canvasW, canvasH);
             // 根据地球位置参数在画布上绘制地球
-            CanvasRenderTarget target = new CanvasRenderTarget(device, meta.Dimen.Width, meta.Dimen.Height, 96);
+            CanvasRenderTarget target = new CanvasRenderTarget(device, (float)meta.Dimen.Width, (float)meta.Dimen.Height, 96);
             using (var session = target.CreateDrawingSession()) {
                 session.Clear(Colors.Black);
-                session.DrawImage(bitmap, (meta.Dimen.Width + bitmap.SizeInPixels.Width) * offsetEarth - bitmap.SizeInPixels.Width,
-                    meta.Dimen.Height / 2.0f - bitmap.SizeInPixels.Height / 2.0f);
+                session.DrawImage(bitmap, (float)((meta.Dimen.Width + bitmap.SizeInPixels.Width) * offsetEarth - bitmap.SizeInPixels.Width),
+                    (float)(meta.Dimen.Height / 2.0f - bitmap.SizeInPixels.Height / 2.0f));
             }
             if (token.IsCancellationRequested) {
                 return meta;

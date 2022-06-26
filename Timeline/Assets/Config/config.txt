@@ -22,7 +22,7 @@ provider=bing
 ; provider=wallhere   图源：WallHere - One of the best hd wallpapers site! https://wallhere.com
 ; provider=infinity   图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
 ; provider=obzhi      图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
-; provider=glutton    图源；贪食鬼 - 聚合
+; provider=glutton    图源；贪食鬼 - 拾光聚合
 ; provider=lsp        图源：LSP - 不可描述
 
 desktopprovider=
@@ -77,6 +77,11 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+order=date
+; order=date    排序：收录（默认）
+; order=score   排序：热度
+; order=random  排序：随机
 
 mirror=bjp
 ; mirror=     镜像：官方

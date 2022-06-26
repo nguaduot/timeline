@@ -22,6 +22,7 @@ using Windows.System.UserProfile;
 using Windows.UI.Core;
 using Windows.UI.Shell;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -49,7 +50,8 @@ namespace Timeline {
         private bool providerLspR22On = false; // LSP图源贤者模式开启
         private bool autoStoryPos = true; // 自动调整图文区贴靠位置（需检测图像人脸位置）
 
-        private DispatcherTimer resizeTimer;
+        private DispatcherTimer resizeTimer1;
+        private DispatcherTimer resizeTimer2;
         private DispatcherTimer pageTimer;
         private PageAction pageTimerAction = PageAction.Yesterday;
         private Meta markTimerMeta = null;
@@ -83,9 +85,14 @@ namespace Timeline {
 
             TextTitle.Text = resLoader.GetString("AppDesc");
 
-            resizeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1400) };
-            resizeTimer.Tick += (sender2, e2) => {
-                resizeTimer.Stop();
+            resizeTimer1 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1400) };
+            resizeTimer1.Tick += (sender2, e2) => {
+                resizeTimer1.Stop();
+                ReDecodeImg();
+            };
+            resizeTimer2 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(800) };
+            resizeTimer2.Tick += (sender2, e2) => {
+                resizeTimer2.Stop();
                 ReDecodeImg();
             };
             pageTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(240) };
@@ -102,8 +109,9 @@ namespace Timeline {
             };
 
             // 前者会在应用启动时触发多次，后者仅一次
-            //this.SizeChanged += Current_SizeChanged;
-            Window.Current.SizeChanged += Current_SizeChanged;
+            // this.SizeChanged += Current_SizeChanged;
+            // Window.Current.SizeChanged += Current_SizeChanged;
+            // ViewMain.SizeChanged += ViewMain_SizeChanged;
 
             Task.Run(async () => {
                 ini = await IniUtil.GetIniAsync();
@@ -413,11 +421,11 @@ namespace Timeline {
                 string source = resLoader.GetString("Provider_" + provider.Id) + (meta.Cate != null ? (" · " + meta.Cate) : "");
                 string fileSize = FileUtil.ConvertFileSize((long)((await meta.CacheUhd.GetBasicPropertiesAsync()).Size));
                 TextDetailProperties.Text = string.Format("{0} / {1}x{2}, {3}",
-                    source, meta.Dimen.Width, meta.Dimen.Height, fileSize);
+                    source, (int)meta.Dimen.Width, (int)meta.Dimen.Height, fileSize);
                 TextDetailProperties.Visibility = Visibility.Visible;
                 // 根据人脸识别优化组件放置位置
                 if (autoStoryPos) {
-                    adjustStoryPos(meta.ExistsFaceAndAllLeft());
+                    AdjustStoryPos(meta.ExistsFaceAndAllLeft());
                 }
             }
 
@@ -429,21 +437,16 @@ namespace Timeline {
             imgLoadStart = DateTime.Now.Ticks;
 
             // 显示图片
-            float winW = Window.Current.Content.ActualSize.X;
-            float winH = Window.Current.Content.ActualSize.Y;
             BitmapImage biUhd = new BitmapImage();
             ImgUhd.Source = biUhd;
-            biUhd.DecodePixelType = DecodePixelType.Logical;
-            if (meta.Dimen.Width * 1.0f / meta.Dimen.Height > winW / winH) { // 图片比窗口宽，缩放至与窗口等高
-                biUhd.DecodePixelWidth = (int)Math.Round(winH * meta.Dimen.Width / meta.Dimen.Height);
-                biUhd.DecodePixelHeight = (int)Math.Round(winH);
-            } else { // 图片比窗口窄，缩放至与窗口等宽
-                biUhd.DecodePixelWidth = (int)Math.Round(winW);
-                biUhd.DecodePixelHeight = (int)Math.Round(winW * meta.Dimen.Height / meta.Dimen.Width);
-            }
-            LogUtil.D("ShowImg() {0}x{1}, win logical: {2}x{3}, scale logical: {4}x{5}",
-                meta.Dimen.Width, meta.Dimen.Height, (int)winW, (int)winH,
-                biUhd.DecodePixelWidth, biUhd.DecodePixelHeight);
+            ImgUhd.Tag = meta.Id;
+            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
+            biUhd.DecodePixelType = DecodePixelType.Logical; // 按逻辑像素
+            biUhd.DecodePixelWidth = resize[0];
+            biUhd.DecodePixelHeight = resize[1];
+            LogUtil.D("ShowImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
+                Math.Ceiling(meta.Dimen.Width), Math.Ceiling(meta.Dimen.Height),
+                Math.Ceiling(ViewMain.ActualWidth), Math.Ceiling(ViewMain.ActualHeight), resize[0], resize[1]);
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             } else if (meta.CacheUhd != null) {
@@ -454,7 +457,7 @@ namespace Timeline {
         }
 
         private void ReDecodeImg() {
-            if (ImgUhd.Source == null) {
+            if (meta == null || meta.Dimen.Width == 0 || ImgUhd.Source == null || !ImgUhd.Tag.Equals(meta.Id)) {
                 return;
             }
             BitmapImage bi = ImgUhd.Source as BitmapImage;
@@ -462,21 +465,16 @@ namespace Timeline {
                 LogUtil.D("ReDecodeImg() bi.PixelWidth 0");
                 return;
             }
-            bi.DecodePixelType = DecodePixelType.Logical;
-            float winW = Window.Current.Content.ActualSize.X;
-            float winH = Window.Current.Content.ActualSize.Y;
-            if (bi.PixelWidth * 1.0f / bi.PixelHeight > winW / winH) { // 图片比窗口宽，缩放至与窗口等高
-                bi.DecodePixelWidth = (int)Math.Round(winH * bi.PixelWidth / bi.PixelHeight);
-                bi.DecodePixelHeight = (int)Math.Round(winH);
-            } else { // 图片比窗口窄，缩放至与窗口等宽
-                bi.DecodePixelWidth = (int)Math.Round(winW);
-                bi.DecodePixelHeight = (int)Math.Round(winW * bi.PixelHeight / bi.PixelWidth);
-            }
-            LogUtil.D("ReDecodeImg() {0}x{1}, win logical: {2}x{3}, scale logical: {4}x{5}",
-                bi.PixelWidth, bi.PixelHeight, winW, winH, bi.DecodePixelWidth, bi.DecodePixelHeight);
+            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
+            bi.DecodePixelType = DecodePixelType.Logical; // 按逻辑像素
+            bi.DecodePixelWidth = resize[0];
+            bi.DecodePixelHeight = resize[1];
+            LogUtil.D("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
+                Math.Ceiling(meta.Dimen.Width), Math.Ceiling(meta.Dimen.Height),
+                Math.Ceiling(ViewMain.ActualWidth), Math.Ceiling(ViewMain.ActualHeight), resize[0], resize[1]);
         }
 
-        private void adjustStoryPos(bool right) {
+        private void AdjustStoryPos(bool right) {
             RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !right);
             RelativePanel.SetAlignRightWithPanel(ViewBarPointer, right);
             RelativePanel.SetAlignLeftWithPanel(Info, !right);
@@ -626,10 +624,10 @@ namespace Timeline {
         }
 
         private void ToggleFullscreenMode() {
-            ToggleFullscreenMode(!ApplicationView.GetForCurrentView().IsFullScreenMode);
+            ToggleFullscreenMode(!ApplicationView.GetForCurrentView().IsFullScreenMode, false);
         }
 
-        private void ToggleFullscreenMode(bool fullScreen) {
+        private void ToggleFullscreenMode(bool fullScreen, bool optimizeSize) {
             ApplicationView view = ApplicationView.GetForCurrentView();
             if (fullScreen) {
                 if (view.TryEnterFullScreenMode()) {
@@ -638,6 +636,21 @@ namespace Timeline {
             } else {
                 view.ExitFullScreenMode();
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+                if (optimizeSize) {
+                    Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(true);
+                    if (logic.Width == 0) {
+                        logic = new Windows.Foundation.Size(1920, 1080);
+                    }
+                    float winW = Window.Current.Content.ActualSize.X; // 窗口逻辑宽度
+                    float winH = Window.Current.Content.ActualSize.Y; // 窗口逻辑高度
+                    Windows.Foundation.Size size;
+                    if (Math.Abs(logic.Width / 2 - winW) <= 1 && Math.Abs(logic.Height / 2 - winH) <= 1) { // 4/9屏
+                        size = new Windows.Foundation.Size(logic.Width * 2 / 3, logic.Height * 2 / 3);
+                    } else { // 1/4屏
+                        size = new Windows.Foundation.Size(logic.Width / 2, logic.Height / 2);
+                    }
+                    _ = ApplicationView.GetForCurrentView().TryResizeView(size);
+                }
             }
         }
 
@@ -825,9 +838,13 @@ namespace Timeline {
             }
         }
 
-        private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e) {
-            resizeTimer.Stop();
-            resizeTimer.Start();
+        private async Task Mark(string action, string desc) {
+            markTimerMeta = meta;
+            markTimerAction = action;
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), desc), null, resLoader.GetString("ActionUndo"), async () => {
+                await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+            });
+            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
         }
 
         private void MenuYesterday_Click(object sender, RoutedEventArgs e) {
@@ -881,6 +898,8 @@ namespace Timeline {
         private void MenuFill_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
             ToggleImgMode(ImgUhd.Stretch != Stretch.UniformToFill);
+            resizeTimer2.Stop();
+            resizeTimer2.Start();
         }
 
         private async void MenuSave_Click(object sender, RoutedEventArgs e) {
@@ -891,13 +910,7 @@ namespace Timeline {
         }
 
         private async void MenuMark_Click(object sender, RoutedEventArgs e) {
-            markTimerMeta = meta;
-            markTimerAction = (sender as MenuFlyoutItem).Tag as string;
-            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
-                resLoader.GetString("ActionUndo"), async () => {
-                    await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
-                });
-            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
+            await Mark((sender as MenuFlyoutItem).Tag as string, (sender as MenuFlyoutItem).Text);
         }
 
         private async void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
@@ -998,7 +1011,7 @@ namespace Timeline {
         }
 
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
-            LogUtil.D("ImgUhd_ImageOpened() {0}", meta?.Id);
+            LogUtil.D("ImgUhd_ImageOpened() " + meta?.Id);
             StatusEnjoy();
         }
 
@@ -1064,7 +1077,7 @@ namespace Timeline {
             // 调整组件放置位置
             if (Math.Abs(e.Cumulative.Translation.X) > 100) {
                 autoStoryPos = false; // 关闭自动调位（同时不再检测图像人脸位置）
-                adjustStoryPos(e.Cumulative.Translation.X > 100);
+                AdjustStoryPos(e.Cumulative.Translation.X > 100);
             }
         }
 
@@ -1100,6 +1113,13 @@ namespace Timeline {
             IconSave.Glyph = meta != null && meta.Favorite ? "\uE735" : "\uE734";
             localSettings.Values["MenuLearned"] = true;
             CloseToast();
+        }
+
+        private void ViewMain_SizeChanged(object sender, SizeChangedEventArgs e) {
+            if (ImgUhd.Source != null) { // 避免图片首次加载之前启动
+                resizeTimer1.Stop();
+                resizeTimer2.Start();
+            }
         }
 
         private void ViewMain_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -1165,6 +1185,87 @@ namespace Timeline {
             args.Handled = true;
             CloseToast();
             switch (sender.Key) {
+                case VirtualKey.F1: // F1
+                    await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("LinkOpenSource/NavigateUri")));
+                    break;
+                case VirtualKey.F3: // F3
+                case VirtualKey.F: // Ctrl + F
+                case VirtualKey.G: // Ctrl + G
+                    ShowFlyoutGo();
+                    break;
+                case VirtualKey.F4: // Ctrl + F4
+                case VirtualKey.W: // Ctrl + W
+                    Application.Current.Exit();
+                    break;
+                case VirtualKey.F5: // F5
+                case VirtualKey.R: // Ctrl + R
+                    FlyoutMenu.Hide();
+                    await Refresh(true);
+                    break;
+                case VirtualKey.F8: // F8
+                    ToggleFullscreenMode(false, true);
+                    break;
+                case VirtualKey.F10: // F10
+                    if (ViewSplit.IsPaneOpen) {
+                        ViewSplit.IsPaneOpen = false;
+                    } else {
+                        MenuSettings_Click(null, null);
+                    }
+                    break;
+                case VirtualKey.F11: // F11
+                case VirtualKey.Escape: // Escape
+                case VirtualKey.Enter: // Enter
+                    ToggleFullscreenMode();
+                    break;
+                case VirtualKey.F12: // F12
+                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
+                    break;
+                case VirtualKey.Number6: // Ctrl + 6
+                    await Mark("audited", resLoader.GetString("MarkAudited"));
+                    break;
+                case VirtualKey.Number0: // 0 / Ctrl + 0
+                    await ShowFlyoutMarkCate();
+                    break;
+                case VirtualKey.Tab:
+                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + Tab
+                        SwitchProvider(true); // 切换下个图源
+                    } else { // Shift + Ctrl + Tab
+                        SwitchProvider(false); // 切换上个图源
+                    }
+                    break;
+                case VirtualKey.I: // Ctrl + I
+                    await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
+                    break;
+                case VirtualKey.O: // Ctrl + O
+                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
+                        CreationCollisionOption.OpenIfExists));
+                    break;
+                case VirtualKey.S: // Ctrl + S
+                case VirtualKey.D: // Ctrl + D
+                    MenuSave_Click(null, null);
+                    break;
+                case VirtualKey.L: // Ctrl + L
+                    MenuSetLock_Click(null, null);
+                    break;
+                case VirtualKey.C:
+                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + C
+                        if (TextUtil.Copy(meta?.CacheUhd)) {
+                            ShowToastS(resLoader.GetString("MsgCopiedImg"));
+                            _ = Api.RankAsync(ini?.Provider, meta, "copy");
+                        }
+                    } else { // Shift + Control + C
+                        if (meta != null) {
+                            TextUtil.Copy(JsonConvert.SerializeObject(meta, Formatting.Indented));
+                            ShowToastS(resLoader.GetString("MsgCopiedMeta"));
+                        }
+                    }
+                    break;
+                case VirtualKey.B: // Ctrl + B
+                    MenuSetDesktop_Click(null, null);
+                    break;
+                case VirtualKey.Space: // Space
+                    MenuFill_Click(null, null);
+                    break;
                 case VirtualKey.Left: // Left
                 case VirtualKey.Up: // Up
                     if (FlyoutMarkCate.IsOpen) { // 避免误操作
@@ -1186,77 +1287,6 @@ namespace Timeline {
                     StatusLoading();
                     pageTimer.Stop();
                     pageTimer.Start();
-                    break;
-                case VirtualKey.F11: // F11
-                case VirtualKey.Escape: // Escape
-                case VirtualKey.Enter: // Enter
-                    ToggleFullscreenMode();
-                    break;
-                case VirtualKey.Space: // Space
-                    MenuFill_Click(null, null);
-                    break;
-                case VirtualKey.B: // Ctrl + B
-                    MenuSetDesktop_Click(null, null);
-                    break;
-                case VirtualKey.L: // Ctrl + L
-                    MenuSetLock_Click(null, null);
-                    break;
-                case VirtualKey.D: // Ctrl + D
-                case VirtualKey.S: // Ctrl + S
-                    MenuSave_Click(null, null);
-                    break;
-                case VirtualKey.C:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + C
-                        if (TextUtil.Copy(meta?.CacheUhd)) {
-                            ShowToastS(resLoader.GetString("MsgCopiedImg"));
-                            _ = Api.RankAsync(ini?.Provider, meta, "copy");
-                        }
-                    } else { // Shift + Control + C
-                        if (meta != null) {
-                            TextUtil.Copy(JsonConvert.SerializeObject(meta, Formatting.Indented));
-                            ShowToastS(resLoader.GetString("MsgCopiedMeta"));
-                        }
-                    }
-                    break;
-                case VirtualKey.F5: // F5
-                case VirtualKey.R: // Ctrl + R
-                    FlyoutMenu.Hide();
-                    await Refresh(true);
-                    break;
-                case VirtualKey.F3: // F3
-                case VirtualKey.F: // Ctrl + F
-                case VirtualKey.G: // Ctrl + G
-                    ShowFlyoutGo();
-                    break;
-                case VirtualKey.Number0: // Ctrl + 0 / 0
-                    await ShowFlyoutMarkCate();
-                    break;
-                case VirtualKey.F10: // F10
-                    if (ViewSplit.IsPaneOpen) {
-                        ViewSplit.IsPaneOpen = false;
-                    } else {
-                        MenuSettings_Click(null, null);
-                    }
-                    break;
-                case VirtualKey.I: // Ctrl + I
-                    await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
-                    break;
-                case VirtualKey.O: // Ctrl + O
-                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                        CreationCollisionOption.OpenIfExists));
-                    break;
-                case VirtualKey.W: // Ctrl + W
-                    Application.Current.Exit();
-                    break;
-                case VirtualKey.F12: // F12
-                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
-                    break;
-                case VirtualKey.Tab:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + Tab
-                        SwitchProvider(true); // 切换下个图源
-                    } else { // Shift + Ctrl + Tab
-                        SwitchProvider(false); // 切换上个图源
-                    }
                     break;
             }
         }

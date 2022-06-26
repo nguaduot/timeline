@@ -85,7 +85,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopLocal"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -93,7 +92,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockLocal"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -191,7 +189,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopBing"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -199,7 +196,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockBing"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -270,7 +266,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopNasa"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -278,7 +273,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockNasa"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -289,27 +283,51 @@
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE774;" />
-                            <TextBlock Grid.Column="1"
-                                       x:Uid="TextNasaMirror"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <ToggleSwitch Name="ToggleNasaMirror"
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextNasaOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxNasaOrder"
                                           Grid.Column="2"
-                                          MinWidth="0"
-                                          Toggled="ToggleNasaMirror_Toggled" />
-                        </Grid>
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listNasaOrder}"
+                                          SelectionChanged="BoxNasaOrder_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE774;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextNasaMirror"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ToggleSwitch Name="ToggleNasaMirror"
+                                              Grid.Column="2"
+                                              MinWidth="0"
+                                              Toggled="ToggleNasaMirror_Toggled" />
+                            </Grid>
+                        </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
                 <muxc:Expander Name="ExpanderOneplus"
@@ -348,7 +366,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopOneplus"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -356,7 +373,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockOneplus"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -427,7 +443,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopTimeline"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -435,7 +450,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockTimeline"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -572,7 +586,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopOne"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -580,7 +593,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockOne"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -651,7 +663,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopHimawari8"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -659,7 +670,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockHimawari8"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -764,7 +774,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopYmyouli"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -772,7 +781,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockYmyouli"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -888,7 +896,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopWallhaven"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -896,7 +903,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockWallhaven"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -991,7 +997,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopQingbz"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -999,7 +1004,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockQingbz"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -1115,7 +1119,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopWallhere"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -1123,7 +1126,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockWallhere"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -1218,7 +1220,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopInfinity"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -1226,7 +1227,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockInfinity"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -1298,7 +1298,6 @@
                                       Glyph="&#xE7B3;" />
                             <FontIcon Grid.Column="2"
                                       VerticalAlignment="Center"
-                                      Name="IconPushDesktopLsp"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -1306,7 +1305,6 @@
                                       FontSize="16"
                                       Glyph="&#xE70A;" />
                             <FontIcon Grid.Column="3"
-                                      Name="IconPushLockLsp"
                                       Margin="12,0,0,0"
                                       Visibility="Collapsed"
                                       VerticalAlignment="Center"
@@ -1614,7 +1612,7 @@
                                        Margin="0,8,0,0">
                                 <Span xml:space="default">
                                     <Run x:Uid="TextContatc0" />
-                                    <Hyperlink x:Uid="LinkGithub"
+                                    <Hyperlink x:Uid="LinkOpenSource"
                                                UnderlineStyle="None">
                                         <Run x:Uid="TextContatc1" />
                                     </Hyperlink>

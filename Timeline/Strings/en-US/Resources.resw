@@ -249,7 +249,7 @@
   <data name="LinkEmail.NavigateUri" xml:space="preserve">
     <value>mailto:nguaduot@163.com</value>
   </data>
-  <data name="LinkGithub.NavigateUri" xml:space="preserve">
+  <data name="LinkOpenSource.NavigateUri" xml:space="preserve">
     <value>https://gitee.com/nguaduot/timeline</value>
   </data>
   <data name="LinkReview.NavigateUri" xml:space="preserve">
@@ -273,7 +273,7 @@
   <data name="LinkEmail.ToolTipService.ToolTip" xml:space="preserve">
     <value>nguaduot@163.com</value>
   </data>
-  <data name="LinkGithub.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="LinkOpenSource.ToolTipService.ToolTip" xml:space="preserve">
     <value>https://gitee.com/nguaduot/timeline</value>
   </data>
   <data name="BingLang_" xml:space="preserve">
@@ -660,9 +660,6 @@
   <data name="JumpPushLock" xml:space="preserve">
     <value>Push lock screen</value>
   </data>
-  <data name="MarkR22" xml:space="preserve">
-    <value>R22</value>
-  </data>
   <data name="MsgErrService" xml:space="preserve">
     <value>Failed to run push service.</value>
   </data>
@@ -726,11 +723,14 @@
   <data name="DlgReview.SecondaryButtonText" xml:space="preserve">
     <value>Donate</value>
   </data>
+  <data name="MarkAudited" xml:space="preserve">
+    <value>Audited</value>
+  </data>
   <data name="Provider_glutton" xml:space="preserve">
     <value>Glutton</value>
   </data>
   <data name="Slogan_glutton" xml:space="preserve">
-    <value>Glutton</value>
+    <value>Timeline TOP</value>
   </data>
   <data name="TextContatc0.Text" xml:space="preserve">
     <value>该项目已在</value>
@@ -758,6 +758,9 @@
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
     <value>Recommend for me</value>
+  </data>
+  <data name="TextNasaOrder.Text" xml:space="preserve">
+    <value>Order</value>
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
     <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，不妨前往</value>

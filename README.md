@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v6.0-brightgreen)
-[![release](https://img.shields.io/badge/release-v5.9.220622-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v6.1-brightgreen)
+[![release](https://img.shields.io/badge/release-v6.0.220626-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -117,7 +117,9 @@
 + 打开日志位置：`F12`
 + 切换下一个图源：`Ctrl` + `Tab`
 + 切换上一个图源：`Shift` + `Ctrl` + `Tab`
-+ 关闭应用：`Ctrl` + `W`
++ 关闭应用：`Ctrl` + `W` / `Ctrl` + `F4`
++ 跳转开源页面：`F1`
++ 优化窗口尺寸：`F8`
 
 ## 进阶
 
