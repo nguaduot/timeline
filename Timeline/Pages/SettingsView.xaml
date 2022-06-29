@@ -143,13 +143,16 @@
                                            VerticalAlignment="Center"
                                            Style="{StaticResource BodyTextBlockStyle}" />
                                 <Button Grid.Column="2"
-                                        IsEnabled="False"
-                                        Name="BtnLocalGlutton"
-                                        x:Uid="BtnLocalGlutton"
+                                        Name="BtnLocalImport"
+                                        x:Uid="BtnLocalImport"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Click="BtnLocalGlutton_Click" />
+                                        Click="BtnLocalImport_Click" />
                             </Grid>
+                            <muxc:ProgressBar Name="PbImport"
+                                              Margin="0,8,0,0"
+                                              Visibility="Collapsed"
+                                              IsIndeterminate="True" />
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

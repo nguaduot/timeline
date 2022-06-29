@@ -19,10 +19,8 @@ using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.System;
 using Windows.System.UserProfile;
-using Windows.UI.Core;
 using Windows.UI.Shell;
 using Windows.UI.ViewManagement;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -1057,12 +1055,14 @@ namespace Timeline {
                 transfrom = new TranslateTransform();
                 ViewBarPointer.RenderTransform = transfrom;
             }
-            if (transfrom.X + e.Delta.Translation.X > 12) {
-                transfrom.X = 12;
-            } else if (transfrom.X + e.Delta.Translation.X < -12) {
-                transfrom.X = -12;
+            double threshold = 12;
+            double factor = 4;
+            if (transfrom.X + e.Delta.Translation.X / factor > threshold) {
+                transfrom.X = threshold;
+            } else if (transfrom.X + e.Delta.Translation.X / factor < -threshold) {
+                transfrom.X = -threshold;
             } else {
-                transfrom.X += e.Delta.Translation.X;
+                transfrom.X += e.Delta.Translation.X / factor;
             }
         }
 
@@ -1141,12 +1141,14 @@ namespace Timeline {
                 transfrom = new TranslateTransform();
                 ImgUhdPointer.RenderTransform = transfrom;
             }
-            if (transfrom.X + e.Delta.Translation.X > 12) {
-                transfrom.X = 12;
-            } else if (transfrom.X + e.Delta.Translation.X < -12) {
-                transfrom.X = -12;
+            double threshold = 12;
+            double factor = 4;
+            if (transfrom.X + e.Delta.Translation.X / factor > threshold) {
+                transfrom.X = threshold;
+            } else if (transfrom.X + e.Delta.Translation.X / factor < -threshold) {
+                transfrom.X = -threshold;
             } else {
-                transfrom.X += e.Delta.Translation.X;
+                transfrom.X += e.Delta.Translation.X / factor;
             }
         }
 

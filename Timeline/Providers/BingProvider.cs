@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using System.Globalization;
+using System.Web;
 
 namespace Timeline.Providers {
     public class BingProvider : BaseProvider {
@@ -39,7 +40,7 @@ namespace Timeline.Providers {
             URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx=7&n=" + PAGE_SIZE
         };
 
-        private Meta ParseBean(BingApiImg bean) {
+        private Meta ParseBean(BingApiImg bean, string lang) {
             Meta meta = new Meta {
                 Id = bean.Hsh,
                 Uhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bean.UrlBase),
@@ -56,6 +57,14 @@ namespace Timeline.Providers {
                 meta.Story = bean.Desc;
             }
 
+            if (!bean.CopyrightLink.Contains("filters=HpDate") && DateTime.TryParseExact(bean.FullStartDate, "yyyyMMddHHmm", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime time)) {
+                meta.Src = string.Format("{0}{1}&filters={2}", URL_API_HOST, bean.CopyrightLink,
+                    HttpUtility.UrlEncode(string.Format("HpDate:\"{0}\"", time.ToString("yyyyMMdd_HHmm"))));
+            } else {
+                meta.Src = URL_API_HOST + bean.CopyrightLink;
+            }
+            meta.Src += "&ensearch=" + (string.IsNullOrEmpty(lang) || "zh-cn".Equals(lang) ? 0 : 1);
+            
             // zh-cn: 正爬上唐娜·诺克沙滩的灰海豹，英格兰北林肯郡 (© Frederic Desmette/Minden Pictures)
             // en-us: Aerial view of the island of Mainau on Lake Constance, Germany (© Amazing Aerial Agency/Offset by Shutterstock)
             // ja-jp: ｢ドナヌックのハイイロアザラシ｣英国, ノースリンカーンシャー (© Frederic Desmette/Minden Pictures)
@@ -116,7 +125,7 @@ namespace Timeline.Providers {
                 BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (BingApiImg img in api.Images) {
-                    metasAdd.Add(ParseBean(img));
+                    metasAdd.Add(ParseBean(img, ini.Lang));
                 }
                 SortMetas(metasAdd); // 按时序倒序排列
                 return true;

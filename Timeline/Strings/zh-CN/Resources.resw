@@ -747,7 +747,7 @@
   <data name="ActionView" xml:space="preserve">
     <value>查看</value>
   </data>
-  <data name="BtnLocalGlutton.Content" xml:space="preserve">
+  <data name="BtnLocalImport.Content" xml:space="preserve">
     <value>导入</value>
   </data>
   <data name="DlgReview.SecondaryButtonText" xml:space="preserve">

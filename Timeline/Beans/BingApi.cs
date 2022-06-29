@@ -18,13 +18,21 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "urlbase")]
         public string UrlBase { set; get; }
 
-        // 日期：yyyyMMdd
+        // 本地发布日期：yyyyMMdd
         [JsonProperty(PropertyName = "enddate")]
         public string EndDate { set; get; }
+
+        // UTC发布时间：yyyyMMddHHmm
+        [JsonProperty(PropertyName = "fullstartdate")]
+        public string FullStartDate { set; get; }
 
         // 说明+版权
         [JsonProperty(PropertyName = "copyright")]
         public string Copyright { set; get; }
+
+        // 搜索链接
+        [JsonProperty(PropertyName = "copyrightlink")]
+        public string CopyrightLink { set; get; }
 
         // 标题
         [JsonProperty(PropertyName = "title")]

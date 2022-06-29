@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Timeline.Beans;
+using Timeline.Providers;
 using Timeline.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
@@ -300,6 +302,12 @@ namespace Timeline.Pages {
             glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
             SettingsReviewDesc.Text = glittersRandom[0];
             SettingsThankDesc.Text = glittersRandom[1];
+        }
+
+        private async Task ImportAsync() {
+            GluttonProvider glutton = ini.GenerateProvider(GluttonIni.ID) as GluttonProvider;
+            await glutton.LoadData(new CancellationTokenSource().Token, ini.GetIni(GluttonIni.ID));
+            
         }
 
         private async void ExpanderStaticProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
@@ -706,8 +714,8 @@ namespace Timeline.Pages {
             await FileUtil.LaunchFolderAsync(folder);
         }
 
-        private void BtnLocalGlutton_Click(object sender, RoutedEventArgs e) {
-            // TODO
+        private async void BtnLocalImport_Click(object sender, RoutedEventArgs e) {
+            await ImportAsync();
         }
 
         private string GenerateProviderTitle(object tag) {

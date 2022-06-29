@@ -235,6 +235,14 @@ namespace Timeline.Providers {
             return null;
         }
 
+        public List<Meta> GetMetas(int count) {
+            List<Meta> metasNew = new List<Meta>();
+            for (int i = 0; i < count && i < metas.Count; ++i) {
+                metasNew.Add(metas[i]);
+            }
+            return metasNew;
+        }
+
         public virtual async Task<Meta> CacheAsync(Meta meta, bool calFacePos, CancellationToken token) {
             LogUtil.D("Cache() " + meta?.Id);
             int index = -1;
