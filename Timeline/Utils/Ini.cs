@@ -139,10 +139,16 @@ namespace Timeline.Utils {
 
     public class LocalIni : BaseIni {
         public const string ID = "local";
+        private int appetite = 18;
         private string folder = ""; // 非null
 
         public LocalIni() {
             Id = ID;
+        }
+
+        public int Appetite {
+            set => appetite = value <= 0 || value > 99 ? 18 : value;
+            get => appetite;
         }
 
         public string Folder {
@@ -152,7 +158,7 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&folder={Folder}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&appetite={Appetite}&folder={Folder}";
     }
 
     public class BingIni : BaseIni {

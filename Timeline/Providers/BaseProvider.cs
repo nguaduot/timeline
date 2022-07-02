@@ -93,6 +93,10 @@ namespace Timeline.Providers {
             return false;
         }
 
+        public int GetCount() {
+            return metas.Count;
+        }
+
         public int GetIndexFocus() {
             return indexFocus;
         }
@@ -199,6 +203,7 @@ namespace Timeline.Providers {
         }
 
         public Meta Index(int index) {
+            index -= 1;
             if (metas.Count == 0) {
                 indexFocus = 0;
                 return null;

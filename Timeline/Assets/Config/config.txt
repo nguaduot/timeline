@@ -1,4 +1,4 @@
-; 拾光 / Timeline v6.0
+; 拾光 / Timeline v6.1
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -51,6 +51,9 @@ order=random
 ; order=date    排序：收录
 ; order=random  排序：随机（默认）
 
+appetite=18
+; appetite={n}  导入量：从“贪食鬼”图源热度榜导入图片量（默认为18张）
+
 folder=
 ; folder=  图库名：默认留空，与收藏文件夹相同（将存放于系统“图片”文件夹下）
 
@@ -99,6 +102,9 @@ order=date
 ; order=date   排序：收录（默认）
 ; order=score  排序：热度
 ; order=view   排序：浏览
+
+unaudited=0
+; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
 
 [timeline]
 
@@ -195,6 +201,9 @@ cate=
 ; cate=acg         类别：Anime
 ; cate=photograph  类别：General
 
+unaudited=0
+; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
+
 [qingbz]
 
 desktopperiod=24
@@ -236,6 +245,9 @@ cate=
 ; cate=            类别：全部（默认）
 ; cate=acg         类别：ACG
 ; cate=photograph  类别：摄影
+
+unaudited=0
+; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
 
 [infinity]
 
@@ -301,3 +313,6 @@ cate=
 ; cate=            类别：全部（默认）
 ; cate=acg         类别：纸片
 ; cate=photograph  类别：摄影
+
+unaudited=0
+; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）

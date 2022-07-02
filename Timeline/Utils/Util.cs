@@ -219,10 +219,13 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out int desktopPeriod);
             _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int lockPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "appetite", "18", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int appetite);
             _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
             ini.SetIni(LocalIni.ID, new LocalIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                Appetite = appetite,
                 Folder = sb.ToString()
             });
             _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, iniFile);
@@ -355,8 +358,6 @@ namespace Timeline.Utils {
             qingbzIni.Order = sb.ToString();
             _ = GetPrivateProfileString(QingbzIni.ID, "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(QingbzIni.ID, "unaudited", "0", sb, 1024, iniFile);
-            qingbzIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
             ini.SetIni(QingbzIni.ID, qingbzIni);
             _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -740,6 +741,16 @@ namespace Timeline.Utils {
                 LogUtil.E("GetMonitorPhysicalPixels() " + e.Message);
             }
             return new Windows.Foundation.Size(); // do not use IsEmpty to check empty
+        }
+
+        public static double GetMonitorScale() {
+            try {
+                DisplayInformation info = DisplayInformation.GetForCurrentView();
+                return info.RawPixelsPerViewPixel;
+            } catch (Exception e) {
+                LogUtil.E("GetMonitorPhysicalPixels() " + e.Message);
+            }
+            return 0;
         }
     }
 

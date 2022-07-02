@@ -586,7 +586,7 @@
     <value>Exit</value>
   </data>
   <data name="CurIndex" xml:space="preserve">
-    <value>Current: {0}</value>
+    <value>Index: {0}, [1, {1}]</value>
   </data>
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>404</value>
@@ -770,5 +770,11 @@
   </data>
   <data name="TextReview2.Text" xml:space="preserve">
     <value>给它一个评分。</value>
+  </data>
+  <data name="BoxR22Code.PlaceholderText" xml:space="preserve">
+    <value>Anything</value>
+  </data>
+  <data name="ImportProgress" xml:space="preserve">
+    <value>Imported...{0}/{1}</value>
   </data>
 </root>

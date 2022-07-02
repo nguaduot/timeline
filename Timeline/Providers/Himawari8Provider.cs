@@ -41,7 +41,7 @@ namespace Timeline.Providers {
             meta.Thumb = meta.Uhd;
             meta.Date = time.ToLocalTime();
             meta.SortFactor = time.Ticks;
-            meta.Caption = meta.Date.ToString("M") + " " + meta.Date.ToString("t");
+            meta.Caption = "🌏 " + meta.Date.ToString("M") + " " + meta.Date.ToString("t");
             return meta;
         }
 

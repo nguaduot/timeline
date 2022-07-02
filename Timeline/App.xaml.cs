@@ -111,16 +111,17 @@ namespace Timeline {
             // 保存显示器分辨率
             Windows.Foundation.Size pysical = SysUtil.GetMonitorPixels(false);
             ApplicationData.Current.LocalSettings.Values["Screen"] = (long)(((int)pysical.Width << 16) + (int)pysical.Height);
+            ApplicationData.Current.LocalSettings.Values["Scale"] = SysUtil.GetMonitorScale();
             // 调整窗口尺寸
             if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("OptimizeSize")) {
                 ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
-                Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(false);
-                if (logic.Width == 0) {
-                    logic = new Windows.Foundation.Size(1920, 1080);
+                Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(true); // 显示器逻辑尺寸
+                if (logic.Width > 0) {
+                    double w = logic.Width > logic.Height ? logic.Width * 2 / 3 : logic.Width * 4 / 5;
+                    ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(w, w * 10 / 16); // 16:10
+                    ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+                    ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
                 }
-                ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(logic.Width * 2 / 3, logic.Height * 2 / 3);
-                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
             }
         }
 

@@ -37,7 +37,8 @@ namespace Timeline.Providers {
             };
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";
-                foreach (Match match in Regex.Matches(bean.Content, @"([^  ，、。！？；：(?:——)\n(?:\r\n)]+)([  ，、。！？；：(?:——)\n(?:\r\n)])")) {
+                string content = bean.Content.Replace("\r\n", " ").Replace("\n", " ");
+                foreach (Match match in Regex.Matches(content, @"([^  ，、。！？；：(?:——)]+)([  ，、。！？；：(?:——)])")) {
                     meta.Title += match.Groups[1].Value;
                     if (meta.Title.Length < 6) {
                         meta.Title += match.Groups[2].Value;

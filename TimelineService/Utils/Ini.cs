@@ -179,13 +179,19 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
+        private int appetite = 18;
+        public int Appetite {
+            set => appetite = value <= 0 || value > 99 ? 18 : value;
+            get => appetite;
+        }
+
         private string folder = "";
         public string Folder {
             set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
             get => folder;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&folder={Folder}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&appetite={Appetite}&folder={Folder}";
 
         public static string GetId() => "local";
     }

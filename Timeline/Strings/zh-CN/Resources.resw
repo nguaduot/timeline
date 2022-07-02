@@ -616,7 +616,7 @@
     <value>退出</value>
   </data>
   <data name="CurIndex" xml:space="preserve">
-    <value>当前索引：{0}</value>
+    <value>索引：{0}, [1, {1}]</value>
   </data>
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>无法显示</value>
@@ -773,5 +773,11 @@
   </data>
   <data name="TextNasaOrder.Text" xml:space="preserve">
     <value>排序</value>
+  </data>
+  <data name="BoxR22Code.PlaceholderText" xml:space="preserve">
+    <value>随便写点什么</value>
+  </data>
+  <data name="ImportProgress" xml:space="preserve">
+    <value>导入进度...{0}/{1}</value>
   </data>
 </root>

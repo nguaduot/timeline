@@ -287,7 +287,7 @@ namespace Timeline {
                 return;
             }
             meta = provider.Index(index);
-            LogUtil.D("LoadEndAsync() " + meta);
+            LogUtil.D("LoadTargetAsync() " + meta);
             if (meta == null) {
                 StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
@@ -635,19 +635,14 @@ namespace Timeline {
                 view.ExitFullScreenMode();
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
                 if (optimizeSize) {
-                    Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(true);
-                    if (logic.Width == 0) {
-                        logic = new Windows.Foundation.Size(1920, 1080);
+                    //Windows.Foundation.Size winLogic = Window.Current.Content.ActualSize.ToSize(); // 窗口逻辑尺寸
+                    Windows.Foundation.Size monitorLogic = SysUtil.GetMonitorPixels(true); // 显示器逻辑尺寸
+                    LogUtil.I("ToggleFullscreenMode() monitor logic: " + monitorLogic);
+                    if (monitorLogic.Width > 0) {
+                        double w = monitorLogic.Width > monitorLogic.Height ? monitorLogic.Width * 2 / 3 : monitorLogic.Width * 4 / 5;
+                        bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 10 / 16)); // 16:10
+                        LogUtil.I("ToggleFullscreenMode() " + new Windows.Foundation.Size(w, w * 10 / 16) + " " + res);
                     }
-                    float winW = Window.Current.Content.ActualSize.X; // 窗口逻辑宽度
-                    float winH = Window.Current.Content.ActualSize.Y; // 窗口逻辑高度
-                    Windows.Foundation.Size size;
-                    if (Math.Abs(logic.Width / 2 - winW) <= 1 && Math.Abs(logic.Height / 2 - winH) <= 1) { // 4/9屏
-                        size = new Windows.Foundation.Size(logic.Width * 2 / 3, logic.Height * 2 / 3);
-                    } else { // 1/4屏
-                        size = new Windows.Foundation.Size(logic.Width / 2, logic.Height / 2);
-                    }
-                    _ = ApplicationView.GetForCurrentView().TryResizeView(size);
                 }
             }
         }
@@ -702,7 +697,8 @@ namespace Timeline {
                 BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"),
                     meta != null && meta.Date.Ticks > 0 ? meta.Date.ToString("MMdd") : "MMdd");
             } else {
-                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"), provider.GetIndexFocus());
+                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"),
+                    provider.GetIndexFocus() + 1, provider.GetCount());
             }
             BoxGo.Text = "";
             FlyoutGo.Placement = RelativePanel.GetAlignRightWithPanel(AnchorGo)

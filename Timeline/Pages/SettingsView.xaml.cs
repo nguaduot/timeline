@@ -13,7 +13,9 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
+using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -305,9 +307,116 @@ namespace Timeline.Pages {
         }
 
         private async Task ImportAsync() {
+            BtnLocalImport.Content = resLoader.GetString("BtnLocalImport/Content");
+            BtnLocalImport.IsEnabled = false;
+            PbImport.IsIndeterminate = true;
+            PbImport.ShowError = false;
+            PbImport.ShowPaused = false;
+            PbImport.Visibility = Visibility.Visible;
             GluttonProvider glutton = ini.GenerateProvider(GluttonIni.ID) as GluttonProvider;
-            await glutton.LoadData(new CancellationTokenSource().Token, ini.GetIni(GluttonIni.ID));
-            
+            LocalIni localIni = ini.GetIni(LocalIni.ID) as LocalIni;
+            await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
+                Order = "score"
+            });
+            List<Meta> top = glutton.GetMetas(localIni.Appetite);
+            if (top.Count == 0) {
+                BtnLocalImport.IsEnabled = true;
+                PbImport.ShowError = true;
+                return;
+            }
+            BtnLocalImport.Content = string.Format(resLoader.GetString("ImportProgress"), 0, top.Count);
+            PbImport.Maximum = top.Count;
+            PbImport.Value = 0;
+            StorageFolder folderLocal = null;
+            if (!string.IsNullOrEmpty(localIni.Folder)) {
+                try {
+                    folderLocal = await KnownFolders.PicturesLibrary.CreateFolderAsync(localIni.Folder, CreationCollisionOption.OpenIfExists);
+                } catch (Exception ex) {
+                    LogUtil.E("ImportAsync() " + ex.Message);
+                }
+            }
+            if (folderLocal == null) {
+                folderLocal = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+            }
+            Dictionary<string, double> topProgress = new Dictionary<string, double>();
+
+            BackgroundDownloader downloader = new BackgroundDownloader();
+            IReadOnlyList<DownloadOperation> historyDownloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            foreach (Meta meta in top) { // 开始下载
+                string localName = string.Format("{0}-{1}{2}", resLoader.GetString("Provider_" + glutton.Id), meta.Id, meta.Format);
+                if (await folderLocal.TryGetItemAsync(localName) != null || meta.Uhd == null) { // 已导入
+                    await Task.Delay(80);
+                    topProgress[meta.Uhd] = 1;
+                    PbImport.Value = SumProgress(topProgress);
+                    PbImport.IsIndeterminate = false;
+                    BtnLocalImport.Content = string.Format(resLoader.GetString("ImportProgress"), (int)PbImport.Value, top.Count);
+                    continue;
+                }
+                StorageFile cacheFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(
+                    string.Format("{0}-{1}{2}", glutton.Id, meta.Id, meta.Format), CreationCollisionOption.OpenIfExists);
+                BasicProperties fileProperties = await cacheFile.GetBasicPropertiesAsync();
+                if (fileProperties.Size > 0) { // 已缓存过
+                    await cacheFile.CopyAsync(folderLocal, localName, NameCollisionOption.ReplaceExisting);
+                    topProgress[meta.Uhd] = 1;
+                    PbImport.Value = SumProgress(topProgress);
+                    PbImport.IsIndeterminate = false;
+                    BtnLocalImport.Content = string.Format(resLoader.GetString("ImportProgress"), (int)PbImport.Value, top.Count);
+                    continue;
+                }
+                topProgress[meta.Uhd] = 0;
+                foreach (DownloadOperation o in historyDownloads) { // 从历史中恢复任务
+                    if (meta.Uhd.Equals(o.RequestedUri)) {
+                        meta.Do = o;
+                        break;
+                    }
+                }
+                if (meta.Do == null) { // 新建下载任务
+                    meta.Do = downloader.CreateDownload(new Uri(meta.Uhd), cacheFile);
+                    _ = meta.Do.StartAsync();
+                }
+            }
+            foreach (Meta meta in top) { // 等待下载
+                if (meta.Do == null) {
+                    continue;
+                }
+                try {
+                    if (meta.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
+                        meta.Do.Resume();
+                    }
+                    Progress<DownloadOperation> progress = new Progress<DownloadOperation>((op) => {
+                        if (op.Progress.TotalBytesToReceive > 0 && op.Progress.BytesReceived > 0) {
+                            ulong value = op.Progress.BytesReceived * 100 / op.Progress.TotalBytesToReceive;
+                            Debug.WriteLine(op.ResultFile.Name + " progress: " + value + "%");
+                            topProgress[meta.Uhd] = op.Progress.BytesReceived * 1.0 / op.Progress.TotalBytesToReceive;
+                            PbImport.Value = SumProgress(topProgress);
+                            PbImport.IsIndeterminate = false;
+                        }
+                    });
+                    _ = await meta.Do.AttachAsync().AsTask(progress);
+                    if (meta.Do.Progress.Status == BackgroundTransferStatus.Completed) {
+                        Debug.WriteLine("ImportAsync() downloaded " + meta.Do.ResultFile.Name);
+                        string localName = string.Format("{0}-{1}{2}", resLoader.GetString("Provider_" + glutton.Id), meta.Id, meta.Format);
+                        await meta.Do.ResultFile.CopyAsync(folderLocal, localName, NameCollisionOption.ReplaceExisting);
+                        topProgress[meta.Uhd] = 1;
+                        PbImport.Value = SumProgress(topProgress);
+                        PbImport.IsIndeterminate = false;
+                        BtnLocalImport.Content = string.Format(resLoader.GetString("ImportProgress"), (int)PbImport.Value, top.Count);
+                    }
+                } catch (Exception e) {
+                    meta.Do = null;
+                    LogUtil.E("ImportAsync() " + e.Message);
+                }
+            }
+            BtnLocalImport.IsEnabled = true;
+            PbImport.ShowPaused = true;
+        }
+
+        private double SumProgress(Dictionary<string, double> dicProgress) {
+            double sum = 0;
+            foreach (double v in dicProgress.Values) {
+                sum += v;
+            }
+            return sum;
         }
 
         private async void ExpanderStaticProvider_Expanding(Expander sender, ExpanderExpandingEventArgs args) {
