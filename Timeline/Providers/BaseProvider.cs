@@ -84,7 +84,7 @@ namespace Timeline.Providers {
             AppendMetas(metasAdd);
         }
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             dicHistory.Clear();
             Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
             foreach (var item in dicNew) {
@@ -203,7 +203,6 @@ namespace Timeline.Providers {
         }
 
         public Meta Index(int index) {
-            index -= 1;
             if (metas.Count == 0) {
                 indexFocus = 0;
                 return null;
@@ -231,13 +230,15 @@ namespace Timeline.Providers {
         }
 
         public Meta Target(DateTime date) {
-            for (int i = 0; i < metas.Count; i++) {
-                if (date.ToString("yyyyMMddHHmm").Equals(metas[i].Date.ToString("yyyyMMddHHmm"))) {
+            Meta target = null;
+            for (int i = 0; i < metas.Count; i++) { // 从近到远取最接近
+                long thisMinutes = Math.Abs(metas[i].Date.Ticks - date.Ticks) / 10000 / 1000 / 60;
+                if (target == null || thisMinutes < Math.Abs(target.Date.Ticks - date.Ticks) / 10000 / 1000 / 60) {
                     indexFocus = i;
-                    return metas[i];
+                    target = metas[i];
                 }
             }
-            return null;
+            return target;
         }
 
         public List<Meta> GetMetas(int count) {

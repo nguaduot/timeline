@@ -117,8 +117,13 @@ namespace Timeline {
                 ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
                 Windows.Foundation.Size logic = SysUtil.GetMonitorPixels(true); // 显示器逻辑尺寸
                 if (logic.Width > 0) {
-                    double w = logic.Width > logic.Height ? logic.Width * 2 / 3 : logic.Width * 4 / 5;
-                    ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(w, w * 10 / 16); // 16:10
+                    if (logic.Width > logic.Height) { // 横屏
+                        double h = logic.Height * 2 / 3; // 2/3高度
+                        ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(h * 16 / 10, h); // 16:10
+                    } else { // 竖屏
+                        double w = logic.Width * 4 / 5; // 4/5宽度
+                        ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(w, w * 10 / 16); // 16:10
+                    }
                     ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
                     ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
                 }

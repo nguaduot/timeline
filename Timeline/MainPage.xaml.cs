@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
@@ -192,7 +193,7 @@ namespace Timeline {
 
         private async Task LoadFocusAsync(CancellationToken token) {
             await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni());
+            bool res = await provider.LoadData(token, ini.GetIni(), 0);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -212,7 +213,7 @@ namespace Timeline {
 
         private async Task LoadYesterdayAsync(CancellationToken token) {
             await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni());
+            bool res = await provider.LoadData(token, ini.GetIni(), provider.GetIndexFocus() + 2);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -235,7 +236,7 @@ namespace Timeline {
 
         private async Task LoadTomorrowAsync(CancellationToken token) {
             //await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni());
+            bool res = await provider.LoadData(token, ini.GetIni(), provider.GetIndexFocus() - 1);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -257,14 +258,11 @@ namespace Timeline {
 
         private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
             await FileUtil.WriteDosage();
-            bool res = await provider.LoadData(token, ini.GetIni(), date);
+            bool res = await provider.LoadData(token, ini.GetIni(), 0, date);
             if (token.IsCancellationRequested) {
                 return;
             }
             meta = provider.Target(date);
-            if (meta == null) { // 跳转至最早
-                meta = provider.Index(99999);
-            }
             LogUtil.D("LoadTargetAsync() " + meta);
             if (meta == null) {
                 StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
@@ -282,7 +280,7 @@ namespace Timeline {
 
         private async Task LoadTargetAsync(int index, CancellationToken token) {
             await FileUtil.WriteDosage();
-            bool res = await provider.LoadData(token, ini.GetIni());
+            bool res = await provider.LoadData(token, ini.GetIni(), index + 1);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -639,9 +637,15 @@ namespace Timeline {
                     Windows.Foundation.Size monitorLogic = SysUtil.GetMonitorPixels(true); // 显示器逻辑尺寸
                     LogUtil.I("ToggleFullscreenMode() monitor logic: " + monitorLogic);
                     if (monitorLogic.Width > 0) {
-                        double w = monitorLogic.Width > monitorLogic.Height ? monitorLogic.Width * 2 / 3 : monitorLogic.Width * 4 / 5;
-                        bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 10 / 16)); // 16:10
-                        LogUtil.I("ToggleFullscreenMode() " + new Windows.Foundation.Size(w, w * 10 / 16) + " " + res);
+                        if (monitorLogic.Width > monitorLogic.Height) { // 横屏
+                            double h = monitorLogic.Height * 2 / 3; // 2/3高度
+                            bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(h * 16 / 10, h)); // 16:10
+                            LogUtil.I("ToggleFullscreenMode() " + res);
+                        } else { // 竖屏
+                            double w = monitorLogic.Width * 4 / 5; // 4/5宽度
+                            bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 10 / 16)); // 16:10
+                            LogUtil.I("ToggleFullscreenMode() " + res);
+                        }
                     }
                 }
             }
@@ -693,13 +697,8 @@ namespace Timeline {
                 FlyoutGo.Hide();
                 return;
             }
-            if (ini.GetIni().IsSequential()) {
-                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurDate"),
-                    meta != null && meta.Date.Ticks > 0 ? meta.Date.ToString("MMdd") : "MMdd");
-            } else {
-                BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"),
-                    provider.GetIndexFocus() + 1, provider.GetCount());
-            }
+            BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"),
+                provider.GetIndexFocus() + 1, provider.GetCount());
             BoxGo.Text = "";
             FlyoutGo.Placement = RelativePanel.GetAlignRightWithPanel(AnchorGo)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
@@ -1087,21 +1086,17 @@ namespace Timeline {
                 return;
             }
             FlyoutGo.Hide();
-            if (ini.GetIni().IsSequential()) {
-                DateTime? date = DateUtil.ParseDate(BoxGo.Text);
-                if (date != null) {
-                    ctsLoad.Cancel();
-                    StatusLoading();
-                    ctsLoad = new CancellationTokenSource();
-                    await LoadTargetAsync(date.Value, ctsLoad.Token);
-                }
-            } else {
-                if (int.TryParse(BoxGo.Text, out int index)) {
-                    ctsLoad.Cancel();
-                    StatusLoading();
-                    ctsLoad = new CancellationTokenSource();
-                    await LoadTargetAsync(index, ctsLoad.Token);
-                }
+            if (ini.GetIni().IsSequential() && DateTime.TryParseExact(BoxGo.Text.Trim(), "yyyyMMdd",
+                new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
+                ctsLoad.Cancel();
+                StatusLoading();
+                ctsLoad = new CancellationTokenSource();
+                await LoadTargetAsync(date, ctsLoad.Token);
+            } else if (int.TryParse(BoxGo.Text.Trim(), out int index)) {
+                ctsLoad.Cancel();
+                StatusLoading();
+                ctsLoad = new CancellationTokenSource();
+                await LoadTargetAsync(Math.Min(index - 1, provider.GetCount() - 1), ctsLoad.Token);
             }
         }
 

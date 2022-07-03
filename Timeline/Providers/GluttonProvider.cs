@@ -30,7 +30,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             // 已加载过无需加载
             if (metas.Count > 0) {
                 return true;
@@ -39,7 +39,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             string urlApi = string.Format(URL_API, bi.Order);
             LogUtil.D("LoadData() provider url: " + urlApi);

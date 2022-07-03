@@ -181,7 +181,7 @@ namespace TimelineService.Utils {
 
         private int appetite = 18;
         public int Appetite {
-            set => appetite = value <= 0 || value > 99 ? 18 : value;
+            set => appetite = appetite = value <= 0 ? 18 : (value > 99 ? 99 : value);
             get => appetite;
         }
 

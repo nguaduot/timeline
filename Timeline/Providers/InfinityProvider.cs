@@ -12,7 +12,7 @@ using System.Threading;
 namespace Timeline.Providers {
     public class InfinityProvider : BaseProvider {
         // 页数据索引（从0开始）（用于按需加载）
-        private int pageIndex = -1;
+        private int pageIndex = 0;
 
         // Infinity新标签页 - 壁纸库
         // http://cn.infinitynewtab.com/
@@ -43,18 +43,18 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
-            if (indexFocus < metas.Count - 1) {
+            if (index < metas.Count) {
                 return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
-            string urlApi = "score".Equals(bi.Order) ? String.Format(URL_API, ++pageIndex)
+            string urlApi = "score".Equals(bi.Order) ? string.Format(URL_API, pageIndex)
                 : string.Format(URL_API_RANDOM, DateUtil.CurrentTimeMillis());
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
@@ -76,6 +76,7 @@ namespace Timeline.Providers {
                     }
                     AppendMetas(metasAdd);
                 }
+                pageIndex += 1;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

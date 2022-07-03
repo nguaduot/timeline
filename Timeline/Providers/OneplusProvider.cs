@@ -14,7 +14,7 @@ using System.Globalization;
 namespace Timeline.Providers {
     public class OneplusProvider : BaseProvider {
         // 页数据索引（从1开始）（用于按需加载）
-        private int pageIndex = 0;
+        private int pageIndex = 1;
 
         private const int PAGE_SIZE = 99;
 
@@ -45,25 +45,25 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
-            } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
+            } else if (index < metas.Count) { // 现有数据未浏览完，无需加载更多
                 return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
             string sort = "score".Equals(bi.Order) ? "2" : ("view".Equals(bi.Order) ? "3" : "1");
             OneplusRequest request = new OneplusRequest {
                 PageSize = PAGE_SIZE, // 不限
-                CurrentPage = ++pageIndex,
+                CurrentPage = pageIndex,
                 SortMethod = sort
             };
             string requestStr = JsonConvert.SerializeObject(request);
@@ -87,6 +87,7 @@ namespace Timeline.Providers {
                 } else {
                     RandomMetas(metasAdd);
                 }
+                pageIndex += 1;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

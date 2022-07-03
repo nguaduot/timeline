@@ -317,8 +317,9 @@ namespace Timeline.Pages {
             LocalIni localIni = ini.GetIni(LocalIni.ID) as LocalIni;
             await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
                 Order = "score"
-            });
+            }, 0);
             List<Meta> top = glutton.GetMetas(localIni.Appetite);
+            Dictionary<string, double> topProgress = new Dictionary<string, double>();
             if (top.Count == 0) {
                 BtnLocalImport.IsEnabled = true;
                 PbImport.ShowError = true;
@@ -327,25 +328,14 @@ namespace Timeline.Pages {
             BtnLocalImport.Content = string.Format(resLoader.GetString("ImportProgress"), 0, top.Count);
             PbImport.Maximum = top.Count;
             PbImport.Value = 0;
-            StorageFolder folderLocal = null;
-            if (!string.IsNullOrEmpty(localIni.Folder)) {
-                try {
-                    folderLocal = await KnownFolders.PicturesLibrary.CreateFolderAsync(localIni.Folder, CreationCollisionOption.OpenIfExists);
-                } catch (Exception ex) {
-                    LogUtil.E("ImportAsync() " + ex.Message);
-                }
-            }
-            if (folderLocal == null) {
-                folderLocal = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
-            }
-            Dictionary<string, double> topProgress = new Dictionary<string, double>();
 
             BackgroundDownloader downloader = new BackgroundDownloader();
             IReadOnlyList<DownloadOperation> historyDownloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            StorageFolder folderLocal = await FileUtil.GetPicLibFolder(localIni.Folder);
             foreach (Meta meta in top) { // 开始下载
                 string localName = string.Format("{0}-{1}{2}", resLoader.GetString("Provider_" + glutton.Id), meta.Id, meta.Format);
                 if (await folderLocal.TryGetItemAsync(localName) != null || meta.Uhd == null) { // 已导入
-                    await Task.Delay(80);
+                    await Task.Delay(60);
                     topProgress[meta.Uhd] = 1;
                     PbImport.Value = SumProgress(topProgress);
                     PbImport.IsIndeterminate = false;
@@ -809,18 +799,10 @@ namespace Timeline.Pages {
 
         private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
             LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
-            StorageFolder folder = null;
-            if (!string.IsNullOrEmpty(bi.Folder)) {
-                try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(bi.Folder, CreationCollisionOption.OpenIfExists);
-                } catch (Exception ex) {
-                    LogUtil.E("BtnLocalFolder_Click() " + ex.Message);
-                }
-            }
-            if (folder == null) {
-                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
-            }
-            await FileUtil.LaunchFolderAsync(folder);
+            StorageFolder folder = await FileUtil.GetPicLibFolder(bi.Folder);
+            IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
+            StorageFile fileSelected = imgFiles.FirstOrDefault(f => f.ContentType.StartsWith("image"));
+            await FileUtil.LaunchFolderAsync(folder, fileSelected);
         }
 
         private async void BtnLocalImport_Click(object sender, RoutedEventArgs e) {

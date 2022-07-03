@@ -1,4 +1,4 @@
-; 拾光 / Timeline v6.1
+; 拾光 / Timeline v6.2
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -90,6 +90,11 @@ mirror=bjp
 ; mirror=     镜像：官方
 ; mirror=bjp  镜像：北京天文馆（默认） http://www.bjp.org.cn/mryt
 
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
+
 [oneplus]
 
 desktopperiod=24
@@ -102,9 +107,6 @@ order=date
 ; order=date   排序：收录（默认）
 ; order=score  排序：热度
 ; order=view   排序：浏览
-
-unaudited=0
-; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
 
 [timeline]
 
@@ -129,6 +131,10 @@ cate=
 
 unauthorized=0
 ; unauthorized={n}  未授权内容：0或1（默认为0，仅展示已授权内容）
+
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
 
 [one]
 
@@ -183,6 +189,10 @@ cate=
 ; cate=delicacy      类别：美食蔬果
 ; cate=nature        类别：山水花草
 
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
+
 [wallhaven]
 
 desktopperiod=24
@@ -201,8 +211,10 @@ cate=
 ; cate=acg         类别：Anime
 ; cate=photograph  类别：General
 
-unaudited=0
-; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
 
 [qingbz]
 
@@ -228,6 +240,10 @@ cate=
 ; cate=game      类别：游戏迷
 ; cate=animal    类别：动物萌宠
 
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
+
 [wallhere]
 
 desktopperiod=24
@@ -246,8 +262,10 @@ cate=
 ; cate=acg         类别：ACG
 ; cate=photograph  类别：摄影
 
-unaudited=0
-; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
 
 [infinity]
 
@@ -314,5 +332,7 @@ cate=
 ; cate=acg         类别：纸片
 ; cate=photograph  类别：摄影
 
-unaudited=0
-; unaudited={n}  待审查内容：0或1（默认为0，仅展示已审查内容，管理员用途）
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）

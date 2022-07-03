@@ -11,17 +11,17 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Globalization;
 using System.Web;
+using Windows.System.UserProfile;
 
 namespace Timeline.Providers {
     public class BingProvider : BaseProvider {
         // 页数据索引（从0开始）（用于按需加载）
-        private int pageIndex = -1;
+        private int pageIndex = 0;
 
         private const int PAGE_SIZE = 8;
 
-        // http://s.cn.bing.net
-        // https://cn.bing.com
         private const string URL_API_HOST = "https://global.bing.com";
+        private const string URL_CND_HOST = "http://s.cn.bing.net";
         // Bing搜索 官方提供的 API
         // GET 参数：
         // pid: hp（缺省会导致数据不全）
@@ -41,30 +41,15 @@ namespace Timeline.Providers {
         };
 
         private Meta ParseBean(BingApiImg bean, string lang) {
+            bool cn = "zh-cn".Equals(lang) || (string.IsNullOrEmpty(lang) && "CN".Equals(GlobalizationPreferences.HomeGeographicRegion));
             Meta meta = new Meta {
                 Id = bean.Hsh,
-                Uhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, bean.UrlBase),
-                Thumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, bean.UrlBase),
+                Uhd = string.Format("{0}{1}_UHD.jpg", cn ? URL_CND_HOST : URL_API_HOST, bean.UrlBase),
+                Thumb = string.Format("{0}{1}_400x240.jpg", cn ? URL_CND_HOST : URL_API_HOST, bean.UrlBase),
+                Title = !"Info".Equals(bean.Title) ? bean.Title : "", // ko-kr等未支持地区为“Info”
+                Story = bean.Desc, // 部分区域无该字段
                 Caption = bean.Copyright
             };
-
-            if (!string.IsNullOrEmpty(bean.Title)) {
-                if (!bean.Title.Equals("Info")) { // ko-kr等未支持的地区
-                    meta.Title = bean.Title;
-                }
-            }
-            if (!string.IsNullOrEmpty(bean.Desc)) {
-                meta.Story = bean.Desc;
-            }
-
-            if (!bean.CopyrightLink.Contains("filters=HpDate") && DateTime.TryParseExact(bean.FullStartDate, "yyyyMMddHHmm", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime time)) {
-                meta.Src = string.Format("{0}{1}&filters={2}", URL_API_HOST, bean.CopyrightLink,
-                    HttpUtility.UrlEncode(string.Format("HpDate:\"{0}\"", time.ToString("yyyyMMdd_HHmm"))));
-            } else {
-                meta.Src = URL_API_HOST + bean.CopyrightLink;
-            }
-            meta.Src += "&ensearch=" + (string.IsNullOrEmpty(lang) || "zh-cn".Equals(lang) ? 0 : 1);
-            
             // zh-cn: 正爬上唐娜·诺克沙滩的灰海豹，英格兰北林肯郡 (© Frederic Desmette/Minden Pictures)
             // en-us: Aerial view of the island of Mainau on Lake Constance, Germany (© Amazing Aerial Agency/Offset by Shutterstock)
             // ja-jp: ｢ドナヌックのハイイロアザラシ｣英国, ノースリンカーンシャー (© Frederic Desmette/Minden Pictures)
@@ -85,6 +70,14 @@ namespace Timeline.Providers {
                 }
             }
 
+            if (!bean.CopyrightLink.Contains("filters=HpDate") && DateTime.TryParseExact(bean.FullStartDate, "yyyyMMddHHmm", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime time)) {
+                meta.Src = string.Format("{0}{1}&filters={2}", URL_API_HOST, bean.CopyrightLink,
+                    HttpUtility.UrlEncode(string.Format("HpDate:\"{0}\"", time.ToString("yyyyMMdd_HHmm"))));
+            } else {
+                meta.Src = URL_API_HOST + bean.CopyrightLink;
+            }
+            meta.Src += "&ensearch=" + (cn ? 0 : 1);
+            
             if (DateTime.TryParseExact(bean.EndDate, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
@@ -93,26 +86,24 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
-            // 已无更多数据
-            if (pageIndex >= URL_API_PAGES.Length - 1) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+            if (pageIndex >= URL_API_PAGES.Length) { // 已无更多数据
                 return true;
             }
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
-            } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
+            } else if (index < metas.Count) { // 现有数据未浏览完，无需加载更多
                 return true;
             }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
+            if (!NetworkInterface.GetIsNetworkAvailable()) { // 无网络连接
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             BingIni ini = bi as BingIni;
-            string urlApi = URL_API_PAGES[++pageIndex];
+            string urlApi = URL_API_PAGES[pageIndex];
             if (ini.Lang.Length > 0) {
                 urlApi += "&setmkt=" + ini.Lang;
             }
@@ -128,6 +119,7 @@ namespace Timeline.Providers {
                     metasAdd.Add(ParseBean(img, ini.Lang));
                 }
                 SortMetas(metasAdd); // 按时序倒序排列
+                pageIndex += 1;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

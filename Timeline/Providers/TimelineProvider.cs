@@ -11,12 +11,12 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class TimelineProvider : BaseProvider {
-        // 下一页数据索引（从0开始）（用于按需加载）
+        // 下一页数据索引（从今日开始）（用于按需加载）
         private DateTime nextPage = DateTime.UtcNow.AddHours(8);
 
         // 自建图源
         // https://github.com/nguaduot/TimelineApi
-        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&order={1}&enddate={2}&unauthorized={3}";
+        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate={0}&order={1}&enddate={2}&unauthorized={3}&marked={4}";
         
         private Meta ParseBean(TimelineApiData bean, string order) {
             Meta meta = new Meta {
@@ -50,20 +50,21 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多，或已无更多数据
-            if (indexFocus < metas.Count - 1 && date.Ticks == 0) {
+            if (index < metas.Count && date.Ticks == 0) {
                 return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             TimelineIni ini = bi as TimelineIni;
             nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(URL_API, ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized);
+            string urlApi = string.Format(URL_API, ini.Cate, ini.Order, nextPage.ToString("yyyyMMdd"), ini.Unauthorized,
+                "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -83,7 +84,11 @@ namespace Timeline.Providers {
                 } else {
                     AppendMetas(metasAdd);
                 }
-                nextPage = "date".Equals(ini.Order) ? nextPage.AddDays(-api.Data.Count) : nextPage;
+                if ("date".Equals(ini.Order) && metas.Count > 0) { // 下一页日期索引
+                    nextPage = metas[metas.Count - 1].Date.AddDays(-1);
+                } else { // 默认索引
+                    nextPage = DateTime.UtcNow.AddHours(8);
+                }
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

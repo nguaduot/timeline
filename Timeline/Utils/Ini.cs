@@ -78,11 +78,14 @@ namespace Timeline.Utils {
     }
 
     public class BaseIni {
+        public static readonly List<string> ADMIN = new List<string>() { "", "unaudited", "marked" };
+
         private string id = "base"; // 非null
         private readonly List<CateMeta> cates = new List<CateMeta>();
         private readonly List<string> orders = new List<string>();
         private string order;
         private string cate = ""; // 非null，""为全部
+        private string admin = ""; // 管理员用途，非null，""为普通用户内容
         private int desktopPeriod = 24;
         private int lockPeriod = 24;
 
@@ -117,7 +120,10 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public bool Unaudited { set; get; } // 管理员用途
+        public string Admin {
+            set => admin = ADMIN.Contains(value) ? value : "";
+            get => admin;
+        }
 
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -147,7 +153,7 @@ namespace Timeline.Utils {
         }
 
         public int Appetite {
-            set => appetite = value <= 0 || value > 99 ? 18 : value;
+            set => appetite = value <= 0 ? 18 : (value > 99 ? 99 : value);
             get => appetite;
         }
 

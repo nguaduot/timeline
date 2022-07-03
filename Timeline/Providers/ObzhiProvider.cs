@@ -12,7 +12,7 @@ using System.Threading;
 namespace Timeline.Providers {
     public class ObzhiProvider : BaseProvider {
         // 页数据索引（从1开始）（用于按需加载）
-        private int pageIndex = 0;
+        private int pageIndex = 1;
 
         private const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}";
         
@@ -34,16 +34,16 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             // 现有数据未浏览完，无需加载更多
-            if (indexFocus < metas.Count - 1) {
+            if (index < metas.Count) {
                 return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex);
             LogUtil.D("LoadData() provider url: " + urlApi);
@@ -65,6 +65,7 @@ namespace Timeline.Providers {
                 } else {
                     AppendMetas(metasAdd);
                 }
+                pageIndex += 1;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

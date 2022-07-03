@@ -61,19 +61,19 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
                 }
-            } else if (indexFocus < metas.Count - 1) { // 现有数据未浏览完，无需加载更多
+            } else if (index < metas.Count) { // 现有数据未浏览完，无需加载更多
                 return true;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
                 try {
@@ -94,7 +94,7 @@ namespace Timeline.Providers {
                 }
             }
             if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
-                return metas.Count > 0;
+                return false;
             }
 
             if ("random".Equals(bi.Order)) {

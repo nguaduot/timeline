@@ -265,8 +265,8 @@ namespace Timeline.Utils {
             nasaIni.Order = sb.ToString();
             _ = GetPrivateProfileString(NasaIni.ID, "mirror", "", sb, 1024, iniFile);
             nasaIni.Mirror = sb.ToString();
-            _ = GetPrivateProfileString(NasaIni.ID, "unaudited", "0", sb, 1024, iniFile);
-            nasaIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
+            _ = GetPrivateProfileString(NasaIni.ID, "admin", "", sb, 1024, iniFile);
+            nasaIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(NasaIni.ID, nasaIni);
             _ = GetPrivateProfileString(OneplusIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -293,6 +293,8 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(TimelineIni.ID, "unauthorized", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int unauthorized);
             timelineIni.Unauthorized = unauthorized;
+            _ = GetPrivateProfileString(TimelineIni.ID, "admin", "", sb, 1024, iniFile);
+            timelineIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(TimelineIni.ID, timelineIni);
             _ = GetPrivateProfileString(OneIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -330,6 +332,8 @@ namespace Timeline.Utils {
             ymyouliIni.Order = sb.ToString();
             _ = GetPrivateProfileString(YmyouliIni.ID, "cate", "", sb, 1024, iniFile);
             ymyouliIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(YmyouliIni.ID, "admin", "", sb, 1024, iniFile);
+            ymyouliIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(YmyouliIni.ID, ymyouliIni);
             _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -343,8 +347,8 @@ namespace Timeline.Utils {
             wallhavenIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
             wallhavenIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhavenIni.ID, "unaudited", "0", sb, 1024, iniFile);
-            wallhavenIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
+            _ = GetPrivateProfileString(WallhavenIni.ID, "admin", "", sb, 1024, iniFile);
+            wallhavenIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -358,6 +362,8 @@ namespace Timeline.Utils {
             qingbzIni.Order = sb.ToString();
             _ = GetPrivateProfileString(QingbzIni.ID, "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(QingbzIni.ID, "admin", "", sb, 1024, iniFile);
+            qingbzIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(QingbzIni.ID, qingbzIni);
             _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -371,8 +377,8 @@ namespace Timeline.Utils {
             wallhereIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhereIni.ID, "cate", "", sb, 1024, iniFile);
             wallhereIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhereIni.ID, "unaudited", "0", sb, 1024, iniFile);
-            wallhereIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
+            _ = GetPrivateProfileString(WallhereIni.ID, "admin", "", sb, 1024, iniFile);
+            wallhereIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(wallhereIni.Id, wallhereIni);
             _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -419,8 +425,8 @@ namespace Timeline.Utils {
             lspIni.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(LspIni.ID, "unaudited", "0", sb, 1024, iniFile);
-            lspIni.Unaudited = "1".Equals(sb.ToString()); // 管理员通途
+            _ = GetPrivateProfileString(LspIni.ID, "admin", "", sb, 1024, iniFile);
+            lspIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(LspIni.ID, lspIni);
             return ini;
         }
@@ -460,37 +466,37 @@ namespace Timeline.Utils {
             return 30;
         }
 
-        public static DateTime? ParseDate(string text) {
-            DateTime now = DateTime.Now;
-            if (string.IsNullOrEmpty(text)) {
-                return null;
-            }
-            if (Regex.Match(text, @"\d").Success) {
-                if (text.Length == 8) {
-                    text = text.Substring(0, 4) + "-" + text.Substring(4, 2) + "-" + text.Substring(6);
-                } else if (text.Length == 6) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2, 2) + "-" + text.Substring(4);
-                } else if (text.Length == 5) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2, 1) + "-" + text.Substring(3);
-                } else if (text.Length == 4) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2);
-                } else if (text.Length == 3) {
-                    text = text.Substring(0, 1) + "-" + text.Substring(1);
-                } else if (text.Length == 2) {
-                    if (int.Parse(text) > DateTime.DaysInMonth(now.Year, now.Month)) {
-                        text = text.Substring(0, 1) + "-" + text.Substring(1);
-                    } else {
-                        text = now.Month + "-" + text;
-                    }
-                } else if (text.Length == 1) {
-                    text = now.Month + "-" + text;
-                }
-            }
-            if (DateTime.TryParse(text, out DateTime date)) {
-                return date;
-            }
-            return null;
-        }
+        //public static DateTime? ParseDate(string text) {
+        //    DateTime now = DateTime.Now;
+        //    if (string.IsNullOrEmpty(text)) {
+        //        return null;
+        //    }
+        //    if (Regex.Match(text, @"\d").Success) {
+        //        if (text.Length == 8) {
+        //            text = text.Substring(0, 4) + "-" + text.Substring(4, 2) + "-" + text.Substring(6);
+        //        } else if (text.Length == 6) {
+        //            text = text.Substring(0, 2) + "-" + text.Substring(2, 2) + "-" + text.Substring(4);
+        //        } else if (text.Length == 5) {
+        //            text = text.Substring(0, 2) + "-" + text.Substring(2, 1) + "-" + text.Substring(3);
+        //        } else if (text.Length == 4) {
+        //            text = text.Substring(0, 2) + "-" + text.Substring(2);
+        //        } else if (text.Length == 3) {
+        //            text = text.Substring(0, 1) + "-" + text.Substring(1);
+        //        } else if (text.Length == 2) {
+        //            if (int.Parse(text) > DateTime.DaysInMonth(now.Year, now.Month)) {
+        //                text = text.Substring(0, 1) + "-" + text.Substring(1);
+        //            } else {
+        //                text = now.Month + "-" + text;
+        //            }
+        //        } else if (text.Length == 1) {
+        //            text = now.Month + "-" + text;
+        //        }
+        //    }
+        //    if (DateTime.TryParse(text, out DateTime date)) {
+        //        return date;
+        //    }
+        //    return null;
+        //}
     }
 
     public class FileUtil {
@@ -576,9 +582,6 @@ namespace Timeline.Utils {
                 LogUtil.E("ReadDosage() " + e.Message);
             }
             return res;
-
-            //string key = "Dosage_" + (provider ?? "");
-            //return localSettings.Values[key] is string dosage ? dosage.Split(",").Length : 0;
         }
 
         public static async Task WriteDosage(string provider = null) {
@@ -617,19 +620,6 @@ namespace Timeline.Utils {
                 Debug.WriteLine(e);
                 LogUtil.E("WriteDosage() " + e.Message);
             }
-
-            //string key = "dosage_" + (provider ?? "");
-            //string[] sec_old = localSettings.Values[key] is string dosage ? dosage.Split(",") : new string[0];
-            //List<long> sec_new = new List<long>();
-            //long sec_now = DateTime.Now.Ticks / 10000 / 1000;
-            //foreach (string item in sec_old) {
-            //    long sec = long.Parse(item);
-            //    if (sec <= sec_now && sec_now - sec <= 24 * 60 * 60) {
-            //        sec_new.Add(sec);
-            //    }
-            //}
-            //sec_new.Add(sec_now);
-            //localSettings.Values[key] = string.Join(",", sec_new.ToArray());
         }
 
         public static async Task<StorageFolder> GetLogFolder() {
@@ -681,6 +671,21 @@ namespace Timeline.Utils {
             } catch (Exception e) {
                 LogUtil.E("ClearCache() " + e.Message);
             }
+        }
+
+        public static async Task<StorageFolder> GetPicLibFolder(string folderName = null) {
+            StorageFolder folder = null;
+            if (!string.IsNullOrEmpty(folderName)) {
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+                } catch (Exception ex) {
+                    LogUtil.E("GetPicLibFolder() " + ex.Message);
+                }
+            }
+            if (folder == null) {
+                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+            }
+            return folder;
         }
     }
 
@@ -804,19 +809,19 @@ namespace Timeline.Utils {
             int[] res = new int[2];
             if (stretch == Stretch.UniformToFill) { // 填充模式
                 if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等高（不使用 Round() 或 Floor()，会导致闪烁）
-                    res[1] = (int)Math.Ceiling(boxH);
-                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH);
+                    res[1] = (int)Math.Ceiling(boxH) + 1;
+                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH) + 1;
                 } else { // 图片比窗口窄，缩放至与窗口等宽
-                    res[0] = (int)Math.Ceiling(boxW);
-                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW);
+                    res[0] = (int)Math.Ceiling(boxW) + 1;
+                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW) + 1;
                 }
             } else if (stretch == Stretch.Uniform) { // 全图模式
                 if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等宽
-                    res[0] = (int)Math.Ceiling(boxW);
-                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW);
+                    res[0] = (int)Math.Ceiling(boxW) + 1;
+                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW) + 1;
                 } else { // 图片比窗口窄，缩放至与窗口等高
-                    res[1] = (int)Math.Ceiling(boxH);
-                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH);
+                    res[1] = (int)Math.Ceiling(boxH) + 1;
+                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH) + 1;
                 }
             } else if (stretch == Stretch.Fill) { // 拉伸模式
                 res[0] = (int)Math.Ceiling(boxW);

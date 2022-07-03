@@ -32,29 +32,15 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
             // 已加载过无需加载
             if (metas.Count > 0) {
                 return true;
             }
-            await base.LoadData(token, bi, date);
+            await base.LoadData(token, bi, index, date);
 
             LocalIni ini = bi as LocalIni;
-            StorageFolder folder = null;
-            if (!string.IsNullOrEmpty(ini.Folder)) {
-                try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Folder, CreationCollisionOption.OpenIfExists);
-                } catch (Exception e) {
-                    LogUtil.E("LoadData() " + e.Message);
-                }
-            }
-            if (folder == null) {
-                try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
-                } catch (Exception e) {
-                    LogUtil.E("LoadData() " + e.Message);
-                }
-            }
+            StorageFolder folder = await FileUtil.GetPicLibFolder(ini.Folder);
             LogUtil.D("LoadData() provider folder: " + folder.Path);
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
             LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);

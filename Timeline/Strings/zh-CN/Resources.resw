@@ -309,9 +309,6 @@
   <data name="BoxGo.Header" xml:space="preserve">
     <value>跳转</value>
   </data>
-  <data name="CurDate" xml:space="preserve">
-    <value>当前日期：{0}</value>
-  </data>
   <data name="RbThemeDark.Content" xml:space="preserve">
     <value>深色</value>
   </data>
