@@ -48,7 +48,7 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, index, date);
 
-            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, ++pageIndex,
+            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, pageIndex,
                 "marked".Equals(bi.Admin) ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
