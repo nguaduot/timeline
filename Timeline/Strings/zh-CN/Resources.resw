@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDesc" xml:space="preserve">
-    <value>时光如歌，岁月如诗。拾光，每日一景</value>
+    <value>时光如歌，岁月如诗</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>拾光</value>

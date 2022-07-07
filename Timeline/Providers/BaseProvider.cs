@@ -308,7 +308,7 @@ namespace Timeline.Providers {
             }
             // 等待当前任务下载完成
             if (meta.CacheUhd == null && meta.Do != null) {
-                LogUtil.D("Cache() wait for cache: " + meta.Do.Guid);
+                LogUtil.D("Cache() wait for cache: " + meta.Id);
                 try {
                     if (meta.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                         meta.Do.Resume();

@@ -757,19 +757,19 @@
                 </muxc:InfoBar.ActionButton>
             </muxc:InfoBar>
 
-            <Rectangle Name="AnchorGo"
+            <Rectangle Name="AnchorCate"
                        Width="0"
                        Height="0"
-                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutGo}"
+                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
                        Margin="10,12,10,12"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />
 
-            <Rectangle Name="AnchorCate"
+            <Rectangle Name="AnchorGo"
                        Width="0"
                        Height="0"
-                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
+                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutGo}"
                        Margin="10,12,10,12"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
