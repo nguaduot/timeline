@@ -733,7 +733,7 @@
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value>开源。如果您愿意为「拾光」提供国内CDN加速服务，或有其他想法、合作意向，可</value>
+    <value>开源。如果您愿意为「拾光」提供国内CDN加速服务，或有其他想法、合作意向、定制需求，可</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
     <value>发邮件</value>
@@ -742,13 +742,13 @@
     <value>联系我。</value>
   </data>
   <data name="TextDonate0.Text" xml:space="preserve">
-    <value>「拾光」为非盈利性项目，迫于服务器等成本压力，开通了赞助渠道，如果您有稳定的收入，可以</value>
+    <value>迫于服务器等成本压力，开放</value>
   </data>
   <data name="TextDonate1.Text" xml:space="preserve">
     <value>扫码赞助</value>
   </data>
   <data name="TextDonate2.Text" xml:space="preserve">
-    <value>任意金额，所有赞助都将用来维护本项目以及提升积极性。(●'◡'●)</value>
+    <value>渠道，如果您有稳定的收入，可以打赏任意金额，都将用于维护本项目以及提升积极性。(●'◡'●)</value>
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
     <value>Recommend for me</value>

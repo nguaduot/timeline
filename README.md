@@ -4,7 +4,7 @@
 
 ![developing](https://img.shields.io/badge/developing-v6.5-brightgreen)
 [![release](https://img.shields.io/badge/release-v6.4.220710-blue)](https://gitee.com/nguaduot/timeline/releases)
-![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
+![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
 

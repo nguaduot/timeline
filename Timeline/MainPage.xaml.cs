@@ -122,7 +122,7 @@ namespace Timeline {
                 e.Handled = true;
                 exception = e.Exception;
                 LogUtil.E(exception.ToString());
-                ShowToastE(e.Exception.Message, "UnhandledException", resLoader.GetString("ActionReport"), async () => {
+                ShowToastE(exception.Message, "UnhandledException", resLoader.GetString("ActionReport"), async () => {
                     await Api.CrashAsync(exception);
                 });
             };
@@ -130,7 +130,7 @@ namespace Timeline {
                 e.SetObserved();
                 exception = e.Exception;
                 LogUtil.E(exception.ToString());
-                ShowToastE(e.Exception.Message, "UnobservedTaskException", resLoader.GetString("ActionReport"), async () => {
+                ShowToastE(exception.Message, "UnobservedTaskException", resLoader.GetString("ActionReport"), async () => {
                     await Api.CrashAsync(exception);
                 });
             };
@@ -1284,7 +1284,7 @@ namespace Timeline {
                     MenuFill_Click(null, null);
                     break;
                 case VirtualKey.Application: // Application
-                    // TOOD
+                    // TODO
                     break;
                 case VirtualKey.Left: // Left
                 case VirtualKey.Up: // Up

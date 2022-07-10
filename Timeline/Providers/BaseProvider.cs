@@ -265,26 +265,22 @@ namespace Timeline.Providers {
 
         public virtual async Task<Meta> CacheAsync(Meta meta, bool calFacePos, CancellationToken token) {
             LogUtil.D("CacheAsync() " + meta?.Uhd);
-            Debug.WriteLine("CacheAsync() " + meta?.Uhd);
             if (meta == null) {
                 return null;
             }
             // 缓存当前（等待）
             IReadOnlyList<DownloadOperation> downloading = await BackgroundDownloader.GetCurrentDownloadsAsync();
             LogUtil.D("CacheAsync() history " + downloading.Count);
-            Debug.WriteLine("CacheAsync() current downloads " + downloading.Count);
             if (meta.CacheUhd == null) {
                 string cacheName = string.Format("{0}-{1}{2}", Id, meta.Id, meta.Format);
                 StorageFile cacheFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(cacheName, CreationCollisionOption.OpenIfExists);
                 if ((await cacheFile.GetBasicPropertiesAsync()).Size > 0) { // 已缓存过
                     LogUtil.D("CacheAsync() cache from disk: " + cacheFile.Path);
-                    Debug.WriteLine("CacheAsync() cache from disk: " + cacheFile.Path);
                     meta.CacheUhd = cacheFile;
                 } else if (meta.Uhd != null) { // 未缓存
                     Uri uriUhd = new Uri(meta.Uhd);
                     if (uriUhd.IsFile) { // 开始复制
                         LogUtil.D("CacheAsync() cache from file: " + cacheFile.Path);
-                        Debug.WriteLine("CacheAsync() cache from file: " + cacheFile.Path);
                         StorageFile srcFile = await StorageFile.GetFileFromPathAsync(meta.Uhd);
                         await srcFile.CopyAndReplaceAsync(cacheFile);
                         meta.CacheUhd = cacheFile;
@@ -296,7 +292,6 @@ namespace Timeline.Providers {
                                 } else if (o.Progress.Status == BackgroundTransferStatus.Running) {
                                     o.Pause(); // 暂停缓存池之外的任务
                                     LogUtil.D("CacheAsync() pause: " + meta.Uhd);
-                                    Debug.WriteLine("CacheAsync() pause: " + meta.Uhd);
                                 }
                             }
                         }
@@ -304,19 +299,16 @@ namespace Timeline.Providers {
                             long start = DateTime.Now.Ticks;
                             if (meta.Do != null) { // 从历史中恢复任务
                                 LogUtil.D("CacheAsync() cache from history: " + meta.Uhd);
-                                Debug.WriteLine("CacheAsync() cache from history: " + meta.Uhd);
                                 if (meta.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                                     meta.Do.Resume();
                                 }
                                 await meta.Do.AttachAsync().AsTask(token);
                             } else { // 新建下载任务
                                 LogUtil.D("CacheAsync() cache from network: " + meta.Uhd);
-                                Debug.WriteLine("CacheAsync() cache from network: " + meta.Uhd);
                                 meta.Do = downloader.CreateDownload(uriUhd, cacheFile);
                                 await meta.Do.StartAsync().AsTask(token);
                             }
                             LogUtil.D("CacheAsync() " + meta.Uhd + " " + meta.Do.Progress.Status + " " + (int)((DateTime.Now.Ticks - start) / 10000));
-                            Debug.WriteLine("CacheAsync() " + meta.Uhd + " " + meta.Do.Progress.Status + " " + (int)((DateTime.Now.Ticks - start) / 10000));
                             if (meta.Do.Progress.Status == BackgroundTransferStatus.Completed) {
                                 meta.CacheUhd = meta.Do.ResultFile as StorageFile;
                             }
@@ -327,7 +319,6 @@ namespace Timeline.Providers {
                             // 情况2：任务被取消，此时该下载不再存在于 BackgroundDownloader.GetCurrentDownloadsAsync()
                             // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                             LogUtil.E("CacheAsync() " + e.Message);
-                            Debug.WriteLine("CacheAsync() " + e.Message);
                         }
                     }
                 }
@@ -343,7 +334,6 @@ namespace Timeline.Providers {
                 if ((await cacheFile.GetBasicPropertiesAsync()).Size > 0) { // 已缓存过
                     m.CacheUhd = cacheFile;
                     LogUtil.D("CacheAsync() cache from disk: " + cacheFile.Path);
-                    Debug.WriteLine("CacheAsync() cache from disk: " + cacheFile.Path);
                 } else if (m.Do != null) { // 下载中
                     if (m.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                         m.Do.Resume();
@@ -352,7 +342,6 @@ namespace Timeline.Providers {
                     foreach (DownloadOperation o in downloading) { // 从历史中恢复任务
                         if (m.Uhd.Equals(o.RequestedUri)) {
                             LogUtil.D("CacheAsync() cache from history: " + m.Uhd);
-                            Debug.WriteLine("CacheAsync() cache from history: " + m.Uhd);
                             m.Do = o;
                             if (m.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                                 m.Do.Resume();
@@ -362,7 +351,6 @@ namespace Timeline.Providers {
                     }
                     if (m.Do == null) { // 新建下载任务
                         LogUtil.D("CacheAsync() cache from network: " + m.Uhd);
-                        Debug.WriteLine("CacheAsync() cache from network: " + m.Uhd);
                         m.Do = downloader.CreateDownload(new Uri(m.Uhd), cacheFile);
                         _ = m.Do.StartAsync();
                     }
@@ -377,7 +365,6 @@ namespace Timeline.Providers {
                     }
                 } catch (Exception e) {
                     LogUtil.E("CacheAsync() " + e.Message);
-                    Debug.WriteLine("CacheAsync() " + e.Message);
                 }
             }
             if (token.IsCancellationRequested) {
@@ -410,11 +397,9 @@ namespace Timeline.Providers {
                             });
                         }
                         LogUtil.D("detect face cost: " + (int)((DateTime.Now.Ticks - start) / 10000));
-                        Debug.WriteLine("detect face cost: " + (int)((DateTime.Now.Ticks - start) / 10000));
                     }
                 } catch (Exception ex) {
                     LogUtil.E("CacheAsync() " + ex.Message);
-                    Debug.WriteLine("CacheAsync() " + ex.Message);
                 } finally {
                     bitmap?.Dispose();
                 }
