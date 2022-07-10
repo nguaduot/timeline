@@ -26,6 +26,7 @@ namespace Timeline.Utils {
         private string provider = BingIni.ID;
         private string desktopProvider = ""; // 非null
         private string lockProvider = ""; // 非null
+        private string tileProvider = ""; // 非null
         private string theme = ""; // 非null
 
         public string Provider {
@@ -41,6 +42,11 @@ namespace Timeline.Utils {
         public string LockProvider {
             set => lockProvider = Inis.ContainsKey(value) ? value : "";
             get => lockProvider;
+        }
+
+        public string TileProvider {
+            set => tileProvider = Inis.ContainsKey(value) ? value : "";
+            get => tileProvider;
         }
 
         public string Theme {

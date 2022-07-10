@@ -43,6 +43,8 @@ namespace TimelineService.Utils {
             ini.DesktopProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, iniFile);
             ini.LockProvider = sb.ToString();
+            _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, iniFile);
+            ini.TileProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
             _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, iniFile);

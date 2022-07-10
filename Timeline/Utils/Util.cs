@@ -49,6 +49,8 @@ namespace Timeline.Utils {
                     _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
+                    _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = WritePrivateProfileString("app", "tileprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, oldFiles[0].FullName);
@@ -233,6 +235,8 @@ namespace Timeline.Utils {
             ini.DesktopProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, iniFile);
             ini.LockProvider = sb.ToString();
+            _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, iniFile);
+            ini.TileProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
             _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, iniFile);

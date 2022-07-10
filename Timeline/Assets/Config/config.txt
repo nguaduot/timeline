@@ -31,6 +31,9 @@ desktopprovider=
 lockprovider=
 ; lockprovider={provider}  锁屏背景推送图源：参数参考 provider（置空则关闭推送）
 
+tileprovider=
+; tileprovider={provider}  磁贴推送图源：仅限 Windows 10，参数参考 provider（置空则与当前图源一致）
+
 theme=
 ; theme=       主题：跟随系统（默认）
 ; theme=light  主题：亮色

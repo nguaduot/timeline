@@ -47,7 +47,8 @@ namespace TimelineService {
             LogUtil.I("Run() trigger: " + taskInstance.TriggerDetails);
             LogUtil.I("Run() desktop: " + ini.DesktopProvider + ", " + periodDesktop);
             LogUtil.I("Run() lock: " + ini.LockProvider + ", " + periodLock);
-            LogUtil.I("Run() tile: " + ini.Provider + ", " + periodTile);
+            LogUtil.I("Run() tile: " + (!string.IsNullOrEmpty(ini.TileProvider)
+                ? ini.TileProvider : ini.Provider) + ", " + periodTile);
             // 检查网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 LogUtil.W("Run() network not available");
@@ -231,38 +232,41 @@ namespace TimelineService {
         }
 
         private async Task<bool> PushTileAsync() {
-            await FileUtil.WriteDosage(ini.Provider);
-            bool res = false;
-            if (LocalIni.GetId().Equals(ini.Provider)) {
+            string tileProvider = !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider;
+            await FileUtil.WriteDosage(tileProvider);
+            bool res;
+            if (LocalIni.GetId().Equals(tileProvider)) {
                 res = await LoadLocalAsync(Action.Tile);
-            } else if (BingIni.GetId().Equals(ini.Provider)) {
+            } else if (BingIni.GetId().Equals(tileProvider)) {
                 res = await LoadBingAsync(Action.Tile);
-            } else if (NasaIni.GetId().Equals(ini.Provider)) {
+            } else if (NasaIni.GetId().Equals(tileProvider)) {
                 res = await LoadNasaAsync(Action.Tile);
-            } else if (OneplusIni.GetId().Equals(ini.Provider)) {
+            } else if (OneplusIni.GetId().Equals(tileProvider)) {
                 res = await LoadOneplusAsync(Action.Tile);
-            } else if (TimelineIni.GetId().Equals(ini.Provider)) {
+            } else if (TimelineIni.GetId().Equals(tileProvider)) {
                 res = await LoadTimelineAsync(Action.Tile);
-            } else if (OneIni.GetId().Equals(ini.Provider)) {
+            } else if (OneIni.GetId().Equals(tileProvider)) {
                 res = await LoadOneAsync(Action.Tile);
-            } else if (Himawari8Ini.GetId().Equals(ini.Provider)) {
+            } else if (Himawari8Ini.GetId().Equals(tileProvider)) {
                 res = await LoadHimawari8Async(Action.Tile);
-            } else if (YmyouliIni.GetId().Equals(ini.Provider)) {
+            } else if (YmyouliIni.GetId().Equals(tileProvider)) {
                 res = await LoadYmyouliAsync(Action.Tile);
-            } else if (WallhavenIni.GetId().Equals(ini.Provider)) {
+            } else if (WallhavenIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallhavenAsync(Action.Tile);
-            } else if (QingbzIni.GetId().Equals(ini.Provider)) {
+            } else if (QingbzIni.GetId().Equals(tileProvider)) {
                 res = await LoadQingbzAsync(Action.Tile);
-            } else if (WallhereIni.GetId().Equals(ini.Provider)) {
+            } else if (WallhereIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallhereAsync(Action.Tile);
-            } else if (InfinityIni.GetId().Equals(ini.Provider)) {
+            } else if (InfinityIni.GetId().Equals(tileProvider)) {
                 res = await LoadInfinityAsync(Action.Tile);
-            } else if (ObzhiIni.GetId().Equals(ini.Provider)) {
+            } else if (ObzhiIni.GetId().Equals(tileProvider)) {
                 res = await LoadObzhiAsync(Action.Tile);
-            } else if (GluttonIni.GetId().Equals(ini.Provider)) {
+            } else if (GluttonIni.GetId().Equals(tileProvider)) {
                 res = await LoadGluttonAsync(Action.Tile);
-            } else if (LspIni.GetId().Equals(ini.Provider)) {
+            } else if (LspIni.GetId().Equals(tileProvider)) {
                 res = await LoadLspAsync(Action.Tile);
+            } else {
+                res = await LoadBingAsync(Action.Tile);
             }
             if (res) {
                 localSettings.Values[tagTile] = (int)(localSettings.Values[tagTile] ?? 0) + 1;

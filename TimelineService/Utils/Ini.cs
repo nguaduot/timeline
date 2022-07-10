@@ -20,6 +20,8 @@ namespace TimelineService.Utils {
 
         public string LockProvider { set; get; }
 
+        public string TileProvider { set; get; }
+
         private string theme = "";
         public string Theme {
             set => theme = THEME.Contains(value) ? value : "";
