@@ -18,8 +18,11 @@ namespace Timeline.Utils {
                 return;
             }
             const string URL_API = "https://api.nguaduot.cn/appstats";
-            Windows.Foundation.Size screen = SysUtil.GetMonitorPixels(false);
-            double scaleFactor = SysUtil.GetMonitorScale();
+            Windows.Foundation.Size resolution = SysUtil.GetMonitorPixels(false); // 分辨率
+            double scaleFactor = SysUtil.GetMonitorScale(); // 缩放因子
+            double diagonalInch = SysUtil.GetMonitorDiagonal(); // 屏幕物理大小（吋）
+            string screen = string.Format("{0}x{1},{2},{3}", (int)resolution.Width, (int)resolution.Height,
+                scaleFactor.ToString("0.00"), diagonalInch.ToString("0.0"));
             StatsApiReq req = new StatsApiReq {
                 App = Package.Current.DisplayName, // 不会随语言改变
                 Package = Package.Current.Id.FamilyName,
@@ -29,7 +32,7 @@ namespace Timeline.Utils {
                 DosageApi = dosageApi,
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = SysUtil.GetOsVer(),
-                Screen = String.Format("{0}x{1},{2}", (int)screen.Width, (int)screen.Height, scaleFactor.ToString("0.00")),
+                Screen = screen,
                 Device = SysUtil.GetDevice(),
                 DeviceName = SysUtil.GetDeviceName(),
                 DeviceId = SysUtil.GetDeviceId(),

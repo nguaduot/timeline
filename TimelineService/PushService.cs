@@ -65,11 +65,12 @@ namespace TimelineService {
             // 上传统计
             IReadOnlyDictionary<string, int> dosage = await FileUtil.ReadDosage();
             double scaleFactor = (double)(localSettings.Values["Scale"] ?? 0);
-            long screen = (long)(localSettings.Values["Screen"] ?? 0);
-            long screenW = (screen & 0xffff0000) >> 16;
-            long screenH = screen & 0x0000ffff;
+            double diagonalInch = (double)(localSettings.Values["Diagonal"] ?? 0);
+            long resolution = (long)(localSettings.Values["Resolution"] ?? 0);
+            long resW = (resolution & 0xffff0000) >> 16;
+            long resH = resolution & 0x0000ffff;
             await Api.Stats(ini, dosage.GetValueOrDefault("all", 0), 0,
-                string.Format("{0}x{1},{2}", screenW, screenH, scaleFactor.ToString("0.00")));
+                string.Format("{0}x{1},{2},{3}", resW, resH, scaleFactor.ToString("0.00"), diagonalInch.ToString("0.0")));
             // 开始推送
             try {
                 if (pushDesktop) {

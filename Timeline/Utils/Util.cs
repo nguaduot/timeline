@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -767,6 +766,16 @@ namespace Timeline.Utils {
             try {
                 DisplayInformation info = DisplayInformation.GetForCurrentView();
                 return info.RawPixelsPerViewPixel;
+            } catch (Exception e) {
+                LogUtil.E("GetMonitorPhysicalPixels() " + e.Message);
+            }
+            return 0;
+        }
+
+        public static double GetMonitorDiagonal() {
+            try {
+                DisplayInformation info = DisplayInformation.GetForCurrentView();
+                return info.DiagonalSizeInInches ?? 0;
             } catch (Exception e) {
                 LogUtil.E("GetMonitorPhysicalPixels() " + e.Message);
             }

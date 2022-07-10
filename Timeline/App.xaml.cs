@@ -111,8 +111,9 @@ namespace Timeline {
         private void OptimizeSize() {
             // 保存显示器分辨率
             Windows.Foundation.Size pysical = SysUtil.GetMonitorPixels(false);
-            ApplicationData.Current.LocalSettings.Values["Screen"] = (long)(((int)pysical.Width << 16) + (int)pysical.Height);
+            ApplicationData.Current.LocalSettings.Values["Resolution"] = (long)(((int)pysical.Width << 16) + (int)pysical.Height);
             ApplicationData.Current.LocalSettings.Values["Scale"] = SysUtil.GetMonitorScale();
+            ApplicationData.Current.LocalSettings.Values["Diagonal"] = SysUtil.GetMonitorDiagonal();
             // 调整窗口尺寸
             if (!ApplicationData.Current.LocalSettings.Values.ContainsKey("OptimizeSize")) {
                 ApplicationData.Current.LocalSettings.Values["OptimizeSize"] = true;
