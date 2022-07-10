@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Timeline.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -27,7 +28,7 @@ namespace Timeline {
             this.Suspending += OnSuspending;
 
             // 上传崩溃日志
-            this.UnhandledException += OnUnhandledException;
+            //this.UnhandledException += OnUnhandledException;
             //TaskScheduler.UnobservedTaskException += OnUnobservedException;
             //AppDomain.CurrentDomain.UnhandledException += OnBgUnhandledException;
         }

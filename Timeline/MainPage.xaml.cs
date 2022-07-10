@@ -30,10 +30,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Timeline {
-    public delegate void BtnInfoLinkHandler();
+    public delegate void BtnInfoHandler();
 
     public sealed partial class MainPage : Page {
-        private event BtnInfoLinkHandler InfoLink;
+        private event BtnInfoHandler InfoHandler;
 
         private readonly ResourceLoader resLoader;
         private readonly ApplicationDataContainer localSettings;
@@ -116,6 +116,17 @@ namespace Timeline {
                 ini = await IniUtil.GetIniAsync();
             }).Wait();
             InitProvider();
+
+            App.Current.UnhandledException += (s, e) => {
+                e.Handled = true;
+                ShowToastE(e.Exception.Message, "UnhandledException");
+                LogUtil.E("UnhandledException() " + e.Exception.ToString());
+            };
+            TaskScheduler.UnobservedTaskException += (s, e) => {
+                e.SetObserved();
+                ShowToastE(e.Exception.Message, "UnobservedTaskException");
+                LogUtil.E("OnUnobservedException() " + e.Exception.ToString());
+            };
         }
 
         private async Task LaunchAsync() {
@@ -123,7 +134,7 @@ namespace Timeline {
             Dictionary<string, int> dosage = await FileUtil.ReadDosage();
             await Api.StatsAsync(ini, dosage.GetValueOrDefault("all", 0), dosage.GetValueOrDefault(ini.Provider, 0));
             // 在缓存可能被使用之前清理缓存
-            FileUtil.ClearCache(ini);
+            await FileUtil.ClearCache(ini);
             // 初始化任务栏右键菜单
             //await InitJumpList();
             // 确保推送服务一直运行
@@ -441,8 +452,8 @@ namespace Timeline {
             biUhd.DecodePixelWidth = resize[0];
             biUhd.DecodePixelHeight = resize[1];
             LogUtil.D("ShowImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
-                Math.Ceiling(meta.Dimen.Width), Math.Ceiling(meta.Dimen.Height),
-                Math.Ceiling(ViewMain.ActualWidth), Math.Ceiling(ViewMain.ActualHeight), resize[0], resize[1]);
+                Math.Round(meta.Dimen.Width), Math.Round(meta.Dimen.Height),
+                Math.Round(ViewMain.ActualWidth), Math.Round(ViewMain.ActualHeight), resize[0], resize[1]);
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             } else if (meta.CacheUhd != null) {
@@ -461,13 +472,14 @@ namespace Timeline {
                 LogUtil.D("ReDecodeImg() bi.PixelWidth 0");
                 return;
             }
+            bi.DecodePixelWidth = 0; // 先重置，否则可能出现图像闪烁
+            bi.DecodePixelHeight = 0;
             int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
-            bi.DecodePixelType = DecodePixelType.Logical; // 按逻辑像素
             bi.DecodePixelWidth = resize[0];
             bi.DecodePixelHeight = resize[1];
-            LogUtil.D("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
-                Math.Ceiling(meta.Dimen.Width), Math.Ceiling(meta.Dimen.Height),
-                Math.Ceiling(ViewMain.ActualWidth), Math.Ceiling(ViewMain.ActualHeight), resize[0], resize[1]);
+            Debug.WriteLine("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
+                Math.Round(meta.Dimen.Width), Math.Round(meta.Dimen.Height),
+                Math.Round(ViewMain.ActualWidth), Math.Round(ViewMain.ActualHeight), resize[0], resize[1]);
         }
 
         private void AdjustStoryPos(bool right) {
@@ -580,20 +592,18 @@ namespace Timeline {
             }
             try {
                 if (setDesktopOrLock) {
-                    // Your app can't set wallpapers from any folder.
-                    // Copy file in ApplicationData.Current.LocalFolder and set wallpaper from there.
-                    StorageFile fileWallpaper = await meta.CacheUhd.CopyAsync(ApplicationData.Current.LocalFolder,
-                        "desktop", NameCollisionOption.ReplaceExisting);
-                    bool wallpaperSet = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(fileWallpaper);
+                    StorageFile file = await meta.CacheUhd.CopyAsync(await FileUtil.GetWallpaperFolderAsync(),
+                        string.Format("desktop-{0}.jpg", DateTime.Now.ToString("yyyyMMddHH00")), NameCollisionOption.ReplaceExisting);
+                    bool wallpaperSet = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(file);
                     if (wallpaperSet) {
                         ShowToastS(resLoader.GetString("MsgSetDesktop1"));
                     } else {
                         ShowToastE(resLoader.GetString("MsgSetDesktop0"));
                     }
                 } else {
-                    StorageFile fileWallpaper = await meta.CacheUhd.CopyAsync(ApplicationData.Current.LocalFolder,
-                        "lock", NameCollisionOption.ReplaceExisting);
-                    bool wallpaperSet = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(fileWallpaper);
+                    StorageFile file = await meta.CacheUhd.CopyAsync(await FileUtil.GetWallpaperFolderAsync(),
+                        string.Format("lock-{0}.jpg", DateTime.Now.ToString("yyyyMMddHH00")), NameCollisionOption.ReplaceExisting);
+                    bool wallpaperSet = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(file);
                     if (wallpaperSet) {
                         ShowToastS(resLoader.GetString("MsgSetLock1"));
                     } else {
@@ -601,7 +611,7 @@ namespace Timeline {
                     }
                 }
             } catch (Exception e) {
-                LogUtil.E("SetWallpaper() " + e.Message);
+                LogUtil.E("SetWallpaperAsync() " + e.Message);
             }
         }
 
@@ -651,32 +661,32 @@ namespace Timeline {
             }
         }
 
-        private void ShowToast(InfoBarSeverity severity, string msg, string title, string action, BtnInfoLinkHandler handler) {
+        private void ShowToast(InfoBarSeverity severity, string msg, string title, string action, BtnInfoHandler handler) {
             if (string.IsNullOrEmpty(msg)) {
                 return;
             }
             Info.Severity = severity;
             Info.Title = title ?? "";
             Info.Message = msg;
-            InfoLink = handler;
-            BtnInfoLink.Content = action ?? resLoader.GetString("ActionGo");
-            BtnInfoLink.Visibility = handler != null ? Visibility.Visible : Visibility.Collapsed;
+            InfoHandler = handler;
+            BtnInfo.Content = action ?? resLoader.GetString("ActionGo");
+            BtnInfo.Visibility = handler != null ? Visibility.Visible : Visibility.Collapsed;
             Info.IsOpen = true;
         }
 
-        private void ShowToastI(string msg, string title = null, string action = null, BtnInfoLinkHandler handler = null) {
+        private void ShowToastI(string msg, string title = null, string action = null, BtnInfoHandler handler = null) {
             ShowToast(InfoBarSeverity.Informational, msg, title, action, handler);
         }
 
-        private void ShowToastS(string msg, string title = null, string action = null, BtnInfoLinkHandler handler = null) {
+        private void ShowToastS(string msg, string title = null, string action = null, BtnInfoHandler handler = null) {
             ShowToast(InfoBarSeverity.Success, msg, title, action, handler);
         }
 
-        private void ShowToastW(string msg, string title = null, string action = null, BtnInfoLinkHandler handler = null) {
+        private void ShowToastW(string msg, string title = null, string action = null, BtnInfoHandler handler = null) {
             ShowToast(InfoBarSeverity.Warning, msg, title, action, handler);
         }
 
-        private void ShowToastE(string msg, string title = null, string action = null, BtnInfoLinkHandler handler = null) {
+        private void ShowToastE(string msg, string title = null, string action = null, BtnInfoHandler handler = null) {
             ShowToast(InfoBarSeverity.Error, msg, title, action, handler);
         }
 
@@ -725,15 +735,16 @@ namespace Timeline {
             foreach (CateMeta cate in bi.Cates) {
                 MenuFlyoutItem item = new MenuFlyoutItem {
                     Text = cate.Name,
-                    Tag = cate.Id
+                    Tag = cate.Id,
+                    IsEnabled = string.IsNullOrEmpty(cate.Name) || !cate.Name.Equals(meta.Cate)
                 };
-                item.IsEnabled = string.IsNullOrEmpty(cate.Name) || !cate.Name.Equals(meta.Cate);
                 item.Click += MenuMarkCate_Click;
                 FlyoutMarkCate.Items.Add(item);
             }
             FlyoutMarkCate.Placement = RelativePanel.GetAlignRightWithPanel(AnchorCate)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorCate);
+            Debug.WriteLine(AnchorCate.Margin);
         }
 
         private async Task<bool> RegServiceAsync() {
@@ -847,7 +858,7 @@ namespace Timeline {
 
             if (!localSettings.Values.ContainsKey("YesterdayLearned")) {
                 localSettings.Values["YesterdayLearned"] = true;
-                ShowToastI(resLoader.GetString("MsgYesterdayDesc"), resLoader.GetString("MsgYesterday"));
+                ShowToastI(resLoader.GetString("MsgWelcome"), resLoader.GetString("MsgYesterday"));
             }
 
             ctsLoad.Cancel();
@@ -1019,8 +1030,8 @@ namespace Timeline {
             }
         }
 
-        private void BtnInfoLink_Click(object sender, RoutedEventArgs e) {
-            InfoLink?.Invoke();
+        private void BtnInfo_Click(object sender, RoutedEventArgs e) {
+            InfoHandler?.Invoke();
         }
 
         private void ViewBarPointer_PointerEntered(object sender, PointerRoutedEventArgs e) {
@@ -1098,6 +1109,12 @@ namespace Timeline {
                 ctsLoad = new CancellationTokenSource();
                 await LoadTargetAsync(Math.Min(index - 1, provider.GetCount() - 1), ctsLoad.Token);
             }
+        }
+
+        private void BoxGo_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args) {
+            // 限制仅输入数字
+            sender.Text = new string(sender.Text.Where(char.IsDigit).ToArray());
+            sender.Select(sender.Text.Length, 0);
         }
 
         private void FlyoutMenu_Opened(object sender, object e) {
@@ -1211,7 +1228,7 @@ namespace Timeline {
                     ToggleFullscreenMode();
                     break;
                 case VirtualKey.F12: // F12
-                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolder());
+                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolderAsync());
                     break;
                 case VirtualKey.Number6: // Ctrl + 6
                     await Mark("audited", resLoader.GetString("MarkAudited"));
@@ -1258,6 +1275,9 @@ namespace Timeline {
                     break;
                 case VirtualKey.Space: // Space
                     MenuFill_Click(null, null);
+                    break;
+                case VirtualKey.Application: // Application
+                    // TOOD
                     break;
                 case VirtualKey.Left: // Left
                 case VirtualKey.Up: // Up

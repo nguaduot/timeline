@@ -622,8 +622,18 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task<StorageFolder> GetLogFolder() {
-            return await ApplicationData.Current.LocalFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
+        public static async Task<StorageFolder> GetLogFolderAsync() {
+            // LocalCache folder can be relied upon until it's deleted,
+            // whereas TempState folder cannot be relied upon at a later time
+            // as it's subject to deletion by external factors such as disk clean - up,
+            // or by the operating system on running low on storage space.
+            return await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
+        }
+
+        public static async Task<StorageFolder> GetWallpaperFolderAsync() {
+            // Your app can't set wallpapers from any folder.
+            // Copy file in ApplicationData.Current.LocalFolder and set wallpaper from there.
+            return await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper", CreationCollisionOption.OpenIfExists);
         }
 
         public static async Task LaunchFileAsync(StorageFile file) {
@@ -656,18 +666,23 @@ namespace Timeline.Utils {
             }
         }
 
-        public static void ClearCache(Ini ini) {
+        public static async Task ClearCache(Ini ini) {
             int count_threshold = ini?.Cache ?? 1000; // 缓存量阈值
-            StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 缓存文件夹
             try {
-                FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
-                Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
-                int count_clear = 0;
-                for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
-                    files[i].Delete();
-                    count_clear++;
+                if (count_threshold <= 0) {
+                    await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
+                    LogUtil.I("ClearCache() all");
+                } else {
+                    StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 缓存文件夹
+                    FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
+                    Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
+                    int count_clear = 0;
+                    for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
+                        files[i].Delete();
+                        count_clear++;
+                    }
+                    LogUtil.I("ClearCache() " + count_clear);
                 }
-                LogUtil.I("ClearCache() " + count_clear);
             } catch (Exception e) {
                 LogUtil.E("ClearCache() " + e.Message);
             }
@@ -808,27 +823,31 @@ namespace Timeline.Utils {
         public static int[] Resize(double boxW, double boxH, double imgW, double imgH, Stretch stretch) {
             int[] res = new int[2];
             if (stretch == Stretch.UniformToFill) { // 填充模式
-                if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等高（不使用 Round() 或 Floor()，会导致闪烁）
-                    res[1] = (int)Math.Ceiling(boxH) + 1;
-                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH) + 1;
+                if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等高
+                    res[1] = (int)Math.Round(boxH);
+                    //res[0] = (int)Math.Round(boxH * imgW / imgH);
+                    res[0] = 0;
                 } else { // 图片比窗口窄，缩放至与窗口等宽
-                    res[0] = (int)Math.Ceiling(boxW) + 1;
-                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW) + 1;
+                    res[0] = (int)Math.Round(boxW);
+                    //res[1] = (int)Math.Round(boxW * imgH / imgW);
+                    res[1] = 0;
                 }
             } else if (stretch == Stretch.Uniform) { // 全图模式
                 if (imgW / imgH > boxW / boxH) { // 图片比窗口宽，缩放至与窗口等宽
-                    res[0] = (int)Math.Ceiling(boxW) + 1;
-                    res[1] = (int)Math.Ceiling(boxW * imgH / imgW) + 1;
+                    res[0] = (int)Math.Round(boxW);
+                    //res[1] = (int)Math.Round(boxW * imgH / imgW);
+                    res[1] = 0;
                 } else { // 图片比窗口窄，缩放至与窗口等高
-                    res[1] = (int)Math.Ceiling(boxH) + 1;
-                    res[0] = (int)Math.Ceiling(boxH * imgW / imgH) + 1;
+                    res[1] = (int)Math.Round(boxH);
+                    //res[0] = (int)Math.Round(boxH * imgW / imgH);
+                    res[0] = 0;
                 }
             } else if (stretch == Stretch.Fill) { // 拉伸模式
-                res[0] = (int)Math.Ceiling(boxW);
-                res[1] = (int)Math.Ceiling(boxH);
+                res[0] = (int)Math.Round(boxW);
+                res[1] = (int)Math.Round(boxH);
             } else { // 原图模式
-                res[0] = (int)Math.Ceiling(imgW);
-                res[1] = (int)Math.Ceiling(imgH);
+                res[0] = (int)Math.Round(imgW);
+                res[1] = (int)Math.Round(imgH);
             }
             return res;
         }
@@ -866,7 +885,7 @@ namespace Timeline.Utils {
         }
 
         private static void Initialize() {
-            string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs/timeline.log");
+            string logFilePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, "logs/timeline.log");
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(logFilePath, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)

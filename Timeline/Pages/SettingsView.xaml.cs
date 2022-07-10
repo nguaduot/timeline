@@ -294,14 +294,16 @@ namespace Timeline.Pages {
             if (glitters.Count == 0) {
                 glitters.AddRange(await FileUtil.GetGlitterAsync());
             }
-            LogUtil.I("RandomGlitter() " + glitters.Count);
-            List<string> glittersRandom = new List<string>();
-            for (int i = 0; i < glitters.Count && i < 2; i++) {
-                string target = glitters[new Random().Next(glitters.Count)];
-                glitters.Remove(target);
-                glittersRandom.Add(target);
+            if (glitters.Count < 2) {
+                return;
             }
+            List<string> glittersRandom = new List<string>();
+            foreach (var glitter in glitters) {
+                glittersRandom.Insert(new Random().Next(glittersRandom.Count), glitter);
+            }
+            glittersRandom.RemoveRange(2, glittersRandom.Count - 2);
             glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
+            LogUtil.I("RandomGlitter() " + string.Join(" ", glittersRandom));
             SettingsReviewDesc.Text = glittersRandom[0];
             SettingsThankDesc.Text = glittersRandom[1];
         }

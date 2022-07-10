@@ -342,7 +342,10 @@ namespace TimelineService {
                     cacheName = "tile";
                     break;
             }
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(cacheName, CreationCollisionOption.ReplaceExisting);
+            StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
+                CreationCollisionOption.OpenIfExists);
+            StorageFile file = await folder.CreateFileAsync(string.Format("{0}-{1}.jpg", cacheName, DateTime.Now.ToString("yyyyMMddHH00")),
+                CreationCollisionOption.ReplaceExisting);
             if (string.IsNullOrEmpty(urlImg)) {
                 LogUtil.E("DownloadImgAsync() invalid url");
                 return file;
@@ -393,7 +396,8 @@ namespace TimelineService {
                     session.DrawImage(bitmap, (canvasW + bitmap.SizeInPixels.Width) * offset - bitmap.SizeInPixels.Width,
                         canvasH / 2 - bitmap.SizeInPixels.Height / 2);
                 }
-                file = await ApplicationData.Current.LocalFolder.CreateFileAsync(cacheName + "-reset", CreationCollisionOption.ReplaceExisting);
+                file = await folder.CreateFileAsync(string.Format("{0}-reset-{1}.jpg", cacheName, DateTime.Now.ToString("yyyyMMddHH00")),
+                    CreationCollisionOption.ReplaceExisting);
                 await target.SaveAsync(file.Path, CanvasBitmapFileFormat.Png, 1.0f);
             }
             return file;
@@ -423,7 +427,9 @@ namespace TimelineService {
             if (action == Action.Tile) {
                 // 生成缩略图
                 // TODO：无法保持原图比例
-                StorageFile fileThumb = await ApplicationData.Current.LocalFolder.CreateFileAsync("tile",
+                StorageFolder folderWp = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile fileThumb = await folderWp.CreateFileAsync(string.Format("tile-{0}.jpg", DateTime.Now.ToString("yyyyMMddHH00")),
                     CreationCollisionOption.ReplaceExisting);
                 StorageItemThumbnail thumb = await fileSrc.GetThumbnailAsync(ThumbnailMode.PicturesView);
                 Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(Convert.ToUInt32(thumb.Size));
@@ -645,6 +651,7 @@ namespace TimelineService {
             } else {
                 LogUtil.I("LoadYmyouliAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                Debug.WriteLine("LoadYmyouliAsync() img file: " + fileImg?.Path);
                 if (action == Action.Lock) {
                     return await SetLockBackground(fileImg);
                 } else {
@@ -854,9 +861,11 @@ namespace TimelineService {
             if (action == Action.Tile) {
                 // 生成缩略图
                 // TODO：无法保持原图比例
-                StorageFile fileSrc = await DownloadImgAsync(data.ImgUrl, action);
-                StorageFile fileThumb = await ApplicationData.Current.LocalFolder.CreateFileAsync("tile",
+                StorageFolder folderWp = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
+                    CreationCollisionOption.OpenIfExists);
+                StorageFile fileThumb = await folderWp.CreateFileAsync(string.Format("tile-{0}.jpg", DateTime.Now.ToString("yyyyMMddHH00")),
                     CreationCollisionOption.ReplaceExisting);
+                StorageFile fileSrc = await DownloadImgAsync(data.ImgUrl, action);
                 StorageItemThumbnail thumb = await fileSrc.GetThumbnailAsync(ThumbnailMode.PicturesView);
                 Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(Convert.ToUInt32(thumb.Size));
                 using (var stream = await fileThumb.OpenAsync(FileAccessMode.ReadWrite)) {

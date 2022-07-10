@@ -549,9 +549,6 @@
   <data name="TextWallhavenOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
-  <data name="MsgYesterdayDesc" xml:space="preserve">
-    <value>还可用向左键、鼠标滚轮或滑动来回顾</value>
-  </data>
   <data name="Slogan_wallhere" xml:space="preserve">
     <value>One of the best hd wallpapers site!</value>
   </data>
@@ -580,7 +577,7 @@
     <value>支持一下</value>
   </data>
   <data name="MsgWelcome" xml:space="preserve">
-    <value>方向键或滚轮可翻页；鼠标右键可切换图源</value>
+    <value>方向键或鼠标滚轮可翻页</value>
   </data>
   <data name="MsgYesterday" xml:space="preserve">
     <value>回顾</value>

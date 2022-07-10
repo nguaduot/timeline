@@ -439,8 +439,9 @@
                 LightDismissOverlayMode="On">
             <TextBox Name="BoxGo"
                      x:Uid="BoxGo"
-                     MaxLength="10"
+                     MaxLength="8"
                      MinWidth="168"
+                     TextChanging="BoxGo_TextChanging"
                      KeyDown="BoxGo_KeyDown" />
         </Flyout>
 
@@ -469,11 +470,11 @@
                         <Setter Target="ViewBar.CornerRadius"
                                 Value="14" />
                         <Setter Target="Info.Margin"
-                                Value="24,36,24,24" />
+                                Value="23,48,23,24" />
                         <Setter Target="AnchorGo.Margin"
-                                Value="20,24,20,24" />
+                                Value="20,24" />
                         <Setter Target="AnchorCate.Margin"
-                                Value="20,24,20,24" />
+                                Value="20,24" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -615,6 +616,9 @@
                 <KeyboardAccelerator Key="Space"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Application"
+                                     Modifiers="None"
+                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Left"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
@@ -749,28 +753,29 @@
                           RelativePanel.AlignLeftWithPanel="True"
                           RelativePanel.AlignRightWithPanel="False"
                           IsOpen="False"
-                          Margin="12,36,12,12">
+                          Margin="11,42,11,12">
                 <muxc:InfoBar.ActionButton>
-                    <HyperlinkButton Name="BtnInfoLink"
+                    <HyperlinkButton Name="BtnInfo"
                                      Visibility="Collapsed"
-                                     Click="BtnInfoLink_Click" />
+                                     HorizontalAlignment="Right"
+                                     Click="BtnInfo_Click" />
                 </muxc:InfoBar.ActionButton>
             </muxc:InfoBar>
-
-            <Rectangle Name="AnchorCate"
-                       Width="0"
-                       Height="0"
-                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
-                       Margin="10,12,10,12"
-                       RelativePanel.AlignLeftWithPanel="False"
-                       RelativePanel.AlignRightWithPanel="True"
-                       RelativePanel.AlignBottomWithPanel="True" />
 
             <Rectangle Name="AnchorGo"
                        Width="0"
                        Height="0"
                        FlyoutBase.AttachedFlyout="{StaticResource FlyoutGo}"
-                       Margin="10,12,10,12"
+                       Margin="10,12"
+                       RelativePanel.AlignLeftWithPanel="False"
+                       RelativePanel.AlignRightWithPanel="True"
+                       RelativePanel.AlignBottomWithPanel="True" />
+
+            <Rectangle Name="AnchorCate"
+                       Width="0"
+                       Height="0"
+                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
+                       Margin="10,12"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />

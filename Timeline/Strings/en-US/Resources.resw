@@ -522,9 +522,6 @@
   <data name="UrlQingbz" xml:space="preserve">
     <value>https://bz.qinggongju.com/1159-2/</value>
   </data>
-  <data name="MsgYesterdayDesc" xml:space="preserve">
-    <value>Use LEFT or WHEEL to look back.</value>
-  </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
@@ -547,7 +544,7 @@
     <value>Scan QR</value>
   </data>
   <data name="MsgWelcome" xml:space="preserve">
-    <value>Right-click to show menus.</value>
+    <value>Use LEFT or WHEEL to look back.</value>
   </data>
   <data name="TextTimelineDonate.Text" xml:space="preserve">
     <value>Buy me a coffee</value>

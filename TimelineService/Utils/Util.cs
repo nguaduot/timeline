@@ -350,7 +350,7 @@ namespace TimelineService.Utils {
 
         private static async Task<string> ReadProviderCache_Impl(string provider, string p1, string p2) {
             try {
-                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
+                StorageFolder folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("data",
                     CreationCollisionOption.OpenIfExists);
                 string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", p1 ?? "", p2 ?? "", DateTime.Now.ToString("yyyyMMdd"));
                 StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
@@ -364,7 +364,7 @@ namespace TimelineService.Utils {
 
         private static async Task<bool> WriteProviderCache_Impl(string provider, string p1, string p2, string data) {
             try {
-                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("data",
+                StorageFolder folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("data",
                     CreationCollisionOption.OpenIfExists);
                 string name = string.Format("{0}-{1}-{2}-{3}.json", provider ?? "", p1 ?? "", p2 ?? "", DateTime.Now.ToString("yyyyMMdd"));
                 StorageFile file = await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
@@ -410,7 +410,7 @@ namespace TimelineService.Utils {
         }
 
         private static void Initialize() {
-            string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs/timelineservice.log");
+            string logFilePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, "logs/timelineservice.log");
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(logFilePath, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
