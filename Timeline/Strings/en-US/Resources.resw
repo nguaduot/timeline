@@ -772,6 +772,6 @@
     <value>Imported...{0}/{1}</value>
   </data>
   <data name="TextThank4.Text" xml:space="preserve">
-    <value>多笔捐赠：*幻、*新等多位用户</value>
+    <value>@*幻、@*新 等：多笔捐赠</value>
   </data>
 </root>
