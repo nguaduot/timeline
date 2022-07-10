@@ -1,4 +1,4 @@
-; Ê°¹â / Timeline v6.3
+; Ê°¹â / Timeline v6.4
 ; Microsoft Store£ºhttps://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee£ºhttps://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
