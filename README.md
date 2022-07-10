@@ -2,7 +2,7 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v6.3-brightgreen)
+![developing](https://img.shields.io/badge/developing-v6.4-brightgreen)
 [![release](https://img.shields.io/badge/release-v6.2.220704-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2010%20--%2011-lightgrey)
 
