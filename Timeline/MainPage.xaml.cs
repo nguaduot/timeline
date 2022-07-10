@@ -55,6 +55,7 @@ namespace Timeline {
         private PageAction pageTimerAction = PageAction.Yesterday;
         private Meta markTimerMeta = null;
         private string markTimerAction = null;
+        private Exception exception;
 
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
@@ -119,13 +120,19 @@ namespace Timeline {
 
             App.Current.UnhandledException += (s, e) => {
                 e.Handled = true;
-                ShowToastE(e.Exception.Message, "UnhandledException");
-                LogUtil.E("UnhandledException() " + e.Exception.ToString());
+                exception = e.Exception;
+                LogUtil.E(exception.ToString());
+                ShowToastE(e.Exception.Message, "UnhandledException", resLoader.GetString("ActionReport"), async () => {
+                    await Api.CrashAsync(exception);
+                });
             };
             TaskScheduler.UnobservedTaskException += (s, e) => {
                 e.SetObserved();
-                ShowToastE(e.Exception.Message, "UnobservedTaskException");
-                LogUtil.E("OnUnobservedException() " + e.Exception.ToString());
+                exception = e.Exception;
+                LogUtil.E(exception.ToString());
+                ShowToastE(e.Exception.Message, "UnobservedTaskException", resLoader.GetString("ActionReport"), async () => {
+                    await Api.CrashAsync(exception);
+                });
             };
         }
 

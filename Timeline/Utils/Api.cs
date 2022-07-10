@@ -146,7 +146,7 @@ namespace Timeline.Utils {
         }
 
         public static async Task CrashAsync(Exception e) {
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
+            if (e == null || !NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
             const string URL_API = "https://api.nguaduot.cn/appstats/crash";
