@@ -781,6 +781,9 @@
     <value>上报</value>
   </data>
   <data name="Life" xml:space="preserve">
-    <value>已运营{0}天，收到赞助{1}笔，剩余{0}天</value>
+    <value>运营{0}天，得赏{1}笔，续{2}天</value>
+  </data>
+  <data name="ActionDonate" xml:space="preserve">
+    <value>赞助</value>
   </data>
 </root>

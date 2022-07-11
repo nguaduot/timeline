@@ -52,6 +52,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
         private List<string> glitters = new List<string>();
+        private LifeApiData life = null;
 
         private DispatcherTimer himawari8OffsetTimer = null;
         private DispatcherTimer himawari8RatioTimer = null;
@@ -214,8 +215,6 @@ namespace Timeline.Pages {
             TextThemeCur.Text = rbTheme.Content.ToString();
             // 刷新“其他”组 Expander 随机一文
             await RandomGlitter();
-            // 刷新运营数据
-            _ = LifeAsync();
             // 展开当前图源 Expander
             Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
@@ -296,28 +295,36 @@ namespace Timeline.Pages {
             if (glitters.Count == 0) {
                 glitters.AddRange(await FileUtil.GetGlitterAsync());
             }
-            if (glitters.Count < 2) {
-                return;
+            if (glitters.Count > 0) {
+                SettingsThankDesc.Text = glitters[new Random().Next(glitters.Count)];
             }
-            List<string> glittersRandom = new List<string>();
-            foreach (var glitter in glitters) {
-                glittersRandom.Insert(new Random().Next(glittersRandom.Count), glitter);
+            // 刷新运营数据
+            _ = LifeAsync();
+            // 随机替换“评分”按钮为“赞助”
+            if (DateTime.Now.Ticks % 2 == 0) {
+                BtnReview.Content = resLoader.GetString("ActionDonate");
             }
-            glittersRandom.RemoveRange(2, glittersRandom.Count - 2);
-            glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
-            LogUtil.I("RandomGlitter() " + string.Join(" ", glittersRandom));
-            SettingsReviewDesc.Text = glittersRandom[0];
-            SettingsThankDesc.Text = glittersRandom[1];
+            //if (glitters.Count < 2) {
+            //    return;
+            //}
+            //List<string> glittersRandom = new List<string>();
+            //foreach (var glitter in glitters) {
+            //    glittersRandom.Insert(new Random().Next(glittersRandom.Count), glitter);
+            //}
+            //glittersRandom.RemoveRange(2, glittersRandom.Count - 2);
+            //glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
+            //LogUtil.I("RandomGlitter() " + string.Join(" ", glittersRandom));
+            //SettingsReviewDesc.Text = glittersRandom[0];
+            //SettingsThankDesc.Text = glittersRandom[1];
         }
 
         private async Task LifeAsync() {
-            if (TextLife.Visibility == Visibility.Visible) {
-                return;
+            if (life == null) {
+                life = await Api.LifeAsync();
             }
-            LifeApiData data = await Api.LifeAsync();
-            if (data.Past > 0) {
-                TextLife.Text = string.Format(resLoader.GetString("Life"), data.Past, data.DonateCount, data.Remain);
-                TextLife.Visibility = Visibility.Visible;
+            if (life.Past > 0) {
+                SettingsReviewDesc.Text = string.Format(resLoader.GetString("Life"),
+                    life.Past, life.DonateCount, life.Remain);
             }
         }
 
@@ -472,7 +479,13 @@ namespace Timeline.Pages {
         }
 
         private async void BtnReview_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetStringForUri(new Uri("ms-resource:///Resources/LinkReview/NavigateUri"))));
+            if (BtnReview.Content.Equals(resLoader.GetString("ActionDonate"))) {
+                await new DonateDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                }.ShowAsync();
+            } else {
+                await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("LinkReview/NavigateUri")));
+            }
         }
 
         private async void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {

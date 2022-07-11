@@ -780,4 +780,7 @@
   <data name="Life" xml:space="preserve">
     <value>Running {0} days, {1} donations received, {2} days left.</value>
   </data>
+  <data name="ActionDonate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
 </root>
