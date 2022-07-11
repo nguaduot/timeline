@@ -780,4 +780,7 @@
   <data name="ActionReport" xml:space="preserve">
     <value>上报</value>
   </data>
+  <data name="Life" xml:space="preserve">
+    <value>已运营{0}天，收到赞助{1}笔，剩余{0}天</value>
+  </data>
 </root>

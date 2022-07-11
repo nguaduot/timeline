@@ -777,4 +777,7 @@
   <data name="ActionReport" xml:space="preserve">
     <value>Report</value>
   </data>
+  <data name="Life" xml:space="preserve">
+    <value>Running {0} days, {1} donations received, {2} days left.</value>
+  </data>
 </root>

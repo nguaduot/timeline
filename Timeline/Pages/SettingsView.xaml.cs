@@ -214,6 +214,8 @@ namespace Timeline.Pages {
             TextThemeCur.Text = rbTheme.Content.ToString();
             // 刷新“其他”组 Expander 随机一文
             await RandomGlitter();
+            // 刷新运营数据
+            _ = LifeAsync();
             // 展开当前图源 Expander
             Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
@@ -306,6 +308,17 @@ namespace Timeline.Pages {
             LogUtil.I("RandomGlitter() " + string.Join(" ", glittersRandom));
             SettingsReviewDesc.Text = glittersRandom[0];
             SettingsThankDesc.Text = glittersRandom[1];
+        }
+
+        private async Task LifeAsync() {
+            if (TextLife.Visibility == Visibility.Visible) {
+                return;
+            }
+            LifeApiData data = await Api.LifeAsync();
+            if (data.Past > 0) {
+                TextLife.Text = string.Format(resLoader.GetString("Life"), data.Past, data.DonateCount, data.Remain);
+                TextLife.Visibility = Visibility.Visible;
+            }
         }
 
         private async Task ImportAsync() {

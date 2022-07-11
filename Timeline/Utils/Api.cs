@@ -56,7 +56,7 @@ namespace Timeline.Utils {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return;
             }
-            LogUtil.D("Rank() " + action);
+            LogUtil.D("RankAsync() " + action);
             const string URL_API = "https://api.nguaduot.cn/appstats/rank";
             RankApiReq req = new RankApiReq {
                 Provider = provider,
@@ -75,10 +75,27 @@ namespace Timeline.Utils {
                 HttpResponseMessage response = await client.PostAsync(URL_API, content);
                 _ = response.EnsureSuccessStatusCode();
                 string jsonData = await response.Content.ReadAsStringAsync();
-                LogUtil.D("Rank() " + jsonData.Trim());
+                LogUtil.D("RankAsync() " + jsonData.Trim());
             } catch (Exception e) {
-                LogUtil.E("Rank() " + e.Message);
+                LogUtil.E("RankAsync() " + e.Message);
             }
+        }
+
+        public static async Task<LifeApiData> LifeAsync() {
+            if (!NetworkInterface.GetIsNetworkAvailable()) {
+                return new LifeApiData();
+            }
+            const string URL_API = "https://api.nguaduot.cn/appstats/life";
+            try {
+                HttpClient client = new HttpClient();
+                string jsonData = await client.GetStringAsync(URL_API);
+                LogUtil.D("LifeAsync(): " + jsonData.Trim());
+                LifeApi api = JsonConvert.DeserializeObject<LifeApi>(jsonData);
+                return api.Data ?? new LifeApiData();
+            } catch (Exception e) {
+                LogUtil.E("LifeAsync() " + e.Message);
+            }
+            return new LifeApiData();
         }
 
         public static async Task<List<CateMeta>> CateAsync(string urlApi) {
