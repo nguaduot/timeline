@@ -28,6 +28,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 namespace Timeline {
     public delegate void BtnInfoHandler();
@@ -856,6 +857,12 @@ namespace Timeline {
                 await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
             });
             await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+
+            // TODO
         }
 
         private void MenuYesterday_Click(object sender, RoutedEventArgs e) {

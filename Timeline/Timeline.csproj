@@ -162,6 +162,9 @@
     <Compile Include="Pages\DonateDlg.xaml.cs">
       <DependentUpon>DonateDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\GalleryPage.xaml.cs">
+      <DependentUpon>GalleryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\OsVerTrigger.cs" />
     <Compile Include="Pages\R22Dlg.xaml.cs">
       <DependentUpon>R22Dlg.xaml</DependentUpon>
@@ -275,6 +278,10 @@
     <Page Include="Pages\DonateDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GalleryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\R22Dlg.xaml">
       <SubType>Designer</SubType>

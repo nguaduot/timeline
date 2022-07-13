@@ -305,7 +305,7 @@ namespace Timeline.Pages {
                 BtnReview.Content = resLoader.GetString("ActionDonate");
             }
             // 刷新版本状态
-            if (!string.IsNullOrEmpty(release.Url)) {
+            if (!string.IsNullOrEmpty(release?.Url)) {
                 TextRelease.Text = resLoader.GetString("NewRelease");
                 LinkRelease.NavigateUri = new Uri(release.Url);
                 ToolTipService.SetToolTip(LinkRelease, new ToolTip {
