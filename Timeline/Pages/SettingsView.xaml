@@ -1685,10 +1685,17 @@
                 <TextBlock x:Uid="TextAbout"
                            Style="{StaticResource BodyTextBlockStyle}"
                            Margin="0,24,0,0" />
-                <TextBlock Name="TextApp"
-                           Style="{StaticResource BodyTextBlockStyle}"
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Margin="0,8,0,0" />
+                           Margin="0,8,0,0">
+                    <Span xml:space="default">
+                        <Run x:Name="TextApp" />
+                        <Hyperlink x:Name="LinkRelease"
+                                   UnderlineStyle="None">
+                            <Run x:Name="TextRelease" />
+                        </Hyperlink>
+                    </Span>
+                </TextBlock>
                 <TextBlock x:Uid="TextCopyright"
                            Style="{StaticResource BodyTextBlockStyle}"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />

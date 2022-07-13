@@ -183,7 +183,7 @@ namespace Timeline.Pages {
             //};
         }
 
-        public async Task NotifyPaneOpened(Ini ini) {
+        public async Task NotifyPaneOpened(Ini ini, ReleaseApi release) {
             this.ini = ini;
             // 控制图源“LSP”是否可用
             ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
@@ -214,7 +214,7 @@ namespace Timeline.Pages {
             rbTheme.IsChecked = true;
             TextThemeCur.Text = rbTheme.Content.ToString();
             // 刷新“其他”组 Expander 随机一文
-            await RandomGlitter();
+            await RandomGlitter(release);
             // 展开当前图源 Expander
             Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
@@ -291,7 +291,7 @@ namespace Timeline.Pages {
             }
         }
 
-        private async Task RandomGlitter() {
+        private async Task RandomGlitter(ReleaseApi release) {
             if (glitters.Count == 0) {
                 glitters.AddRange(await FileUtil.GetGlitterAsync());
             }
@@ -303,6 +303,16 @@ namespace Timeline.Pages {
             // 随机替换“评分”按钮为“赞助”
             if (DateTime.Now.Ticks % 2 == 0) {
                 BtnReview.Content = resLoader.GetString("ActionDonate");
+            }
+            // 刷新版本状态
+            if (!string.IsNullOrEmpty(release.Url)) {
+                TextRelease.Text = resLoader.GetString("NewRelease");
+                LinkRelease.NavigateUri = new Uri(release.Url);
+                ToolTipService.SetToolTip(LinkRelease, new ToolTip {
+                    Content = release.Version
+                });
+            } else {
+                TextRelease.Text = "";
             }
             //if (glitters.Count < 2) {
             //    return;

@@ -786,4 +786,7 @@
   <data name="ActionDonate" xml:space="preserve">
     <value>赞助</value>
   </data>
+  <data name="NewRelease" xml:space="preserve">
+    <value>发现新版本</value>
+  </data>
 </root>

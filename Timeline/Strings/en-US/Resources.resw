@@ -783,4 +783,7 @@
   <data name="ActionDonate" xml:space="preserve">
     <value>Donate</value>
   </data>
+  <data name="NewRelease" xml:space="preserve">
+    <value>NEW</value>
+  </data>
 </root>
