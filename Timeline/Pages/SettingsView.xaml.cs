@@ -51,7 +51,6 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
-        private List<string> glitters = new List<string>();
         private LifeApiData life = null;
 
         private DispatcherTimer himawari8OffsetTimer = null;
@@ -214,7 +213,7 @@ namespace Timeline.Pages {
             rbTheme.IsChecked = true;
             TextThemeCur.Text = rbTheme.Content.ToString();
             // 刷新“其他”组 Expander 随机一文
-            await RandomGlitter(release);
+            _ = RandomGlitter(release);
             // 展开当前图源 Expander
             Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
@@ -292,18 +291,6 @@ namespace Timeline.Pages {
         }
 
         private async Task RandomGlitter(ReleaseApi release) {
-            if (glitters.Count == 0) {
-                glitters.AddRange(await FileUtil.GetGlitterAsync());
-            }
-            if (glitters.Count > 0) {
-                SettingsThankDesc.Text = glitters[new Random().Next(glitters.Count)];
-            }
-            // 刷新运营数据
-            _ = LifeAsync();
-            // 随机替换“评分”按钮为“赞助”
-            if (DateTime.Now.Ticks % 2 == 0) {
-                BtnReview.Content = resLoader.GetString("ActionDonate");
-            }
             // 刷新版本状态
             if (!string.IsNullOrEmpty(release?.Url)) {
                 TextRelease.Text = resLoader.GetString("NewRelease");
@@ -314,17 +301,20 @@ namespace Timeline.Pages {
             } else {
                 TextRelease.Text = "";
             }
-        }
-
-        private async Task LifeAsync() {
+            // 随机替换“评分”按钮为“赞助”
+            if (DateTime.Now.Ticks % 2 == 0) {
+                BtnReview.Content = resLoader.GetString("ActionDonate");
+            }
+            // 刷新运营数据 & 随机一文
             if (life == null) {
                 life = await Api.LifeAsync();
             }
             if (life.Past > 0) {
                 SettingsReviewDesc.Text = string.Format(resLoader.GetString("Life"),
                     life.Past, life.DonateCount, life.Remain);
-            } else if (glitters.Count > 0) {
-                SettingsReviewDesc.Text = glitters[new Random().Next(glitters.Count)];
+                if (life.Glitter != null && life.Glitter.Length > 0) {
+                    SettingsThankDesc.Text = life.Glitter[new Random().Next(life.Glitter.Length)];
+                }
             }
         }
 

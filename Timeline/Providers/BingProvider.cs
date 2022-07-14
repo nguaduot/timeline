@@ -112,7 +112,7 @@ namespace Timeline.Providers {
                 HttpClient client = new HttpClient();
                 HttpResponseMessage res = await client.GetAsync(urlApi, token);
                 string jsonData = await res.Content.ReadAsStringAsync();
-                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                 BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (BingApiImg img in api.Images) {
@@ -122,6 +122,7 @@ namespace Timeline.Providers {
                 pageIndex += 1;
                 return true;
             } catch (Exception e) {
+                // TODO Object reference not set to an instance of an object.
                 // 情况1：任务被取消
                 // System.Threading.Tasks.TaskCanceledException: A task was canceled.
                 LogUtil.E("LoadData() " + e.Message);

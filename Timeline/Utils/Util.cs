@@ -530,17 +530,17 @@ namespace Timeline.Utils {
             return (size / 1024.0 / 1024.0 / 1024.0).ToString("0.00GB");
         }
 
-        public static async Task<IList<string>> GetGlitterAsync() {
-            try {
-                StorageFile file = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\glitter.txt");
-                if (file != null) {
-                    return await FileIO.ReadLinesAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-                }
-            } catch (Exception e) {
-                LogUtil.E("GetGlitterAsync() " + e.Message);
-            }
-            return new List<string>();
-        }
+        //public static async Task<IList<string>> GetGlitterAsync() {
+        //    try {
+        //        StorageFile file = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\glitter.txt");
+        //        if (file != null) {
+        //            return await FileIO.ReadLinesAsync(file, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+        //        }
+        //    } catch (Exception e) {
+        //        LogUtil.E("GetGlitterAsync() " + e.Message);
+        //    }
+        //    return new List<string>();
+        //}
 
         public static async Task<Dictionary<string, int>> GetHistoryAsync(string provider) {
             try {

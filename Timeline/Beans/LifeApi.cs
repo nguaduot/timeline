@@ -36,5 +36,9 @@ namespace Timeline.Beans {
         // 可运营天数
         [JsonProperty(PropertyName = "remain")]
         public int Remain { set; get; }
+
+        // 一句
+        [JsonProperty(PropertyName = "glitter")]
+        public string[] Glitter { set; get; }
     }
 }

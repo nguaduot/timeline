@@ -203,7 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Config\config.txt" />
-    <Content Include="Assets\Config\glitter.txt" />
     <Content Include="Assets\Images\default.png" />
     <Content Include="Assets\Images\donate_alipay.png" />
     <Content Include="Assets\Images\donate_wechat.png" />
