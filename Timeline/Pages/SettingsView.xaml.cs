@@ -314,18 +314,6 @@ namespace Timeline.Pages {
             } else {
                 TextRelease.Text = "";
             }
-            //if (glitters.Count < 2) {
-            //    return;
-            //}
-            //List<string> glittersRandom = new List<string>();
-            //foreach (var glitter in glitters) {
-            //    glittersRandom.Insert(new Random().Next(glittersRandom.Count), glitter);
-            //}
-            //glittersRandom.RemoveRange(2, glittersRandom.Count - 2);
-            //glittersRandom.Sort((a, b) => a.Length.CompareTo(b.Length));
-            //LogUtil.I("RandomGlitter() " + string.Join(" ", glittersRandom));
-            //SettingsReviewDesc.Text = glittersRandom[0];
-            //SettingsThankDesc.Text = glittersRandom[1];
         }
 
         private async Task LifeAsync() {
@@ -335,6 +323,8 @@ namespace Timeline.Pages {
             if (life.Past > 0) {
                 SettingsReviewDesc.Text = string.Format(resLoader.GetString("Life"),
                     life.Past, life.DonateCount, life.Remain);
+            } else if (glitters.Count > 0) {
+                SettingsReviewDesc.Text = glitters[new Random().Next(glitters.Count)];
             }
         }
 
