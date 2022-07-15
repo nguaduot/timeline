@@ -129,7 +129,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Beans\LifeApi.cs" />
     <Compile Include="Beans\R22AuthApi.cs" />
     <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\BingApi.cs" />

@@ -771,9 +771,6 @@
   <data name="ImportProgress" xml:space="preserve">
     <value>Imported...{0}/{1}</value>
   </data>
-  <data name="TextThank4.Text" xml:space="preserve">
-    <value>@*幻、@*新 等：多笔捐赠</value>
-  </data>
   <data name="ActionReport" xml:space="preserve">
     <value>Report</value>
   </data>
@@ -785,5 +782,8 @@
   </data>
   <data name="NewRelease" xml:space="preserve">
     <value>NEW</value>
+  </data>
+  <data name="ThankDonate" xml:space="preserve">
+    <value>@{0}, @{1} etc.: donations</value>
   </data>
 </root>

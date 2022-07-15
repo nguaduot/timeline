@@ -51,7 +51,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
-        private LifeApiData life = null;
+        private ReleaseApiData release = null;
 
         private DispatcherTimer himawari8OffsetTimer = null;
         private DispatcherTimer himawari8RatioTimer = null;
@@ -182,7 +182,7 @@ namespace Timeline.Pages {
             //};
         }
 
-        public async Task NotifyPaneOpened(Ini ini, ReleaseApi release) {
+        public async Task NotifyPaneOpened(Ini ini) {
             this.ini = ini;
             // 控制图源“LSP”是否可用
             ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
@@ -213,7 +213,7 @@ namespace Timeline.Pages {
             rbTheme.IsChecked = true;
             TextThemeCur.Text = rbTheme.Content.ToString();
             // 刷新“其他”组 Expander 随机一文
-            _ = RandomGlitter(release);
+            _ = RandomGlitter();
             // 展开当前图源 Expander
             Expander expanderFocus = null;
             foreach (var item in ViewSettings.Children) {
@@ -290,31 +290,42 @@ namespace Timeline.Pages {
             }
         }
 
-        private async Task RandomGlitter(ReleaseApi release) {
-            // 刷新版本状态
-            if (!string.IsNullOrEmpty(release?.Url)) {
-                TextRelease.Text = resLoader.GetString("NewRelease");
-                LinkRelease.NavigateUri = new Uri(release.Url);
-                ToolTipService.SetToolTip(LinkRelease, new ToolTip {
-                    Content = release.Version
-                });
-            } else {
-                TextRelease.Text = "";
+        private async Task RandomGlitter() {
+            if (release == null) {
+                release = await Api.VersionAsync();
+                if (SysUtil.CheckNewVer(release.Version?.Version)) {
+                    SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                        VersionChanged = release.Version
+                    });
+                }
             }
             // 随机替换“评分”按钮为“赞助”
             if (DateTime.Now.Ticks % 2 == 0) {
                 BtnReview.Content = resLoader.GetString("ActionDonate");
             }
-            // 刷新运营数据 & 随机一文
-            if (life == null) {
-                life = await Api.LifeAsync();
-            }
-            if (life.Past > 0) {
+            // 刷新运营数据
+            if (release.Life != null && release.Life.Past > 0) {
                 SettingsReviewDesc.Text = string.Format(resLoader.GetString("Life"),
-                    life.Past, life.DonateCount, life.Remain);
-                if (life.Glitter != null && life.Glitter.Length > 0) {
-                    SettingsThankDesc.Text = life.Glitter[new Random().Next(life.Glitter.Length)];
+                    release.Life.Past, release.Life.DonateCount, release.Life.Remain);
+                string[] users = release.Life.DonateUser?.Split(",");
+                if (users != null && users.Length >= 2) {
+                    TextThankDonate.Text = String.Format(resLoader.GetString("ThankDonate"), users);
+                    TextThankDonate.Visibility = Visibility.Visible;
                 }
+            }
+            // 随机一文
+            if (release.Glitter != null && release.Glitter.Length > 0) {
+                SettingsThankDesc.Text = release.Glitter[new Random().Next(release.Glitter.Length)];
+            }
+            // 刷新版本状态
+            if (SysUtil.CheckNewVer(release.Version?.Version)) {
+                TextRelease.Text = resLoader.GetString("NewRelease");
+                LinkRelease.NavigateUri = new Uri(release.Version.Url);
+                ToolTipService.SetToolTip(LinkRelease, new ToolTip {
+                    Content = release.Version
+                });
+            } else {
+                TextRelease.Text = "";
             }
         }
 
@@ -860,6 +871,8 @@ namespace Timeline.Pages {
         public bool ProviderConfigChanged { get; set; }
 
         public bool ThemeChanged { get; set; }
+
+        public VersionApiData VersionChanged { get; set; }
     }
 
     public class DlgEventArgs : EventArgs {

@@ -718,6 +718,18 @@ namespace Timeline.Utils {
                 Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision);
         }
 
+        public static bool CheckNewVer(string versionNew) {
+            string[] versions = versionNew?.Split(".");
+            if (versions == null || versions.Length < 2) {
+                return false;
+            }
+            int major = Package.Current.Id.Version.Major;
+            int minor = Package.Current.Id.Version.Minor;
+            _ = int.TryParse(versions[0], out int majorNew);
+            _ = int.TryParse(versions[1], out int minorNew);
+            return majorNew > major || (majorNew == major && minorNew > minor);
+        }
+
         public static string GetOsVer() {
             ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
             ulong major = (version & 0xFFFF000000000000L) >> 48;

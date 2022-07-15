@@ -1674,8 +1674,9 @@
                                        TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0" />
-                            <TextBlock x:Uid="TextThank4"
+                            <TextBlock Name="TextThankDonate"
                                        TextWrapping="WrapWholeWords"
+                                       Visibility="Collapsed"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0" />
                         </StackPanel>

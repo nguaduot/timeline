@@ -774,8 +774,8 @@
   <data name="ImportProgress" xml:space="preserve">
     <value>导入进度...{0}/{1}</value>
   </data>
-  <data name="TextThank4.Text" xml:space="preserve">
-    <value>@*幻、@*新 等：多笔捐赠</value>
+  <data name="ThankDonate" xml:space="preserve">
+    <value>@{0}、@{1} 等：多笔捐赠</value>
   </data>
   <data name="ActionReport" xml:space="preserve">
     <value>上报</value>

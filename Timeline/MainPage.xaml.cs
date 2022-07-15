@@ -43,7 +43,7 @@ namespace Timeline {
         private Ini ini;
         private BaseProvider provider;
         private Meta meta;
-        private ReleaseApi release = null;
+        //private ReleaseApiData release = null;
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
         private bool providerLspHintOn = true; // LSP图源提示
@@ -201,13 +201,13 @@ namespace Timeline {
                 return;
             }
             // 检查更新
-            release = await Api.CheckUpdateAsync();
-            if (!string.IsNullOrEmpty(release.Url)) {
-                await Task.Delay(1000);
-                ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
-                    await FileUtil.LaunchUriAsync(new Uri(release?.Url));
-                });
-            }
+            //release = await Api.VersionAsync();
+            //if (SysUtil.CheckNewVer(release.Version?.Version)) {
+            //    await Task.Delay(1000);
+            //    ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
+            //        await FileUtil.LaunchUriAsync(new Uri(release.Version.Url));
+            //    });
+            //}
         }
 
         private async Task LoadFocusAsync(CancellationToken token) {
@@ -1025,7 +1025,7 @@ namespace Timeline {
         }
 
         private async void ViewSplit_PaneOpened(SplitView sender, object args) {
-            await ViewSettings.NotifyPaneOpened(ini, release);
+            await ViewSettings.NotifyPaneOpened(ini);
         }
 
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
@@ -1325,6 +1325,11 @@ namespace Timeline {
             //    await Refresh(false);
             //    await ViewSettings.NotifyPaneOpened(ini);
             //}
+            if (e.VersionChanged != null) {
+                ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
+                    await FileUtil.LaunchUriAsync(new Uri(e.VersionChanged.Url));
+                });
+            }
             if (e.ProviderChanged || e.ProviderConfigChanged) {
                 await Refresh(false);
             }
