@@ -1663,22 +1663,37 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
-                            <TextBlock x:Uid="TextThank1"
+                            <TextBlock x:Uid="TextThankIcon"
                                        TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}" />
-                            <TextBlock x:Uid="TextThank2"
+                            <TextBlock x:Uid="TextThankCode"
                                        TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0" />
-                            <TextBlock x:Uid="TextThank3"
-                                       TextWrapping="WrapWholeWords"
+                            <TextBlock TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0" />
+                                       Margin="0,8,0,0">
+                                <Span xml:space="default">
+                                    <Run x:Uid="TextThankAd" />
+                                    <Hyperlink x:Uid="LinkAd"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextView" />
+                                    </Hyperlink>
+                                </Span>
+                            </TextBlock>
                             <TextBlock Name="TextThankDonate"
                                        TextWrapping="WrapWholeWords"
                                        Visibility="Collapsed"
                                        Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0" />
+                                       Margin="0,8,0,0">
+                                <Span xml:space="default">
+                                    <Run x:Name="TextDonators" />
+                                    <Hyperlink x:Name="LinkDonators"
+                                               UnderlineStyle="None">
+                                        <Run x:Name="TextExpand" />
+                                    </Hyperlink>
+                                </Span>
+                            </TextBlock>
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

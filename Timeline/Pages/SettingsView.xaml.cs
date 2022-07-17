@@ -182,7 +182,7 @@ namespace Timeline.Pages {
             //};
         }
 
-        public async Task NotifyPaneOpened(Ini ini) {
+        public void NotifyPaneOpened(Ini ini) {
             this.ini = ini;
             // 控制图源“LSP”是否可用
             ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
@@ -293,9 +293,9 @@ namespace Timeline.Pages {
         private async Task RandomGlitter() {
             if (release == null) {
                 release = await Api.VersionAsync();
-                if (SysUtil.CheckNewVer(release.Version?.Version)) {
+                if (SysUtil.CheckNewVer(release.Version)) {
                     SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                        VersionChanged = release.Version
+                        VersionChanged = release
                     });
                 }
             }
@@ -307,9 +307,17 @@ namespace Timeline.Pages {
             if (release.Life != null && release.Life.Past > 0) {
                 SettingsReviewDesc.Text = string.Format(resLoader.GetString("Life"),
                     release.Life.Past, release.Life.DonateCount, release.Life.Remain);
-                string[] users = release.Life.DonateUser?.Split(",");
+                string[] users = release.Life.DonateRank?.Split(",");
                 if (users != null && users.Length >= 2) {
-                    TextThankDonate.Text = String.Format(resLoader.GetString("ThankDonate"), users);
+                    TextDonators.Text = string.Format(resLoader.GetString("ThankDonate1"), users);
+                    if (!string.IsNullOrEmpty(release.Life.DonateUser)) {
+                        TextExpand.Text = resLoader.GetString("ActionExpand");
+                        LinkDonators.Click += (s, e) => {
+                            TextExpand.Text = "";
+                            TextDonators.Text = string.Format(resLoader.GetString("ThankDonate2"),
+                                release.Life.DonateUser.Replace(",", ", "));
+                        };
+                    }
                     TextThankDonate.Visibility = Visibility.Visible;
                 }
             }
@@ -318,9 +326,9 @@ namespace Timeline.Pages {
                 SettingsThankDesc.Text = release.Glitter[new Random().Next(release.Glitter.Length)];
             }
             // 刷新版本状态
-            if (SysUtil.CheckNewVer(release.Version?.Version)) {
+            if (SysUtil.CheckNewVer(release.Version)) {
                 TextRelease.Text = resLoader.GetString("NewRelease");
-                LinkRelease.NavigateUri = new Uri(release.Version.Url);
+                LinkRelease.NavigateUri = new Uri(release.Url);
                 ToolTipService.SetToolTip(LinkRelease, new ToolTip {
                     Content = release.Version
                 });
@@ -872,7 +880,7 @@ namespace Timeline.Pages {
 
         public bool ThemeChanged { get; set; }
 
-        public VersionApiData VersionChanged { get; set; }
+        public ReleaseApiData VersionChanged { get; set; }
     }
 
     public class DlgEventArgs : EventArgs {

@@ -13,10 +13,14 @@ namespace Timeline.Beans {
     }
 
     public class ReleaseApiData {
-        // 版本信息
-        [JsonProperty(PropertyName = "version")]
+        // 版本
+        [JsonProperty(PropertyName = "ver")]
 
-        public VersionApiData Version { get; set; }
+        public string Version { get; set; }
+
+        // 链接
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
 
         // 运营信息
         [JsonProperty(PropertyName = "life")]
@@ -27,17 +31,6 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "glitter")]
 
         public string[] Glitter { get; set; }
-    }
-
-    public class VersionApiData {
-        // 版本
-        [JsonProperty(PropertyName = "ver")]
-
-        public string Version { get; set; }
-
-        // 链接
-        [JsonProperty(PropertyName = "url")]
-        public string Url { get; set; }
     }
 
     public class LifeApiData {
@@ -57,9 +50,13 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "donatecount")]
         public int DonateCount { set; get; }
 
-        // 赞助用户名单，金额降序，“,”分隔
+        // 赞助用户名单，时间升序，“,”分隔
         [JsonProperty(PropertyName = "donateuser")]
         public string DonateUser { set; get; }
+
+        // 赞助用户名单，金额降序，“,”分隔
+        [JsonProperty(PropertyName = "donaterank")]
+        public string DonateRank { set; get; }
 
         // 已运营天数
         [JsonProperty(PropertyName = "past")]

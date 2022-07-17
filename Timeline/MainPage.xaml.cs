@@ -1024,8 +1024,8 @@ namespace Timeline {
             ViewSplit.IsPaneOpen = true;
         }
 
-        private async void ViewSplit_PaneOpened(SplitView sender, object args) {
-            await ViewSettings.NotifyPaneOpened(ini);
+        private void ViewSplit_PaneOpened(SplitView sender, object args) {
+            ViewSettings.NotifyPaneOpened(ini);
         }
 
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {

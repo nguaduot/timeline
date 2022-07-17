@@ -378,7 +378,7 @@
   <data name="TextYmyouliCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="TextThank1.Text" xml:space="preserve">
+  <data name="TextThankIcon.Text" xml:space="preserve">
     <value>Thank Coolapk@鱼离不开水 for designing the main icon.</value>
   </data>
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
@@ -558,7 +558,7 @@
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>Image copied.</value>
   </data>
-  <data name="TextThank2.Text" xml:space="preserve">
+  <data name="TextThankCode.Text" xml:space="preserve">
     <value>Thank GitHub@Richasy for bugfix.</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
@@ -633,7 +633,7 @@
   <data name="TextSettingsOther.Text" xml:space="preserve">
     <value>Other</value>
   </data>
-  <data name="TextThank3.Text" xml:space="preserve">
+  <data name="TextThankAd.Text" xml:space="preserve">
     <value>Thank WeChat@网罗灯下黑 for article.</value>
   </data>
   <data name="Provider_wallhaven" xml:space="preserve">
@@ -783,7 +783,19 @@
   <data name="NewRelease" xml:space="preserve">
     <value>NEW</value>
   </data>
-  <data name="ThankDonate" xml:space="preserve">
+  <data name="ThankDonate1" xml:space="preserve">
     <value>@{0}, @{1} etc.: donations</value>
+  </data>
+  <data name="ActionExpand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="LinkAd.NavigateUri" xml:space="preserve">
+    <value>https://mp.weixin.qq.com/s/bY9rJUhmowGr0mbxtDLR6w</value>
+  </data>
+  <data name="TextView.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ThankDonate2" xml:space="preserve">
+    <value>Sponsor list: {0}</value>
   </data>
 </root>

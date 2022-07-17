@@ -408,7 +408,7 @@
   <data name="TextYmyouliCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TextThank1.Text" xml:space="preserve">
+  <data name="TextThankIcon.Text" xml:space="preserve">
     <value>酷安 @鱼离不开水：帮助设计主图标</value>
   </data>
   <data name="BtnTimelineContribute.Content" xml:space="preserve">
@@ -588,7 +588,7 @@
   <data name="MsgCopiedImg" xml:space="preserve">
     <value>已复制图片</value>
   </data>
-  <data name="TextThank2.Text" xml:space="preserve">
+  <data name="TextThankCode.Text" xml:space="preserve">
     <value>Bili.Uwp 开发者 @云之幻：提供代码指导</value>
   </data>
   <data name="Provider_lsp" xml:space="preserve">
@@ -663,7 +663,7 @@
   <data name="TextSettingsOther.Text" xml:space="preserve">
     <value>其他</value>
   </data>
-  <data name="TextThank3.Text" xml:space="preserve">
+  <data name="TextThankAd.Text" xml:space="preserve">
     <value>微信公众号 @网罗灯下黑：发文推荐</value>
   </data>
   <data name="Provider_wallhaven" xml:space="preserve">
@@ -774,7 +774,7 @@
   <data name="ImportProgress" xml:space="preserve">
     <value>导入进度...{0}/{1}</value>
   </data>
-  <data name="ThankDonate" xml:space="preserve">
+  <data name="ThankDonate1" xml:space="preserve">
     <value>@{0}、@{1} 等：多笔捐赠</value>
   </data>
   <data name="ActionReport" xml:space="preserve">
@@ -788,5 +788,17 @@
   </data>
   <data name="NewRelease" xml:space="preserve">
     <value>发现新版本</value>
+  </data>
+  <data name="ActionExpand" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="LinkAd.NavigateUri" xml:space="preserve">
+    <value>https://mp.weixin.qq.com/s/bY9rJUhmowGr0mbxtDLR6w</value>
+  </data>
+  <data name="TextView.Text" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="ThankDonate2" xml:space="preserve">
+    <value>赞助者名单：{0}</value>
   </data>
 </root>

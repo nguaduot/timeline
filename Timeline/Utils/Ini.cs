@@ -54,7 +54,7 @@ namespace Timeline.Utils {
             get => theme;
         }
 
-        public int Cache { set; get; } = 1000;
+        public int Cache { set; get; } = 600;
 
         public int R18 { set; get; } = 0;
 

@@ -49,6 +49,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "catename")]
         public string CateName { set; get; }
 
+        // 平台发布链接
+        [JsonProperty(PropertyName = "srcurl")]
+        public string SrcUrl { set; get; }
+
         // 图片URL
         [JsonProperty(PropertyName = "imgurl")]
         public string ImgUrl { set; get; }

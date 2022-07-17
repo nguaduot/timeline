@@ -47,7 +47,7 @@ namespace TimelineService.Utils {
             ini.TileProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
             ini.Theme = sb.ToString();
-            _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, iniFile);
+            _ = GetPrivateProfileString("app", "cache", "600", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int cache);
             ini.Cache = cache;
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
