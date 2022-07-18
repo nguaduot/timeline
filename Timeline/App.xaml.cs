@@ -140,11 +140,11 @@ namespace Timeline {
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent; // 窗口失焦后仍保持标题栏透明
         }
 
-        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) {
-            e.Handled = true;
-            _ = Api.CrashAsync(e.Exception);
-            LogUtil.E("OnUnhandledException() " + e.Exception.ToString());
-        }
+        //private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e) {
+        //    e.Handled = true;
+        //    _ = Api.CrashAsync(e.Exception);
+        //    LogUtil.E("OnUnhandledException() " + e.Exception.ToString());
+        //}
 
         //private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e) {
         //    e.SetObserved();

@@ -13,6 +13,7 @@ using TimelineService.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
@@ -30,14 +31,16 @@ namespace TimelineService {
         private Ini ini;
         private int periodDesktop = 24;
         private int periodLock = 24;
+        private int periodToast = 24;
         private int periodTile = 2;
         private string tagDesktop; // 免重复推送桌面背景标记
         private string tagLock; // 免重复推送锁屏背景标记
+        private string tagToast; // 免重复推送磁贴背景标记
         private string tagTile; // 免重复推送磁贴背景标记
         private bool pushNow = false; // 立即运行一次
 
         private enum Action {
-            Desktop, Lock, Tile
+            Desktop, Lock, Toast, Tile
         }
 
         public async void Run(IBackgroundTaskInstance taskInstance) {
@@ -47,6 +50,7 @@ namespace TimelineService {
             LogUtil.I("Run() trigger: " + taskInstance.TriggerDetails);
             LogUtil.I("Run() desktop: " + ini.DesktopProvider + ", " + periodDesktop);
             LogUtil.I("Run() lock: " + ini.LockProvider + ", " + periodLock);
+            LogUtil.I("Run() toast: " + ini.ToastProvider + ", " + periodToast);
             LogUtil.I("Run() tile: " + (!string.IsNullOrEmpty(ini.TileProvider)
                 ? ini.TileProvider : ini.Provider) + ", " + periodTile);
             // 检查网络连接
@@ -57,9 +61,10 @@ namespace TimelineService {
             }
             bool pushDesktop = CheckDesktopNecessary();
             bool pushLock = CheckLockNecessary();
+            bool pushToast = CheckToastNecessary();
             bool pushTile = await CheckTileNecessaryAsync();
-            LogUtil.I("Run() CheckNecessary: " + pushDesktop + " " + pushLock + " " + pushTile);
-            if (!pushDesktop && !pushLock && !pushTile) { // 本次无需推送
+            LogUtil.I("Run() CheckNecessary: " + pushDesktop + " " + pushLock + " " + pushToast + " " + pushTile);
+            if (!pushDesktop && !pushLock && !pushToast && !pushTile) { // 本次无需推送
                 _deferral.Complete();
                 return;
             }
@@ -80,11 +85,14 @@ namespace TimelineService {
                 if (pushLock) {
                     await PushLockAsync();
                 }
+                if (pushToast) {
+                    await PushToastAsync();
+                }
                 if (pushTile) {
                     await PushTileAsync();
                 }
             } catch (Exception e) {
-                LogUtil.E("Run() " + e.Message);
+                Debug.WriteLine("Run() " + e.Message);
             } finally {
                 _deferral.Complete();
             }
@@ -95,12 +103,16 @@ namespace TimelineService {
             ini = IniUtil.GetIni();
             periodDesktop = ini.GetDesktopPeriod(ini.DesktopProvider);
             periodLock = ini.GetLockPeriod(ini.LockProvider);
+            periodToast = ini.GetToastPeriod(ini.ToastProvider);
+            periodTile = ini.GetTilePeriod(ini.TileProvider);
             tagDesktop = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
                 DateTime.Now.Hour / periodDesktop, ini.DesktopProvider);
             tagLock = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
                 DateTime.Now.Hour / periodLock, ini.LockProvider);
+            tagToast = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
+                DateTime.Now.Hour / periodToast, ini.ToastProvider);
             tagTile = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                DateTime.Now.Hour / periodTile, ini.Provider);
+                DateTime.Now.Hour / periodTile, !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider);
 
             if (localSettings == null) {
                 localSettings = ApplicationData.Current.LocalSettings;
@@ -133,6 +145,16 @@ namespace TimelineService {
                 return ini.LockProvider.Equals(ini.Provider);
             }
             return !localSettings.Values.ContainsKey(tagLock);
+        }
+
+        private bool CheckToastNecessary() {
+            if (string.IsNullOrEmpty(ini.ToastProvider)) { // 未开启推送
+                return false;
+            }
+            if (pushNow) { // 立即运行一次
+                return ini.ToastProvider.Equals(ini.Provider);
+            }
+            return !localSettings.Values.ContainsKey(tagToast);
         }
 
         private async Task<bool> CheckTileNecessaryAsync() {
@@ -220,7 +242,7 @@ namespace TimelineService {
             } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadObzhiAsync(Action.Lock);
             } else if (GluttonIni.GetId().Equals(ini.LockProvider)) {
-                res = await LoadGluttonAsync(Action.Desktop);
+                res = await LoadGluttonAsync(Action.Lock);
             } else if (LspIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadLspAsync(Action.Lock);
             }
@@ -228,6 +250,47 @@ namespace TimelineService {
                 localSettings.Values[tagLock] = (int)(localSettings.Values[tagLock] ?? 0) + 1;
             }
             LogUtil.I("PushLockAsync() " + res);
+            return res;
+        }
+
+        private async Task<bool> PushToastAsync() {
+            await FileUtil.WriteDosage(ini.ToastProvider);
+            bool res = false;
+            if (LocalIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadLocalAsync(Action.Toast);
+            } else if (BingIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadBingAsync(Action.Toast);
+            } else if (NasaIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadNasaAsync(Action.Toast);
+            } else if (OneplusIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadOneplusAsync(Action.Toast);
+            } else if (TimelineIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadTimelineAsync(Action.Toast);
+            } else if (OneIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadOneAsync(Action.Toast);
+            } else if (Himawari8Ini.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadHimawari8Async(Action.Toast);
+            } else if (YmyouliIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadYmyouliAsync(Action.Toast);
+            } else if (WallhavenIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadWallhavenAsync(Action.Toast);
+            } else if (QingbzIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadQingbzAsync(Action.Toast);
+            } else if (WallhereIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadWallhereAsync(Action.Toast);
+            } else if (InfinityIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadInfinityAsync(Action.Toast);
+            } else if (ObzhiIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadObzhiAsync(Action.Toast);
+            } else if (GluttonIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadGluttonAsync(Action.Toast);
+            } else if (LspIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadLspAsync(Action.Toast);
+            }
+            if (res) {
+                localSettings.Values[tagLock] = (int)(localSettings.Values[tagLock] ?? 0) + 1;
+            }
+            LogUtil.I("PushToastAsync() " + res);
             return res;
         }
 
@@ -283,12 +346,35 @@ namespace TimelineService {
             return await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(fileImg);
         }
 
-        private async Task<bool> SetLockBackground(StorageFile fileImg) {
+        private async Task<bool> SetLockBgAsync(StorageFile fileImg) {
             BasicProperties properties = await fileImg.GetBasicPropertiesAsync();
             if (properties.Size == 0) {
                 return false;
             }
             return await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(fileImg);
+        }
+
+        private bool ShowToast(string urlThumb) {
+            if (string.IsNullOrEmpty(urlThumb)) {
+                return false;
+            }
+            // ResourceLoader.GetForCurrentView().GetString("ToastTitle")
+            string content = string.Format("<toast><visual>" +
+                "<binding template='ToastGeneric'>" +
+                "<image src='{0}' placement='hero' />" +
+                "<text hint-maxLines='1'>{1}</text>" +
+                "</binding></visual>" +
+                "<actions>" +
+                "<action content='{2}' arguments='' activationType='background' />" +
+                "<action content='{3}' arguments='' activationType='background' />" +
+                "</actions></toast>", urlThumb, "今日一图", "设为桌面", "设为锁屏");
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(content);
+            ToastNotification toast = new ToastNotification(doc) {
+                ExpirationTime = DateTime.Now.AddDays(1)
+            };
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+            return true;
         }
 
         private bool SetTileBg(string urlThumb) {
@@ -310,7 +396,7 @@ namespace TimelineService {
             return true;
         }
 
-        private async Task<bool> SetTileBackgroundForHimawari8(StorageFile fileImg) {
+        private async Task<bool> SetTileBgForHimawari8(StorageFile fileImg) {
             BasicProperties properties = await fileImg.GetBasicPropertiesAsync();
             if (properties.Size == 0) {
                 return false;
@@ -341,6 +427,9 @@ namespace TimelineService {
                     break;
                 case Action.Lock:
                     cacheName = "lock";
+                    break;
+                case Action.Toast:
+                    cacheName = "toast";
                     break;
                 case Action.Tile:
                 default:
@@ -429,7 +518,7 @@ namespace TimelineService {
             }
             StorageFile fileSrc = srcFiles[new Random().Next(srcFiles.Count)];
             LogUtil.I("LoadLocalAsync() img file: " + fileSrc.Path);
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 // 生成缩略图
                 // TODO：无法保持原图比例
                 StorageFolder folderWp = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
@@ -442,11 +531,15 @@ namespace TimelineService {
                     await stream.WriteAsync(await thumb.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None));
                 }
                 LogUtil.I("LoadLocalAsync() thumb file: " + fileThumb.Path);
-                return SetTileBg(fileThumb.Path);
+                if (action == Action.Toast) {
+                    return ShowToast(fileThumb.Path);
+                } else {
+                    return SetTileBg(fileThumb.Path);
+                }
             } else {
                 StorageFile fileImg = await DownloadImgAsync(fileSrc.Path, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -460,16 +553,20 @@ namespace TimelineService {
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(URL_API);
             BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 string urlThumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBingAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                if (action == Action.Toast) {
+                    return ShowToast(urlThumb);
+                } else {
+                    return SetTileBg(urlThumb);
+                }
             } else {
                 string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBingAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -498,14 +595,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(NasaIni.GetId(), ini.Nasa.Order, ini.Nasa.Mirror, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadNasaAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadNasaAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -528,16 +629,20 @@ namespace TimelineService {
             _ = response.EnsureSuccessStatusCode();
             string jsonData = await response.Content.ReadAsStringAsync();
             OneplusApi oneplusApi = JsonConvert.DeserializeObject<OneplusApi>(jsonData);
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 string urlThumb = oneplusApi.Items[0].PhotoUrl.Replace(".jpg", "_400_0.jpg");
                 LogUtil.I("LoadOneplusAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                if (action == Action.Toast) {
+                    return ShowToast(urlThumb);
+                } else {
+                    return SetTileBg(urlThumb);
+                }
             } else {
                 string urlUhd = oneplusApi.Items[0].PhotoUrl;
                 LogUtil.I("LoadOneplusAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -563,14 +668,18 @@ namespace TimelineService {
                 data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
                 await FileUtil.WriteProviderCache(TimelineIni.GetId(), "", "date", jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadTimelineAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadTimelineAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -591,12 +700,16 @@ namespace TimelineService {
             match = Regex.Match(jsonData, @"""img_url"": ?""(.+?)""");
             string urlUhd = Regex.Unescape(match.Groups[1].Value); // 反转义
             LogUtil.I("LoadOneAsync() img url: " + urlUhd);
-            if (action == Action.Tile) {
-                return SetTileBg(urlUhd);
+            if (action == Action.Toast || action == Action.Tile) {
+                if (action == Action.Toast) {
+                    return ShowToast(urlUhd);
+                } else {
+                    return SetTileBg(urlUhd);
+                }
             } else {
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -615,13 +728,17 @@ namespace TimelineService {
             string urlUhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"),
                 string.Format("{0}{1}000", time.ToString("HH"), time.Minute / 10));
             LogUtil.I("LoadHimawari8Async() img url: " + urlUhd);
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action, 0.5f, 0.5f);
-                return await SetTileBackgroundForHimawari8(fileImg);
+                if (action == Action.Toast) {
+                    return ShowToast(fileImg.Path);
+                } else {
+                    return await SetTileBgForHimawari8(fileImg);
+                }
             } else {
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action, ini.Himawari8.Offset, ini.Himawari8.Ratio);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -650,15 +767,19 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Cate, ini.Ymyouli.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadYmyouliAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadYmyouliAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 Debug.WriteLine("LoadYmyouliAsync() img file: " + fileImg?.Path);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -687,14 +808,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadWallhaven() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadWallhaven() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -723,14 +848,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadQingbzAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadQingbzAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -759,14 +888,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadWallhereAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadWallhereAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -781,7 +914,7 @@ namespace TimelineService {
             LogUtil.I("LoadInfinity() api url: " + urlApi);
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(urlApi);
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 string urlThumb;
                 Match match = Regex.Match(jsonData, @"""smallSrc"": ?""(.+?)""");
                 if (match.Success) {
@@ -791,14 +924,18 @@ namespace TimelineService {
                     urlThumb = match.Groups[1].Value + "?imageMogr2/auto-orient/thumbnail/600x/blur/1x0/quality/75|imageslim";
                 }
                 LogUtil.I("LoadInfinityAsync() thumb url: " + urlThumb);
-                return SetTileBg(urlThumb);
+                if (action == Action.Toast) {
+                    return ShowToast(urlThumb);
+                } else {
+                    return SetTileBg(urlThumb);
+                }
             } else {
                 Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
                 string urlUhd = match.Groups[1].Value;
                 LogUtil.I("LoadInfinityAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -827,14 +964,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(ObzhiIni.GetId(), ini.Obzhi.Cate, ini.Obzhi.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadObzhiAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadObzhiAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -863,7 +1004,7 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(GluttonIni.GetId(), "", ini.Glutton.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 // 生成缩略图
                 // TODO：无法保持原图比例
                 StorageFolder folderWp = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
@@ -877,12 +1018,16 @@ namespace TimelineService {
                     await stream.WriteAsync(await thumb.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None));
                 }
                 LogUtil.I("LoadGluttonAsync() thumb url: " + fileThumb.Path);
-                return SetTileBg(fileThumb.Path);
+                if (action == Action.Toast) {
+                    return ShowToast(fileThumb.Path);
+                } else {
+                    return SetTileBg(fileThumb.Path);
+                }
             } else {
                 LogUtil.I("LoadGluttonAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }
@@ -911,14 +1056,18 @@ namespace TimelineService {
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(LspIni.GetId(), ini.Lsp.Cate, ini.Lsp.Order, jsonData);
             }
-            if (action == Action.Tile) {
+            if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadLspAsync() thumb url: " + data.ThumbUrl);
-                return SetTileBg(data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
             } else {
                 LogUtil.I("LoadLspAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
-                    return await SetLockBackground(fileImg);
+                    return await SetLockBgAsync(fileImg);
                 } else {
                     return await SetDesktopBgAsync(fileImg);
                 }

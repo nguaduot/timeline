@@ -20,6 +20,8 @@ namespace TimelineService.Utils {
 
         public string LockProvider { set; get; }
 
+        public string ToastProvider { set; get; }
+
         public string TileProvider { set; get; }
 
         private string theme = "";
@@ -130,6 +132,74 @@ namespace TimelineService.Utils {
             }
         }
 
+        public int GetToastPeriod(string provider) {
+            if (LocalIni.GetId().Equals(provider)) {
+                return Local.ToastPeriod;
+            } else if (NasaIni.GetId().Equals(provider)) {
+                return Nasa.ToastPeriod;
+            } else if (OneplusIni.GetId().Equals(provider)) {
+                return Oneplus.ToastPeriod;
+            } else if (TimelineIni.GetId().Equals(provider)) {
+                return Timeline.ToastPeriod;
+            } else if (OneIni.GetId().Equals(provider)) {
+                return One.ToastPeriod;
+            } else if (Himawari8Ini.GetId().Equals(provider)) {
+                return Himawari8.ToastPeriod;
+            } else if (YmyouliIni.GetId().Equals(provider)) {
+                return Ymyouli.ToastPeriod;
+            } else if (WallhavenIni.GetId().Equals(provider)) {
+                return Wallhaven.ToastPeriod;
+            } else if (QingbzIni.GetId().Equals(provider)) {
+                return Qingbz.ToastPeriod;
+            } else if (WallhereIni.GetId().Equals(provider)) {
+                return Wallhere.ToastPeriod;
+            } else if (InfinityIni.GetId().Equals(provider)) {
+                return Infinity.ToastPeriod;
+            } else if (ObzhiIni.GetId().Equals(provider)) {
+                return Obzhi.ToastPeriod;
+            } else if (GluttonIni.GetId().Equals(provider)) {
+                return Glutton.ToastPeriod;
+            } else if (LspIni.GetId().Equals(provider)) {
+                return Lsp.ToastPeriod;
+            } else {
+                return Bing.ToastPeriod;
+            }
+        }
+
+        public int GetTilePeriod(string provider) {
+            if (LocalIni.GetId().Equals(provider)) {
+                return Local.TilePeriod;
+            } else if (NasaIni.GetId().Equals(provider)) {
+                return Nasa.TilePeriod;
+            } else if (OneplusIni.GetId().Equals(provider)) {
+                return Oneplus.TilePeriod;
+            } else if (TimelineIni.GetId().Equals(provider)) {
+                return Timeline.TilePeriod;
+            } else if (OneIni.GetId().Equals(provider)) {
+                return One.TilePeriod;
+            } else if (Himawari8Ini.GetId().Equals(provider)) {
+                return Himawari8.TilePeriod;
+            } else if (YmyouliIni.GetId().Equals(provider)) {
+                return Ymyouli.TilePeriod;
+            } else if (WallhavenIni.GetId().Equals(provider)) {
+                return Wallhaven.TilePeriod;
+            } else if (QingbzIni.GetId().Equals(provider)) {
+                return Qingbz.TilePeriod;
+            } else if (WallhereIni.GetId().Equals(provider)) {
+                return Wallhere.TilePeriod;
+            } else if (InfinityIni.GetId().Equals(provider)) {
+                return Infinity.TilePeriod;
+            } else if (ObzhiIni.GetId().Equals(provider)) {
+                return Obzhi.TilePeriod;
+            } else if (GluttonIni.GetId().Equals(provider)) {
+                return Glutton.TilePeriod;
+            } else if (LspIni.GetId().Equals(provider)) {
+                return Lsp.TilePeriod;
+            } else {
+                return Bing.TilePeriod;
+            }
+        }
+
         override public string ToString() {
             string paras;
             if (LocalIni.GetId().Equals(provider)) {
@@ -163,24 +233,13 @@ namespace TimelineService.Utils {
             } else {
                 paras = Bing.ToString();
             }
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&cache={Cache}&r18={R18}"
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&toastprovider={ToastProvider}&tileprovider={TileProvider}"
+                + $"&theme={Theme}&cache={Cache}&r18={R18}"
                 + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
 
     public sealed class LocalIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => desktopPeriod;
-        }
-
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => lockPeriod;
-        }
-
         private int appetite = 18;
         public int Appetite {
             set => appetite = appetite = value <= 0 ? 18 : (value > 99 ? 99 : value);
@@ -193,13 +252,44 @@ namespace TimelineService.Utils {
             get => folder;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&appetite={Appetite}&folder={Folder}";
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&appetite={Appetite}&folder={Folder}";
 
         public static string GetId() => "local";
     }
 
     public sealed class BingIni {
         private readonly HashSet<string> LANG = new HashSet<string>() { "", "zh-cn", "en-us", "ja-jp", "de-de", "fr-fr" };
+
+        private string lang = "";
+        public string Lang {
+            set => lang = LANG.Contains(value) ? value : "";
+            get => lang;
+        }
 
         private int desktopPeriod = 24;
         public int DesktopPeriod {
@@ -213,13 +303,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        private string lang = "";
-        public string Lang {
-            set => lang = LANG.Contains(value) ? value : "";
-            get => lang;
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&lang={Lang}";
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&lang={Lang}";
 
         public static string GetId() => "bing";
     }
@@ -252,7 +349,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&mirror={Mirror}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&mirror={Mirror}";
 
         public static string GetId() => "nasa";
     }
@@ -278,7 +388,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
 
         public static string GetId() => "oneplus";
     }
@@ -312,7 +435,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
 
         public static string GetId() => "timeline";
     }
@@ -338,7 +474,19 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "one";
     }
@@ -368,7 +516,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&offset={Offset}&ratio={Ratio}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&offset={Offset}&ratio={Ratio}";
 
         public static string GetId() => "himawari8";
     }
@@ -400,7 +561,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "ymyouli";
     }
@@ -432,7 +606,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "wallhaven";
     }
@@ -464,7 +651,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "qingbz";
     }
@@ -496,7 +696,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "wallhere";
     }
@@ -522,7 +735,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
 
         public static string GetId() => "infinity";
     }
@@ -555,7 +781,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "obzhi";
     }
@@ -581,7 +820,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
 
         public static string GetId() => "glutton";
     }
@@ -613,7 +865,20 @@ namespace TimelineService.Utils {
             get => lockPeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "lsp";
     }

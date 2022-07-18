@@ -26,6 +26,7 @@ namespace Timeline.Utils {
         private string provider = BingIni.ID;
         private string desktopProvider = ""; // 非null
         private string lockProvider = ""; // 非null
+        private string toastProvider = ""; // 非null
         private string tileProvider = ""; // 非null
         private string theme = ""; // 非null
 
@@ -42,6 +43,11 @@ namespace Timeline.Utils {
         public string LockProvider {
             set => lockProvider = Inis.ContainsKey(value) ? value : "";
             get => lockProvider;
+        }
+
+        public string ToastProvider {
+            set => toastProvider = Inis.ContainsKey(value) ? value : "";
+            get => toastProvider;
         }
 
         public string TileProvider {
@@ -78,7 +84,8 @@ namespace Timeline.Utils {
 
         override public string ToString() {
             string paras = Inis[provider].ToString();
-            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&theme={Theme}&cache={Cache}&r18={R18}"
+            return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&toastprovider={ToastProvider}&tileprovider={TileProvider}"
+                + $"&theme={Theme}&cache={Cache}&r18={R18}"
                 + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
@@ -94,6 +101,8 @@ namespace Timeline.Utils {
         private string admin = ""; // 管理员用途，非null，""为普通用户内容
         private int desktopPeriod = 24;
         private int lockPeriod = 24;
+        private int toastPeriod = 24;
+        private int tilePeriod = 2;
 
         public string Id {
             set => id = value ?? "base";
@@ -141,6 +150,16 @@ namespace Timeline.Utils {
             get => lockPeriod;
         }
 
+        public int ToastPeriod {
+            set => toastPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => toastPeriod;
+        }
+
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
         public virtual string GetCateApi() => null;
 
         // 时序图源
@@ -170,7 +189,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&appetite={Appetite}&folder={Folder}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&appetite={Appetite}&folder={Folder}";
     }
 
     public class BingIni : BaseIni {
@@ -195,7 +215,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new BingProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&lang={Lang}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&lang={Lang}";
     }
 
     public class NasaIni : BaseIni {
@@ -223,7 +244,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new NasaProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&mirror={Mirror}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&mirror={Mirror}";
     }
 
     public class OneplusIni : BaseIni {
@@ -240,7 +262,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new OneplusProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
     }
 
     public class TimelineIni : BaseIni {
@@ -263,7 +286,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new TimelineProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
     }
 
     public class OneIni : BaseIni {
@@ -280,7 +304,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new OneProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
     }
 
     public class Himawari8Ini : BaseIni {
@@ -308,7 +333,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new Himawari8Provider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&offset={Offset}&ratio={Ratio}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&offset={Offset}&ratio={Ratio}";
     }
 
     public class YmyouliIni : BaseIni {
@@ -328,7 +354,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new YmyouliProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 
     public class WallhavenIni : BaseIni {
@@ -348,7 +375,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new WallhavenProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 
     public class QingbzIni : BaseIni {
@@ -368,7 +396,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new QingbzProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 
     public class WallhereIni : BaseIni {
@@ -387,7 +416,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new WallhereProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 
     public class InfinityIni : BaseIni {
@@ -402,7 +432,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new InfinityProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
     }
 
     // deprecated
@@ -423,7 +454,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new ObzhiProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 
     public class GluttonIni : BaseIni {
@@ -438,7 +470,8 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new GluttonProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
     }
 
     public class LspIni : BaseIni {
@@ -459,6 +492,7 @@ namespace Timeline.Utils {
 
         public override BaseProvider GenerateProvider() => new LspProvider { Id = this.Id };
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&order={Order}&cate={Cate}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
     }
 }

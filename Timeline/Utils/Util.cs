@@ -49,6 +49,8 @@ namespace Timeline.Utils {
                     _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
+                    _ = GetPrivateProfileString("app", "toastprovider", "", sb, 1024, oldFiles[0].FullName);
+                    _ = WritePrivateProfileString("app", "toastprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, oldFiles[0].FullName);
                     _ = WritePrivateProfileString("app", "tileprovider", sb.ToString(), iniFile.Path);
                     _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
@@ -216,25 +218,14 @@ namespace Timeline.Utils {
                 return ini;
             }
             StringBuilder sb = new StringBuilder(1024);
-            _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int desktopPeriod);
-            _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int lockPeriod);
-            _ = GetPrivateProfileString(LocalIni.ID, "appetite", "18", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out int appetite);
-            _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
-            ini.SetIni(LocalIni.ID, new LocalIni {
-                DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod,
-                Appetite = appetite,
-                Folder = sb.ToString()
-            });
             _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, iniFile);
             ini.Provider = sb.ToString();
             _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, iniFile);
             ini.DesktopProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, iniFile);
             ini.LockProvider = sb.ToString();
+            _ = GetPrivateProfileString("app", "toastprovider", "", sb, 1024, iniFile);
+            ini.ToastProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, iniFile);
             ini.TileProvider = sb.ToString();
             _ = GetPrivateProfileString("app", "theme", "", sb, 1024, iniFile);
@@ -245,23 +236,54 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int r18);
             ini.R18 = r18;
+            _ = GetPrivateProfileString(LocalIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int desktopPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int lockPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int toastPeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int tilePeriod);
+            _ = GetPrivateProfileString(LocalIni.ID, "appetite", "18", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int appetite);
+            _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
+            ini.SetIni(LocalIni.ID, new LocalIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
+                Appetite = appetite,
+                Folder = sb.ToString()
+            });
             _ = GetPrivateProfileString(BingIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(BingIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(BingIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(BingIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(BingIni.ID, "lang", "", sb, 1024, iniFile);
             ini.SetIni(BingIni.ID, new BingIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Lang = sb.ToString()
             });
             _ = GetPrivateProfileString(NasaIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(NasaIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(NasaIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(NasaIni.ID, "tilePeriod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             NasaIni nasaIni = new NasaIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Mirror = sb.ToString()
             };
             _ = GetPrivateProfileString(NasaIni.ID, "order", "date", sb, 1024, iniFile);
@@ -275,19 +297,31 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(OneplusIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(OneplusIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(OneplusIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(OneplusIni.ID, "order", "date", sb, 1024, iniFile);
             ini.SetIni(OneplusIni.ID, new OneplusIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Order = sb.ToString()
             });
             _ = GetPrivateProfileString(TimelineIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(TimelineIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(TimelineIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(TimelineIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             TimelineIni timelineIni = new TimelineIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
             };
             _ = GetPrivateProfileString(TimelineIni.ID, "order", "date", sb, 1024, iniFile);
             timelineIni.Order = sb.ToString();
@@ -303,16 +337,26 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(OneIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(OneIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(OneIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(OneIni.ID, "order", "date", sb, 1024, iniFile);
             ini.SetIni(OneIni.ID, new OneIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Order = sb.ToString()
             });
             _ = GetPrivateProfileString(Himawari8Ini.ID, "desktopperiod", "1", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(Himawari8Ini.ID, "lockperiod", "2", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(Himawari8Ini.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(Himawari8Ini.ID, "offset", "0.50", sb, 1024, iniFile);
             _ = float.TryParse(sb.ToString(), out float offset);
             _ = GetPrivateProfileString(Himawari8Ini.ID, "ratio", "0.50", sb, 1024, iniFile);
@@ -320,6 +364,8 @@ namespace Timeline.Utils {
             ini.SetIni(Himawari8Ini.ID, new Himawari8Ini {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Offset = offset,
                 Ratio = ratio
             });
@@ -327,9 +373,15 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(YmyouliIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(YmyouliIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(YmyouliIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             YmyouliIni ymyouliIni = new YmyouliIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
             };
             _ = GetPrivateProfileString(YmyouliIni.ID, "order", "random", sb, 1024, iniFile);
             ymyouliIni.Order = sb.ToString();
@@ -342,9 +394,15 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(WallhavenIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             WallhavenIni wallhavenIni = new WallhavenIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
             };
             _ = GetPrivateProfileString(WallhavenIni.ID, "order", "random", sb, 1024, iniFile);
             wallhavenIni.Order = sb.ToString();
@@ -357,9 +415,15 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(QingbzIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(QingbzIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(QingbzIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             QingbzIni qingbzIni = new QingbzIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
             };
             _ = GetPrivateProfileString(QingbzIni.ID, "order", "random", sb, 1024, iniFile);
             qingbzIni.Order = sb.ToString();
@@ -372,9 +436,15 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(WallhereIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(WallhereIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(WallhereIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             WallhereIni wallhereIni = new WallhereIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
             };
             _ = GetPrivateProfileString(WallhereIni.ID, "order", "random", sb, 1024, iniFile);
             wallhereIni.Order = sb.ToString();
@@ -387,19 +457,31 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(InfinityIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(InfinityIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(InfinityIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(InfinityIni.ID, "order", "random", sb, 1024, iniFile);
             ini.SetIni(InfinityIni.ID, new InfinityIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Order = sb.ToString()
             });
             _ = GetPrivateProfileString(ObzhiIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(ObzhiIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(ObzhiIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(ObzhiIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             ObzhiIni obzhiIni = new ObzhiIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod
             };
             _ = GetPrivateProfileString(ObzhiIni.ID, "order", "random", sb, 1024, iniFile);
             obzhiIni.Order = sb.ToString();
@@ -410,19 +492,31 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(GluttonIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(GluttonIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(GluttonIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             _ = GetPrivateProfileString(GluttonIni.ID, "order", "score", sb, 1024, iniFile);
             ini.SetIni(GluttonIni.ID, new GluttonIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
                 Order = sb.ToString()
             });
             _ = GetPrivateProfileString(LspIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(LspIni.ID, "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(LspIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(LspIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
             LspIni lspIni = new LspIni {
                 DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod
             };
             _ = GetPrivateProfileString(LspIni.ID, "order", "random", sb, 1024, iniFile);
             lspIni.Order = sb.ToString();

@@ -31,6 +31,9 @@ desktopprovider=
 lockprovider=
 ; lockprovider={provider}  锁屏背景推送图源：参数参考 provider（置空则关闭推送）
 
+toastprovider=
+; toastprovider={provider}  通知推送图源：参数参考 provider（置空则关闭推送）
+
 tileprovider=
 ; tileprovider={provider}  磁贴推送图源：仅限 Windows 10，参数参考 provider（置空则与当前图源一致）
 
@@ -50,6 +53,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为24h/次，开启推送后生效）
+
 order=random
 ; order=date    排序：收录
 ; order=random  排序：随机（默认）
@@ -68,6 +77,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 lang=
 ; lang=       语言代码：自动识别（默认）
 ; lang=zh-cn  语言代码：中文
@@ -83,6 +98,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date    排序：收录（默认）
@@ -106,6 +127,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=date
 ; order=date   排序：收录（默认）
 ; order=score  排序：热度
@@ -118,6 +145,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date    排序：日期（默认）
@@ -147,6 +180,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=date
 ; order=date    排序：日期（默认）
 ; order=random  排序：随机
@@ -158,6 +197,12 @@ desktopperiod=1
 
 lockperiod=2
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为2h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 offset=0.50
 ; offset={n}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
@@ -172,6 +217,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -204,6 +255,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=random
 ; order=date    排序：收录
 ; order=score   排序：热度
@@ -226,6 +283,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -255,6 +318,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=random
 ; order=date    排序：收录
 ; order=score   排序：热度
@@ -278,6 +347,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=random
 ; order=score   排序：热度
 ; order=random  排序：随机（默认）
@@ -289,6 +364,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -313,6 +394,12 @@ desktopperiod=24
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
 
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
 order=score
 ; order=score   排序：热度（默认）
 ; order=random  排序：随机
@@ -324,6 +411,12 @@ desktopperiod=24
 
 lockperiod=24
 ; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
