@@ -43,12 +43,11 @@ namespace Timeline {
         private Ini ini;
         private BaseProvider provider;
         private Meta meta;
-        //private ReleaseApiData release = null;
         private long imgAnimStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
         private bool providerLspHintOn = true; // LSP图源提示
         private bool providerLspR22On = false; // LSP图源贤者模式开启
-        private bool autoStoryPos = true; // 自动调整图文区贴靠位置（需检测图像人脸位置）
+        private bool autoStoryPos = false; // TODO：自动调整图文区贴靠位置（需检测图像人脸位置）
 
         private DispatcherTimer resizeTimer1;
         private DispatcherTimer resizeTimer2;
@@ -200,14 +199,6 @@ namespace Timeline {
                 }
                 return;
             }
-            // 检查更新
-            //release = await Api.VersionAsync();
-            //if (SysUtil.CheckNewVer(release.Version?.Version)) {
-            //    await Task.Delay(1000);
-            //    ShowToastI(resLoader.GetString("MsgUpdate"), null, resLoader.GetString("ActionGo"), async () => {
-            //        await FileUtil.LaunchUriAsync(new Uri(release.Version.Url));
-            //    });
-            //}
         }
 
         private async Task LoadFocusAsync(CancellationToken token) {
@@ -1246,6 +1237,9 @@ namespace Timeline {
                     break;
                 case VirtualKey.Number6: // Ctrl + 6
                     await Mark("audited", resLoader.GetString("MarkAudited"));
+                    break;
+                case VirtualKey.Number7: // Ctrl + 7
+                    await Mark("journal", resLoader.GetString("MarkJournal"));
                     break;
                 case VirtualKey.Number0: // 0 / Ctrl + 0
                     await ShowFlyoutMarkCate();

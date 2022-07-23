@@ -1264,6 +1264,83 @@
                         </Grid>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderGlutton"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="glutton"
+                               Expanding="ExpanderStaticProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderGlutton.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderGlutton.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Margin="0,0,12,0"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE8F1;" />
+                            <TextBlock Grid.Column="1"
+                                       x:Uid="TextGluttonAlbum"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                            <ComboBox Name="BoxGluttonAlbum"
+                                      Grid.Column="2"
+                                      MinWidth="140"
+                                      ItemsSource="{x:Bind listGluttonAlbum}"
+                                      SelectionChanged="BoxGluttonAlbum_SelectionChanged" />
+                        </Grid>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderLsp"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -1674,8 +1751,19 @@
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">
                                 <Span xml:space="default">
-                                    <Run x:Uid="TextThankAd" />
-                                    <Hyperlink x:Uid="LinkAd"
+                                    <Run x:Uid="TextThankAd1" />
+                                    <Hyperlink x:Uid="LinkAd1"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextView" />
+                                    </Hyperlink>
+                                </Span>
+                            </TextBlock>
+                            <TextBlock TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0">
+                                <Span xml:space="default">
+                                    <Run x:Uid="TextThankAd2" />
+                                    <Hyperlink x:Uid="LinkAd2"
                                                UnderlineStyle="None">
                                         <Run x:Uid="TextView" />
                                     </Hyperlink>

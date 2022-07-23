@@ -460,18 +460,22 @@ namespace Timeline.Utils {
 
     public class GluttonIni : BaseIni {
         public const string ID = "glutton";
-        public static readonly List<string> ORDERS = new List<string>() { "score", "random" };
+        public static readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
+        private string album = "journal"; // 非null
 
         public GluttonIni() {
             Id = ID;
-            Orders = ORDERS;
-            Order = "score";
+        }
+
+        public string Album {
+            set => album = ALBUMS.Contains(value) ? value : "journal";
+            get => album;
         }
 
         public override BaseProvider GenerateProvider() => new GluttonProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}";
+            $"&album={Album}";
     }
 
     public class LspIni : BaseIni {

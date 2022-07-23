@@ -1,4 +1,4 @@
-; 拾光 / Timeline v6.5
+; 拾光 / Timeline v6.6
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -22,7 +22,7 @@ provider=bing
 ; provider=wallhere   图源：WallHere - One of the best hd wallpapers site! https://wallhere.com
 ; provider=infinity   图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
 ; provider=obzhi      图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
-; provider=glutton    图源；贪食鬼 - 拾光聚合
+; provider=glutton    图源；贪食鬼 - 饕餮盛宴
 ; provider=lsp        图源：LSP - 不可描述
 
 desktopprovider=
@@ -63,8 +63,8 @@ order=random
 ; order=date    排序：收录
 ; order=random  排序：随机（默认）
 
-appetite=18
-; appetite={n}  导入量：从“贪食鬼”图源热度榜导入图片量（默认为18张）
+appetite=20
+; appetite={n}  导入量：从“贪食鬼”图源热度集导入图片量（默认为20张）
 
 folder=
 ; folder=  图库名：默认留空，与收藏文件夹相同（将存放于系统“图片”文件夹下）
@@ -400,9 +400,9 @@ toastperiod=24
 tileperiod=2
 ; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
-order=score
-; order=score   排序：热度（默认）
-; order=random  排序：随机
+album=journal
+; album=journal  集：周选集（默认）
+; album=rank     集：热度集
 
 [lsp]
 

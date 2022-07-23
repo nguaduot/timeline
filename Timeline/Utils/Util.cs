@@ -22,7 +22,7 @@ using Windows.UI.Xaml.Media;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-6.0.ini";
+        private const string FILE_INI = "timeline-6.6.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -145,6 +145,11 @@ namespace Timeline.Utils {
         public static async Task SaveInfinityOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(InfinityIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveGluttonAlbumAsync(string album) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(GluttonIni.ID, "album", album, iniFile.Path);
         }
 
         public static async Task SaveOneOrderAsync(string order) {
@@ -496,13 +501,13 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out toastPeriod);
             _ = GetPrivateProfileString(GluttonIni.ID, "tileperiod", "2", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out tilePeriod);
-            _ = GetPrivateProfileString(GluttonIni.ID, "order", "score", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(GluttonIni.ID, "album", "journal", sb, 1024, iniFile);
             ini.SetIni(GluttonIni.ID, new GluttonIni {
                 DesktopPeriod = desktopPeriod,
                 LockPeriod = lockPeriod,
                 ToastPeriod = toastPeriod,
                 TilePeriod = tilePeriod,
-                Order = sb.ToString()
+                Album = sb.ToString()
             });
             _ = GetPrivateProfileString(LspIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);

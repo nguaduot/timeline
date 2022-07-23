@@ -663,7 +663,7 @@
   <data name="TextSettingsOther.Text" xml:space="preserve">
     <value>其他</value>
   </data>
-  <data name="TextThankAd.Text" xml:space="preserve">
+  <data name="TextThankAd1.Text" xml:space="preserve">
     <value>微信公众号 @网罗灯下黑：发文推荐</value>
   </data>
   <data name="Provider_wallhaven" xml:space="preserve">
@@ -757,7 +757,7 @@
     <value>贪食鬼</value>
   </data>
   <data name="Slogan_glutton" xml:space="preserve">
-    <value>拾光聚合</value>
+    <value>饕餮盛宴</value>
   </data>
   <data name="TextDonate0.Text" xml:space="preserve">
     <value>迫于服务器等成本压力，开放</value>
@@ -792,7 +792,7 @@
   <data name="ActionExpand" xml:space="preserve">
     <value>展开</value>
   </data>
-  <data name="LinkAd.NavigateUri" xml:space="preserve">
+  <data name="LinkAd1.NavigateUri" xml:space="preserve">
     <value>https://mp.weixin.qq.com/s/bY9rJUhmowGr0mbxtDLR6w</value>
   </data>
   <data name="TextView.Text" xml:space="preserve">
@@ -800,5 +800,26 @@
   </data>
   <data name="ThankDonate2" xml:space="preserve">
     <value>赞助者名单：{0}</value>
+  </data>
+  <data name="LinkAd2.NavigateUri" xml:space="preserve">
+    <value>https://mp.weixin.qq.com/s/A1wVql71U8p_ikuPJ3cgcA</value>
+  </data>
+  <data name="TextThankAd2.Text" xml:space="preserve">
+    <value>微信公众号 @阿明不哭：发文推荐</value>
+  </data>
+  <data name="Album_journal" xml:space="preserve">
+    <value>周选集</value>
+  </data>
+  <data name="Album_rank" xml:space="preserve">
+    <value>热度集</value>
+  </data>
+  <data name="GluttonPhase" xml:space="preserve">
+    <value>第{0}期 {1}</value>
+  </data>
+  <data name="MarkJournal" xml:space="preserve">
+    <value>周选集</value>
+  </data>
+  <data name="TextGluttonAlbum.Text" xml:space="preserve">
+    <value>集</value>
   </data>
 </root>

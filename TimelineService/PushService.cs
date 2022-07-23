@@ -85,9 +85,10 @@ namespace TimelineService {
                 if (pushLock) {
                     await PushLockAsync();
                 }
-                if (pushToast) {
-                    await PushToastAsync();
-                }
+                // TODO
+                //if (pushToast) {
+                //    await PushToastAsync();
+                //}
                 if (pushTile) {
                     await PushTileAsync();
                 }
@@ -983,26 +984,35 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadGluttonAsync(Action action) {
+            const int PHASE_SIZE = 10; // 每期图片数
             GluttonApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(GluttonIni.GetId(), "", ini.Glutton.Order);
+            string jsonData = await FileUtil.ReadProviderCache(GluttonIni.GetId(), ini.Glutton.Album, "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    data = api.Data[new Random().Next(api.Data.Count)];
+                    if ("journal".Equals(ini.Glutton.Album)) {
+                        data = api.Data[new Random().Next(Math.Min(api.Data.Count, PHASE_SIZE))];
+                    } else { // rank or null
+                        data = api.Data[new Random().Next(api.Data.Count)];
+                    }
                     LogUtil.I("LoadGluttonAsync() cache from disk");
                 } catch (Exception e) {
                     LogUtil.E("LoadGluttonAsync() " + e.Message);
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/glutton/v2?client=timelinewallpaper&order={0}";
-                string urlApi = string.Format(URL_API, ini.Glutton.Order);
+                const string URL_API = "https://api.nguaduot.cn/glutton/v2?client=timelinewallpaper&album={0}";
+                string urlApi = string.Format(URL_API, ini.Glutton.Album);
                 LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(GluttonIni.GetId(), "", ini.Glutton.Order, jsonData);
+                if ("journal".Equals(ini.Glutton.Album)) {
+                    data = api.Data[new Random().Next(Math.Min(api.Data.Count, PHASE_SIZE))];
+                } else { // rank or null
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                }
+                await FileUtil.WriteProviderCache(GluttonIni.GetId(), ini.Glutton.Album, "", jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 // 生成缩略图

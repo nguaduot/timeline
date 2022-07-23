@@ -800,12 +800,12 @@ namespace TimelineService.Utils {
     }
 
     public sealed class GluttonIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "score", "random" };
+        private readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
 
-        private string order = "score";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "score";
-            get => order;
+        private string album = "journal";
+        public string Album {
+            set => album = ALBUMS.Contains(value) ? value : "journal";
+            get => album;
         }
 
         private int desktopPeriod = 24;
@@ -833,7 +833,7 @@ namespace TimelineService.Utils {
         }
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}";
+            $"&album={Album}";
 
         public static string GetId() => "glutton";
     }

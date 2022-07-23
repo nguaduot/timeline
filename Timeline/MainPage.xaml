@@ -412,6 +412,9 @@
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="infinity"
                                       GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="glutton"
+                                      GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
                                       Tag="lsp"
                                       Click="MenuProvider_Click"
@@ -560,6 +563,9 @@
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number6"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Number7"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number0"

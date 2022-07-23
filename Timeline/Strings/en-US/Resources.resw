@@ -633,7 +633,7 @@
   <data name="TextSettingsOther.Text" xml:space="preserve">
     <value>Other</value>
   </data>
-  <data name="TextThankAd.Text" xml:space="preserve">
+  <data name="TextThankAd1.Text" xml:space="preserve">
     <value>Thank WeChat@网罗灯下黑 for article.</value>
   </data>
   <data name="Provider_wallhaven" xml:space="preserve">
@@ -789,7 +789,7 @@
   <data name="ActionExpand" xml:space="preserve">
     <value>Expand</value>
   </data>
-  <data name="LinkAd.NavigateUri" xml:space="preserve">
+  <data name="LinkAd1.NavigateUri" xml:space="preserve">
     <value>https://mp.weixin.qq.com/s/bY9rJUhmowGr0mbxtDLR6w</value>
   </data>
   <data name="TextView.Text" xml:space="preserve">
@@ -797,5 +797,26 @@
   </data>
   <data name="ThankDonate2" xml:space="preserve">
     <value>Sponsor list: {0}</value>
+  </data>
+  <data name="LinkAd2.NavigateUri" xml:space="preserve">
+    <value>https://mp.weixin.qq.com/s/A1wVql71U8p_ikuPJ3cgcA</value>
+  </data>
+  <data name="TextThankAd2.Text" xml:space="preserve">
+    <value>Thank WeChat@阿明不哭 for article.</value>
+  </data>
+  <data name="Album_journal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Album_rank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="GluttonPhase" xml:space="preserve">
+    <value>Phase {1} {2}</value>
+  </data>
+  <data name="MarkJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="TextGluttonAlbum.Text" xml:space="preserve">
+    <value>Album</value>
   </data>
 </root>

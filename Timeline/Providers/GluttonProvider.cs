@@ -8,18 +8,29 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using Windows.ApplicationModel.Resources;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
-        private const string URL_API = "https://api.nguaduot.cn/glutton/v2?client=timelinewallpaper&order={0}";
+        // 页数据索引（从最大值开始）（用于按需加载）
+        private int nextPage = int.MaxValue;
+
+        private const string URL_API = "https://api.nguaduot.cn/glutton/v2?client=timelinewallpaper&album={0}&order={1}&phase={2}";
         
-        private Meta ParseBean(GluttonApiData bean) {
+        private Meta ParseBean(GluttonApiData bean, string album) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
-                Title = bean.Title,
-                SortFactor = bean.Score
+                Title = bean.Title
             };
+            if ("journal".Equals(album)) {
+                if (bean.Phase > 0) {
+                    meta.Title = string.Format(ResourceLoader.GetForCurrentView().GetString("GluttonPhase"),
+                        bean.Phase, bean.Title);
+                }
+            } else { // rank or null
+                meta.Title = ResourceLoader.GetForCurrentView().GetString("Album_rank") + " " + bean.Title;
+            }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
             }
@@ -41,7 +52,8 @@ namespace Timeline.Providers {
             }
             await base.LoadData(token, bi, index, date);
 
-            string urlApi = string.Format(URL_API, bi.Order);
+            GluttonIni ini = bi as GluttonIni;
+            string urlApi = string.Format(URL_API, ini.Album, ini.Order, nextPage);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -54,12 +66,13 @@ namespace Timeline.Providers {
                 }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (GluttonApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item));
+                    metasAdd.Add(ParseBean(item, ini.Album));
                 }
-                if ("score".Equals(bi.Order)) { // 有序排列
-                    SortMetas(metasAdd);
-                } else {
-                    AppendMetas(metasAdd);
+                AppendMetas(metasAdd);
+                if ("journal".Equals(ini.Album) && !"random".Equals(ini.Order)) {
+                    int phase = int.MaxValue;
+                    api.Data.ForEach(item => phase = Math.Min(phase, item.Phase));
+                    nextPage = phase > 0 ? phase - 1 : nextPage;
                 }
                 return true;
             } catch (Exception e) {

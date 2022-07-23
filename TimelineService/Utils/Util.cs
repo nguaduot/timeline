@@ -17,7 +17,7 @@ using Windows.System.Profile;
 namespace TimelineService.Utils {
     public sealed class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-6.0.ini";
+        private const string FILE_INI = "timeline-6.6.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -273,8 +273,8 @@ namespace TimelineService.Utils {
             _ = GetPrivateProfileString(GluttonIni.GetId(), "lockperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Glutton.LockPeriod = period;
-            _ = GetPrivateProfileString(GluttonIni.GetId(), "order", "score", sb, 1024, iniFile);
-            ini.Glutton.Order = sb.ToString();
+            _ = GetPrivateProfileString(GluttonIni.GetId(), "album", "journal", sb, 1024, iniFile);
+            ini.Glutton.Album = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Lsp.DesktopPeriod = period;
