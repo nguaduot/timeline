@@ -1102,7 +1102,7 @@ namespace Timeline {
                 return;
             }
             FlyoutGo.Hide();
-            if (ini.GetIni().IsSequential() && DateTime.TryParseExact(BoxGo.Text.Trim(), "yyyyMMdd",
+            if (/*ini.GetIni().IsSequential() && */DateTime.TryParseExact(BoxGo.Text.Trim(), "yyyyMMdd",
                 new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 ctsLoad.Cancel();
                 StatusLoading();
