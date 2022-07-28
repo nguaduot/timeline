@@ -41,6 +41,9 @@ namespace Timeline.Providers {
 
             LocalIni ini = bi as LocalIni;
             StorageFolder folder = await FileUtil.GetPicLibFolder(ini.Folder);
+            if (folder == null) {
+                return false;
+            }
             LogUtil.D("LoadData() provider folder: " + folder.Path);
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
             LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);

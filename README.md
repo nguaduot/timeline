@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v6.6-brightgreen)
-[![release](https://img.shields.io/badge/release-v6.4.220710-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v6.7-brightgreen)
+[![release](https://img.shields.io/badge/release-v6.6.220729-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -84,6 +84,8 @@
     + `排序`：取当前排序结果第一页随机
   + Infinity
     + `排序`：取当前排序结果第一页随机
+  + 贪食鬼
+    + `集`：支持
   + LSP
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机

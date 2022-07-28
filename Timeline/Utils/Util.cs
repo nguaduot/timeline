@@ -800,7 +800,11 @@ namespace Timeline.Utils {
                 }
             }
             if (folder == null) {
-                folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+                try {
+                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+                } catch (Exception ex) {
+                    LogUtil.E("GetPicLibFolder() " + ex.Message);
+                }
             }
             return folder;
         }

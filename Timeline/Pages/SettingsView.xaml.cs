@@ -372,6 +372,11 @@ namespace Timeline.Pages {
             BackgroundDownloader downloader = new BackgroundDownloader();
             IReadOnlyList<DownloadOperation> historyDownloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
             StorageFolder folderLocal = await FileUtil.GetPicLibFolder(localIni.Folder);
+            if (folderLocal == null) {
+                BtnLocalImport.IsEnabled = true;
+                PbImport.ShowError = true;
+                return;
+            }
             foreach (Meta meta in top) { // 开始下载
                 string localName = string.Format("{0}-{1}{2}", resLoader.GetString("Provider_" + glutton.Id), meta.Id, meta.Format);
                 if (await folderLocal.TryGetItemAsync(localName) != null || meta.Uhd == null) { // 已导入
@@ -860,6 +865,9 @@ namespace Timeline.Pages {
         private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
             LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
             StorageFolder folder = await FileUtil.GetPicLibFolder(bi.Folder);
+            if (folder == null) {
+                return;
+            }
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
             StorageFile fileSelected = imgFiles.FirstOrDefault(f => f.ContentType.StartsWith("image"));
             await FileUtil.LaunchFolderAsync(folder, fileSelected);
