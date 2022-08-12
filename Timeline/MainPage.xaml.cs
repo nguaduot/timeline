@@ -844,17 +844,17 @@ namespace Timeline {
         private async Task Mark(string action, string desc) {
             markTimerMeta = meta;
             markTimerAction = action;
+            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
             ShowToastS(string.Format(resLoader.GetString("MsgMarked"), desc), null, resLoader.GetString("ActionUndo"), async () => {
                 await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
             });
-            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
-            base.OnNavigatedTo(e);
+        //protected override void OnNavigatedTo(NavigationEventArgs e) {
+        //    base.OnNavigatedTo(e);
 
-            // TODO
-        }
+        //    // TODO
+        //}
 
         private void MenuYesterday_Click(object sender, RoutedEventArgs e) {
             pageTimerAction = PageAction.Yesterday;

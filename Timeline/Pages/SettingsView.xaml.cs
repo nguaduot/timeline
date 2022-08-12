@@ -192,7 +192,8 @@ namespace Timeline.Pages {
         public void NotifyPaneOpened(Ini ini) {
             this.ini = ini;
             // 控制图源“LSP”是否可用
-            ExpanderLsp.IsEnabled = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider);
+            ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
+                ? Visibility.Visible : Visibility.Collapsed;
             // 刷新“图源”组设置项
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
             BoxNasaOrder.SelectedIndex = listNasaOrder.Select(t => t.Id).ToList().IndexOf(((NasaIni)ini.GetIni(NasaIni.ID)).Order);

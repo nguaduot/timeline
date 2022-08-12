@@ -162,9 +162,6 @@ namespace Timeline.Utils {
 
         public virtual string GetCateApi() => null;
 
-        // 时序图源
-        public virtual bool IsSequential() => false;
-
         public virtual BaseProvider GenerateProvider() => new BaseProvider();
     }
 
@@ -211,8 +208,6 @@ namespace Timeline.Utils {
             get => lang;
         }
 
-        public override bool IsSequential() => true;
-
         public override BaseProvider GenerateProvider() => new BingProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
@@ -240,8 +235,6 @@ namespace Timeline.Utils {
             get => mirror;
         }
 
-        public override bool IsSequential() => "date".Equals(Order);
-
         public override BaseProvider GenerateProvider() => new NasaProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
@@ -257,8 +250,6 @@ namespace Timeline.Utils {
             Orders = ORDERS;
             Order = "date";
         }
-
-        public override bool IsSequential() => "date".Equals(Order);
 
         public override BaseProvider GenerateProvider() => new OneplusProvider { Id = this.Id };
 
@@ -282,8 +273,6 @@ namespace Timeline.Utils {
 
         public override string GetCateApi() => URL_API_CATE;
 
-        public override bool IsSequential() => "date".Equals(Order);
-
         public override BaseProvider GenerateProvider() => new TimelineProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
@@ -299,8 +288,6 @@ namespace Timeline.Utils {
             Orders = ORDERS;
             Order = "date";
         }
-
-        public override bool IsSequential() => "date".Equals(Order);
 
         public override BaseProvider GenerateProvider() => new OneProvider { Id = this.Id };
 
@@ -328,8 +315,6 @@ namespace Timeline.Utils {
             DesktopPeriod = 1;
             LockPeriod = 2;
         }
-
-        public override bool IsSequential() => true;
 
         public override BaseProvider GenerateProvider() => new Himawari8Provider { Id = this.Id };
 
