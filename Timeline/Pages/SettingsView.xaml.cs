@@ -41,12 +41,14 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listOneOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listYmyouliCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listYmyouliOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallhavenOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallhavenOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallpaperupCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listWallpaperupOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
@@ -121,6 +123,12 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
+            foreach (string item in WallpaperupIni.ORDERS) {
+                listWallpaperupOrder.Add(new CateMeta {
+                    Id = item,
+                    Name = resLoader.GetString("Order_" + item)
+                });
+            }
             foreach (string item in InfinityIni.ORDERS) {
                 listInfinityOrder.Add(new CateMeta {
                     Id = item,
@@ -156,37 +164,6 @@ namespace Timeline.Pages {
                     RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp
                 }
             };
-
-            //dicPushDesktop = new Dictionary<string, FontIcon> {
-            //    { LocalIni.ID, IconPushDesktopLocal },
-            //    { BingIni.ID, IconPushDesktopBing },
-            //    { NasaIni.ID, IconPushDesktopNasa },
-            //    { OneplusIni.ID, IconPushDesktopOneplus },
-            //    { TimelineIni.ID, IconPushDesktopTimeline },
-            //    { OneIni.ID, IconPushDesktopOne },
-            //    { Himawari8Ini.ID, IconPushDesktopHimawari8 },
-            //    { YmyouliIni.ID, IconPushDesktopYmyouli },
-            //    { WallhavenIni.ID, IconPushDesktopWallhaven },
-            //    { QingbzIni.ID, IconPushDesktopQingbz },
-            //    { WallhereIni.ID, IconPushDesktopWallhere },
-            //    { InfinityIni.ID, IconPushDesktopInfinity },
-            //    { LspIni.ID, IconPushDesktopLsp }
-            //};
-            //dicPushLock = new Dictionary<string, FontIcon> {
-            //    { LocalIni.ID, IconPushLockLocal },
-            //    { BingIni.ID, IconPushLockBing },
-            //    { NasaIni.ID, IconPushLockNasa },
-            //    { OneplusIni.ID, IconPushLockOneplus },
-            //    { TimelineIni.ID, IconPushLockTimeline },
-            //    { OneIni.ID, IconPushLockOne },
-            //    { Himawari8Ini.ID, IconPushLockHimawari8 },
-            //    { YmyouliIni.ID, IconPushLockYmyouli },
-            //    { WallhavenIni.ID, IconPushLockWallhaven },
-            //    { QingbzIni.ID, IconPushLockQingbz },
-            //    { WallhereIni.ID, IconPushLockWallhere },
-            //    { InfinityIni.ID, IconPushLockInfinity },
-            //    { LspIni.ID, IconPushLockLsp }
-            //};
         }
 
         public void NotifyPaneOpened(Ini ini) {
@@ -204,9 +181,10 @@ namespace Timeline.Pages {
             BoxHimawari8Offset.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Offset;
             BoxHimawari8Ratio.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Ratio;
             BoxYmyouliOrder.SelectedIndex = listYmyouliOrder.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Order);
-            BoxWallhavenOrder.SelectedIndex = listWallhavenOrder.Select(t => t.Id).ToList().IndexOf(((WallhavenIni)ini.GetIni(WallhavenIni.ID)).Order);
             BoxQingbzOrder.SelectedIndex = listQingbzOrder.Select(t => t.Id).ToList().IndexOf(((QingbzIni)ini.GetIni(QingbzIni.ID)).Order);
+            BoxWallhavenOrder.SelectedIndex = listWallhavenOrder.Select(t => t.Id).ToList().IndexOf(((WallhavenIni)ini.GetIni(WallhavenIni.ID)).Order);
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
+            BoxWallpaperupOrder.SelectedIndex = listWallpaperupOrder.Select(t => t.Id).ToList().IndexOf(((WallpaperupIni)ini.GetIni(WallpaperupIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
@@ -808,6 +786,34 @@ namespace Timeline.Pages {
             }
             bi.Order = order;
             await IniUtil.SaveWallhereOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxWallpaperupCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveWallpaperupCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxWallpaperupOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string order = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveWallpaperupOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

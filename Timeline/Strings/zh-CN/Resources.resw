@@ -304,7 +304,7 @@
     <value>扫码赞助</value>
   </data>
   <data name="TextDonate2.Text" xml:space="preserve">
-    <value>渠道，如果您有稳定的收入，可以打赏任意金额，都将用于维护本项目以及提升积极性。(●'◡'●)</value>
+    <value>渠道，如果您有稳定的收入，可以打赏任意金额，将用于维护本项目以及提升积极性。(●'◡'●)</value>
   </data>
   <data name="BoxGo.Header" xml:space="preserve">
     <value>跳转</value>
@@ -550,7 +550,7 @@
     <value>排序</value>
   </data>
   <data name="Slogan_wallhere" xml:space="preserve">
-    <value>One of the best hd wallpapers site!</value>
+    <value>One of the best hd wallpapers site</value>
   </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>类别</value>
@@ -673,7 +673,7 @@
     <value>寻求CDN赞助</value>
   </data>
   <data name="Slogan_wallhaven" xml:space="preserve">
-    <value>The best wallpapers on the Net!</value>
+    <value>The best wallpapers on the Net</value>
   </data>
   <data name="Glitter.Text" xml:space="preserve">
     <value>时光如歌，岁月如诗</value>
@@ -821,5 +821,23 @@
   </data>
   <data name="TextGluttonAlbum.Text" xml:space="preserve">
     <value>集</value>
+  </data>
+  <data name="LinkAd3.NavigateUri" xml:space="preserve">
+    <value>https://go2think.com/timeline-wallpaper-app/</value>
+  </data>
+  <data name="Provider_wallpaperup" xml:space="preserve">
+    <value>WallpaperUP</value>
+  </data>
+  <data name="Slogan_wallpaperup" xml:space="preserve">
+    <value>Your best source of wallpapers</value>
+  </data>
+  <data name="TextThankAd3.Text" xml:space="preserve">
+    <value>Go 2 Think：发文推荐</value>
+  </data>
+  <data name="TextWallpaperupCate.Text" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="TextWallpaperupOrder.Text" xml:space="preserve">
+    <value>排序</value>
   </data>
 </root>

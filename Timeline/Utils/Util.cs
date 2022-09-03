@@ -22,7 +22,7 @@ using Windows.UI.Xaml.Media;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-6.6.ini";
+        private const string FILE_INI = "timeline-6.7.ini";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -185,6 +185,16 @@ namespace Timeline.Utils {
         public static async Task SaveWallhereCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(WallhereIni.ID, "cate", cate, iniFile.Path);
+        }
+
+        public static async Task SaveWallpaperupOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(WallpaperupIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveWallpaperupCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(WallpaperupIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveObzhiOrderAsync(string order) {
@@ -395,27 +405,6 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(YmyouliIni.ID, "admin", "", sb, 1024, iniFile);
             ymyouliIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(YmyouliIni.ID, ymyouliIni);
-            _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out desktopPeriod);
-            _ = GetPrivateProfileString(WallhavenIni.ID, "lockperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out lockPeriod);
-            _ = GetPrivateProfileString(WallhavenIni.ID, "toastperiod", "24", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out toastPeriod);
-            _ = GetPrivateProfileString(WallhavenIni.ID, "tileperiod", "2", sb, 1024, iniFile);
-            _ = int.TryParse(sb.ToString(), out tilePeriod);
-            WallhavenIni wallhavenIni = new WallhavenIni {
-                DesktopPeriod = desktopPeriod,
-                LockPeriod = lockPeriod,
-                ToastPeriod = toastPeriod,
-                TilePeriod = tilePeriod,
-            };
-            _ = GetPrivateProfileString(WallhavenIni.ID, "order", "random", sb, 1024, iniFile);
-            wallhavenIni.Order = sb.ToString();
-            _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
-            wallhavenIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhavenIni.ID, "admin", "", sb, 1024, iniFile);
-            wallhavenIni.Admin = sb.ToString(); // 管理员用途
-            ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(QingbzIni.ID, "lockperiod", "24", sb, 1024, iniFile);
@@ -437,6 +426,27 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(QingbzIni.ID, "admin", "", sb, 1024, iniFile);
             qingbzIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(QingbzIni.ID, qingbzIni);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(WallhavenIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
+            WallhavenIni wallhavenIni = new WallhavenIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
+            };
+            _ = GetPrivateProfileString(WallhavenIni.ID, "order", "random", sb, 1024, iniFile);
+            wallhavenIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
+            wallhavenIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(WallhavenIni.ID, "admin", "", sb, 1024, iniFile);
+            wallhavenIni.Admin = sb.ToString(); // 管理员用途
+            ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(WallhereIni.ID, "lockperiod", "24", sb, 1024, iniFile);
@@ -458,6 +468,27 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(WallhereIni.ID, "admin", "", sb, 1024, iniFile);
             wallhereIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(wallhereIni.Id, wallhereIni);
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
+            WallpaperupIni wallpaperupIni = new WallpaperupIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
+            };
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "order", "random", sb, 1024, iniFile);
+            wallpaperupIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "cate", "", sb, 1024, iniFile);
+            wallpaperupIni.Cate = sb.ToString();
+            _ = GetPrivateProfileString(WallpaperupIni.ID, "admin", "", sb, 1024, iniFile);
+            wallpaperupIni.Admin = sb.ToString(); // 管理员用途
+            ini.SetIni(wallpaperupIni.Id, wallpaperupIni);
             _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(InfinityIni.ID, "lockperiod", "24", sb, 1024, iniFile);

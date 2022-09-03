@@ -1,4 +1,4 @@
-; 拾光 / Timeline v6.6
+; 拾光 / Timeline v6.7
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -6,24 +6,25 @@
 [app]
 
 r18=0
-; r18={n}  R18内容：0或1（R18内容如“LSP”图源，默认为0，不含）
+; r18={n}  R18内容：0或1，置为1可启用图源“LSP”（默认为0，不启用）
 
 provider=bing
-; provider=local      图源：本地图库 - 我的精选
-; provider=bing       图源：Microsoft Bing - 每天发现一个新地方 https://cn.bing.com
-; provider=nasa       图源：NASA - 每日天文一图 https://apod.nasa.gov/apod
-; provider=oneplus    图源：OnePlus - Shot on OnePlus https://photos.oneplus.com
-; provider=timeline   图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline
-; provider=one        图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
-; provider=himawari8  图源：向日葵8号 - 实时地球 https://himawari8.nict.go.jp
-; provider=ymyouli    图源：一梦幽黎 - 8K优质壁纸资源 https://www.ymyouli.com
-; provider=wallhaven  图源：wallhaven - The best wallpapers on the Net! https://wallhaven.cc
-; provider=qingbz     图源：轻壁纸 - 4K壁纸分享站 https://bz.qinggongju.com
-; provider=wallhere   图源：WallHere - One of the best hd wallpapers site! https://wallhere.com
-; provider=infinity   图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
-; provider=obzhi      图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
-; provider=glutton    图源；贪食鬼 - 饕餮盛宴
-; provider=lsp        图源：LSP - 不可描述
+; provider=local        图源：本地图库 - 我的精选
+; provider=bing         图源：Microsoft Bing - 每天发现一个新地方 https://cn.bing.com
+; provider=nasa         图源：NASA - 每日天文一图 https://apod.nasa.gov/apod
+; provider=oneplus      图源：OnePlus - Shot on OnePlus https://photos.oneplus.com
+; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline
+; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
+; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari8.nict.go.jp
+; provider=ymyouli      图源：一梦幽黎 - 8K优质壁纸资源 https://www.ymyouli.com
+; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://bz.qinggongju.com
+; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc
+; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com
+; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
+; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
+; provider=obzhi        图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
+; provider=glutton      图源；贪食鬼 - 饕餮盛宴
+; provider=lsp          图源：LSP - 不可描述
 
 desktopprovider=
 ; desktopprovider={provider}  桌面背景推送图源：参数参考 provider（置空则关闭推送）
@@ -247,35 +248,6 @@ admin=
 ; admin=           管理员：普通用户内容（默认）
 ; admin=marked     管理员：用户标记内容（普通用户无权限）
 
-[wallhaven]
-
-desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
-
-order=random
-; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
-
-cate=
-; cate=            类别：全部（默认）
-; cate=acg         类别：Anime
-; cate=photograph  类别：General
-
-admin=
-; admin=           管理员：普通用户内容（默认）
-; admin=unaudited  管理员：待审查内容（普通用户无权限）
-; admin=marked     管理员：用户标记内容（普通用户无权限）
-
 [qingbz]
 
 desktopperiod=24
@@ -310,7 +282,65 @@ admin=
 ; admin=           管理员：普通用户内容（默认）
 ; admin=marked     管理员：用户标记内容（普通用户无权限）
 
+[wallhaven]
+
+desktopperiod=24
+; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：热度
+; order=random  排序：随机（默认）
+
+cate=
+; cate=            类别：全部（默认）
+; cate=acg         类别：Anime
+; cate=photograph  类别：General
+
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
+
 [wallhere]
+
+desktopperiod=24
+; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：热度
+; order=random  排序：随机（默认）
+
+cate=
+; cate=            类别：全部（默认）
+; cate=acg         类别：ACG
+; cate=photograph  类别：摄影
+
+admin=
+; admin=           管理员：普通用户内容（默认）
+; admin=unaudited  管理员：待审查内容（普通用户无权限）
+; admin=marked     管理员：用户标记内容（普通用户无权限）
+
+[wallpaperup]
 
 desktopperiod=24
 ; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）

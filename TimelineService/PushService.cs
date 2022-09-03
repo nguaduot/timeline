@@ -191,12 +191,14 @@ namespace TimelineService {
                 res = await LoadHimawari8Async(Action.Desktop);
             } else if (YmyouliIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadYmyouliAsync(Action.Desktop);
-            } else if (WallhavenIni.GetId().Equals(ini.DesktopProvider)) {
-                res = await LoadWallhavenAsync(Action.Desktop);
             } else if (QingbzIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadQingbzAsync(Action.Desktop);
+            } else if (WallhavenIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadWallhavenAsync(Action.Desktop);
             } else if (WallhereIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadWallhereAsync(Action.Desktop);
+            } else if (WallpaperupIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadWallpaperupAsync(Action.Desktop);
             } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadInfinityAsync(Action.Desktop);
             } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
@@ -232,12 +234,14 @@ namespace TimelineService {
                 res = await LoadHimawari8Async(Action.Lock);
             } else if (YmyouliIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadYmyouliAsync(Action.Lock);
-            } else if (WallhavenIni.GetId().Equals(ini.LockProvider)) {
-                res = await LoadWallhavenAsync(Action.Lock);
             } else if (QingbzIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadQingbzAsync(Action.Lock);
+            } else if (WallhavenIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadWallhavenAsync(Action.Lock);
             } else if (WallhereIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadWallhereAsync(Action.Lock);
+            } else if (WallpaperupIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadWallpaperupAsync(Action.Lock);
             } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadInfinityAsync(Action.Lock);
             } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
@@ -273,12 +277,14 @@ namespace TimelineService {
                 res = await LoadHimawari8Async(Action.Toast);
             } else if (YmyouliIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadYmyouliAsync(Action.Toast);
-            } else if (WallhavenIni.GetId().Equals(ini.ToastProvider)) {
-                res = await LoadWallhavenAsync(Action.Toast);
             } else if (QingbzIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadQingbzAsync(Action.Toast);
+            } else if (WallhavenIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadWallhavenAsync(Action.Toast);
             } else if (WallhereIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadWallhereAsync(Action.Toast);
+            } else if (WallpaperupIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadWallpaperupAsync(Action.Toast);
             } else if (InfinityIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadInfinityAsync(Action.Toast);
             } else if (ObzhiIni.GetId().Equals(ini.ToastProvider)) {
@@ -315,12 +321,14 @@ namespace TimelineService {
                 res = await LoadHimawari8Async(Action.Tile);
             } else if (YmyouliIni.GetId().Equals(tileProvider)) {
                 res = await LoadYmyouliAsync(Action.Tile);
-            } else if (WallhavenIni.GetId().Equals(tileProvider)) {
-                res = await LoadWallhavenAsync(Action.Tile);
             } else if (QingbzIni.GetId().Equals(tileProvider)) {
                 res = await LoadQingbzAsync(Action.Tile);
+            } else if (WallhavenIni.GetId().Equals(tileProvider)) {
+                res = await LoadWallhavenAsync(Action.Tile);
             } else if (WallhereIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallhereAsync(Action.Tile);
+            } else if (WallpaperupIni.GetId().Equals(tileProvider)) {
+                res = await LoadWallpaperupAsync(Action.Tile);
             } else if (InfinityIni.GetId().Equals(tileProvider)) {
                 res = await LoadInfinityAsync(Action.Tile);
             } else if (ObzhiIni.GetId().Equals(tileProvider)) {
@@ -787,46 +795,6 @@ namespace TimelineService {
             }
         }
 
-        private async Task<bool> LoadWallhavenAsync(Action action) {
-            WallhavenApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order);
-            if (!string.IsNullOrEmpty(jsonData)) {
-                try {
-                    WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
-                    data = api.Data[new Random().Next(api.Data.Count)];
-                    LogUtil.I("LoadWallhaven() cache from disk");
-                } catch (Exception e) {
-                    LogUtil.E("LoadWallhaven() " + e.Message);
-                }
-            }
-            if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
-                LogUtil.I("LoadWallhaven() api url: " + urlApi);
-                HttpClient client = new HttpClient();
-                jsonData = await client.GetStringAsync(urlApi);
-                WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
-                data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order, jsonData);
-            }
-            if (action == Action.Toast || action == Action.Tile) {
-                LogUtil.I("LoadWallhaven() thumb url: " + data.ThumbUrl);
-                if (action == Action.Toast) {
-                    return ShowToast(data.ThumbUrl);
-                } else {
-                    return SetTileBg(data.ThumbUrl);
-                }
-            } else {
-                LogUtil.I("LoadWallhaven() img url: " + data.ImgUrl);
-                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
-                if (action == Action.Lock) {
-                    return await SetLockBgAsync(fileImg);
-                } else {
-                    return await SetDesktopBgAsync(fileImg);
-                }
-            }
-        }
-
         private async Task<bool> LoadQingbzAsync(Action action) {
             QingbzApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order);
@@ -867,6 +835,46 @@ namespace TimelineService {
             }
         }
 
+        private async Task<bool> LoadWallhavenAsync(Action action) {
+            WallhavenApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadWallhaven() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadWallhaven() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
+                LogUtil.I("LoadWallhaven() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order, jsonData);
+            }
+            if (action == Action.Toast || action == Action.Tile) {
+                LogUtil.I("LoadWallhaven() thumb url: " + data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
+            } else {
+                LogUtil.I("LoadWallhaven() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
         private async Task<bool> LoadWallhereAsync(Action action) {
             WallhereApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order);
@@ -898,6 +906,46 @@ namespace TimelineService {
                 }
             } else {
                 LogUtil.I("LoadWallhereAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadWallpaperupAsync(Action action) {
+            WallpaperupApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Cate, ini.Wallpaperup.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadWallpaperupAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadWallpaperupAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/wallpaperup/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Wallpaperup.Cate, ini.Wallpaperup.Order);
+                LogUtil.I("LoadWallpaperupAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Cate, ini.Wallpaperup.Order, jsonData);
+            }
+            if (action == Action.Toast || action == Action.Tile) {
+                LogUtil.I("LoadWallpaperupAsync() thumb url: " + data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
+            } else {
+                LogUtil.I("LoadWallpaperupAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBgAsync(fileImg);
