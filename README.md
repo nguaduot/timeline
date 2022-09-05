@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v6.7-brightgreen)
-[![release](https://img.shields.io/badge/release-v6.6.220729-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v6.8-brightgreen)
+[![release](https://img.shields.io/badge/release-v6.7.220903-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -37,9 +37,10 @@
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari8.nict.go.jp/) - 实时地球
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源
-+ [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net!
 + [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站
-+ [WallHere](https://wallhere.com) - One of the best hd wallpapers site!
++ [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net
++ [WallHere](https://wallhere.com) - One of the best hd wallpapers site
++ [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 
@@ -73,13 +74,16 @@
   + 一梦幽黎
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
-  + wallhaven
-    + `类别`：支持
-    + `排序`：取当前排序结果第一页随机
   + 轻壁纸
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
+  + wallhaven
+    + `类别`：支持
+    + `排序`：取当前排序结果第一页随机
   + WallHere
+    + `类别`：支持
+    + `排序`：取当前排序结果第一页随机
+  + WallpaperUP
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
   + Infinity
