@@ -2,8 +2,8 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v6.8-brightgreen)
-[![release](https://img.shields.io/badge/release-v6.7.220903-blue)](https://gitee.com/nguaduot/timeline/releases)
+![developing](https://img.shields.io/badge/developing-v6.9-brightgreen)
+[![release](https://img.shields.io/badge/release-v6.8.220909-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
