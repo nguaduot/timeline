@@ -1897,6 +1897,58 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander ExpandDirection="Down"
+                               Name="ExpanderBbs"
+                               IsExpanded="False"
+                               Visibility="Collapsed"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Margin="0,0,12,0"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE8BD;" />
+                            <StackPanel Grid.Column="1"
+                                        Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock x:Uid="SettingsBbsTitle"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock x:Uid="SettingsBbsDesc"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel Margin="28,0,0,0">
+                            <TextBlock Name="TextBbsContent1"
+                                       TextWrapping="WrapWholeWords"
+                                       IsTextSelectionEnabled="True"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                            <TextBlock Name="TextBbsContent2"
+                                       TextWrapping="WrapWholeWords"
+                                       Margin="0,8,0,0"
+                                       IsTextSelectionEnabled="True"
+                                       Visibility="Collapsed"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                            <TextBlock Name="TextBbsContent3"
+                                       TextWrapping="WrapWholeWords"
+                                       Visibility="Collapsed"
+                                       IsTextSelectionEnabled="True"
+                                       Margin="0,8,0,0"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 
                 <TextBlock x:Uid="TextAbout"
                            Style="{StaticResource BodyTextBlockStyle}"

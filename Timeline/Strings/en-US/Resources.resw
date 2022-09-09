@@ -837,4 +837,16 @@
   <data name="TextWallpaperupOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
+  <data name="BbsContent" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="BoxAdmin.Header" xml:space="preserve">
+    <value>Admin command</value>
+  </data>
+  <data name="SettingsBbsDesc.Text" xml:space="preserve">
+    <value>Messages from the developer</value>
+  </data>
+  <data name="SettingsBbsTitle.Text" xml:space="preserve">
+    <value>BBS</value>
+  </data>
 </root>

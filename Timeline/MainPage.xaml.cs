@@ -314,7 +314,7 @@ namespace Timeline {
             if (reloadIni) {
                 providerLspR22On = (ini.GetIni(LspIni.ID) as LspIni).R22; // 重置前保存状态
                 ini = await IniUtil.GetIniAsync();
-                (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置前恢复状态
+                (ini.GetIni(LspIni.ID) as LspIni).R22 = providerLspR22On; // 重置后恢复状态
             }
             InitProvider();
             if (ini.Provider.Equals(MenuProviderLsp.Tag) && providerLspHintOn) { // 防社死
@@ -486,6 +486,8 @@ namespace Timeline {
             RelativePanel.SetAlignRightWithPanel(ViewBarPointer, right);
             RelativePanel.SetAlignLeftWithPanel(Info, !right);
             RelativePanel.SetAlignRightWithPanel(Info, right);
+            RelativePanel.SetAlignLeftWithPanel(AnchorAdmin, right);
+            RelativePanel.SetAlignRightWithPanel(AnchorAdmin, !right);
             RelativePanel.SetAlignLeftWithPanel(AnchorGo, right);
             RelativePanel.SetAlignRightWithPanel(AnchorGo, !right);
             RelativePanel.SetAlignLeftWithPanel(AnchorCate, right);
@@ -642,18 +644,30 @@ namespace Timeline {
                 view.ExitFullScreenMode();
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
                 if (optimizeSize) {
-                    //Windows.Foundation.Size winLogic = Window.Current.Content.ActualSize.ToSize(); // 窗口逻辑尺寸
                     Windows.Foundation.Size monitorLogic = SysUtil.GetMonitorPixels(true); // 显示器逻辑尺寸
+                    Windows.Foundation.Size winLogic = Window.Current.Content.ActualSize.ToSize(); // 窗口逻辑尺寸
                     LogUtil.I("ToggleFullscreenMode() monitor logic: " + monitorLogic);
                     if (monitorLogic.Width > 0) {
                         if (monitorLogic.Width > monitorLogic.Height) { // 横屏
-                            double h = monitorLogic.Height * 2 / 3; // 2/3高度
-                            bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(h * 16 / 10, h)); // 16:10
-                            LogUtil.I("ToggleFullscreenMode() " + res);
+                            if ((winLogic.Width < winLogic.Height && Math.Abs(winLogic.Height / winLogic.Width - 1.6) >= 0.01) || Math.Abs(winLogic.Width / winLogic.Height - 1.6) < 0.01) { // 非完美竖窗或完美横窗
+                                double h = monitorLogic.Height * 4 / 5; // 4/5高度
+                                bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(h * 10 / 16, h)); // 10:16
+                                LogUtil.I("ToggleFullscreenMode() " + res);
+                            } else { // 竖窗
+                                double h = monitorLogic.Height * 2 / 3; // 2/3高度
+                                bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(h * 16 / 10, h)); // 16:10
+                                LogUtil.I("ToggleFullscreenMode() " + res);
+                            }
                         } else { // 竖屏
-                            double w = monitorLogic.Width * 4 / 5; // 4/5宽度
-                            bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 10 / 16)); // 16:10
-                            LogUtil.I("ToggleFullscreenMode() " + res);
+                            if ((winLogic.Width < winLogic.Height && Math.Abs(winLogic.Height / winLogic.Width - 1.6) >= 0.01) || Math.Abs(winLogic.Width / winLogic.Height - 1.6) < 0.01) { // 非完美竖窗或完美横窗
+                                double w = monitorLogic.Width * 2 / 3; // 2/3宽度
+                                bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 16 / 10)); // 10:16
+                                LogUtil.I("ToggleFullscreenMode() " + res);
+                            } else { // 竖窗
+                                double w = monitorLogic.Width * 4 / 5; // 4/5宽度
+                                bool res = ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(w, w * 10 / 16)); // 16:10
+                                LogUtil.I("ToggleFullscreenMode() " + res);
+                            }
                         }
                     }
                 }
@@ -699,6 +713,18 @@ namespace Timeline {
             MenuFillOff.Visibility = fillOn ? Visibility.Visible : Visibility.Collapsed;
 
             ShowToastI(fillOn ? resLoader.GetString("MsgUniformToFill") : resLoader.GetString("MsgUniform"));
+        }
+
+        private void ShowFlyoutAdmin() {
+            if (FlyoutAdmin.IsOpen) {
+                FlyoutAdmin.Hide();
+                return;
+            }
+            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.ToArray());
+            BoxAdmin.Text = ini.GetIni().Admin;
+            FlyoutAdmin.Placement = RelativePanel.GetAlignRightWithPanel(AnchorAdmin)
+                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
+            FlyoutBase.ShowAttachedFlyout(AnchorAdmin);
         }
 
         private void ShowFlyoutGo() {
@@ -1097,6 +1123,15 @@ namespace Timeline {
             args.Handled = true;
         }
 
+        private async void BoxAdmin_KeyDown(object sender, KeyRoutedEventArgs e) {
+            if (e.Key != VirtualKey.Enter) {
+                return;
+            }
+            FlyoutAdmin.Hide();
+            ini.GetIni().Admin = BoxAdmin.Text.ToString();
+            await Refresh(false);
+        }
+
         private async void BoxGo_KeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key != VirtualKey.Enter) {
                 return;
@@ -1257,6 +1292,9 @@ namespace Timeline {
                 case VirtualKey.O: // Ctrl + O
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists));
+                    break;
+                case VirtualKey.A: // Ctrl + A
+                    ShowFlyoutAdmin();
                     break;
                 case VirtualKey.S: // Ctrl + S
                 case VirtualKey.D: // Ctrl + D

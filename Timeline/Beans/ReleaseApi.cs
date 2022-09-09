@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Timeline.Beans {
     public class ReleaseApi {
@@ -31,6 +32,11 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "glitter")]
 
         public string[] Glitter { get; set; }
+
+        // 公告板
+        [JsonProperty(PropertyName = "bbs")]
+
+        public List<BbsApiData> Bbs { get; set; }
     }
 
     public class LifeApiData {
@@ -65,5 +71,15 @@ namespace Timeline.Beans {
         // 可运营天数
         [JsonProperty(PropertyName = "remain")]
         public int Remain { set; get; }
+    }
+
+    public class BbsApiData {
+        // 开始日期：yyyy-MM-dd
+        [JsonProperty(PropertyName = "start")]
+        public string Start { set; get; }
+
+        // 内容
+        [JsonProperty(PropertyName = "comment")]
+        public string Comment { set; get; }
     }
 }

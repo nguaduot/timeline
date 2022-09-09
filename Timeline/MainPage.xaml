@@ -451,6 +451,17 @@
                      KeyDown="BoxGo_KeyDown" />
         </Flyout>
 
+        <Flyout x:Key="FlyoutAdmin"
+                x:Name="FlyoutAdmin"
+                Placement="LeftEdgeAlignedBottom"
+                LightDismissOverlayMode="On">
+            <TextBox Name="BoxAdmin"
+                     x:Uid="BoxAdmin"
+                     MaxLength="8"
+                     MinWidth="168"
+                     KeyDown="BoxAdmin_KeyDown" />
+        </Flyout>
+
     </Page.Resources>
 
     <SplitView Name="ViewSplit"
@@ -477,6 +488,8 @@
                                 Value="14" />
                         <Setter Target="Info.Margin"
                                 Value="23,48,23,24" />
+                        <Setter Target="AnchorAdmin.Margin"
+                                Value="20,24" />
                         <Setter Target="AnchorGo.Margin"
                                 Value="20,24" />
                         <Setter Target="AnchorCate.Margin"
@@ -593,6 +606,9 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="O"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="A"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="S"
@@ -770,6 +786,15 @@
                                      Click="BtnInfo_Click" />
                 </muxc:InfoBar.ActionButton>
             </muxc:InfoBar>
+
+            <Rectangle Name="AnchorAdmin"
+                       Width="0"
+                       Height="0"
+                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutAdmin}"
+                       Margin="10,12"
+                       RelativePanel.AlignLeftWithPanel="False"
+                       RelativePanel.AlignRightWithPanel="True"
+                       RelativePanel.AlignBottomWithPanel="True" />
 
             <Rectangle Name="AnchorGo"
                        Width="0"

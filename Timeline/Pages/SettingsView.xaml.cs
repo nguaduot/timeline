@@ -322,6 +322,28 @@ namespace Timeline.Pages {
             } else {
                 TextRelease.Text = "";
             }
+            // 刷新公告板
+            if (release.Bbs != null && release.Bbs.Count > 0) {
+                release.Bbs.Sort((a, b) => b.Start.CompareTo(a.Start)); // 日期降序
+                TextBbsContent1.Visibility = Visibility.Visible;
+                if (release.Bbs.Count == 1) {
+                    TextBbsContent1.Text = release.Bbs[0].Comment;
+                } else {
+                    TextBbsContent1.Text = string.Format(resLoader.GetString("BbsContent"),
+                        DateTime.Parse(release.Bbs[0].Start).ToString("M"), release.Bbs[0].Comment);
+                }
+                if (release.Bbs.Count > 1) {
+                    TextBbsContent2.Visibility = Visibility.Visible;
+                    TextBbsContent2.Text = string.Format(resLoader.GetString("BbsContent"),
+                        DateTime.Parse(release.Bbs[1].Start).ToString("M"), release.Bbs[1].Comment);
+                }
+                if (release.Bbs.Count > 2) {
+                    TextBbsContent3.Visibility = Visibility.Visible;
+                    TextBbsContent3.Text = string.Format(resLoader.GetString("BbsContent"),
+                        DateTime.Parse(release.Bbs[2].Start).ToString("M"), release.Bbs[2].Comment);
+                }
+                ExpanderBbs.Visibility = Visibility.Visible;
+            }
         }
 
         private async Task ImportAsync() {

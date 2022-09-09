@@ -305,8 +305,6 @@ namespace Timeline.Utils {
             nasaIni.Order = sb.ToString();
             _ = GetPrivateProfileString(NasaIni.ID, "mirror", "", sb, 1024, iniFile);
             nasaIni.Mirror = sb.ToString();
-            _ = GetPrivateProfileString(NasaIni.ID, "admin", "", sb, 1024, iniFile);
-            nasaIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(NasaIni.ID, nasaIni);
             _ = GetPrivateProfileString(OneplusIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -345,8 +343,6 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(TimelineIni.ID, "unauthorized", "0", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int unauthorized);
             timelineIni.Unauthorized = unauthorized;
-            _ = GetPrivateProfileString(TimelineIni.ID, "admin", "", sb, 1024, iniFile);
-            timelineIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(TimelineIni.ID, timelineIni);
             _ = GetPrivateProfileString(OneIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -402,8 +398,6 @@ namespace Timeline.Utils {
             ymyouliIni.Order = sb.ToString();
             _ = GetPrivateProfileString(YmyouliIni.ID, "cate", "", sb, 1024, iniFile);
             ymyouliIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(YmyouliIni.ID, "admin", "", sb, 1024, iniFile);
-            ymyouliIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(YmyouliIni.ID, ymyouliIni);
             _ = GetPrivateProfileString(QingbzIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -423,8 +417,6 @@ namespace Timeline.Utils {
             qingbzIni.Order = sb.ToString();
             _ = GetPrivateProfileString(QingbzIni.ID, "cate", "", sb, 1024, iniFile);
             qingbzIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(QingbzIni.ID, "admin", "", sb, 1024, iniFile);
-            qingbzIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(QingbzIni.ID, qingbzIni);
             _ = GetPrivateProfileString(WallhavenIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -444,8 +436,6 @@ namespace Timeline.Utils {
             wallhavenIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhavenIni.ID, "cate", "", sb, 1024, iniFile);
             wallhavenIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhavenIni.ID, "admin", "", sb, 1024, iniFile);
-            wallhavenIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(WallhavenIni.ID, wallhavenIni);
             _ = GetPrivateProfileString(WallhereIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -465,8 +455,6 @@ namespace Timeline.Utils {
             wallhereIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallhereIni.ID, "cate", "", sb, 1024, iniFile);
             wallhereIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallhereIni.ID, "admin", "", sb, 1024, iniFile);
-            wallhereIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(wallhereIni.Id, wallhereIni);
             _ = GetPrivateProfileString(WallpaperupIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -486,8 +474,6 @@ namespace Timeline.Utils {
             wallpaperupIni.Order = sb.ToString();
             _ = GetPrivateProfileString(WallpaperupIni.ID, "cate", "", sb, 1024, iniFile);
             wallpaperupIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(WallpaperupIni.ID, "admin", "", sb, 1024, iniFile);
-            wallpaperupIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(wallpaperupIni.Id, wallpaperupIni);
             _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -558,8 +544,6 @@ namespace Timeline.Utils {
             lspIni.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.ID, "cate", "", sb, 1024, iniFile);
             lspIni.Cate = sb.ToString();
-            _ = GetPrivateProfileString(LspIni.ID, "admin", "", sb, 1024, iniFile);
-            lspIni.Admin = sb.ToString(); // 管理员用途
             ini.SetIni(LspIni.ID, lspIni);
             return ini;
         }

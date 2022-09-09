@@ -840,4 +840,16 @@
   <data name="TextWallpaperupOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
+  <data name="BbsContent" xml:space="preserve">
+    <value>{0}：{1}</value>
+  </data>
+  <data name="BoxAdmin.Header" xml:space="preserve">
+    <value>管理员参数</value>
+  </data>
+  <data name="SettingsBbsDesc.Text" xml:space="preserve">
+    <value>来自开发者的碎碎念</value>
+  </data>
+  <data name="SettingsBbsTitle.Text" xml:space="preserve">
+    <value>公告板</value>
+  </data>
 </root>
