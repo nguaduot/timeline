@@ -26,7 +26,8 @@ namespace Timeline.Providers {
                 Uhd = bean.PhotoUrl,
                 Thumb = bean.PhotoUrl.Replace(".jpg", "_400_0.jpg"),
                 Title = bean.PhotoTopic?.Trim(),
-                Copyright = "@" + bean.Author
+                Copyright = "@" + bean.Author,
+                Format = FileUtil.ParseFormat(bean.PhotoUrl)
             };
 
             if (!bean.PhotoTopic.Equals(bean.Remark?.Trim())) {

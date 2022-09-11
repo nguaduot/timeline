@@ -26,7 +26,8 @@ namespace Timeline.Providers {
                 Title = bean.Title,
                 Cate = bean.CateName,
                 Story = bean.Story?.Trim(),
-                Src = bean.SrcUrl
+                Src = bean.SrcUrl,
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (bean.Unauthorized != 0) {
                 meta.Title = "🚫 " + meta.Title;
@@ -36,11 +37,6 @@ namespace Timeline.Providers {
             }
             if (!string.IsNullOrEmpty(bean.Platform)) {
                 meta.Copyright = bean.Platform + meta.Copyright;
-            }
-            if (bean.ImgUrl != null) {
-                Uri uri = new Uri(bean.ImgUrl);
-                string[] name = uri.Segments[uri.Segments.Length - 1].Split(".");
-                meta.Format = "." + name[1];
             }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {

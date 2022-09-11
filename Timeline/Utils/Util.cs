@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Timeline.Beans;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Display;
@@ -822,6 +823,17 @@ namespace Timeline.Utils {
                 }
             }
             return folder;
+        }
+
+        public static string ParseFormat(string url) {
+            if (!string.IsNullOrEmpty(url)) {
+                Uri uri = new Uri(url);
+                string[] nameArr = uri.Segments[uri.Segments.Length - 1].Split(".");
+                if (nameArr.Length > 1) {
+                    return "." + nameArr[nameArr.Length - 1];
+                }
+            }
+            return ".jpg";
         }
     }
 

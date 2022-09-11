@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.Threading;
 using System.Globalization;
+using System.Linq;
 
 namespace Timeline.Providers {
     public class OneProvider : BaseProvider {
@@ -33,12 +34,13 @@ namespace Timeline.Providers {
                 Title = bean.Title,
                 Story = bean.Content,
                 Copyright = bean.PictureAuthor,
-                Src = bean.Url
+                Src = bean.Url,
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";
                 string content = bean.Content.Replace("\r\n", " ").Replace("\n", " ");
-                foreach (Match match in Regex.Matches(content, @"([^  ，、。！？；：(?:——)]+)([  ，、。！？；：(?:——)])")) {
+                foreach (Match match in Regex.Matches(content, @"([^  ，、。！？；：(?:——)]+)([  ，、。！？；：(?:——)])").Cast<Match>()) {
                     meta.Title += match.Groups[1].Value;
                     if (meta.Title.Length < 6) {
                         meta.Title += match.Groups[2].Value;

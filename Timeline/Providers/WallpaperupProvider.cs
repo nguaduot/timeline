@@ -25,6 +25,7 @@ namespace Timeline.Providers {
                 Story = bean.Story,
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
+                Format = FileUtil.ParseFormat(bean.ImgUrl),
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);

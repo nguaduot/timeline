@@ -25,6 +25,7 @@ namespace Timeline.Providers {
                 Story = bean.Story,
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
+                Format = FileUtil.ParseFormat(bean.ImgUrl),
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {

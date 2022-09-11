@@ -22,7 +22,8 @@ namespace Timeline.Providers {
             Meta meta = new Meta {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
-                Title = bean.Title
+                Title = bean.Title,
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if ("journal".Equals(album)) {
                 if (bean.Phase > 0) {

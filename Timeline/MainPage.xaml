@@ -457,7 +457,6 @@
                 LightDismissOverlayMode="On">
             <TextBox Name="BoxAdmin"
                      x:Uid="BoxAdmin"
-                     MaxLength="8"
                      MinWidth="168"
                      KeyDown="BoxAdmin_KeyDown" />
         </Flyout>

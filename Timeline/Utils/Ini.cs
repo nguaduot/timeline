@@ -137,7 +137,7 @@ namespace Timeline.Utils {
         }
 
         public string Admin {
-            set => admin = ADMIN.Contains(value) ? value : "";
+            set => admin = value ?? "";
             get => admin;
         }
 
