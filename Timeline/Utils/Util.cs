@@ -785,13 +785,14 @@ namespace Timeline.Utils {
         }
 
         public static async Task ClearCache(Ini ini) {
-            int count_threshold = ini?.Cache ?? 1000; // 缓存量阈值
+            int count_threshold = ini?.Cache ?? 600; // 缓存量阈值
             try {
                 if (count_threshold <= 0) {
                     await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
                     LogUtil.I("ClearCache() all");
                 } else {
-                    StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 缓存文件夹
+                    // 清理浏览缓存文件夹
+                    StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 浏览缓存文件夹
                     FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
                     Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
                     int count_clear = 0;
@@ -799,7 +800,17 @@ namespace Timeline.Utils {
                         files[i].Delete();
                         count_clear++;
                     }
-                    LogUtil.I("ClearCache() " + count_clear);
+                    // 清理壁纸缓存文件夹
+                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
+                        CreationCollisionOption.OpenIfExists); // 壁纸缓存文件夹
+                    files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
+                    Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
+                    int count_clear2 = 0;
+                    for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
+                        files[i].Delete();
+                        count_clear2++;
+                    }
+                    LogUtil.I("ClearCache() " + count_clear + "+" + count_clear2);
                 }
             } catch (Exception e) {
                 LogUtil.E("ClearCache() " + e.Message);

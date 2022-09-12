@@ -478,7 +478,7 @@ namespace TimelineService {
                 }
                 //DisplayInformation info = DisplayInformation.GetForCurrentView();
                 //Size monitorSize = new Size((int)info.ScreenWidthInRawPixels, (int)info.ScreenHeightInRawPixels);
-                long screen = (long)(localSettings.Values["Screen"] ?? 0);
+                long screen = (long)(localSettings.Values["Resolution"] ?? 0);
                 long screenW = (screen & 0xffff0000) >> 16;
                 long screenH = screen & 0x0000ffff;
                 if (screen == 0) {
@@ -499,7 +499,8 @@ namespace TimelineService {
                     session.DrawImage(bitmap, (canvasW + bitmap.SizeInPixels.Width) * offset - bitmap.SizeInPixels.Width,
                         canvasH / 2 - bitmap.SizeInPixels.Height / 2);
                 }
-                file = await folder.CreateFileAsync(string.Format("{0}-reset-{1}.jpg", cacheName, DateTime.Now.ToString("yyyyMMddHH00")),
+                await file.DeleteAsync(); // 删除原图
+                file = await folder.CreateFileAsync(string.Format("{0}-reset-{1}.png", cacheName, DateTime.Now.ToString("yyyyMMddHH00")),
                     CreationCollisionOption.ReplaceExisting);
                 await target.SaveAsync(file.Path, CanvasBitmapFileFormat.Png, 1.0f);
             }
@@ -738,7 +739,7 @@ namespace TimelineService {
                 string.Format("{0}{1}000", time.ToString("HH"), time.Minute / 10));
             LogUtil.I("LoadHimawari8Async() img url: " + urlUhd);
             if (action == Action.Toast || action == Action.Tile) {
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action, 0.5f, 0.5f);
+                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Toast) {
                     return ShowToast(fileImg.Path);
                 } else {
