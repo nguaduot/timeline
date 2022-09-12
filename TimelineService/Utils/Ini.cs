@@ -6,8 +6,8 @@ namespace TimelineService.Utils {
         private readonly HashSet<string> PROVIDER = new HashSet<string>() {
             LocalIni.GetId(), BingIni.GetId(), NasaIni.GetId(), OneplusIni.GetId(), TimelineIni.GetId(),
             OneIni.GetId(), Himawari8Ini.GetId(), YmyouliIni.GetId(), QingbzIni.GetId(), WallhavenIni.GetId(),
-            WallhereIni.GetId(), WallpaperupIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(), GluttonIni.GetId(),
-            LspIni.GetId()
+            WallhereIni.GetId(), WallpaperupIni.GetId(), ToopicIni.GetId(), InfinityIni.GetId(), ObzhiIni.GetId(),
+            GluttonIni.GetId(), LspIni.GetId()
         };
         private readonly HashSet<string> THEME = new HashSet<string>() { "", "light", "dark" };
 
@@ -59,6 +59,8 @@ namespace TimelineService.Utils {
 
         public WallpaperupIni Wallpaperup { set; get; } = new WallpaperupIni();
 
+        public ToopicIni Toopic { set; get; } = new ToopicIni();
+
         public InfinityIni Infinity { set; get; } = new InfinityIni();
 
         public ObzhiIni Obzhi { set; get; } = new ObzhiIni();
@@ -90,6 +92,8 @@ namespace TimelineService.Utils {
                 return Wallhere.DesktopPeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.DesktopPeriod;
+            } else if (ToopicIni.GetId().Equals(provider)) {
+                return Toopic.DesktopPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.DesktopPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -126,6 +130,8 @@ namespace TimelineService.Utils {
                 return Wallhere.LockPeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.LockPeriod;
+            } else if (ToopicIni.GetId().Equals(provider)) {
+                return Toopic.LockPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.LockPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -162,6 +168,8 @@ namespace TimelineService.Utils {
                 return Wallhere.ToastPeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.ToastPeriod;
+            } else if (ToopicIni.GetId().Equals(provider)) {
+                return Toopic.ToastPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.ToastPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -198,6 +206,8 @@ namespace TimelineService.Utils {
                 return Wallhere.TilePeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.TilePeriod;
+            } else if (ToopicIni.GetId().Equals(provider)) {
+                return Toopic.TilePeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.TilePeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -235,6 +245,8 @@ namespace TimelineService.Utils {
                 paras = Wallhere.ToString();
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 paras = Wallpaperup.ToString();
+            } else if (ToopicIni.GetId().Equals(provider)) {
+                paras = Toopic.ToString();
             } else if (InfinityIni.GetId().Equals(provider)) {
                 paras = Infinity.ToString();
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -253,7 +265,7 @@ namespace TimelineService.Utils {
     }
 
     public sealed class LocalIni {
-        private int appetite = 18;
+        private int appetite = 20;
         public int Appetite {
             set => appetite = appetite = value <= 0 ? 18 : (value > 99 ? 99 : value);
             get => appetite;
@@ -261,8 +273,15 @@ namespace TimelineService.Utils {
 
         private string folder = "";
         public string Folder {
-            set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            //set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            set => folder = value ?? "";
             get => folder;
+        }
+
+        private int depth = 0;
+        public int Depth {
+            set => depth = value > 0 ? value : 0;
+            get => depth;
         }
 
         private int desktopPeriod = 24;
@@ -770,6 +789,51 @@ namespace TimelineService.Utils {
             $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "wallpaperup";
+    }
+
+    public sealed class ToopicIni {
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = value ?? "";
+            get => cate;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+
+        public static string GetId() => "toopic";
     }
 
     public sealed class InfinityIni {

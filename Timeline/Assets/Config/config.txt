@@ -21,6 +21,7 @@ provider=bing
 ; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc
 ; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com
 ; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
+; provider=toopic       图源：壁纸社 - 4K高清壁纸 https://www.toopic.cn
 ; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
 ; provider=obzhi        图源：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
 ; provider=glutton      图源；贪食鬼 - 饕餮盛宴
@@ -68,7 +69,10 @@ appetite=20
 ; appetite={n}  导入量：从“贪食鬼”图源热度集导入图片量（默认为20张）
 
 folder=
-; folder=  图库名：默认留空，与收藏文件夹相同（将存放于系统“图片”文件夹下）
+; folder=  图库路径：默认留空（与收藏文件夹相同）
+
+depth=0
+; depth={n}  图库深度：读取子文件夹层数（默认为0，不读取子文件夹）
 
 [bing]
 
@@ -319,6 +323,34 @@ cate=
 ; cate=still      类别：静物
 
 [wallpaperup]
+
+desktopperiod=24
+; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：热度
+; order=random  排序：随机（默认）
+
+cate=
+; cate=           类别：全部（默认）
+; cate=acg        类别：ACG
+; cate=animal     类别：动物
+; cate=art        类别：创意
+; cate=landscape  类别：风光
+; cate=portrait   类别：人像
+; cate=still      类别：静物
+
+[toopic]
 
 desktopperiod=24
 ; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）

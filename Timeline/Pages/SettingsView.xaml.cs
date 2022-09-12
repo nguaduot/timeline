@@ -15,7 +15,9 @@ using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -49,6 +51,8 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listWallhereOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallpaperupCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallpaperupOrder = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listToopicOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
@@ -129,6 +133,12 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Order_" + item)
                 });
             }
+            foreach (string item in ToopicIni.ORDERS) {
+                listToopicOrder.Add(new CateMeta {
+                    Id = item,
+                    Name = resLoader.GetString("Order_" + item)
+                });
+            }
             foreach (string item in InfinityIni.ORDERS) {
                 listInfinityOrder.Add(new CateMeta {
                     Id = item,
@@ -185,6 +195,7 @@ namespace Timeline.Pages {
             BoxWallhavenOrder.SelectedIndex = listWallhavenOrder.Select(t => t.Id).ToList().IndexOf(((WallhavenIni)ini.GetIni(WallhavenIni.ID)).Order);
             BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
             BoxWallpaperupOrder.SelectedIndex = listWallpaperupOrder.Select(t => t.Id).ToList().IndexOf(((WallpaperupIni)ini.GetIni(WallpaperupIni.ID)).Order);
+            BoxToopicOrder.SelectedIndex = listToopicOrder.Select(t => t.Id).ToList().IndexOf(((ToopicIni)ini.GetIni(ToopicIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
@@ -372,7 +383,7 @@ namespace Timeline.Pages {
 
             BackgroundDownloader downloader = new BackgroundDownloader();
             IReadOnlyList<DownloadOperation> historyDownloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-            StorageFolder folderLocal = await FileUtil.GetPicLibFolder(localIni.Folder);
+            StorageFolder folderLocal = await FileUtil.GetGalleryFolder(localIni.Folder);
             if (folderLocal == null) {
                 BtnLocalImport.IsEnabled = true;
                 PbImport.ShowError = true;
@@ -842,6 +853,38 @@ namespace Timeline.Pages {
             });
         }
 
+        private async void BoxToopicCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(ToopicIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveToopicCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxToopicOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string order = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(ToopicIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveToopicOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BtnToopicDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlToopic")));
+        }
+
         private async void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string cate = (e.AddedItems[0] as CateMeta).Id;
             BaseIni bi = ini.GetIni(LspIni.ID);
@@ -893,13 +936,37 @@ namespace Timeline.Pages {
 
         private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
             LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
-            StorageFolder folder = await FileUtil.GetPicLibFolder(bi.Folder);
+            StorageFolder folder = await FileUtil.GetGalleryFolder(bi.Folder);
             if (folder == null) {
                 return;
             }
             IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
             StorageFile fileSelected = imgFiles.FirstOrDefault(f => f.ContentType.StartsWith("image"));
             await FileUtil.LaunchFolderAsync(folder, fileSelected);
+        }
+
+        private async void BtnLocalPick_Click(object sender, RoutedEventArgs e) {
+            FolderPicker picker = new FolderPicker();
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add("*");
+
+            StorageFolder folder = await picker.PickSingleFolderAsync();
+            if (folder != null) {
+                // Application now has read/write access to all contents in the picked folder
+                // (including other sub-folder contents)
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+
+                LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
+                //if (folder.Path.Equals(bi.Folder)) {
+                //    return;
+                //}
+                bi.Folder = folder.Path;
+                await IniUtil.SaveLocalFolderAsync(bi.Folder);
+                await IniUtil.SaveProviderAsync(bi.Id);
+                SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                    ProviderConfigChanged = true
+                });
+            }
         }
 
         private async void BtnLocalImport_Click(object sender, RoutedEventArgs e) {

@@ -413,6 +413,9 @@
                                       Tag="wallpaperup"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="toopic"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="infinity"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
@@ -461,6 +464,15 @@
                      KeyDown="BoxAdmin_KeyDown" />
         </Flyout>
 
+        <muxc:TeachingTip x:Name="TipThumb"
+                          x:Uid="TipThumb"
+                          PreferredPlacement="BottomRight"
+                          IsLightDismissEnabled="True">
+            <muxc:TeachingTip.HeroContent>
+                <Image Name="ImgThumb" />
+            </muxc:TeachingTip.HeroContent>
+        </muxc:TeachingTip>
+
     </Page.Resources>
 
     <SplitView Name="ViewSplit"
@@ -480,7 +492,7 @@
                         <Setter Target="ViewSplit.OpenPaneLength"
                                 Value="420" />
                         <Setter Target="ViewBar.Margin"
-                                Value="24" />
+                                Value="30" />
                         <Setter Target="ViewBar.Padding"
                                 Value="16,12" />
                         <Setter Target="ViewBar.CornerRadius"
@@ -488,11 +500,11 @@
                         <Setter Target="Info.Margin"
                                 Value="23,48,23,24" />
                         <Setter Target="AnchorAdmin.Margin"
-                                Value="20,24" />
+                                Value="24,28" />
                         <Setter Target="AnchorGo.Margin"
-                                Value="20,24" />
+                                Value="24,28" />
                         <Setter Target="AnchorCate.Margin"
-                                Value="20,24" />
+                                Value="24,28" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -640,6 +652,9 @@
                 <KeyboardAccelerator Key="Space"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Space"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Application"
                                      Modifiers="None"
                                      Invoked="KeyInvoked" />
@@ -708,7 +723,7 @@
                 <StackPanel Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                             Name="ViewBar"
                             MaxWidth="640"
-                            Margin="12"
+                            Margin="16"
                             Padding="12,10"
                             CornerRadius="12">
 
@@ -790,7 +805,7 @@
                        Width="0"
                        Height="0"
                        FlyoutBase.AttachedFlyout="{StaticResource FlyoutAdmin}"
-                       Margin="10,12"
+                       Margin="11,15"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />
@@ -799,7 +814,7 @@
                        Width="0"
                        Height="0"
                        FlyoutBase.AttachedFlyout="{StaticResource FlyoutGo}"
-                       Margin="10,12"
+                       Margin="11,15"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />
@@ -808,7 +823,7 @@
                        Width="0"
                        Height="0"
                        FlyoutBase.AttachedFlyout="{StaticResource FlyoutMarkCate}"
-                       Margin="10,12"
+                       Margin="11,15"
                        RelativePanel.AlignLeftWithPanel="False"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.AlignBottomWithPanel="True" />

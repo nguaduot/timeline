@@ -137,6 +137,29 @@
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                           FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
+                                          Glyph="&#xE8AC;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextLocalPick"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnLocalPick"
+                                        x:Uid="BtnLocalPick"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Click="BtnLocalPick_Click" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
                                           Glyph="&#xECAD;" />
                                 <TextBlock Grid.Column="1"
                                            x:Uid="TextLocalGlutton"
@@ -857,7 +880,7 @@
                                            Style="{StaticResource BodyTextBlockStyle}" />
                                 <Button Grid.Column="2"
                                         Name="BtnYmyouliDonate"
-                                        x:Uid="BtnYmyouliDonate"
+                                        x:Uid="BtnProviderDonate"
                                         Click="BtnYmyouliDonate_Click" />
                             </Grid>
                         </StackPanel>
@@ -979,7 +1002,7 @@
                                            Style="{StaticResource BodyTextBlockStyle}" />
                                 <Button Grid.Column="2"
                                         Name="BtnQingbzDonate"
-                                        x:Uid="BtnQingbzDonate"
+                                        x:Uid="BtnProviderDonate"
                                         Click="BtnQingbzDonate_Click" />
                             </Grid>
                         </StackPanel>
@@ -1284,6 +1307,128 @@
                                           MinWidth="140"
                                           ItemsSource="{x:Bind listWallpaperupOrder}"
                                           SelectionChanged="BoxWallpaperupOrder_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
+                <muxc:Expander Name="ExpanderToopic"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="toopic"
+                               Expanding="ExpanderDynamicProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderToopic.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderToopic.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextToopicCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxToopicCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listToopicCate}"
+                                          SelectionChanged="BoxToopicCate_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextToopicOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxToopicOrder"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listToopicOrder}"
+                                          SelectionChanged="BoxToopicOrder_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE95E;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextToopicDonate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnToopicDonate"
+                                        x:Uid="BtnProviderDonate"
+                                        Click="BtnToopicDonate_Click" />
                             </Grid>
                         </StackPanel>
                     </muxc:Expander.Content>

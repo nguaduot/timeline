@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Timeline.Beans;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Display;
@@ -89,6 +88,11 @@ namespace Timeline.Utils {
         public static async Task SaveThemeAsync(string theme) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString("app", "theme", theme, iniFile.Path);
+        }
+
+        public static async Task SaveLocalFolderAsync(string folder) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(LocalIni.ID, "folder", folder, iniFile.Path);
         }
 
         public static async Task SaveBingLangAsync(string langCode) {
@@ -198,14 +202,14 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(WallpaperupIni.ID, "cate", cate, iniFile.Path);
         }
 
-        public static async Task SaveObzhiOrderAsync(string order) {
+        public static async Task SaveToopicOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(ObzhiIni.ID, "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(ToopicIni.ID, "order", order, iniFile.Path);
         }
 
-        public static async Task SaveObzhiCateAsync(string cate) {
+        public static async Task SaveToopicCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(ObzhiIni.ID, "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(ToopicIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveLspOrderAsync(string order) {
@@ -216,11 +220,6 @@ namespace Timeline.Utils {
         public static async Task SaveLspCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LspIni.ID, "cate", cate, iniFile.Path);
-        }
-
-        public static async Task SaveLocalOrderAsync(string order) {
-            StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(LocalIni.ID, "order", order, iniFile.Path);
         }
 
         public static async Task<StorageFile> GetIniPath() {
@@ -260,8 +259,10 @@ namespace Timeline.Utils {
             _ = int.TryParse(sb.ToString(), out int toastPeriod);
             _ = GetPrivateProfileString(LocalIni.ID, "tileperiod", "2", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int tilePeriod);
-            _ = GetPrivateProfileString(LocalIni.ID, "appetite", "18", sb, 1024, iniFile);
+            _ = GetPrivateProfileString(LocalIni.ID, "appetite", "20", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out int appetite);
+            _ = GetPrivateProfileString(LocalIni.ID, "depth", "0", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out int depth);
             _ = GetPrivateProfileString(LocalIni.ID, "folder", "", sb, 1024, iniFile);
             ini.SetIni(LocalIni.ID, new LocalIni {
                 DesktopPeriod = desktopPeriod,
@@ -269,7 +270,8 @@ namespace Timeline.Utils {
                 ToastPeriod = toastPeriod,
                 TilePeriod = tilePeriod,
                 Appetite = appetite,
-                Folder = sb.ToString()
+                Folder = sb.ToString(),
+                Depth = depth
             });
             _ = GetPrivateProfileString(BingIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
@@ -476,6 +478,25 @@ namespace Timeline.Utils {
             _ = GetPrivateProfileString(WallpaperupIni.ID, "cate", "", sb, 1024, iniFile);
             wallpaperupIni.Cate = sb.ToString();
             ini.SetIni(wallpaperupIni.Id, wallpaperupIni);
+            _ = GetPrivateProfileString(ToopicIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out desktopPeriod);
+            _ = GetPrivateProfileString(ToopicIni.ID, "lockperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out lockPeriod);
+            _ = GetPrivateProfileString(ToopicIni.ID, "toastperiod", "24", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out toastPeriod);
+            _ = GetPrivateProfileString(ToopicIni.ID, "tileperiod", "2", sb, 1024, iniFile);
+            _ = int.TryParse(sb.ToString(), out tilePeriod);
+            ToopicIni toopicIni = new ToopicIni {
+                DesktopPeriod = desktopPeriod,
+                LockPeriod = lockPeriod,
+                ToastPeriod = toastPeriod,
+                TilePeriod = tilePeriod,
+            };
+            _ = GetPrivateProfileString(ToopicIni.ID, "order", "random", sb, 1024, iniFile);
+            toopicIni.Order = sb.ToString();
+            _ = GetPrivateProfileString(ToopicIni.ID, "cate", "", sb, 1024, iniFile);
+            toopicIni.Cate = sb.ToString();
+            ini.SetIni(toopicIni.Id, toopicIni);
             _ = GetPrivateProfileString(InfinityIni.ID, "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out desktopPeriod);
             _ = GetPrivateProfileString(InfinityIni.ID, "lockperiod", "24", sb, 1024, iniFile);
@@ -817,20 +838,45 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task<StorageFolder> GetPicLibFolder(string folderName = null) {
+        //public static async Task<StorageFolder> GetPicLibFolder(string folderName = null) {
+        //    StorageFolder folder = null;
+        //    if (!string.IsNullOrEmpty(folderName)) {
+        //        try {
+        //            folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+        //        } catch (Exception ex) {
+        //            LogUtil.E("GetPicLibFolder() " + ex.Message);
+        //        }
+        //    }
+        //    if (folder == null) {
+        //        try {
+        //            folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
+        //        } catch (Exception ex) {
+        //            LogUtil.E("GetPicLibFolder() " + ex.Message);
+        //        }
+        //    }
+        //    return folder;
+        //}
+
+        public static async Task<StorageFolder> GetGalleryFolder(string pathDir = null) {
             StorageFolder folder = null;
-            if (!string.IsNullOrEmpty(folderName)) {
+            if (!string.IsNullOrEmpty(pathDir)) {
                 try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(folderName, CreationCollisionOption.OpenIfExists);
+                    folder = await StorageFolder.GetFolderFromPathAsync(pathDir.Replace("/", "\\"));
+                } catch (FileNotFoundException ex) { // 指定的文件夹不存在
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                } catch (UnauthorizedAccessException ex) { // 您无权访问指定文件夹
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                } catch (ArgumentException ex) { // 路径不能是相对路径或 URI
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
                 } catch (Exception ex) {
-                    LogUtil.E("GetPicLibFolder() " + ex.Message);
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
                 }
             }
             if (folder == null) {
                 try {
                     folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName, CreationCollisionOption.OpenIfExists);
                 } catch (Exception ex) {
-                    LogUtil.E("GetPicLibFolder() " + ex.Message);
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
                 }
             }
             return folder;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Timeline.Beans;
 using Timeline.Providers;
@@ -18,6 +19,7 @@ namespace Timeline.Utils {
             { WallhavenIni.ID, new WallhavenIni() },
             { WallhereIni.ID, new WallhereIni() },
             { WallpaperupIni.ID, new WallpaperupIni() },
+            { ToopicIni.ID, new ToopicIni() },
             { InfinityIni.ID, new InfinityIni() },
             { ObzhiIni.ID, new ObzhiIni() },
             { GluttonIni.ID, new GluttonIni() },
@@ -168,8 +170,9 @@ namespace Timeline.Utils {
 
     public class LocalIni : BaseIni {
         public const string ID = "local";
-        private int appetite = 18;
+        private int appetite = 20;
         private string folder = ""; // 非null
+        private int depth = 0;
 
         public LocalIni() {
             Id = ID;
@@ -181,8 +184,14 @@ namespace Timeline.Utils {
         }
 
         public string Folder {
-            set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            //set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            set => folder = value ?? "";
             get => folder;
+        }
+
+        public int Depth {
+            set => depth = value > 0 ? value : 0;
+            get => depth;
         }
 
         public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
@@ -409,7 +418,6 @@ namespace Timeline.Utils {
     public class WallpaperupIni : BaseIni {
         public const string ID = "wallpaperup";
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
-        //public static readonly List<string> CATE = new List<string>() { "", "acg", "photograph" };
         public const string URL_API_CATE = "https://api.nguaduot.cn/wallpaperup/cate?client=timelinewallpaper";
 
         public WallpaperupIni() {
@@ -421,6 +429,25 @@ namespace Timeline.Utils {
         public override string GetCateApi() => URL_API_CATE;
 
         public override BaseProvider GenerateProvider() => new WallpaperupProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
+    public class ToopicIni : BaseIni {
+        public const string ID = "toopic";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/toopic/cate?client=timelinewallpaper";
+
+        public ToopicIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new ToopicProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}&cate={Cate}";

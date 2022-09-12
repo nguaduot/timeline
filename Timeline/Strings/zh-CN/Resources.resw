@@ -486,9 +486,6 @@
   <data name="BtnReview.Content" xml:space="preserve">
     <value>评分</value>
   </data>
-  <data name="BtnYmyouliDonate.Content" xml:space="preserve">
-    <value>前往官网</value>
-  </data>
   <data name="SettingsReviewTitle.Text" xml:space="preserve">
     <value>加鸡腿</value>
   </data>
@@ -513,7 +510,7 @@
   <data name="TextYmyouliOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
-  <data name="BtnQingbzDonate.Content" xml:space="preserve">
+  <data name="BtnProviderDonate.Content" xml:space="preserve">
     <value>前往官网</value>
   </data>
   <data name="MsgCopiedMeta" xml:space="preserve">
@@ -616,7 +613,7 @@
     <value>无法显示</value>
   </data>
   <data name="MenuMarkCateHint.Text" xml:space="preserve">
-    <value>标记分类为...</value>
+    <value>标记类别为...</value>
   </data>
   <data name="MenuMarkDirty.Text" xml:space="preserve">
     <value>含水印</value>
@@ -851,5 +848,32 @@
   </data>
   <data name="SettingsBbsTitle.Text" xml:space="preserve">
     <value>公告板</value>
+  </data>
+  <data name="BtnLocalPick.Content" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="Provider_toopic" xml:space="preserve">
+    <value>壁纸社</value>
+  </data>
+  <data name="Slogan_toopic" xml:space="preserve">
+    <value>4K高清壁纸</value>
+  </data>
+  <data name="TextLocalPick.Text" xml:space="preserve">
+    <value>重选图库</value>
+  </data>
+  <data name="TextToopicCate.Text" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="TextToopicDonate.Text" xml:space="preserve">
+    <value>支持一下</value>
+  </data>
+  <data name="TextToopicOrder.Text" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="TipThumb.Title" xml:space="preserve">
+    <value>缩略图检查</value>
+  </data>
+  <data name="UrlToopic" xml:space="preserve">
+    <value>https://www.toopic.cn/</value>
   </data>
 </root>

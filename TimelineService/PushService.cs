@@ -199,6 +199,8 @@ namespace TimelineService {
                 res = await LoadWallhereAsync(Action.Desktop);
             } else if (WallpaperupIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadWallpaperupAsync(Action.Desktop);
+            } else if (ToopicIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadToopicAsync(Action.Desktop);
             } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadInfinityAsync(Action.Desktop);
             } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
@@ -242,6 +244,8 @@ namespace TimelineService {
                 res = await LoadWallhereAsync(Action.Lock);
             } else if (WallpaperupIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadWallpaperupAsync(Action.Lock);
+            } else if (ToopicIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadToopicAsync(Action.Lock);
             } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadInfinityAsync(Action.Lock);
             } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
@@ -285,6 +289,8 @@ namespace TimelineService {
                 res = await LoadWallhereAsync(Action.Toast);
             } else if (WallpaperupIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadWallpaperupAsync(Action.Toast);
+            } else if (ToopicIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadToopicAsync(Action.Toast);
             } else if (InfinityIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadInfinityAsync(Action.Toast);
             } else if (ObzhiIni.GetId().Equals(ini.ToastProvider)) {
@@ -329,6 +335,8 @@ namespace TimelineService {
                 res = await LoadWallhereAsync(Action.Tile);
             } else if (WallpaperupIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallpaperupAsync(Action.Tile);
+            } else if (ToopicIni.GetId().Equals(tileProvider)) {
+                res = await LoadToopicAsync(Action.Tile);
             } else if (InfinityIni.GetId().Equals(tileProvider)) {
                 res = await LoadInfinityAsync(Action.Tile);
             } else if (ObzhiIni.GetId().Equals(tileProvider)) {
@@ -947,6 +955,46 @@ namespace TimelineService {
                 }
             } else {
                 LogUtil.I("LoadWallpaperupAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadToopicAsync(Action action) {
+            ToopicApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(ToopicIni.GetId(), ini.Toopic.Cate, ini.Toopic.Order);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadToopicAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadToopicAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/toopic/v2?client=timelinewallpaper&cate={0}&order={1}";
+                string urlApi = string.Format(URL_API, ini.Toopic.Cate, ini.Toopic.Order);
+                LogUtil.I("LoadToopicAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(ToopicIni.GetId(), ini.Toopic.Cate, ini.Toopic.Order, jsonData);
+            }
+            if (action == Action.Toast || action == Action.Tile) {
+                LogUtil.I("LoadToopicAsync() thumb url: " + data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
+            } else {
+                LogUtil.I("LoadToopicAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBgAsync(fileImg);

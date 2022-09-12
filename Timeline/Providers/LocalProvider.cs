@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.Storage;
-using Windows.ApplicationModel;
 using Windows.Storage.FileProperties;
+using System.Linq;
 
 namespace Timeline.Providers {
     public class LocalProvider : BaseProvider {        
-        private async Task<Meta> ParseBean(StorageFile file, int index) {
+        private async Task<Meta> ParseBean(StorageFolder folder, StorageFile file, int index) {
             Meta meta = new Meta {
                 Uhd = file.Path,
                 Thumb = file.Path,
@@ -27,8 +27,9 @@ namespace Timeline.Providers {
             }
             meta.Date = properties.ItemDate.DateTime;
             meta.SortFactor = properties.ItemDate.Ticks;
-            string folderName = (await file.GetParentAsync()).Name;
-            meta.Title = string.Format("{0} #{1}", folderName, index); // 创建日期升序
+            //string folderName = (await file.GetParentAsync()).Name;
+            string folderName = folder.Name.Length > 16 ? folder.Name.Substring(0, 16) + "..." : folder.Name;
+            meta.Title = string.Format("~\\{0} #{1}", folderName, index); // 创建日期升序
             return meta;
         }
 
@@ -40,21 +41,29 @@ namespace Timeline.Providers {
             await base.LoadData(token, bi, index, date);
 
             LocalIni ini = bi as LocalIni;
-            StorageFolder folder = await FileUtil.GetPicLibFolder(ini.Folder);
+            StorageFolder folder = await FileUtil.GetGalleryFolder(ini.Folder);
             if (folder == null) {
                 return false;
             }
             LogUtil.D("LoadData() provider folder: " + folder.Path);
-            IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
-            LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
-            List<Meta> metasAdd = new List<Meta>();
-            for (int i = 0; i < imgFiles.Count; ++i) {
-                if (imgFiles[i].ContentType.StartsWith("image")) {
-                    metasAdd.Add(await ParseBean(imgFiles[i], imgFiles.Count - i));
+            try {
+                // 某些文件夹使用 CommonFileQuery.OrderByDate 会异常
+                //IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
+                IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync();
+                //imgFiles = imgFiles.OrderBy(async f => (await f.GetBasicPropertiesAsync()).ItemDate.Ticks).ToArray();
+                LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
+                List<Meta> metasAdd = new List<Meta>();
+                for (int i = 0; i < imgFiles.Count; ++i) {
+                    if (imgFiles[i].ContentType.StartsWith("image")) {
+                        metasAdd.Add(await ParseBean(folder, imgFiles[i], imgFiles.Count - i));
+                    }
                 }
+                RandomMetas(metasAdd);
+                return true;
+            } catch (Exception e) {
+                LogUtil.E("LoadData() " + e.Message);
             }
-            RandomMetas(metasAdd);
-            return true;
+            return false;
         }
     }
 }

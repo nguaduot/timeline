@@ -414,6 +414,9 @@ namespace Timeline {
             TextDetailProperties.Text = resLoader.GetString("Provider_" + provider.Id)
                 + (meta.Cate != null ? (" · " + meta.Cate) : "");
             TextDetailProperties.Visibility = Visibility.Visible;
+
+            // TODO
+            ImgThumb.Source = new BitmapImage(new Uri(meta.Thumb));
         }
 
         private async Task ShowImg(Meta meta, CancellationToken token) {
@@ -484,14 +487,20 @@ namespace Timeline {
         private void AdjustStoryPos(bool right) {
             RelativePanel.SetAlignLeftWithPanel(ViewBarPointer, !right);
             RelativePanel.SetAlignRightWithPanel(ViewBarPointer, right);
+            // 调整顶部信息条，与图文块同侧
             RelativePanel.SetAlignLeftWithPanel(Info, !right);
             RelativePanel.SetAlignRightWithPanel(Info, right);
+            // 调整底部管理员参数浮窗至对侧
             RelativePanel.SetAlignLeftWithPanel(AnchorAdmin, right);
             RelativePanel.SetAlignRightWithPanel(AnchorAdmin, !right);
+            // 调整底部跳转浮窗至对侧
             RelativePanel.SetAlignLeftWithPanel(AnchorGo, right);
             RelativePanel.SetAlignRightWithPanel(AnchorGo, !right);
+            // 调整底部标记类别浮窗至对侧
             RelativePanel.SetAlignLeftWithPanel(AnchorCate, right);
             RelativePanel.SetAlignRightWithPanel(AnchorCate, !right);
+            // 调整底部缩略图浮窗至对侧
+            TipThumb.PreferredPlacement = right ? TeachingTipPlacementMode.BottomLeft : TeachingTipPlacementMode.BottomRight;
         }
 
         private void StatusLoading() {
@@ -715,23 +724,12 @@ namespace Timeline {
             ShowToastI(fillOn ? resLoader.GetString("MsgUniformToFill") : resLoader.GetString("MsgUniform"));
         }
 
-        private void ShowFlyoutAdmin() {
-            if (FlyoutAdmin.IsOpen) {
-                FlyoutAdmin.Hide();
-                return;
-            }
-            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.ToArray());
-            BoxAdmin.Text = ini.GetIni().Admin;
-            FlyoutAdmin.Placement = RelativePanel.GetAlignRightWithPanel(AnchorAdmin)
-                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
-            FlyoutBase.ShowAttachedFlyout(AnchorAdmin);
-        }
-
         private void ShowFlyoutGo() {
             if (FlyoutGo.IsOpen) {
                 FlyoutGo.Hide();
                 return;
             }
+            HideFlyouts();
             BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"),
                 provider.GetIndexFocus() + 1, provider.GetCount());
             BoxGo.Text = "";
@@ -740,11 +738,25 @@ namespace Timeline {
             FlyoutBase.ShowAttachedFlyout(AnchorGo);
         }
 
+        private void ShowFlyoutAdmin() {
+            if (FlyoutAdmin.IsOpen) {
+                FlyoutAdmin.Hide();
+                return;
+            }
+            HideFlyouts();
+            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.ToArray());
+            BoxAdmin.Text = ini.GetIni().Admin;
+            FlyoutAdmin.Placement = RelativePanel.GetAlignRightWithPanel(AnchorAdmin)
+                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
+            FlyoutBase.ShowAttachedFlyout(AnchorAdmin);
+        }
+
         private async Task ShowFlyoutMarkCate() {
             if (FlyoutMarkCate.IsOpen) {
                 FlyoutMarkCate.Hide();
                 return;
             }
+            HideFlyouts();
             BaseIni bi = ini.GetIni();
             if (bi.Cates.Count == 0) {
                 bi.Cates = await Api.CateAsync(bi.GetCateApi());
@@ -769,7 +781,29 @@ namespace Timeline {
             FlyoutMarkCate.Placement = RelativePanel.GetAlignRightWithPanel(AnchorCate)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorCate);
-            Debug.WriteLine(AnchorCate.Margin);
+        }
+
+        private void ShowThumb() {
+            if (TipThumb.IsOpen) {
+                TipThumb.IsOpen = false;
+                return;
+            }
+            HideFlyouts();
+            TipThumb.IsOpen = true;
+        }
+
+        private void HideFlyouts() {
+            CloseToast();
+            if (FlyoutGo.IsOpen) {
+                FlyoutGo.Hide();
+            }
+            if (FlyoutAdmin.IsOpen) {
+                FlyoutAdmin.Hide();
+            }
+            if (FlyoutMarkCate.IsOpen) {
+                FlyoutMarkCate.Hide();
+            }
+            TipThumb.IsOpen = false;
         }
 
         private async Task<bool> RegServiceAsync() {
@@ -1276,8 +1310,12 @@ namespace Timeline {
                 case VirtualKey.Number7: // Ctrl + 7
                     await Mark("journal", resLoader.GetString("MarkJournal"));
                     break;
-                case VirtualKey.Number0: // 0 / Ctrl + 0
-                    await ShowFlyoutMarkCate();
+                case VirtualKey.Number0:
+                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + 0
+                        ShowThumb();
+                    } else { // 0
+                        await ShowFlyoutMarkCate();
+                    }
                     break;
                 case VirtualKey.Tab:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + Tab
