@@ -19,12 +19,13 @@ namespace Timeline.Providers {
             };
             BasicProperties properties = await file.GetBasicPropertiesAsync();
             if (file.Name.Contains(".")) {
-                meta.Id = properties.Size + "-" + file.Name.Replace(file.FileType, "");
+                meta.Caption = file.Name.Replace(file.FileType, "");
                 meta.Format = file.FileType;
             } else {
                 // file.FileType == "."
-                meta.Id = properties.Size + "-" + file.Name;
+                meta.Caption = file.Name;
             }
+            meta.Id = properties.Size + "-" + meta.Caption;
             meta.Date = properties.ItemDate.DateTime;
             meta.SortFactor = properties.ItemDate.Ticks;
             //string folderName = (await file.GetParentAsync()).Name;

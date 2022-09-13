@@ -18,6 +18,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.System.UserProfile;
 using Windows.UI.Shell;
@@ -415,8 +416,8 @@ namespace Timeline {
                 + (meta.Cate != null ? (" · " + meta.Cate) : "");
             TextDetailProperties.Visibility = Visibility.Visible;
 
-            // TODO
-            ImgThumb.Source = new BitmapImage(new Uri(meta.Thumb));
+            // 准备缩略图
+            _ = PrepareThumb(meta.Thumb);
         }
 
         private async Task ShowImg(Meta meta, CancellationToken token) {
@@ -589,6 +590,27 @@ namespace Timeline {
                     });
                     break;
             }
+        }
+
+        private async Task PrepareThumb(string urlThumb) {
+            if (string.IsNullOrEmpty(urlThumb)) {
+                ImgThumb.Source = null;
+                return;
+            }
+            BitmapImage bi = new BitmapImage();
+            Uri uri = new Uri(urlThumb);
+            if (uri.IsFile) {
+                bi.DecodePixelType = DecodePixelType.Logical; // 按逻辑像素
+                bi.DecodePixelWidth = 320;
+                bi.DecodePixelHeight = 0;
+                StorageFile file = await StorageFile.GetFileFromPathAsync(urlThumb);
+                using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read)) {
+                    await bi.SetSourceAsync(fileStream);
+                }
+            } else {
+                bi.UriSource = uri;
+            }
+            ImgThumb.Source = bi;
         }
 
         private async Task SetWallpaperAsync(Meta meta, bool setDesktopOrLock) {
@@ -783,7 +805,7 @@ namespace Timeline {
             FlyoutBase.ShowAttachedFlyout(AnchorCate);
         }
 
-        private void ShowThumb() {
+        private void ShowThumbAsync() {
             if (TipThumb.IsOpen) {
                 TipThumb.IsOpen = false;
                 return;
@@ -1312,7 +1334,7 @@ namespace Timeline {
                     break;
                 case VirtualKey.Number0:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + 0
-                        ShowThumb();
+                        ShowThumbAsync();
                     } else { // 0
                         await ShowFlyoutMarkCate();
                     }
@@ -1331,7 +1353,7 @@ namespace Timeline {
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists));
                     break;
-                case VirtualKey.A: // Ctrl + A
+                case VirtualKey.P: // Ctrl + P
                     ShowFlyoutAdmin();
                     break;
                 case VirtualKey.S: // Ctrl + S

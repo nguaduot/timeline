@@ -619,7 +619,7 @@
                 <KeyboardAccelerator Key="O"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="A"
+                <KeyboardAccelerator Key="P"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="S"
