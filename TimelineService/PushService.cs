@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -519,17 +521,34 @@ namespace TimelineService {
             StorageFolder folder = null;
             if (!string.IsNullOrEmpty(ini.Local.Folder)) {
                 try {
-                    folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(ini.Local.Folder, CreationCollisionOption.OpenIfExists);
-                } catch (Exception e) {
-                    LogUtil.E("LoadLocalAsync() " + e.Message);
+                    folder = await StorageFolder.GetFolderFromPathAsync(ini.Local.Folder.Replace("/", "\\"));
+                } catch (FileNotFoundException ex) { // 指定的文件夹不存在
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (UnauthorizedAccessException ex) { // 您无权访问指定文件夹
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (ArgumentException ex) { // 路径不能是相对路径或 URI
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (Exception ex) {
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
                 }
             }
             if (folder == null) {
                 folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                     CreationCollisionOption.OpenIfExists);
             }
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
+            if (ini.Local.Depth > 0) { // 第一层
+                foreach (StorageFolder folder1 in await folder.GetFoldersAsync()) {
+                    files = files.Concat(await folder1.GetFilesAsync()).ToArray();
+                    if (ini.Local.Depth > 1) { // 第二层
+                        foreach (StorageFolder folder2 in await folder1.GetFoldersAsync()) {
+                            files = files.Concat(await folder2.GetFilesAsync()).ToArray();
+                        }
+                    }
+                }
+            }
             List<StorageFile> srcFiles = new List<StorageFile>();
-            foreach (StorageFile file in await folder.GetFilesAsync()) {
+            foreach (StorageFile file in files) {
                 if (file.ContentType.StartsWith("image")) {
                     srcFiles.Add(file);
                 }

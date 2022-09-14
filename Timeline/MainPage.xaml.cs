@@ -899,7 +899,7 @@ namespace Timeline {
         //    //Debug.WriteLine(list.Items.Count);
         //    //list.Items.Clear();
         //    JumpListItem itemPushDesktop = JumpListItem.CreateWithArguments("pushdesktop", resLoader.GetString("JumpPushDesktop"));
-        //    itemPushDesktop.Logo = new Uri("ms-appx://Assets/Square44x44Logo.png");
+        //    itemPushDesktop.Logo = new Uri("ms-appx://Assets/Icons/Square44x44Logo.png");
         //    //itemPushDesktop.GroupName = "push";
         //    list.Items.Add(itemPushDesktop);
         //    JumpListItem itemPushLock = JumpListItem.CreateWithArguments("pushlock", resLoader.GetString("JumpPushLock"));

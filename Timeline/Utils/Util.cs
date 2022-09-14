@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,9 @@ using Windows.UI.Xaml.Media;
 namespace Timeline.Utils {
     public class IniUtil {
         // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-6.7.ini";
+        private const string FILE_INI = "timeline-7.0.ini";
+        private const string FILE_INI_DEF = "Assets\\Config\\config.txt"; // 只支持 .txt 文件
+        private const string FILE_JSON_DEF = "Assets\\Config\\json.txt"; // 只支持 .txt 文件
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -37,28 +40,12 @@ namespace Timeline.Utils {
             if (iniFile == null) { // 生成初始配置文件
                 FileInfo[] oldFiles = new DirectoryInfo(folder.Path).GetFiles("*.ini", SearchOption.TopDirectoryOnly);
                 Array.Sort(oldFiles, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime));
-                StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Config\\config.txt");
+                StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync(FILE_INI_DEF);
                 iniFile = await configFile.CopyAsync(folder, FILE_INI, NameCollisionOption.ReplaceExisting);
                 LogUtil.D("GenerateIniFileAsync() copied ini: " + iniFile.Path);
                 if (oldFiles.Length > 0) { // 继承设置
                     LogUtil.D("GenerateIniFileAsync() inherit: " + oldFiles[0].Name);
-                    StringBuilder sb = new StringBuilder(1024);
-                    _ = GetPrivateProfileString("app", "provider", BingIni.ID, sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "provider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "desktopprovider", "", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "desktopprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "lockprovider", "", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "lockprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "toastprovider", "", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "toastprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "tileprovider", "", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "tileprovider", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "theme", "", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "theme", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "cache", "1000", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "cache", sb.ToString(), iniFile.Path);
-                    _ = GetPrivateProfileString("app", "r18", "0", sb, 1024, oldFiles[0].FullName);
-                    _ = WritePrivateProfileString("app", "r18", sb.ToString(), iniFile.Path);
+                    await InheritIni(oldFiles[0].FullName, iniFile.Path);
                 }
             }
             return iniFile;
@@ -68,6 +55,32 @@ namespace Timeline.Utils {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             string iniFile = Path.Combine(folder.Path, FILE_INI);
             return File.Exists(iniFile) ? iniFile : null;
+        }
+
+        private static async Task InheritIni(string fileOld, string fileNew) {
+            StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync(FILE_JSON_DEF);
+            JObject data = JObject.Parse(await FileIO.ReadTextAsync(configFile));
+            JObject dataApp = data.Value<JObject>("app");
+            JObject dataProvider = data.Value<JObject>("provider");
+            StringBuilder sb = new StringBuilder(1024);
+            // 全局配置
+            foreach (var item in dataApp) {
+                string value = item.Value != null
+                    ? (item.Value.Type is JTokenType.Boolean ? ((bool)item.Value ? "1" : "0") : (string)item.Value)
+                    : "";
+                _ = GetPrivateProfileString("app", item.Key, value, sb, 1024, fileOld);
+                _ = WritePrivateProfileString("app", item.Key, sb.ToString(), fileNew);
+            }
+            // 图源配置
+            foreach (var item1 in dataProvider) {
+                foreach (var item2 in dataProvider.Value<JObject>(item1.Key)) {
+                    string value = item2.Value != null
+                        ? (item2.Value.Type is JTokenType.Boolean ? ((bool)item2.Value ? "1" : "0") : (string)item2.Value)
+                        : "";
+                    _ = GetPrivateProfileString(item1.Key, item2.Key, value, sb, 1024, fileOld);
+                    _ = WritePrivateProfileString(item1.Key, item2.Key, sb.ToString(), fileNew);
+                }
+            }
         }
 
         public static async Task SaveProviderAsync(string provider) {

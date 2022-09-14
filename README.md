@@ -29,6 +29,7 @@
 自建图源：
 + [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗
   API 官网：[api.nguaduot.cn/timeline](https://api.nguaduot.cn/timeline/doc)
++ 贪食鬼 - 饕餮盛宴
 
 三方图源：
 + [Microsoft Bing](https://cn.bing.com) - 每天发现一个新地方
@@ -41,6 +42,7 @@
 + [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers
++ [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 
@@ -84,6 +86,9 @@
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
   + WallpaperUP
+    + `类别`：支持
+    + `排序`：取当前排序结果第一页随机
+  + 壁纸社
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
   + Infinity

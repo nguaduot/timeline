@@ -51,6 +51,16 @@ namespace Timeline.Providers {
                 // 某些文件夹使用 CommonFileQuery.OrderByDate 会异常
                 //IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
                 IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync();
+                if (ini.Depth > 0) { // 第一层
+                    foreach (StorageFolder folder1 in await folder.GetFoldersAsync()) {
+                        imgFiles = imgFiles.Concat(await folder1.GetFilesAsync()).ToArray();
+                        if (ini.Depth > 1) { // 第二层
+                            foreach (StorageFolder folder2 in await folder1.GetFoldersAsync()) {
+                                imgFiles = imgFiles.Concat(await folder2.GetFilesAsync()).ToArray();
+                            }
+                        }
+                    }
+                }
                 //imgFiles = imgFiles.OrderBy(async f => (await f.GetBasicPropertiesAsync()).ItemDate.Ticks).ToArray();
                 LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
                 List<Meta> metasAdd = new List<Meta>();

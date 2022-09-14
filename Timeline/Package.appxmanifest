@@ -10,14 +10,14 @@
   <Identity
     Name="54311Bysyk.forWindows11"
     Publisher="CN=2D8A43ED-3DC1-4AB1-AFFC-B379B33C48BD"
-    Version="6.9.211.0" />
+    Version="7.0.211.0" />
 
   <mp:PhoneIdentity PhoneProductId="d6f08e88-b0cb-4097-b187-d6b50198362d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Timeline Wallpaper</DisplayName>
     <PublisherDisplayName>By_syk</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\Icons\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -34,18 +34,18 @@
       EntryPoint="Timeline.App">
       <uap:VisualElements
         DisplayName="ms-resource:AppName"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png"
+        Square150x150Logo="Assets\Icons\Square150x150Logo.png"
+        Square44x44Logo="Assets\Icons\Square44x44Logo.png"
         Description="ms-resource:AppDesc"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="ms-resource:AppNameShort">
+        <uap:DefaultTile Wide310x150Logo="Assets\Icons\Wide310x150Logo.png" Square71x71Logo="Assets\Icons\SmallTile.png" Square310x310Logo="Assets\Icons\LargeTile.png" ShortName="ms-resource:AppNameShort">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="wide310x150Logo"/>
             <uap:ShowOn Tile="square310x310Logo"/>
             <uap:ShowOn Tile="square150x150Logo"/>
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\Icons\SplashScreen.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape"/>
           <uap:Rotation Preference="portrait"/>
