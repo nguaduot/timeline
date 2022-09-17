@@ -760,7 +760,7 @@
     <value>迫于服务器等成本压力，开放</value>
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
-    <value>为我推荐</value>
+    <value>近期热门</value>
   </data>
   <data name="TextNasaOrder.Text" xml:space="preserve">
     <value>排序</value>
@@ -837,9 +837,6 @@
   <data name="TextWallpaperupOrder.Text" xml:space="preserve">
     <value>排序</value>
   </data>
-  <data name="BbsContent" xml:space="preserve">
-    <value>{0}：{1}</value>
-  </data>
   <data name="BoxAdmin.Header" xml:space="preserve">
     <value>管理员参数</value>
   </data>
@@ -875,5 +872,8 @@
   </data>
   <data name="UrlToopic" xml:space="preserve">
     <value>https://www.toopic.cn/</value>
+  </data>
+  <data name="BbsDate" xml:space="preserve">
+    <value>{0}：</value>
   </data>
 </root>

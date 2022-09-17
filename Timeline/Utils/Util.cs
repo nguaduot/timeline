@@ -22,10 +22,9 @@ using Windows.UI.Xaml.Media;
 
 namespace Timeline.Utils {
     public class IniUtil {
-        // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-7.0.ini";
-        private const string FILE_INI_DEF = "Assets\\Config\\config.txt"; // 只支持 .txt 文件
-        private const string FILE_JSON_DEF = "Assets\\Config\\json.txt"; // 只支持 .txt 文件
+        // Assets 文本文件只支持 .txt 格式；以下两个配置文件结构不同，内容需保持一致
+        private const string FILE_INI_DEF = "Assets\\Config\\config.txt";
+        private const string FILE_JSON_DEF = "Assets\\Config\\json.txt";
 
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
@@ -36,12 +35,13 @@ namespace Timeline.Utils {
 
         private static async Task<StorageFile> GenerateIniFileAsync() {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            StorageFile iniFile = await folder.TryGetItemAsync(FILE_INI) as StorageFile;
+            string iniName = FileUtil.GetIniName();
+            StorageFile iniFile = await folder.TryGetItemAsync(iniName) as StorageFile;
             if (iniFile == null) { // 生成初始配置文件
                 FileInfo[] oldFiles = new DirectoryInfo(folder.Path).GetFiles("*.ini", SearchOption.TopDirectoryOnly);
                 Array.Sort(oldFiles, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime));
                 StorageFile configFile = await Package.Current.InstalledLocation.GetFileAsync(FILE_INI_DEF);
-                iniFile = await configFile.CopyAsync(folder, FILE_INI, NameCollisionOption.ReplaceExisting);
+                iniFile = await configFile.CopyAsync(folder, iniName, NameCollisionOption.ReplaceExisting);
                 LogUtil.D("GenerateIniFileAsync() copied ini: " + iniFile.Path);
                 if (oldFiles.Length > 0) { // 继承设置
                     LogUtil.D("GenerateIniFileAsync() inherit: " + oldFiles[0].Name);
@@ -53,7 +53,7 @@ namespace Timeline.Utils {
 
         private static string GetIniFile() {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            string iniFile = Path.Combine(folder.Path, FILE_INI);
+            string iniFile = Path.Combine(folder.Path, FileUtil.GetIniName());
             return File.Exists(iniFile) ? iniFile : null;
         }
 
@@ -584,7 +584,7 @@ namespace Timeline.Utils {
         }
 
         public static async Task<Ini> GetIniAsync() {
-            LogUtil.D("GetIniAsync() " + FILE_INI);
+            LogUtil.D("GetIniAsync() " + FileUtil.GetIniName());
             _ = await GenerateIniFileAsync();
             return GetIni();
         }
@@ -895,6 +895,11 @@ namespace Timeline.Utils {
             return folder;
         }
 
+        /// <summary>
+        /// 从URL解析文件格式，默认为“.jpg”
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string ParseFormat(string url) {
             if (!string.IsNullOrEmpty(url)) {
                 Uri uri = new Uri(url);
@@ -905,9 +910,20 @@ namespace Timeline.Utils {
             }
             return ".jpg";
         }
+
+        public static string GetIniName() {
+            return string.Format("timeline-{0}.ini", SysUtil.GetPkgVer(true));
+        }
     }
 
     public class SysUtil {
+        /// <summary>
+        /// 获取安装包版本
+        /// 短：{major}.{minor}
+        /// 长：{major}.{minor}.{build}.{revision}
+        /// </summary>
+        /// <param name="forShort"></param>
+        /// <returns></returns>
         public static string GetPkgVer(bool forShort) {
             if (forShort) {
                 return string.Format("{0}.{1}",

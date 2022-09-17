@@ -766,8 +766,9 @@ namespace Timeline {
                 return;
             }
             HideFlyouts();
-            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.ToArray());
-            BoxAdmin.Text = ini.GetIni().Admin;
+            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.GetRange(1, BaseIni.ADMIN.Count - 1));
+            BoxAdmin.Text = string.IsNullOrEmpty(ini.GetIni().Admin) ? BaseIni.ADMIN[1] : ini.GetIni().Admin;
+            BoxAdmin.SelectAll();
             FlyoutAdmin.Placement = RelativePanel.GetAlignRightWithPanel(AnchorAdmin)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorAdmin);

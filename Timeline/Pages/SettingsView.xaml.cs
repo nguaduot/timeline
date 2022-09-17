@@ -336,24 +336,28 @@ namespace Timeline.Pages {
             // 刷新公告板
             if (release.Bbs != null && release.Bbs.Count > 0) {
                 release.Bbs.Sort((a, b) => b.Start.CompareTo(a.Start)); // 日期降序
-                TextBbsContent1.Visibility = Visibility.Visible;
-                if (release.Bbs.Count == 1) {
-                    TextBbsContent1.Text = release.Bbs[0].Comment;
-                } else {
-                    TextBbsContent1.Text = string.Format(resLoader.GetString("BbsContent"),
-                        DateTime.Parse(release.Bbs[0].Start).ToString("M"), release.Bbs[0].Comment);
-                }
+                RunBbsContent1.Text = release.Bbs[0].Comment;
                 if (release.Bbs.Count > 1) {
+                    RunBbsDate1.Text = string.Format(resLoader.GetString("BbsDate"),
+                        DateTime.Parse(release.Bbs[0].Start).ToString("M"));
+                    RunBbsContent2.Text = release.Bbs[1].Comment;
+                    RunBbsDate2.Text = string.Format(resLoader.GetString("BbsDate"),
+                        DateTime.Parse(release.Bbs[1].Start).ToString("M"));
                     TextBbsContent2.Visibility = Visibility.Visible;
-                    TextBbsContent2.Text = string.Format(resLoader.GetString("BbsContent"),
-                        DateTime.Parse(release.Bbs[1].Start).ToString("M"), release.Bbs[1].Comment);
+                } else {
+                    TextBbsContent2.Visibility = Visibility.Collapsed;
                 }
                 if (release.Bbs.Count > 2) {
+                    RunBbsContent3.Text = release.Bbs[2].Comment;
+                    RunBbsDate3.Text = string.Format(resLoader.GetString("BbsDate"),
+                        DateTime.Parse(release.Bbs[2].Start).ToString("M"));
                     TextBbsContent3.Visibility = Visibility.Visible;
-                    TextBbsContent3.Text = string.Format(resLoader.GetString("BbsContent"),
-                        DateTime.Parse(release.Bbs[2].Start).ToString("M"), release.Bbs[2].Comment);
+                } else {
+                    TextBbsContent3.Visibility = Visibility.Collapsed;
                 }
                 ExpanderBbs.Visibility = Visibility.Visible;
+            } else {
+                ExpanderBbs.Visibility = Visibility.Collapsed;
             }
         }
 

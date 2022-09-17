@@ -377,6 +377,7 @@ cate=
 ; cate=landscape  类别：风光
 ; cate=portrait   类别：人像
 ; cate=still      类别：静物
+; cate=lol        类别：LOL
 
 [infinity]
 

@@ -2075,22 +2075,28 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
-                            <TextBlock Name="TextBbsContent1"
+                            <RichTextBlock Name="TextBbsContent1"
                                        TextWrapping="WrapWholeWords"
                                        IsTextSelectionEnabled="True"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <TextBlock Name="TextBbsContent2"
+                                       Style="{StaticResource BodyRichTextBlockStyle}">
+                                <Paragraph xml:space="preserve"><Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" x:Name="RunBbsDate1" /><Run x:Name="RunBbsContent1" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Name="TextBbsContent2"
                                        TextWrapping="WrapWholeWords"
                                        Margin="0,8,0,0"
                                        IsTextSelectionEnabled="True"
                                        Visibility="Collapsed"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <TextBlock Name="TextBbsContent3"
+                                       Style="{StaticResource BodyRichTextBlockStyle}">
+                                <Paragraph xml:space="preserve"><Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" x:Name="RunBbsDate2" /><Run x:Name="RunBbsContent2" /></Paragraph>
+                            </RichTextBlock>
+                            <RichTextBlock Name="TextBbsContent3"
                                        TextWrapping="WrapWholeWords"
                                        Visibility="Collapsed"
                                        IsTextSelectionEnabled="True"
                                        Margin="0,8,0,0"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
+                                       Style="{StaticResource BodyRichTextBlockStyle}">
+                                <Paragraph xml:space="preserve"><Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" x:Name="RunBbsDate3" /><Run x:Name="RunBbsContent3" /></Paragraph>
+                            </RichTextBlock>
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

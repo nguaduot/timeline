@@ -16,22 +16,27 @@ using Windows.System.Profile;
 
 namespace TimelineService.Utils {
     public sealed class IniUtil {
-        // TODO: 参数有变动时需调整配置名
-        private const string FILE_INI = "timeline-7.0.ini";
-
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string defValue,
             StringBuilder returnedString, int size, string filePath);
 
         private static string GetIniFile() {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            string iniFile = Path.Combine(folder.Path, FILE_INI);
+            string iniFile = Path.Combine(folder.Path, FileUtil.GetIniName());
+            if (!File.Exists(iniFile)) { // 可能更新后尚未启动应用，新配置尚未生成，寻找旧配置
+                LogUtil.I("IniUtil.GetIniFile() searching old ini");
+                FileInfo[] oldFiles = new DirectoryInfo(folder.Path).GetFiles("*.ini", SearchOption.TopDirectoryOnly);
+                Array.Sort(oldFiles, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime));
+                if (oldFiles.Length > 0) { // 继承设置
+                    iniFile = oldFiles[0].FullName;
+                }
+            }
             return File.Exists(iniFile) ? iniFile : null;
         }
 
         public static Ini GetIni() {
             string iniFile = GetIniFile();
-            LogUtil.I("IniUtil.GetIni() " + FILE_INI);
+            LogUtil.I("IniUtil.GetIni() " + FileUtil.GetIniName());
             Ini ini = new Ini();
             if (iniFile == null) { // 尚未初始化
                 return ini;
@@ -504,6 +509,10 @@ namespace TimelineService.Utils {
                 LogUtil.E("WriteDosage() " + e.Message);
             }
             return false;
+        }
+
+        public static string GetIniName() {
+            return string.Format("timeline-{0}.ini", SysUtil.GetPkgVer(true));
         }
     }
 

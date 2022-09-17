@@ -748,7 +748,7 @@
     <value>渠道，如果您有稳定的收入，可以打赏任意金额，将用于维护本项目以及提升积极性。(●'◡'●)</value>
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
-    <value>Recommend for me</value>
+    <value>Recently popular</value>
   </data>
   <data name="TextNasaOrder.Text" xml:space="preserve">
     <value>Order</value>
@@ -834,9 +834,6 @@
   <data name="TextWallpaperupOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
-  <data name="BbsContent" xml:space="preserve">
-    <value>{0}: {1}</value>
-  </data>
   <data name="BoxAdmin.Header" xml:space="preserve">
     <value>Admin command</value>
   </data>
@@ -872,5 +869,8 @@
   </data>
   <data name="UrlToopic" xml:space="preserve">
     <value>https://www.toopic.cn/</value>
+  </data>
+  <data name="BbsDate" xml:space="preserve">
+    <value>{0}: {1}</value>
   </data>
 </root>
