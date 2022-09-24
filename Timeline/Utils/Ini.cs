@@ -99,6 +99,7 @@ namespace Timeline.Utils {
         private string id = "base"; // 非null
         private readonly List<CateMeta> cates = new List<CateMeta>();
         private readonly List<string> orders = new List<string>();
+        private readonly List<string> tags = new List<string>();
         private string order;
         private string cate = ""; // 非null，""为全部
         private string admin = ""; // 管理员用途，非null，""为普通用户内容
@@ -126,6 +127,14 @@ namespace Timeline.Utils {
                 orders.AddRange(value);
             }
             get => orders;
+        }
+
+        public List<string> Tags {
+            set {
+                tags.Clear();
+                tags.AddRange(value);
+            }
+            get => tags;
         }
 
         public string Order {
@@ -494,10 +503,13 @@ namespace Timeline.Utils {
     public class GluttonIni : BaseIni {
         public const string ID = "glutton";
         public static readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
         private string album = "journal"; // 非null
 
         public GluttonIni() {
             Id = ID;
+            Orders = ORDERS;
+            Order = "date";
         }
 
         public string Album {

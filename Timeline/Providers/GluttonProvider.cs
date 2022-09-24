@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml.Controls;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
@@ -16,14 +17,15 @@ namespace Timeline.Providers {
         private int nextPage = int.MaxValue;
 
         private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper&order={0}";
-        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper&phase={0}&enddate={1}";
+        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper&order={0}&phase={1}&enddate={2}";
 
-        private Meta ParseBean(GluttonApiData bean, string album) {
+        private Meta ParseBean(GluttonApiData bean, string album, string order) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Title = bean.Title,
-                Format = FileUtil.ParseFormat(bean.ImgUrl)
+                Format = FileUtil.ParseFormat(bean.ImgUrl),
+                SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             if ("journal".Equals(album)) {
                 if (bean.Phase > 0) {
@@ -59,9 +61,9 @@ namespace Timeline.Providers {
                 string urlApi;
                 if (date.Ticks > 0) {
                     metas.Clear(); // TODO：避免乱序
-                    urlApi = string.Format(URL_API_JOURNAL, int.MaxValue, date.ToString("yyyyMMdd"));
+                    urlApi = string.Format(URL_API_JOURNAL, ini.Order, int.MaxValue, date.ToString("yyyyMMdd"));
                 } else {
-                    urlApi = string.Format(URL_API_JOURNAL, nextPage, DateTime.Now.ToString("yyyyMMdd"));
+                    urlApi = string.Format(URL_API_JOURNAL, ini.Order, nextPage, DateTime.Now.ToString("yyyyMMdd"));
                 }
                 LogUtil.D("LoadData() provider url: " + urlApi);
                 try {
@@ -75,7 +77,7 @@ namespace Timeline.Providers {
                     }
                     List<Meta> metasAdd = new List<Meta>();
                     foreach (GluttonApiData item in api.Data) {
-                        metasAdd.Add(ParseBean(item, ini.Album));
+                        metasAdd.Add(ParseBean(item, ini.Album, ini.Order));
                     }
                     AppendMetas(metasAdd);
                     int phase = int.MaxValue;
@@ -112,7 +114,7 @@ namespace Timeline.Providers {
                     }
                     List<Meta> metasAdd = new List<Meta>();
                     foreach (GluttonApiData item in api.Data) {
-                        metasAdd.Add(ParseBean(item, ini.Album));
+                        metasAdd.Add(ParseBean(item, ini.Album, ini.Order));
                     }
                     AppendMetas(metasAdd);
                     return true;

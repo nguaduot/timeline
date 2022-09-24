@@ -1,4 +1,4 @@
-; 拾光 / Timeline v7.0
+; 拾光 / Timeline v7.1
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -15,7 +15,7 @@ provider=bing
 ; provider=oneplus      图源：OnePlus - Shot on OnePlus https://photos.oneplus.com
 ; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline
 ; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
-; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari8.nict.go.jp
+; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari.asia
 ; provider=ymyouli      图源：一梦幽黎 - 8K优质壁纸资源 https://www.ymyouli.com
 ; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://bz.qinggongju.com
 ; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc
@@ -443,6 +443,11 @@ tileperiod=2
 album=journal
 ; album=journal  集：周选集（默认）
 ; album=rank     集：热度集
+
+order=date
+; order=date    排序：收录（默认，热度集无该项）
+; order=score   排序：热度
+; order=random  排序：随机
 
 [lsp]
 

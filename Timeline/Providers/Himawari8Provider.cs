@@ -24,12 +24,14 @@ namespace Timeline.Providers {
         private float ratioEarth = 0.5f;
 
         // 向日葵-8号即時網頁 - NICT
-        // https://himawari8.nict.go.jp/zh/himawari8-image.htm
+        // https://himawari.asia
         // https://gitee.com/irontec/himawaripy
-        private const string URL_API = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json";
-        private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
+        //private const string URL_API = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json";
+        //private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
         //private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/thumbnail/550/{0}/{1}_0_0.png";
         //private const string URL_IMG = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/{0}/{1}_0_0.png";
+        private const string URL_API = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/FULL_24h/latest.json?_=";
+        private const string URL_IMG = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
 
         private Meta ParseBean(DateTime time) {
             string index = string.Format("{0}{1}000", time.ToString("HH"), (time.Minute / 10)); // 转整十分钟
@@ -63,10 +65,11 @@ namespace Timeline.Providers {
                 metas.Clear();
                 nextPage = date;
             } else if (nextPage == null) { // 获取最新UTC时间
-                LogUtil.D("LoadData() provider url: " + URL_API);
+                string urlApi = URL_API + DateUtil.CurrentTimeMillis();
+                LogUtil.D("LoadData() provider url: " + urlApi);
                 try {
                     HttpClient client = new HttpClient();
-                    HttpResponseMessage res = await client.GetAsync(URL_API, token);
+                    HttpResponseMessage res = await client.GetAsync(urlApi, token);
                     string jsonData = await res.Content.ReadAsStringAsync();
                     //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
                     Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);

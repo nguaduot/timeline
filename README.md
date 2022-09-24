@@ -36,7 +36,7 @@
 + [NASA](https://apod.nasa.gov/apod) - 每日天文一图
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
-+ [向日葵8号](https://himawari8.nict.go.jp/) - 实时地球
++ [向日葵8号](https://himawari.asia/) - 实时地球
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源
 + [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站
 + [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net
@@ -95,6 +95,7 @@
     + `排序`：取当前排序结果第一页随机
   + 贪食鬼
     + `集`：支持
+    + `排序`：取当前排序结果第一页随机
   + LSP
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机

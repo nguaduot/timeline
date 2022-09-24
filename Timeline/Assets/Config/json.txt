@@ -134,7 +134,8 @@
 	  "lockperiod": 24,
 	  "toastperiod": 24,
 	  "tileperiod": 2,
-	  "album": "journal"
+	  "album": "journal",
+	  "order": "date"
 	},
 	"lsp": {
 	  "desktopperiod": 24,
@@ -146,7 +147,7 @@
 	}
   },
   "about": {
-    "version": "7.0",
+    "version": "7.1",
 	"doc": "https://gitee.com/nguaduot/timeline",
 	"download": "https://www.microsoft.com/store/apps/9N7VHQ989BB7",
 	"contact": "nguaduot@163.com"

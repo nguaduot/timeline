@@ -612,7 +612,7 @@
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>无法显示</value>
   </data>
-  <data name="MenuMarkCateHint.Text" xml:space="preserve">
+  <data name="MenuMarkCateHint" xml:space="preserve">
     <value>标记类别为...</value>
   </data>
   <data name="MenuMarkDirty.Text" xml:space="preserve">
@@ -875,5 +875,11 @@
   </data>
   <data name="BbsDate" xml:space="preserve">
     <value>{0}：</value>
+  </data>
+  <data name="MenuMarkTagHint" xml:space="preserve">
+    <value>标记标签为...</value>
+  </data>
+  <data name="TextGluttonOrder.Text" xml:space="preserve">
+    <value>排序</value>
   </data>
 </root>

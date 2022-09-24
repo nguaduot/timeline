@@ -21,6 +21,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "name")]
         public string Name { set; get; }
 
+        // 标签组
+        [JsonProperty(PropertyName = "tag")]
+        public string Tag { set; get; }
+
         // 图片数
         [JsonProperty(PropertyName = "count")]
         public int Count { set; get; }

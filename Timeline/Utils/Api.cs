@@ -132,8 +132,8 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task<List<CateMeta>> CateAsync(string urlApi) {
-            List<CateMeta> data = new List<CateMeta>();
+        public static async Task<List<CateApiData>> CateAsync(string urlApi) {
+            List<CateApiData> data = new List<CateApiData>();
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return data;
             }
@@ -146,12 +146,9 @@ namespace Timeline.Utils {
                 string jsonData = await res.Content.ReadAsStringAsync();
                 LogUtil.D("CateAsync(): " + jsonData.Trim());
                 CateApi api = JsonConvert.DeserializeObject<CateApi>(jsonData);
-                api.Data.Sort((a, b) => b.Score.CompareTo(a.Score));
-                foreach (CateApiData item in api.Data) {
-                    data.Add(new CateMeta {
-                        Id = item.Id,
-                        Name = item.Name
-                    });
+                if (api.Data != null) {
+                    data = api.Data;
+                    data.Sort((a, b) => b.Score.CompareTo(a.Score));
                 }
             } catch (Exception e) {
                 LogUtil.E("CateAsync() " + e.Message);

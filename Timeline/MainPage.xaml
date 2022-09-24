@@ -432,8 +432,7 @@
                     x:Name="FlyoutMarkCate"
                     Placement="LeftEdgeAlignedBottom"
                     LightDismissOverlayMode="On">
-            <MenuFlyoutItem x:Uid="MenuMarkCateHint"
-                            IsEnabled="False">
+            <MenuFlyoutItem IsEnabled="False">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE8F1;" />
@@ -593,6 +592,9 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number7"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="Number9"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="Number0"

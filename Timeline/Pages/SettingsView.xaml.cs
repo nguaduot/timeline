@@ -55,6 +55,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listToopicOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listGluttonOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
@@ -151,6 +152,12 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("Album_" + item)
                 });
             }
+            foreach (string item in GluttonIni.ORDERS) {
+                listGluttonOrder.Add(new CateMeta {
+                    Id = item,
+                    Name = resLoader.GetString("Order_" + item)
+                });
+            }
             foreach (string item in LspIni.ORDERS) {
                 listLspOrder.Add(new CateMeta {
                     Id = item,
@@ -198,6 +205,7 @@ namespace Timeline.Pages {
             BoxToopicOrder.SelectedIndex = listToopicOrder.Select(t => t.Id).ToList().IndexOf(((ToopicIni)ini.GetIni(ToopicIni.ID)).Order);
             BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
             BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
+            BoxGluttonOrder.SelectedIndex = listGluttonOrder.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Order);
             BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
             // 刷新推送指示图标
             //foreach (string id in dicPushDesktop.Keys) {
@@ -244,7 +252,14 @@ namespace Timeline.Pages {
                 Name = resLoader.GetString("Cate_all")
             });
             if (bi.Cates.Count == 0) {
-                bi.Cates = await Api.CateAsync(bi.GetCateApi());
+                List<CateMeta> cates = new List<CateMeta>();
+                foreach (CateApiData item in await Api.CateAsync(bi.GetCateApi())) {
+                    cates.Add(new CateMeta {
+                        Id = item.Id,
+                        Name = item.Name
+                    });
+                }
+                bi.Cates = cates;
             }
             foreach (CateMeta meta in bi.Cates) {
                 boxCateList.Add(meta);
@@ -721,6 +736,20 @@ namespace Timeline.Pages {
             }
             bi.Album = album;
             await IniUtil.SaveGluttonAlbumAsync(bi.Album);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxGluttonOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string order = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(GluttonIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveGluttonOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

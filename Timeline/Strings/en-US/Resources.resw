@@ -582,7 +582,7 @@
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>404</value>
   </data>
-  <data name="MenuMarkCateHint.Text" xml:space="preserve">
+  <data name="MenuMarkCateHint" xml:space="preserve">
     <value>Mark as category...</value>
   </data>
   <data name="MenuMarkDirty.Text" xml:space="preserve">
@@ -872,5 +872,11 @@
   </data>
   <data name="BbsDate" xml:space="preserve">
     <value>{0}: {1}</value>
+  </data>
+  <data name="MenuMarkTagHint" xml:space="preserve">
+    <value>Mark as tag...</value>
+  </data>
+  <data name="TextGluttonOrder.Text" xml:space="preserve">
+    <value>Order</value>
   </data>
 </root>

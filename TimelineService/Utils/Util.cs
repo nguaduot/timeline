@@ -315,6 +315,8 @@ namespace TimelineService.Utils {
             ini.Glutton.LockPeriod = period;
             _ = GetPrivateProfileString(GluttonIni.GetId(), "album", "journal", sb, 1024, iniFile);
             ini.Glutton.Album = sb.ToString();
+            _ = GetPrivateProfileString(GluttonIni.GetId(), "order", "date", sb, 1024, iniFile);
+            ini.Glutton.Order = sb.ToString();
             _ = GetPrivateProfileString(LspIni.GetId(), "desktopperiod", "24", sb, 1024, iniFile);
             _ = int.TryParse(sb.ToString(), out period);
             ini.Lsp.DesktopPeriod = period;
@@ -555,6 +557,18 @@ namespace TimelineService.Utils {
                 .CreateLogger();
             isInitialized = true;
             Log.Debug("Initialized Serilog");
+        }
+    }
+
+    public sealed class DateUtil {
+        private static long ToUnixMillis(DateTime date) {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return (long)diff.TotalMilliseconds;
+        }
+
+        public static long CurrentTimeMillis() {
+            return ToUnixMillis(DateTime.Now);
         }
     }
 }

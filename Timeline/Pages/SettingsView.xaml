@@ -1563,28 +1563,52 @@
                         </Grid>
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Margin="0,0,12,0"
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                       FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                       FontSize="16"
                                       Glyph="&#xE8F1;" />
-                            <TextBlock Grid.Column="1"
+                                <TextBlock Grid.Column="1"
                                        x:Uid="TextGluttonAlbum"
                                        VerticalAlignment="Center"
                                        Style="{StaticResource BodyTextBlockStyle}" />
-                            <ComboBox Name="BoxGluttonAlbum"
+                                <ComboBox Name="BoxGluttonAlbum"
                                       Grid.Column="2"
                                       MinWidth="140"
                                       ItemsSource="{x:Bind listGluttonAlbum}"
                                       SelectionChanged="BoxGluttonAlbum_SelectionChanged" />
-                        </Grid>
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8CB;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextGluttonOrder"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxGluttonOrder"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listGluttonOrder}"
+                                          SelectionChanged="BoxGluttonOrder_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
                 <muxc:Expander Name="ExpanderLsp"

@@ -923,11 +923,18 @@ namespace TimelineService.Utils {
 
     public sealed class GluttonIni {
         private readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
+        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
 
         private string album = "journal";
         public string Album {
             set => album = ALBUMS.Contains(value) ? value : "journal";
             get => album;
+        }
+
+        private string order = "date";
+        public string Order {
+            set => order = ORDER.Contains(value) ? value : "date";
+            get => order;
         }
 
         private int desktopPeriod = 24;

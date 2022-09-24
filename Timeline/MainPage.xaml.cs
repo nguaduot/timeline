@@ -782,13 +782,21 @@ namespace Timeline {
             HideFlyouts();
             BaseIni bi = ini.GetIni();
             if (bi.Cates.Count == 0) {
-                bi.Cates = await Api.CateAsync(bi.GetCateApi());
+                List<CateMeta> cates = new List<CateMeta>();
+                foreach (CateApiData item in await Api.CateAsync(bi.GetCateApi())) {
+                    cates.Add(new CateMeta {
+                        Id = item.Id,
+                        Name = item.Name
+                    });
+                }
+                bi.Cates = cates;
             }
             if (bi.Cates.Count == 0) {
                 return;
             }
-            MenuFlyoutItemBase item1 = FlyoutMarkCate.Items[0]; // 标题行
-            MenuFlyoutItemBase item2 = FlyoutMarkCate.Items[1]; // 分隔线
+            MenuFlyoutItem item1 = FlyoutMarkCate.Items[0] as MenuFlyoutItem; // 标题行
+            item1.Text = resLoader.GetString("MenuMarkCateHint");
+            MenuFlyoutSeparator item2 = FlyoutMarkCate.Items[1] as MenuFlyoutSeparator; // 分隔线
             FlyoutMarkCate.Items.Clear();
             FlyoutMarkCate.Items.Add(item1);
             FlyoutMarkCate.Items.Add(item2);
@@ -799,6 +807,44 @@ namespace Timeline {
                     IsEnabled = string.IsNullOrEmpty(cate.Name) || !cate.Name.Equals(meta.Cate)
                 };
                 item.Click += MenuMarkCate_Click;
+                FlyoutMarkCate.Items.Add(item);
+            }
+            FlyoutMarkCate.Placement = RelativePanel.GetAlignRightWithPanel(AnchorCate)
+                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
+            FlyoutBase.ShowAttachedFlyout(AnchorCate);
+        }
+
+        private async Task ShowFlyoutMarkTag() {
+            if (FlyoutMarkCate.IsOpen) {
+                FlyoutMarkCate.Hide();
+                return;
+            }
+            HideFlyouts();
+            BaseIni bi = ini.GetIni();
+            if (bi.Tags.Count == 0) {
+                foreach (CateApiData item in await Api.CateAsync(bi.GetCateApi())) {
+                    if (item.Id.Equals(bi.Cate) && !string.IsNullOrEmpty(item.Tag)) {
+                        bi.Tags = item.Tag.Split(",").ToList();
+                        break;
+                    }
+                }
+            }
+            if (bi.Tags.Count == 0) {
+                return;
+            }
+            MenuFlyoutItem item1 = FlyoutMarkCate.Items[0] as MenuFlyoutItem; // 标题行
+            item1.Text = resLoader.GetString("MenuMarkTagHint");
+            MenuFlyoutSeparator item2 = FlyoutMarkCate.Items[1] as MenuFlyoutSeparator; // 分隔线
+            FlyoutMarkCate.Items.Clear();
+            FlyoutMarkCate.Items.Add(item1);
+            FlyoutMarkCate.Items.Add(item2);
+            foreach (string tag in bi.Tags) {
+                MenuFlyoutItem item = new MenuFlyoutItem {
+                    Text = tag,
+                    Tag = tag,
+                    IsEnabled = true
+                };
+                item.Click += MenuMarkTag_Click;
                 FlyoutMarkCate.Items.Add(item);
             }
             FlyoutMarkCate.Placement = RelativePanel.GetAlignRightWithPanel(AnchorCate)
@@ -1008,6 +1054,16 @@ namespace Timeline {
         private async void MenuMarkCate_Click(object sender, RoutedEventArgs e) {
             markTimerMeta = meta;
             markTimerAction = "cate";
+            ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
+                resLoader.GetString("ActionUndo"), async () => {
+                    await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
+                });
+            await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, (sender as MenuFlyoutItem).Tag as string);
+        }
+
+        private async void MenuMarkTag_Click(object sender, RoutedEventArgs e) {
+            markTimerMeta = meta;
+            markTimerAction = "tag";
             ShowToastS(string.Format(resLoader.GetString("MsgMarked"), (sender as MenuFlyoutItem).Text), null,
                 resLoader.GetString("ActionUndo"), async () => {
                     await Api.RankAsync(ini?.Provider, markTimerMeta, markTimerAction, null, true);
@@ -1332,6 +1388,9 @@ namespace Timeline {
                     break;
                 case VirtualKey.Number7: // Ctrl + 7
                     await Mark("journal", resLoader.GetString("MarkJournal"));
+                    break;
+                case VirtualKey.Number9: // Ctrl + 9
+                    await ShowFlyoutMarkTag();
                     break;
                 case VirtualKey.Number0:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + 0
