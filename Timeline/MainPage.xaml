@@ -385,9 +385,9 @@
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="nasa"
                                       GroupName="Provider" />
-            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+            <!--<muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="oneplus"
-                                      GroupName="Provider" />
+                                      GroupName="Provider" />-->
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="timeline"
                                       GroupName="Provider" />
@@ -445,12 +445,24 @@
                 x:Name="FlyoutGo"
                 Placement="LeftEdgeAlignedBottom"
                 LightDismissOverlayMode="On">
-            <TextBox Name="BoxGo"
-                     x:Uid="BoxGo"
-                     MaxLength="8"
-                     MinWidth="168"
-                     TextChanging="BoxGo_TextChanging"
-                     KeyDown="BoxGo_KeyDown" />
+            <StackPanel>
+                <TextBox Name="BoxGo"
+                         x:Uid="BoxGo"
+                         MinWidth="168"
+                         MaxWidth="320"
+                         KeyDown="BoxGo_KeyDown" />
+                <TextBlock Margin="0,8,0,0"
+                           TextWrapping="WrapWholeWords"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                    <Span xml:space="default">
+                        <Run x:Uid="TextGoDesc" />
+                        <Hyperlink x:Uid="LinkGoDesc"
+                                   UnderlineStyle="None">
+                            <Run x:Uid="TextView" />
+                        </Hyperlink>
+                    </Span>
+                </TextBlock>
+            </StackPanel>
         </Flyout>
 
         <Flyout x:Key="FlyoutAdmin"
@@ -460,6 +472,7 @@
             <TextBox Name="BoxAdmin"
                      x:Uid="BoxAdmin"
                      MinWidth="168"
+                     MaxWidth="320"
                      KeyDown="BoxAdmin_KeyDown" />
         </Flyout>
 
@@ -647,6 +660,9 @@
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="C"
                                      Modifiers="Shift,Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="C"
+                                     Modifiers="Menu,Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="B"
                                      Modifiers="Control"

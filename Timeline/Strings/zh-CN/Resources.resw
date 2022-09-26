@@ -387,23 +387,14 @@
   <data name="TextHimawari8Offset.Text" xml:space="preserve">
     <value>地球位置</value>
   </data>
-  <data name="TextInfinityOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="TextNasaMirror.Text" xml:space="preserve">
     <value>使用北京天文馆镜像</value>
-  </data>
-  <data name="TextOneplusOrder.Text" xml:space="preserve">
-    <value>排序</value>
   </data>
   <data name="TextIni.Text" xml:space="preserve">
     <value>编辑配置文件</value>
   </data>
   <data name="TextTimelineCate.Text" xml:space="preserve">
     <value>类别</value>
-  </data>
-  <data name="TextTimelineOrder.Text" xml:space="preserve">
-    <value>排序</value>
   </data>
   <data name="TextYmyouliCate.Text" xml:space="preserve">
     <value>类别</value>
@@ -480,9 +471,6 @@
   <data name="Slogan_one" xml:space="preserve">
     <value>复杂世界里，一个就够了</value>
   </data>
-  <data name="TextOneOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="BtnReview.Content" xml:space="preserve">
     <value>评分</value>
   </data>
@@ -507,9 +495,6 @@
   <data name="MenuMark.ToolTipService.ToolTip" xml:space="preserve">
     <value>标记为...</value>
   </data>
-  <data name="TextYmyouliOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="BtnProviderDonate.Content" xml:space="preserve">
     <value>前往官网</value>
   </data>
@@ -528,9 +513,6 @@
   <data name="TextQingbzDonate.Text" xml:space="preserve">
     <value>支持一下</value>
   </data>
-  <data name="TextQingbzOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="UrlQingbz" xml:space="preserve">
     <value>https://bz.qinggongju.com/1159-2/</value>
   </data>
@@ -543,17 +525,11 @@
   <data name="TextWallhavenCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TextWallhavenOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="Slogan_wallhere" xml:space="preserve">
     <value>One of the best hd wallpapers site</value>
   </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>类别</value>
-  </data>
-  <data name="TextWallhereOrder.Text" xml:space="preserve">
-    <value>排序</value>
   </data>
   <data name="SettingsIniDesc.Text" xml:space="preserve">
     <value>实验性功能，谨慎尝试</value>
@@ -597,9 +573,6 @@
   <data name="TextLspCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TextLspOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="ActionContinue" xml:space="preserve">
     <value>继续</value>
   </data>
@@ -607,7 +580,7 @@
     <value>退出</value>
   </data>
   <data name="CurIndex" xml:space="preserve">
-    <value>索引：{0}, [1, {1}]</value>
+    <value>i：{0}, [1, {1}]</value>
   </data>
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>无法显示</value>
@@ -638,18 +611,6 @@
   </data>
   <data name="TextHimawari8Ratio.Text" xml:space="preserve">
     <value>地球大小</value>
-  </data>
-  <data name="Order_date" xml:space="preserve">
-    <value>收录</value>
-  </data>
-  <data name="Order_random" xml:space="preserve">
-    <value>随机</value>
-  </data>
-  <data name="Order_score" xml:space="preserve">
-    <value>热度</value>
-  </data>
-  <data name="Order_view" xml:space="preserve">
-    <value>浏览</value>
   </data>
   <data name="Cate_all" xml:space="preserve">
     <value>全部</value>
@@ -762,9 +723,6 @@
   <data name="TextLocalGlutton.Text" xml:space="preserve">
     <value>近期热门</value>
   </data>
-  <data name="TextNasaOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="BoxR22Code.PlaceholderText" xml:space="preserve">
     <value>随便写点什么</value>
   </data>
@@ -834,9 +792,6 @@
   <data name="TextWallpaperupCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="TextWallpaperupOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="BoxAdmin.Header" xml:space="preserve">
     <value>管理员参数</value>
   </data>
@@ -864,9 +819,6 @@
   <data name="TextToopicDonate.Text" xml:space="preserve">
     <value>支持一下</value>
   </data>
-  <data name="TextToopicOrder.Text" xml:space="preserve">
-    <value>排序</value>
-  </data>
   <data name="TipThumb.Title" xml:space="preserve">
     <value>缩略图检查</value>
   </data>
@@ -879,7 +831,25 @@
   <data name="MenuMarkTagHint" xml:space="preserve">
     <value>标记标签为...</value>
   </data>
-  <data name="TextGluttonOrder.Text" xml:space="preserve">
-    <value>排序</value>
+  <data name="TextGoDesc.Text" xml:space="preserve">
+    <value>跳转技巧请查阅文档。</value>
+  </data>
+  <data name="MsgCopiedUrl" xml:space="preserve">
+    <value>已复制URL</value>
+  </data>
+  <data name="LinkGoDesc.NavigateUri" xml:space="preserve">
+    <value>https://gitee.com/nguaduot/timeline/wikis/%E8%B7%B3%E8%BD%AC</value>
+  </data>
+  <data name="OrderDate.Content" xml:space="preserve">
+    <value>收录</value>
+  </data>
+  <data name="OrderRandom.Content" xml:space="preserve">
+    <value>随缘</value>
+  </data>
+  <data name="OrderScore.Content" xml:space="preserve">
+    <value>喜欢</value>
+  </data>
+  <data name="OrderView.Content" xml:space="preserve">
+    <value>浏览</value>
   </data>
 </root>

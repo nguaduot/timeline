@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Timeline.Beans;
@@ -49,6 +51,7 @@ namespace Timeline {
         private bool providerLspHintOn = true; // LSP图源提示
         private bool providerLspR22On = false; // LSP图源贤者模式开启
         private bool autoStoryPos = false; // TODO：自动调整图文区贴靠位置（需检测图像人脸位置）
+        private KeyValuePair<GoCmd, string> loadCmd = new KeyValuePair<GoCmd, string>(GoCmd.Empty, ""); // 加载参数
 
         private DispatcherTimer resizeTimer1;
         private DispatcherTimer resizeTimer2;
@@ -204,7 +207,7 @@ namespace Timeline {
 
         private async Task LoadFocusAsync(CancellationToken token) {
             await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), 0);
+            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -224,7 +227,7 @@ namespace Timeline {
 
         private async Task LoadYesterdayAsync(CancellationToken token) {
             await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), provider.GetIndexFocus() + 2);
+            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -247,7 +250,7 @@ namespace Timeline {
 
         private async Task LoadTomorrowAsync(CancellationToken token) {
             //await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), provider.GetIndexFocus() - 1);
+            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
             if (token.IsCancellationRequested) {
                 return;
             }
@@ -267,13 +270,22 @@ namespace Timeline {
             }
         }
 
-        private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
+        private async Task LoadTargetAsync(CancellationToken token) {
             await FileUtil.WriteDosage();
-            bool res = await provider.LoadData(token, ini.GetIni(), 0, date);
+            provider.ClearMetas();
+            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
             if (token.IsCancellationRequested) {
                 return;
             }
-            meta = provider.Target(date);
+            if (loadCmd.Key == GoCmd.Index) {
+                meta = provider.Index(int.Parse(loadCmd.Value));
+            } else if (loadCmd.Key == GoCmd.No) {
+                meta = provider.No(int.Parse(loadCmd.Value));
+            } else if (loadCmd.Key == GoCmd.Date) {
+                meta = provider.Target(DateUtil.ParseDate(loadCmd.Value).Value);
+            } else {
+                meta = await provider.Focus();
+            }
             LogUtil.D("LoadTargetAsync() " + meta);
             if (meta == null) {
                 StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
@@ -289,27 +301,49 @@ namespace Timeline {
             }
         }
 
-        private async Task LoadTargetAsync(int index, CancellationToken token) {
-            await FileUtil.WriteDosage();
-            bool res = await provider.LoadData(token, ini.GetIni(), index + 1);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            meta = provider.Index(index);
-            LogUtil.D("LoadTargetAsync() " + meta);
-            if (meta == null) {
-                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-                return;
-            }
-            ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                await ShowImg(meta, token);
-            }
-        }
+        //private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
+        //    await FileUtil.WriteDosage();
+        //    bool res = await provider.LoadData(token, ini.GetIni(), 0, date);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    meta = provider.Target(date);
+        //    LogUtil.D("LoadTargetAsync() " + meta);
+        //    if (meta == null) {
+        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
+        //        return;
+        //    }
+        //    ShowText(meta);
+        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+        //        await ShowImg(meta, token);
+        //    }
+        //}
+
+        //private async Task LoadTargetAsync(int index, CancellationToken token) {
+        //    await FileUtil.WriteDosage();
+        //    bool res = await provider.LoadData(token, ini.GetIni(), index + 1);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    meta = provider.Index(index);
+        //    LogUtil.D("LoadTargetAsync() " + meta);
+        //    if (meta == null) {
+        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
+        //        return;
+        //    }
+        //    ShowText(meta);
+        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+        //        await ShowImg(meta, token);
+        //    }
+        //}
 
         private async Task Refresh(bool reloadIni) {
             if (reloadIni) {
@@ -1250,24 +1284,14 @@ namespace Timeline {
                 return;
             }
             FlyoutGo.Hide();
-            if (/*ini.GetIni().IsSequential() && */DateTime.TryParseExact(BoxGo.Text.Trim(), "yyyyMMdd",
-                new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
+            loadCmd = TextUtil.ParseGoCmd(BoxGo.Text.Trim());
+            LogUtil.I("BoxGo_KeyDown() " + loadCmd);
+            if (loadCmd.Key != GoCmd.Empty) { // 有效值
                 ctsLoad.Cancel();
                 StatusLoading();
                 ctsLoad = new CancellationTokenSource();
-                await LoadTargetAsync(date, ctsLoad.Token);
-            } else if (int.TryParse(BoxGo.Text.Trim(), out int index)) {
-                ctsLoad.Cancel();
-                StatusLoading();
-                ctsLoad = new CancellationTokenSource();
-                await LoadTargetAsync(Math.Min(index - 1, provider.GetCount() - 1), ctsLoad.Token);
+                await LoadTargetAsync(ctsLoad.Token);
             }
-        }
-
-        private void BoxGo_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args) {
-            // 限制仅输入数字
-            sender.Text = new string(sender.Text.Where(char.IsDigit).ToArray());
-            sender.Select(sender.Text.Length, 0);
         }
 
         private void FlyoutMenu_Opened(object sender, object e) {
@@ -1424,15 +1448,20 @@ namespace Timeline {
                     MenuSetLock_Click(null, null);
                     break;
                 case VirtualKey.C:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + C
-                        if (TextUtil.Copy(meta?.CacheUhd)) {
-                            ShowToastS(resLoader.GetString("MsgCopiedImg"));
-                            _ = Api.RankAsync(ini?.Provider, meta, "copy");
-                        }
-                    } else { // Shift + Control + C
+                    if ((sender.Modifiers & VirtualKeyModifiers.Shift) == VirtualKeyModifiers.Shift) { // Shift + Ctrl + C
                         if (meta != null) {
                             TextUtil.Copy(JsonConvert.SerializeObject(meta, Formatting.Indented));
                             ShowToastS(resLoader.GetString("MsgCopiedMeta"));
+                        }
+                    } else if ((sender.Modifiers & VirtualKeyModifiers.Menu) == VirtualKeyModifiers.Menu) { // Alt + Control + C
+                        if (meta != null) {
+                            TextUtil.Copy(meta.Uhd);
+                            ShowToastS(resLoader.GetString("MsgCopiedUrl"));
+                        }
+                    } else { // Control + C
+                        if (TextUtil.Copy(meta?.CacheUhd)) {
+                            ShowToastS(resLoader.GetString("MsgCopiedImg"));
+                            _ = Api.RankAsync(ini?.Provider, meta, "copy");
                         }
                     }
                     break;

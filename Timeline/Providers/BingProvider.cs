@@ -86,7 +86,9 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
+            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             if (pageIndex >= URL_API_PAGES.Length) { // 已无更多数据
                 return true;
             }
@@ -100,7 +102,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) { // 无网络连接
                 return false;
             }
-            await base.LoadData(token, bi, index, date);
+            await base.LoadData(token, bi, cmd);
 
             BingIni ini = bi as BingIni;
             string urlApi = URL_API_PAGES[pageIndex];

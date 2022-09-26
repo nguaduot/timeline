@@ -25,9 +25,17 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "title")]
         public string Title { set; get; }
 
-        // 故事（null）
+        // 图集（可能为null）
+        [JsonProperty(PropertyName = "album")]
+        public string Album { set; get; }
+
+        // 故事（可能为null）
         [JsonProperty(PropertyName = "story")]
         public string Story { set; get; }
+
+        // 人物（可能为null）
+        [JsonProperty(PropertyName = "character")]
+        public string Character { set; get; }
 
         // 版权所有（可能为null）
         [JsonProperty(PropertyName = "copyright")]

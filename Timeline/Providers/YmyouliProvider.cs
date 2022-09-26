@@ -21,8 +21,8 @@ namespace Timeline.Providers {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
-                Title = bean.Title,
-                Story = bean.Story,
+                Title = bean.Album,
+                Caption = bean.Title,
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
                 Format = FileUtil.ParseFormat(bean.ImgUrl),
@@ -38,7 +38,8 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             // 现有数据未浏览完，无需加载更多
             if (index < metas.Count) {
                 return true;
@@ -47,7 +48,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, index, date);
+            await base.LoadData(token, bi, cmd);
 
             string urlApi = string.Format(URL_API, bi.Cate, bi.Order, pageIndex,
                 "marked".Equals(bi.Admin) ? SysUtil.GetDeviceId() : "");

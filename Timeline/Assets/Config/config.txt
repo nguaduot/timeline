@@ -1,4 +1,4 @@
-; 拾光 / Timeline v7.1
+; 拾光 / Timeline v7.2
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; nguaduot@163.com
@@ -63,7 +63,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=random  排序：随机（默认）
+; order=random  排序：随缘（默认）
 
 folder=
 ; folder=  图库路径：默认留空（与收藏文件夹相同）
@@ -112,8 +112,8 @@ tileperiod=2
 
 order=date
 ; order=date    排序：收录（默认）
-; order=score   排序：热度
-; order=random  排序：随机
+; order=score   排序：喜欢
+; order=random  排序：随缘
 
 mirror=bjp
 ; mirror=     镜像：官方
@@ -135,7 +135,7 @@ tileperiod=2
 
 order=date
 ; order=date   排序：收录（默认）
-; order=score  排序：热度
+; order=score  排序：喜欢
 ; order=view   排序：浏览
 
 [timeline]
@@ -154,8 +154,8 @@ tileperiod=2
 
 order=date
 ; order=date    排序：日期（默认）
-; order=score   排序：热度
-; order=random  排序：随机
+; order=score   排序：喜欢
+; order=random  排序：随缘
 
 cate=
 ; cate=           类别：全部（默认）
@@ -185,7 +185,7 @@ tileperiod=2
 
 order=date
 ; order=date    排序：日期（默认）
-; order=random  排序：随机
+; order=random  排序：随缘
 
 [himawari8]
 
@@ -223,8 +223,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=              类别：全部（默认）
@@ -256,8 +256,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=          类别：全部（默认）
@@ -286,8 +286,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=            类别：全部（默认）
@@ -310,8 +310,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=           类别：全部（默认）
@@ -338,8 +338,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=           类别：全部（默认）
@@ -366,8 +366,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=           类别：全部（默认）
@@ -394,8 +394,8 @@ tileperiod=2
 ; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 [obzhi]
 
@@ -413,8 +413,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=          类别：全部（默认）
@@ -446,8 +446,8 @@ album=journal
 
 order=date
 ; order=date    排序：收录（默认，热度集无该项）
-; order=score   排序：热度
-; order=random  排序：随机
+; order=score   排序：喜欢
+; order=random  排序：随缘
 
 [lsp]
 
@@ -465,8 +465,8 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：热度
-; order=random  排序：随机（默认）
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
 
 cate=
 ; cate=            类别：全部（默认）

@@ -81,7 +81,7 @@ namespace Timeline.Providers {
             AppendMetas(metasAdd);
         }
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
             dicHistory.Clear();
             Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
             foreach (var item in dicNew) {
@@ -226,6 +226,33 @@ namespace Timeline.Providers {
             return metas[index];
         }
 
+        public Meta No(int no) { // TODO
+            if (metas.Count == 0) {
+                indexFocus = 0;
+                return null;
+            }
+            if (no >= metas.Count) {
+                indexFocus = metas.Count - 1;
+            } else if (no >= 0) {
+                indexFocus = no;
+            } else {
+                indexFocus = 0;
+            }
+            return metas[indexFocus];
+        }
+
+        public Meta GetNo(int no) { // TODO
+            if (metas.Count == 0) {
+                return null;
+            }
+            if (no >= metas.Count) {
+                no = metas.Count - 1;
+            } else if (no < 0) {
+                no = 0;
+            }
+            return metas[no];
+        }
+
         public Meta Target(DateTime date) {
             Meta target = null;
             for (int i = 0; i < metas.Count; i++) { // 从近到远取最接近
@@ -263,6 +290,10 @@ namespace Timeline.Providers {
             return nextMetas;
         }
 
+        public void ClearMetas() {
+            metas.Clear();
+        }
+
         public virtual async Task<Meta> CacheAsync(Meta meta, bool calFacePos, CancellationToken token) {
             LogUtil.D("CacheAsync() " + meta?.Uhd);
             if (meta == null) {
@@ -290,8 +321,12 @@ namespace Timeline.Providers {
                                 if (meta.Uhd.Equals(o.RequestedUri)) {
                                     meta.Do = o;
                                 } else if (o.Progress.Status == BackgroundTransferStatus.Running) {
-                                    o.Pause(); // 暂停缓存池之外的任务
-                                    LogUtil.D("CacheAsync() pause: " + meta.Uhd);
+                                    try { // 暂停缓存池之外的任务
+                                        o.Pause();
+                                        LogUtil.D("CacheAsync() pause: " + meta.Uhd);
+                                    } catch (System.InvalidOperationException e) {
+                                        LogUtil.E("CacheAsync() " + e.Message);
+                                    }
                                 }
                             }
                         }

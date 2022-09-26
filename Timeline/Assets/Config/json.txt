@@ -147,7 +147,7 @@
 	}
   },
   "about": {
-    "version": "7.1",
+    "version": "7.2",
 	"doc": "https://gitee.com/nguaduot/timeline",
 	"download": "https://www.microsoft.com/store/apps/9N7VHQ989BB7",
 	"contact": "nguaduot@163.com"

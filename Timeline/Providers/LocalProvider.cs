@@ -34,12 +34,12 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
             // 已加载过无需加载
             if (metas.Count > 0) {
                 return true;
             }
-            await base.LoadData(token, bi, index, date);
+            await base.LoadData(token, bi, cmd);
 
             LocalIni ini = bi as LocalIni;
             StorageFolder folder = await FileUtil.GetGalleryFolder(ini.Folder);

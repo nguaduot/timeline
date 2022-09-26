@@ -25,7 +25,11 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "title")]
         public string Title { set; get; }
 
-        // 故事
+        // 图集（可能为null）
+        [JsonProperty(PropertyName = "album")]
+        public string Album { set; get; }
+
+        // 故事（可能为null）
         [JsonProperty(PropertyName = "story")]
         public string Story { set; get; }
 

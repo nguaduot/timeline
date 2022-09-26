@@ -8,7 +8,7 @@
 
 > 时光如歌，岁月如诗。拾光，每日一景
 
-`拾光` 是一款壁纸应用，集成多个高质量图源，支持每日推送桌面/锁屏。使用 UWP 框架开发，遵循 Fluent Design，是原生的 Windows 应用，于 Windows 11 体验最佳，向下兼容 Windows 10。
+`拾光` 是一款壁纸应用，干净、舒适、流畅。集成多个高质量图源，支持每日推送桌面/锁屏。使用 UWP 框架开发，遵循 Fluent Design，是原生的 Windows 应用，于 Windows 11 体验最佳，向下兼容 Windows 10。
 
 ## 开始
 
@@ -30,6 +30,7 @@
 + [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗
   API 官网：[api.nguaduot.cn/timeline](https://api.nguaduot.cn/timeline/doc)
 + 贪食鬼 - 饕餮盛宴
++ 本地图源 - 我的精选
 
 三方图源：
 + [Microsoft Bing](https://cn.bing.com) - 每天发现一个新地方
@@ -116,6 +117,7 @@
 + 添加收藏：`Ctrl` + `D` / `Ctrl` + `S`
 + 复制图片：`Ctrl` + `C`
 + 复制JSON：`Ctrl` + `Shift` + `C`
++ 复制URL：`Ctrl` + `Alt` + `C`
 + 刷新：`F5` / `Ctrl` + `R`
 + 跳转：`F3` / `Ctrl` + `F` / `Ctrl` + `G`
 + 标记“不喜欢”：`Backspace` / `Delete` / `Ctrl` + `1`
@@ -123,7 +125,8 @@
 + 标记“分类有误”：`Ctrl` + `3`
 + 标记“含水印”：`Ctrl` + `4`
 + 标记“有色气”：`Ctrl` + `5`
-+ 标记分类：`Ctrl` + `0`
++ 标记分类：`0`
++ 缩略图检查：`Ctrl` + `0`
 + 我的收藏：`Ctrl` + `O`
 + 打开配置文件：`Ctrl` + `I`
 + 打开日志位置：`F12`
@@ -132,6 +135,7 @@
 + 关闭应用：`Ctrl` + `W` / `Ctrl` + `F4`
 + 跳转开源页面：`F1`
 + 优化窗口尺寸：`F8`
++ 管理员参数：`Ctrl` + `P`
 
 ## 进阶
 

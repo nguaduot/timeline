@@ -46,7 +46,9 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
+            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             if (date.Ticks > 0) {
                 if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
                     return true;
@@ -58,7 +60,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, index, date);
+            await base.LoadData(token, bi, cmd);
 
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
             string sort = "score".Equals(bi.Order) ? "2" : ("view".Equals(bi.Order) ? "3" : "1");

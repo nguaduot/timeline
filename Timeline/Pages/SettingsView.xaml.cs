@@ -20,6 +20,7 @@ using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -32,32 +33,16 @@ namespace Timeline.Pages {
 
         private readonly ResourceLoader resLoader;
 
-        //Dictionary<string, FontIcon> dicPushDesktop;
-        //Dictionary<string, FontIcon> dicPushLock;
-
         ObservableCollection<CateMeta> listBingLang = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listNasaOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listOneplusOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listTimelineOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listOneOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listYmyouliCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listYmyouliOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listQingbzOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallhavenOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallhereOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallpaperupCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallpaperupOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listToopicOrder = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listInfinityOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listGluttonOrder = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listLspOrder = new ObservableCollection<CateMeta>();
 
         private ReleaseApiData release = null;
 
@@ -80,88 +65,10 @@ namespace Timeline.Pages {
                     Name = resLoader.GetString("BingLang_" + item)
                 });
             }
-            foreach (string item in NasaIni.ORDERS) {
-                listNasaOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in OneplusIni.ORDERS) {
-                listOneplusOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in TimelineIni.ORDERS) {
-                listTimelineOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in OneIni.ORDERS) {
-                listOneOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in YmyouliIni.ORDERS) {
-                listYmyouliOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in QingbzIni.ORDERS) {
-                listQingbzOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in WallhavenIni.ORDERS) {
-                listWallhavenOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in WallhereIni.ORDERS) {
-                listWallhereOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in WallpaperupIni.ORDERS) {
-                listWallpaperupOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in ToopicIni.ORDERS) {
-                listToopicOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in InfinityIni.ORDERS) {
-                listInfinityOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
             foreach (string item in GluttonIni.ALBUMS) {
                 listGluttonAlbum.Add(new CateMeta {
                     Id = item,
                     Name = resLoader.GetString("Album_" + item)
-                });
-            }
-            foreach (string item in GluttonIni.ORDERS) {
-                listGluttonOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
-                });
-            }
-            foreach (string item in LspIni.ORDERS) {
-                listLspOrder.Add(new CateMeta {
-                    Id = item,
-                    Name = resLoader.GetString("Order_" + item)
                 });
             }
 
@@ -190,23 +97,23 @@ namespace Timeline.Pages {
                 ? Visibility.Visible : Visibility.Collapsed;
             // 刷新“图源”组设置项
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
-            BoxNasaOrder.SelectedIndex = listNasaOrder.Select(t => t.Id).ToList().IndexOf(((NasaIni)ini.GetIni(NasaIni.ID)).Order);
+            GridNasaOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NasaIni.ID).Order)).IsChecked = true;
             ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
-            BoxOneplusOrder.SelectedIndex = listOneplusOrder.Select(t => t.Id).ToList().IndexOf(((OneplusIni)ini.GetIni(OneplusIni.ID)).Order);
-            BoxTimelineOrder.SelectedIndex = listTimelineOrder.Select(t => t.Id).ToList().IndexOf(((TimelineIni)ini.GetIni(TimelineIni.ID)).Order);
-            BoxOneOrder.SelectedIndex = listOneOrder.Select(t => t.Id).ToList().IndexOf(((OneIni)ini.GetIni(OneIni.ID)).Order);
+            //GridOneplusOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(OneplusIni.ID).Order)).IsChecked = true;
+            GridTimelineOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(TimelineIni.ID).Order)).IsChecked = true;
+            GridOneOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(OneIni.ID).Order)).IsChecked = true;
             BoxHimawari8Offset.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Offset;
             BoxHimawari8Ratio.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Ratio;
-            BoxYmyouliOrder.SelectedIndex = listYmyouliOrder.Select(t => t.Id).ToList().IndexOf(((YmyouliIni)ini.GetIni(YmyouliIni.ID)).Order);
-            BoxQingbzOrder.SelectedIndex = listQingbzOrder.Select(t => t.Id).ToList().IndexOf(((QingbzIni)ini.GetIni(QingbzIni.ID)).Order);
-            BoxWallhavenOrder.SelectedIndex = listWallhavenOrder.Select(t => t.Id).ToList().IndexOf(((WallhavenIni)ini.GetIni(WallhavenIni.ID)).Order);
-            BoxWallhereOrder.SelectedIndex = listWallhereOrder.Select(t => t.Id).ToList().IndexOf(((WallhereIni)ini.GetIni(WallhereIni.ID)).Order);
-            BoxWallpaperupOrder.SelectedIndex = listWallpaperupOrder.Select(t => t.Id).ToList().IndexOf(((WallpaperupIni)ini.GetIni(WallpaperupIni.ID)).Order);
-            BoxToopicOrder.SelectedIndex = listToopicOrder.Select(t => t.Id).ToList().IndexOf(((ToopicIni)ini.GetIni(ToopicIni.ID)).Order);
-            BoxInfinityOrder.SelectedIndex = listInfinityOrder.Select(t => t.Id).ToList().IndexOf(((InfinityIni)ini.GetIni(InfinityIni.ID)).Order);
+            GridYmyouliOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(YmyouliIni.ID).Order)).IsChecked = true;
+            GridQingbzOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(QingbzIni.ID).Order)).IsChecked = true;
+            GridWallhavenOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhavenIni.ID).Order)).IsChecked = true;
+            GridWallhereOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhereIni.ID).Order)).IsChecked = true;
+            GridWallpaperupOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallpaperupIni.ID).Order)).IsChecked = true;
+            GridToopicOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ToopicIni.ID).Order)).IsChecked = true;
+            GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
             BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
-            BoxGluttonOrder.SelectedIndex = listGluttonOrder.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Order);
-            BoxLspOrder.SelectedIndex = listLspOrder.Select(t => t.Id).ToList().IndexOf(((LspIni)ini.GetIni(LspIni.ID)).Order);
+            GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
+            GridLspOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(LspIni.ID).Order)).IsChecked = true;
             // 刷新推送指示图标
             //foreach (string id in dicPushDesktop.Keys) {
             //    dicPushDesktop[id].Visibility = id.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
@@ -283,7 +190,7 @@ namespace Timeline.Pages {
             string providerId = expanderTarget.Tag as string;
             Task taskCate = null;
             if (loadCate) {
-                ComboBox boxCate = ((expanderTarget.Content as StackPanel).Children[0] as Grid).Children[2] as ComboBox;
+                ComboBox boxCate = ((expanderTarget.Content as StackPanel).Children[1] as Grid).Children[2] as ComboBox;
                 taskCate = RefreshCate(boxCate, ini.GetIni(providerId));
             }
             // 保存配置&回调
@@ -388,7 +295,7 @@ namespace Timeline.Pages {
             await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
                 Album = "rank",
                 Order = "score"
-            }, 0);
+            }, new KeyValuePair<GoCmd, string>(GoCmd.Index, "0"));
             List<Meta> top = glutton.GetMetas(localIni.Appetite);
             Dictionary<string, double> topProgress = new Dictionary<string, double>();
             if (top.Count == 0) {
@@ -556,8 +463,12 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxNasaOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
+        private async void TbNasaOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridNasaOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
             BaseIni bi = ini.GetIni(NasaIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
@@ -584,14 +495,36 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxOneplusOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(OneplusIni.ID);
+        //private async void TbOneplusOrder_Click(object sender, RoutedEventArgs e) {
+        //    ToggleButton tbThis = sender as ToggleButton;
+        //    foreach (ToggleButton tb in GridOneplusOrder.Children.Cast<ToggleButton>()) {
+        //        tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+        //    }
+        //    string order = tbThis.Tag as string;
+        //    BaseIni bi = ini.GetIni(OneplusIni.ID);
+        //    if (order.Equals(bi.Order)) {
+        //        return;
+        //    }
+        //    bi.Order = order;
+        //    await IniUtil.SaveOneplusOrderAsync(bi.Order);
+        //    await IniUtil.SaveProviderAsync(bi.Id);
+        //    SettingsChanged?.Invoke(this, new SettingsEventArgs {
+        //        ProviderConfigChanged = true
+        //    });
+        //}
+
+        private async void TbTimelineOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridTimelineOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(TimelineIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveOneplusOrderAsync(bi.Order);
+            await IniUtil.SaveTimelineOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -606,20 +539,6 @@ namespace Timeline.Pages {
             }
             bi.Cate = cate;
             await IniUtil.SaveTimelineCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxTimelineOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(TimelineIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveTimelineOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -682,6 +601,24 @@ namespace Timeline.Pages {
             himawari8RatioTimer.Start();
         }
 
+        private async void TbYmyouliOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridYmyouliOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(YmyouliIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveYmyouliOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
         private async void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string cate = (e.AddedItems[0] as CateMeta).Id;
             BaseIni bi = ini.GetIni(YmyouliIni.ID);
@@ -696,32 +633,40 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxYmyouliOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(YmyouliIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveYmyouliOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
         private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
         }
 
-        private async void BoxInfinityOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
+        private async void TbInfinityOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridInfinityOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
             BaseIni bi = ini.GetIni(InfinityIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
             await IniUtil.SaveInfinityOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbGluttonOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridGluttonOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(GluttonIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveGluttonOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -742,28 +687,36 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxGluttonOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(GluttonIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
+        private async void TbOneOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridOneOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
             }
-            bi.Order = order;
-            await IniUtil.SaveGluttonOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxOneOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
+            string order = tbThis.Tag as string;
             BaseIni bi = ini.GetIni(OneIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
             await IniUtil.SaveOneOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbQingbzOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridQingbzOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(QingbzIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveQingbzOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -784,22 +737,26 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxQingbzOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(QingbzIni.ID);
+        private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
+        }
+
+        private async void TbWallhavenOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridWallhavenOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(WallhavenIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveQingbzOrderAsync(bi.Order);
+            await IniUtil.SaveWallhavenOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
-        }
-
-        private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
         }
 
         private async void BoxWallhavenCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -816,14 +773,18 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxWallhavenOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(WallhavenIni.ID);
+        private async void TbWallhereOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridWallhereOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(WallhereIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveWallhavenOrderAsync(bi.Order);
+            await IniUtil.SaveWallhereOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -844,14 +805,18 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxWallhereOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(WallhereIni.ID);
+        private async void TbWallpaperupOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridWallpaperupOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveWallhereOrderAsync(bi.Order);
+            await IniUtil.SaveWallpaperupOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -872,14 +837,18 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxWallpaperupOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
+        private async void TbToopicOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridToopicOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(ToopicIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveWallpaperupOrderAsync(bi.Order);
+            await IniUtil.SaveToopicOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -900,22 +869,26 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxToopicOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(ToopicIni.ID);
+        private async void BtnToopicDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlToopic")));
+        }
+
+        private async void TbLspOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridLspOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(LspIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveToopicOrderAsync(bi.Order);
+            await IniUtil.SaveLspOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
-        }
-
-        private async void BtnToopicDonate_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlToopic")));
         }
 
         private async void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -926,20 +899,6 @@ namespace Timeline.Pages {
             }
             bi.Cate = cate;
             await IniUtil.SaveLspCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxLspOrder_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string order = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(LspIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveLspOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

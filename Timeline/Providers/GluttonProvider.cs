@@ -45,7 +45,9 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
+            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             GluttonIni ini = bi as GluttonIni;
             if ("journal".Equals(ini.Album)) {
                 // 现有数据未浏览完，无需加载更多，或已无更多数据
@@ -56,11 +58,11 @@ namespace Timeline.Providers {
                 if (!NetworkInterface.GetIsNetworkAvailable()) {
                     return false;
                 }
-                await base.LoadData(token, bi, index, date);
+                await base.LoadData(token, bi, cmd);
 
                 string urlApi;
                 if (date.Ticks > 0) {
-                    metas.Clear(); // TODO：避免乱序
+                    ClearMetas(); // TODO：避免乱序
                     urlApi = string.Format(URL_API_JOURNAL, ini.Order, int.MaxValue, date.ToString("yyyyMMdd"));
                 } else {
                     urlApi = string.Format(URL_API_JOURNAL, ini.Order, nextPage, DateTime.Now.ToString("yyyyMMdd"));
@@ -99,7 +101,7 @@ namespace Timeline.Providers {
                 if (!NetworkInterface.GetIsNetworkAvailable()) {
                     return false;
                 }
-                await base.LoadData(token, bi, index, date);
+                await base.LoadData(token, bi, cmd);
 
                 string urlApi = string.Format(URL_API_RANK, ini.Order);
                 LogUtil.D("LoadData() provider url: " + urlApi);

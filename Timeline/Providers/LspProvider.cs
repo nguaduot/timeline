@@ -12,23 +12,31 @@ using System.Threading;
 namespace Timeline.Providers {
     public class LspProvider : BaseProvider {
         // 页数据索引（从1开始）（用于按需加载）
-        private int pageIndex = 1;
+        private int pageIndex = 0;
 
-        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}&r22={3}&unaudited={4}&marked={5}";
+        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper" +
+            "&cate={0}&order={1}&tag={2}&no={3}&page={4}&r22={5}&unaudited={6}&marked={7}";
         
         private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
-                Title = bean.Title,
-                Story = bean.Story,
+                Title = bean.Album,
+                Caption = bean.Title,
                 Cate = bean.CateName,
                 Format = FileUtil.ParseFormat(bean.ImgUrl),
                 SortFactor = "score".Equals(order) ? bean.Score : bean.No
             };
             if (bean.R22 != 0) {
-                meta.Title = "🚫 " + meta.Title;
+                if (!string.IsNullOrEmpty(meta.Title)) {
+                    meta.Title = "🚫 " + meta.Title;
+                } else if (!string.IsNullOrEmpty(meta.Caption)) {
+                    meta.Caption = "🚫 " + meta.Caption;
+                }
+            }
+            if (!string.IsNullOrEmpty(bean.Character)) {
+                meta.Story = "@" + bean.Character;
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
@@ -40,19 +48,26 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, int index, DateTime date = new DateTime()) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
+            string no = cmd.Key == GoCmd.No ? cmd.Value : "";
+            string tag = cmd.Key == GoCmd.Tag ? cmd.Value : "";
             // 现有数据未浏览完，无需加载更多
-            if (index < metas.Count) {
+            if (no.Length == 0 && tag.Length == 0 && index < metas.Count) {
                 return true;
+            }
+            if (no.Length > 0 || tag.Length > 0) { // 重置页索引
+                pageIndex = 0;
             }
             // 无网络连接
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, index, date);
+            await base.LoadData(token, bi, cmd);
 
             LspIni ini = bi as LspIni;
-            string urlApi = string.Format(URL_API, bi.Cate, ini.Order, pageIndex, ini.R22 ? SysUtil.GetDeviceId() : "",
+            string urlApi = string.Format(URL_API, bi.Cate, ini.Order, tag, no, pageIndex + 1,
+                ini.R22 ? SysUtil.GetDeviceId() : "",
                 "unaudited".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "",
                 "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
