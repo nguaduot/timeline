@@ -27,7 +27,6 @@ namespace Timeline.Providers {
             }
             meta.Id = properties.Size + "-" + meta.Caption;
             meta.Date = properties.ItemDate.DateTime;
-            meta.SortFactor = properties.ItemDate.Ticks;
             //string folderName = (await file.GetParentAsync()).Name;
             string folderName = folder.Name.Length > 16 ? folder.Name.Substring(0, 16) + "..." : folder.Name;
             meta.Title = string.Format("~\\{0} #{1}", folderName, index); // 创建日期升序
@@ -35,8 +34,6 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            await base.LoadData(token, bi, go);
-
             LocalIni ini = bi as LocalIni;
             StorageFolder folder = await FileUtil.GetGalleryFolder(ini.Folder);
             if (folder == null) {

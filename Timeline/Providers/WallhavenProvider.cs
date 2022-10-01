@@ -13,20 +13,20 @@ namespace Timeline.Providers {
     public class WallhavenProvider : BaseProvider {
         private const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper" +
             "&order={0}&cate={1}" +
-            "&tag={2}&no={3}&date={6}&score={5}" +
+            "&tag={2}&no={3}&date={4}&score={5}" +
             "&unaudited={6}&marked={7}";
 
-        private Meta ParseBean(WallhavenApiData bean, string order) {
+        private Meta ParseBean(WallhavenApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
+                No = bean.No,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
                 Story = bean.Story,
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
-                Format = FileUtil.ParseFormat(bean.ImgUrl),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.No
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "@" + bean.Copyright;
@@ -41,8 +41,6 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            await base.LoadData(token, bi, go);
-
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
@@ -65,7 +63,7 @@ namespace Timeline.Providers {
                 }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (WallhavenApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, bi.Order));
+                    metasAdd.Add(ParseBean(item));
                 }
                 AppendMetas(metasAdd);
                 return true;

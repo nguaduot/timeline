@@ -11,12 +11,11 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class InfinityProvider : BaseProvider {
-        // 页数据索引（从0开始）（用于按需加载）
-        private int pageIndex = 0;
+        private const int PAGE_SIZE = 50;
 
         // Infinity新标签页 - 壁纸库
         // http://cn.infinitynewtab.com/
-        //private const string URL_API = "https://infinity-api.infinitynewtab.com/get-wallpaper?source=&tag=&order=1&page={0}";
+        // page：从0开始
         private const string URL_API = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&order=like&page={0}";
         //private const string URL_API_LANDSCAPE = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=InfinityLandscape&page={0}";
         //private const string URL_API_ACG = "https://api.infinitynewtab.com/v2/get_wallpaper_list?client=pc&source=Infinity&page={0}";
@@ -44,10 +43,12 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            await base.LoadData(token, bi, go);
-
-            string urlApi = "score".Equals(bi.Order) ? string.Format(URL_API, pageIndex)
-                : string.Format(URL_API_RANDOM, DateUtil.CurrentTimeMillis());
+            string urlApi;
+            if ("score".Equals(bi.Order)) {
+                urlApi = string.Format(URL_API, (int)Math.Ceiling(GetCount() * 1.0 / PAGE_SIZE));
+            } else {
+                urlApi = string.Format(URL_API_RANDOM, DateUtil.CurrentTimeMillis());
+            }
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -68,7 +69,6 @@ namespace Timeline.Providers {
                     }
                     AppendMetas(metasAdd);
                 }
-                pageIndex += 1;
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

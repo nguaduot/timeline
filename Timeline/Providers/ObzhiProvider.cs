@@ -13,20 +13,20 @@ namespace Timeline.Providers {
     public class ObzhiProvider : BaseProvider {
         private const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper" +
             "&order={0}&cate={1}" +
-            "&tag={2}&no={3}&date={6}&score={5}" +
+            "&tag={2}&no={3}&date={4}&score={5}" +
             "&unaudited={6}&marked={7}";
 
-        private Meta ParseBean(ObzhiApiData bean, string order) {
+        private Meta ParseBean(ObzhiApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
+                No = bean.No,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
                 Story = bean.Story,
                 Copyright = "@" + bean.Copyright,
                 Cate = bean.CateName,
-                Format = FileUtil.ParseFormat(bean.ImgUrl),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.No
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
@@ -36,8 +36,6 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            await base.LoadData(token, bi, go);
-
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
@@ -60,7 +58,7 @@ namespace Timeline.Providers {
                 }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (ObzhiApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, bi.Order));
+                    metasAdd.Add(ParseBean(item));
                 }
                 AppendMetas(metasAdd);
                 return true;

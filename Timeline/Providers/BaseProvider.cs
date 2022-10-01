@@ -25,7 +25,7 @@ namespace Timeline.Providers {
         // 当前浏览索引
         protected int indexFocus = 0;
 
-        protected Dictionary<string, int> dicHistory = new Dictionary<string, int>();
+        //protected Dictionary<string, int> dicHistory = new Dictionary<string, int>();
         private readonly BackgroundDownloader downloader = new BackgroundDownloader();
 
         public string Id { set; get; }
@@ -83,11 +83,12 @@ namespace Timeline.Providers {
         //}
 
         public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            dicHistory.Clear();
-            Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
-            foreach (var item in dicNew) {
-                dicHistory.Add(item.Key, item.Value);
-            }
+            //dicHistory.Clear();
+            //Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
+            //foreach (var item in dicNew) {
+            //    dicHistory.Add(item.Key, item.Value);
+            //}
+            await Task.Delay(100);
             return false;
         }
 
@@ -99,7 +100,7 @@ namespace Timeline.Providers {
             return indexFocus;
         }
 
-        public async Task<Meta> Focus() {
+        public Meta Focus() {
             if (metas.Count == 0) {
                 indexFocus = 0;
                 return null;
@@ -110,13 +111,13 @@ namespace Timeline.Providers {
                 indexFocus = 0;
             }
 
-            // 更新沉底机制数据
-            if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-                dicHistory[metas[indexFocus].Id] += 1;
-            } else {
-                dicHistory[metas[indexFocus].Id] = 1;
-            }
-            await FileUtil.SaveHistoryAsync(Id, dicHistory);
+            //// 更新沉底机制数据
+            //if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
+            //    dicHistory[metas[indexFocus].Id] += 1;
+            //} else {
+            //    dicHistory[metas[indexFocus].Id] = 1;
+            //}
+            //await FileUtil.SaveHistoryAsync(Id, dicHistory);
 
             return metas[indexFocus];
         }
@@ -135,7 +136,7 @@ namespace Timeline.Providers {
             return metas[index];
         }
 
-        public async Task<Meta> Yesterday() {
+        public Meta Yesterday() {
             if (metas.Count == 0) {
                 indexFocus = 0;
                 return null;
@@ -148,13 +149,13 @@ namespace Timeline.Providers {
                 indexFocus = 0;
             }
 
-            // 更新沉底机制数据
-            if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-                dicHistory[metas[indexFocus].Id] += 1;
-            } else {
-                dicHistory[metas[indexFocus].Id] = 1;
-            }
-            await FileUtil.SaveHistoryAsync(Id, dicHistory);
+            //// 更新沉底机制数据
+            //if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
+            //    dicHistory[metas[indexFocus].Id] += 1;
+            //} else {
+            //    dicHistory[metas[indexFocus].Id] = 1;
+            //}
+            //await FileUtil.SaveHistoryAsync(Id, dicHistory);
 
             return metas[indexFocus];
         }

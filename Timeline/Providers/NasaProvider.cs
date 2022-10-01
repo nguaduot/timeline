@@ -11,21 +11,21 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class NasaProvider : BaseProvider {
-        // 下一页数据索引（从今日开始）（用于按需加载）
-        private DateTime nextPage = DateTime.UtcNow.AddHours(-4);
+        private const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper" +
+            "&order={0}&mirror={1}" +
+            "&tag={2}&no={3}&date={4}&score={5}" +
+            "&unaudited={6}&marked={7}";
 
-        private const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper&order={0}&mirror={1}&enddate={2}&unaudited={3}&marked={4}";
-
-        private Meta ParseBean(NasaApiData bean, string order) {
+        private Meta ParseBean(NasaApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
+                No = bean.No,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title?.Trim(),
                 Story = bean.Story?.Trim(),
                 Src = bean.SrcUrl,
-                Format = FileUtil.ParseFormat(bean.ImgUrl),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.No
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
@@ -38,21 +38,15 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
-            // 现有数据未浏览完，无需加载更多
-            if (index < metas.Count && date.Ticks == 0) {
-                return true;
-            }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return false;
-            }
-            await base.LoadData(token, bi, go);
-
             NasaIni ini = bi as NasaIni;
-            nextPage = date.Ticks > 0 ? date : nextPage;
-            string urlApi = string.Format(URL_API, ini.Order, ini.Mirror, nextPage.ToString("yyyyMMdd"),
+            int no = GetMinNo();
+            no = go.No < no ? go.No : no;
+            DateTime date = GetMinDate();
+            date = go.Date < date ? go.Date : date;
+            float score = GetMinScore();
+            score = go.Score < score ? go.Score : score;
+            string urlApi = string.Format(URL_API, ini.Order, ini.Mirror,
+                go.Tag, no, date, score,
                 "unaudited".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "",
                 "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
@@ -67,18 +61,9 @@ namespace Timeline.Providers {
                 }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (NasaApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ini.Order));
+                    metasAdd.Add(ParseBean(item));
                 }
-                if ("date".Equals(ini.Order) || "score".Equals(ini.Order)) { // 有序排列
-                    SortMetas(metasAdd);
-                } else {
-                    AppendMetas(metasAdd);
-                }
-                if ("date".Equals(ini.Order) && metas.Count > 0) { // 下一页日期索引
-                    nextPage = metas[metas.Count - 1].Date.AddDays(-1);
-                } else { // 默认索引
-                    nextPage = DateTime.UtcNow.AddHours(-4);
-                }
+                AppendMetas(metasAdd);
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

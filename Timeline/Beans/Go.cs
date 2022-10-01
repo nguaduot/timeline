@@ -9,15 +9,6 @@ using System.Threading.Tasks;
 
 namespace Timeline.Beans {
     public class Go {
-        //public enum GoCmd {
-        //    Index, // 从1开始的索引
-        //    No, // 从1开始的序号
-        //    Date, // 日期
-        //    Score, // 热度分
-        //    Tag, // 标签
-        //    Empty // 无效值
-        //}
-
         private int index = 1; // 从1开始的索引
         public int Index {
             set => index = Math.Max(1, value);

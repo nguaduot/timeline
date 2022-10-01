@@ -16,7 +16,7 @@ using System.Linq;
 namespace Timeline.Providers {
     public class OneProvider : BaseProvider {
         // 下一页数据索引（从0开始）（用于按需加载）
-        private string nextPage = "0";
+        //private string nextPage = "0";
 
         private string cookie = null;
         private string tokenOne = null;
@@ -37,6 +37,9 @@ namespace Timeline.Providers {
                 Src = bean.Url,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
+            if (int.TryParse(bean.Id, out int id)) {
+                meta.No = id;
+            }
             if (!string.IsNullOrEmpty(bean.Content)) {
                 meta.Title = "";
                 string content = bean.Content.Replace("\r\n", " ").Replace("\n", " ");
@@ -59,26 +62,10 @@ namespace Timeline.Providers {
             if (DateTime.TryParseExact(bean.Date, "yyyy / MM / dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = meta.Date.Ticks;
             return meta;
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
-            if (date.Ticks > 0) {
-                if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
-                    return true;
-                }
-            } else if (index < metas.Count) { // 现有数据未浏览完，无需加载更多
-                return true;
-            }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return false;
-            }
-            await base.LoadData(token, bi, go);
-
             if (string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(tokenOne)) {
                 try {
                     HttpClient client = new HttpClient();
@@ -101,12 +88,14 @@ namespace Timeline.Providers {
                 return false;
             }
 
+            int no;
             if ("random".Equals(bi.Order)) {
-                nextPage = (3012 + new Random().Next((DateTime.Now - DateTime.Parse("2020-11-10")).Days)).ToString();
+                no = (3012 + new Random().Next((DateTime.Now - DateTime.Parse("2020-11-10")).Days));
             } else {
-                nextPage = metas.Count > 0 ? metas[metas.Count - 1].Id : "0";
+                no = GetMinNo();
+                no = go.No < no ? go.No : no;
             }
-            string urlApi = string.Format(URL_API, nextPage, tokenOne);
+            string urlApi = string.Format(URL_API, no, tokenOne);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClientHandler handler = new HttpClientHandler() {
@@ -123,11 +112,7 @@ namespace Timeline.Providers {
                 foreach (OneApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item));
                 }
-                if ("date".Equals(bi.Order)) { // 按时序倒序排列
-                    SortMetas(metasAdd);
-                } else {
-                    RandomMetas(metasAdd);
-                }
+                AppendMetas(metasAdd);
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

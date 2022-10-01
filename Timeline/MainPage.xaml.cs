@@ -282,9 +282,9 @@ namespace Timeline {
                 return;
             }
             if (action == PageAction.Focus) {
-                meta = await provider.Focus();
+                meta = provider.Focus();
             } else if (action == PageAction.Yesterday) {
-                meta = await provider.Yesterday();
+                meta = provider.Yesterday();
             } else if (action == PageAction.Tomorrow) {
                 meta = provider.Tomorrow();
             } else {

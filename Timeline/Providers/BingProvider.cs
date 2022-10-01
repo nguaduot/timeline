@@ -118,14 +118,11 @@ namespace Timeline.Providers {
             if (DateTime.TryParseExact(bean.EndDate, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                 meta.Date = date;
             }
-            meta.SortFactor = meta.Date.Ticks;
 
             return meta;
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            await base.LoadData(token, bi, go);
-
             BingIni ini = bi as BingIni;
             string urlApi = string.Format(URL_API, GetMaxIndex() + 1);
             if (ini.Lang.Length > 0) {

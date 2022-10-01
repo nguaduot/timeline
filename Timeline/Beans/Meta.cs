@@ -77,9 +77,6 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "facePos", NullValueHandling = NullValueHandling.Ignore)]
         public List<Windows.Foundation.Point> FacePos { set; get; }
 
-        [JsonProperty(PropertyName = "sortFactor", NullValueHandling = NullValueHandling.Ignore)]
-        public double SortFactor { set; get; }
-
         [JsonProperty(PropertyName = "favorite", NullValueHandling = NullValueHandling.Ignore)]
         public bool Favorite { set; get; }
 

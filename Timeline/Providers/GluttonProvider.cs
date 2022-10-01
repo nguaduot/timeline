@@ -13,19 +13,20 @@ using Windows.UI.Xaml.Controls;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
-        // 页数据索引（从最大值开始）（用于按需加载）
-        private int nextPage = int.MaxValue;
+        private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper" +
+            "&order={0}" +
+            "&no={1}&score={2}";
+        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper" +
+            "&order={0}" +
+            "&no={1}&date={2}&score={3}";
 
-        private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper&order={0}";
-        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper&order={0}&phase={1}&enddate={2}";
-
-        private Meta ParseBean(GluttonApiData bean, string album, string order) {
+        private Meta ParseBean(GluttonApiData bean, string album) {
             Meta meta = new Meta {
                 Id = bean.Id,
+                No = bean.No,
                 Uhd = bean.ImgUrl,
                 Title = bean.Title,
-                Format = FileUtil.ParseFormat(bean.ImgUrl),
-                SortFactor = "score".Equals(order) ? bean.Score : bean.No
+                Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if ("journal".Equals(album)) {
                 if (bean.Phase > 0) {
@@ -46,87 +47,41 @@ namespace Timeline.Providers {
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             GluttonIni ini = bi as GluttonIni;
+            int no = GetMinNo();
+            no = go.No < no ? go.No : no;
+            DateTime date = GetMinDate();
+            date = go.Date < date ? go.Date : date;
+            float score = GetMinScore();
+            score = go.Score < score ? go.Score : score;
+            string urlApi;
             if ("journal".Equals(ini.Album)) {
-                // 现有数据未浏览完，无需加载更多，或已无更多数据
-                if (index < metas.Count && date.Ticks == 0) {
-                    return true;
-                }
-                // 无网络连接
-                if (!NetworkInterface.GetIsNetworkAvailable()) {
-                    return false;
-                }
-                await base.LoadData(token, bi, go);
-
-                string urlApi;
-                if (date.Ticks > 0) {
-                    ClearMetas(); // TODO：避免乱序
-                    urlApi = string.Format(URL_API_JOURNAL, ini.Order, int.MaxValue, date.ToString("yyyyMMdd"));
-                } else {
-                    urlApi = string.Format(URL_API_JOURNAL, ini.Order, nextPage, DateTime.Now.ToString("yyyyMMdd"));
-                }
-                LogUtil.D("LoadData() provider url: " + urlApi);
-                try {
-                    HttpClient client = new HttpClient();
-                    HttpResponseMessage res = await client.GetAsync(urlApi, token);
-                    string jsonData = await res.Content.ReadAsStringAsync();
-                    //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    if (api.Status != 1) {
-                        return false;
-                    }
-                    List<Meta> metasAdd = new List<Meta>();
-                    foreach (GluttonApiData item in api.Data) {
-                        metasAdd.Add(ParseBean(item, ini.Album, ini.Order));
-                    }
-                    AppendMetas(metasAdd);
-                    int phase = int.MaxValue;
-                    api.Data.ForEach(item => phase = Math.Min(phase, item.Phase));
-                    nextPage = phase > 0 ? phase - 1 : nextPage;
-                    return true;
-                } catch (Exception e) {
-                    // 情况1：任务被取消
-                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
-                    LogUtil.E("LoadData() " + e.Message);
-                }
-                return false;
+                urlApi = string.Format(URL_API_JOURNAL, ini.Order, no, date, score);
             } else {
-                // 已加载过无需加载
-                if (metas.Count > 0) {
-                    return true;
-                }
-                // 无网络连接
-                if (!NetworkInterface.GetIsNetworkAvailable()) {
+                urlApi = string.Format(URL_API_RANK, ini.Order, no, score);
+            }
+            LogUtil.D("LoadData() provider url: " + urlApi);
+            try {
+                HttpClient client = new HttpClient();
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                if (api.Status != 1) {
                     return false;
                 }
-                await base.LoadData(token, bi, cmd);
-
-                string urlApi = string.Format(URL_API_RANK, ini.Order);
-                LogUtil.D("LoadData() provider url: " + urlApi);
-                try {
-                    HttpClient client = new HttpClient();
-                    HttpResponseMessage res = await client.GetAsync(urlApi, token);
-                    string jsonData = await res.Content.ReadAsStringAsync();
-                    //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    if (api.Status != 1) {
-                        return false;
-                    }
-                    List<Meta> metasAdd = new List<Meta>();
-                    foreach (GluttonApiData item in api.Data) {
-                        metasAdd.Add(ParseBean(item, ini.Album, ini.Order));
-                    }
-                    AppendMetas(metasAdd);
-                    return true;
-                } catch (Exception e) {
-                    // 情况1：任务被取消
-                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
-                    LogUtil.E("LoadData() " + e.Message);
+                List<Meta> metasAdd = new List<Meta>();
+                foreach (GluttonApiData item in api.Data) {
+                    metasAdd.Add(ParseBean(item, ini.Album));
                 }
-                return false;
+                AppendMetas(metasAdd);
+                return true;
+            } catch (Exception e) {
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
             }
+            return false;
         }
     }
 }

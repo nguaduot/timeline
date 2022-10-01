@@ -39,20 +39,17 @@ namespace Timeline.Providers {
             };
             meta.Thumb = meta.Uhd;
             meta.Date = time.ToLocalTime(); // UTC转本地时间
-            meta.SortFactor = time.Ticks;
             meta.Caption = "🌏 " + meta.Date.ToString("M") + " " + meta.Date.ToString("t");
             return meta;
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            Himawari8Ini ini = bi as Himawari8Ini;
-            offsetEarth = ini.Offset;
-            ratioEarth = ini.Ratio;
-            await base.LoadData(token, bi, go);
-
             if (GetCount() > 0) {
                 return true;
             }
+            Himawari8Ini ini = bi as Himawari8Ini;
+            offsetEarth = ini.Offset;
+            ratioEarth = ini.Ratio;
             string urlApi = URL_API + DateUtil.CurrentTimeMillis();
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
