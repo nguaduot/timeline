@@ -34,12 +34,8 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
-            // 已加载过无需加载
-            if (metas.Count > 0) {
-                return true;
-            }
-            await base.LoadData(token, bi, cmd);
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+            await base.LoadData(token, bi, go);
 
             LocalIni ini = bi as LocalIni;
             StorageFolder folder = await FileUtil.GetGalleryFolder(ini.Folder);
@@ -69,7 +65,7 @@ namespace Timeline.Providers {
                         metasAdd.Add(await ParseBean(folder, imgFiles[i], imgFiles.Count - i));
                     }
                 }
-                RandomMetas(metasAdd);
+                AppendMetas(metasAdd.OrderBy(p => Guid.NewGuid()).ToList());
                 return true;
             } catch (Exception e) {
                 LogUtil.E("LoadData() " + e.Message);

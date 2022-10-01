@@ -38,6 +38,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "title")]
         public string Title { set; get; }
 
+        // 副标题
+        [JsonProperty(PropertyName = "caption")]
+        public string Caption { set; get; }
+
         // 描述
         [JsonProperty(PropertyName = "desc")]
         public string Desc { set; get; }

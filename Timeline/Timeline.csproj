@@ -129,6 +129,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Beans\Go.cs" />
     <Compile Include="Beans\R22AuthApi.cs" />
     <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\BingApi.cs" />
@@ -204,6 +205,7 @@
   <ItemGroup>
     <Content Include="Assets\Config\config.txt" />
     <Content Include="Assets\Config\json.txt" />
+    <Content Include="Assets\Config\shortcut.txt" />
     <Content Include="Assets\Icons\LargeTile.scale-100.png" />
     <Content Include="Assets\Icons\LargeTile.scale-125.png" />
     <Content Include="Assets\Icons\LargeTile.scale-150.png" />

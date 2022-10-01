@@ -11,15 +11,15 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class LspProvider : BaseProvider {
-        // 页数据索引（从1开始）（用于按需加载）
-        private int pageIndex = 0;
-
         private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper" +
-            "&cate={0}&order={1}&tag={2}&no={3}&page={4}&r22={5}&unaudited={6}&marked={7}";
-        
+            "&order={0}&cate={1}" +
+            "&tag={2}&no={3}&date={6}&score={5}" +
+            "&r22={6}&unaudited={7}&marked={8}";
+
         private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
                 Id = bean.Id,
+                No = bean.No,
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Album,
@@ -48,25 +48,18 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
-            string no = cmd.Key == GoCmd.No ? cmd.Value : "";
-            string tag = cmd.Key == GoCmd.Tag ? cmd.Value : "";
-            // 现有数据未浏览完，无需加载更多
-            if (no.Length == 0 && tag.Length == 0 && index < metas.Count) {
-                return true;
-            }
-            if (no.Length > 0 || tag.Length > 0) { // 重置页索引
-                pageIndex = 0;
-            }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return false;
-            }
-            await base.LoadData(token, bi, cmd);
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+            await base.LoadData(token, bi, go);
 
             LspIni ini = bi as LspIni;
-            string urlApi = string.Format(URL_API, bi.Cate, ini.Order, tag, no, pageIndex + 1,
+            int no = GetMinNo();
+            no = go.No < no ? go.No : no;
+            DateTime date = GetMinDate();
+            date = go.Date < date ? go.Date : date;
+            float score = GetMinScore();
+            score = go.Score < score ? go.Score : score;
+            string urlApi = string.Format(URL_API, bi.Order, bi.Cate,
+                go.Tag, no, date, score,
                 ini.R22 ? SysUtil.GetDeviceId() : "",
                 "unaudited".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "",
                 "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
@@ -84,12 +77,7 @@ namespace Timeline.Providers {
                 foreach (LspApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, ini.Order));
                 }
-                if ("date".Equals(ini.Order) || "score".Equals(ini.Order)) { // 有序排列
-                    SortMetas(metasAdd);
-                } else {
-                    AppendMetas(metasAdd);
-                }
-                pageIndex += 1;
+                AppendMetas(metasAdd);
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

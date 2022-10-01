@@ -30,58 +30,59 @@ namespace Timeline.Providers {
 
         public string Id { set; get; }
 
-        protected void AppendMetas(List<Meta> metasAdd) {
+        protected bool AppendMetas(List<Meta> metasAdd) {
             List<string> list = metas.Select(t => t.Id).ToList();
             foreach (Meta meta in metasAdd) {
                 if (!list.Contains(meta.Id) && meta.IsValid()) {
                     metas.Add(meta);
                 }
             }
+            return metas.Count > list.Count;
         }
 
-        protected void SortMetas(List<Meta> metasAdd) {
-            AppendMetas(metasAdd);
-            string idFocus = GetFocus()?.Id;
-            // 按日期降序排列
-            metas.Sort((m1, m2) => {
-                if (m1.SortFactor > m2.SortFactor) {
-                    return -1;
-                }
-                if (m1.SortFactor < m2.SortFactor) {
-                    return 1;
-                }
-                return m1.Id.CompareTo(m2.Id);
-            });
-            // 恢复当前索引
-            if (indexFocus > 0) {
-                for (int i = 0; i < metas.Count; i++) {
-                    if (metas[i].Id == idFocus) {
-                        indexFocus = i;
-                        break;
-                    }
-                }
-            }
-        }
+        //protected void SortMetas(List<Meta> metasAdd) {
+        //    AppendMetas(metasAdd);
+        //    string idFocus = GetFocus()?.Id;
+        //    // 按日期降序排列
+        //    metas.Sort((m1, m2) => {
+        //        if (m1.SortFactor > m2.SortFactor) {
+        //            return -1;
+        //        }
+        //        if (m1.SortFactor < m2.SortFactor) {
+        //            return 1;
+        //        }
+        //        return m1.Id.CompareTo(m2.Id);
+        //    });
+        //    // 恢复当前索引
+        //    if (indexFocus > 0) {
+        //        for (int i = 0; i < metas.Count; i++) {
+        //            if (metas[i].Id == idFocus) {
+        //                indexFocus = i;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
 
-        protected void RandomMetas(List<Meta> metasAdd) {
-            //List<Meta> metasNew = new List<Meta>();
-            //Random random = new Random();
-            //foreach (Meta meta in metas) {
-            //    metasNew.Insert(random.Next(metasNew.Count + 1), meta);
-            //}
-            //metas.Clear();
-            //metas.AddRange(metasNew);
-            Random random = new Random();
-            foreach (Meta meta in metasAdd) {
-                dicHistory.TryGetValue(meta.Id, out int times);
-                meta.SortFactor = random.NextDouble() + Math.Min(times / 10.0, 0.9);
-            }
-            // 升序排列，已阅图降低出现在前排的概率
-            metasAdd.Sort((m1, m2) => m1.SortFactor.CompareTo(m2.SortFactor));
-            AppendMetas(metasAdd);
-        }
+        //protected void RandomMetas(List<Meta> metasAdd) {
+        //    //List<Meta> metasNew = new List<Meta>();
+        //    //Random random = new Random();
+        //    //foreach (Meta meta in metas) {
+        //    //    metasNew.Insert(random.Next(metasNew.Count + 1), meta);
+        //    //}
+        //    //metas.Clear();
+        //    //metas.AddRange(metasNew);
+        //    Random random = new Random();
+        //    foreach (Meta meta in metasAdd) {
+        //        dicHistory.TryGetValue(meta.Id, out int times);
+        //        meta.SortFactor = random.NextDouble() + Math.Min(times / 10.0, 0.9);
+        //    }
+        //    // 升序排列，已阅图降低出现在前排的概率
+        //    metasAdd.Sort((m1, m2) => m1.SortFactor.CompareTo(m2.SortFactor));
+        //    AppendMetas(metasAdd);
+        //}
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             dicHistory.Clear();
             Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
             foreach (var item in dicNew) {
@@ -226,33 +227,6 @@ namespace Timeline.Providers {
             return metas[index];
         }
 
-        public Meta No(int no) { // TODO
-            if (metas.Count == 0) {
-                indexFocus = 0;
-                return null;
-            }
-            if (no >= metas.Count) {
-                indexFocus = metas.Count - 1;
-            } else if (no >= 0) {
-                indexFocus = no;
-            } else {
-                indexFocus = 0;
-            }
-            return metas[indexFocus];
-        }
-
-        public Meta GetNo(int no) { // TODO
-            if (metas.Count == 0) {
-                return null;
-            }
-            if (no >= metas.Count) {
-                no = metas.Count - 1;
-            } else if (no < 0) {
-                no = 0;
-            }
-            return metas[no];
-        }
-
         public Meta Target(DateTime date) {
             Meta target = null;
             for (int i = 0; i < metas.Count; i++) { // 从近到远取最接近
@@ -288,6 +262,22 @@ namespace Timeline.Providers {
                 }
             }
             return nextMetas;
+        }
+
+        public int GetMaxIndex() {
+            return metas.Count > 0 ? metas.Count - 1 : 0;
+        }
+
+        public int GetMinNo() {
+            return metas.Count > 0 ? metas.Max(x => x.No) : int.MaxValue;
+        }
+
+        public DateTime GetMinDate(bool Utc=false) {
+            return metas.Count > 0 ? metas.Min(x => x.Date) : (Utc ? DateTime.UtcNow : DateTime.Now);
+        }
+
+        public float GetMinScore() {
+            return metas.Count > 0 ? metas.Min(x => x.Score) : int.MaxValue;
         }
 
         public void ClearMetas() {

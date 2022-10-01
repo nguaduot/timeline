@@ -627,38 +627,6 @@ namespace Timeline.Utils {
             }
             return 30;
         }
-
-        public static DateTime? ParseDate(string text) {
-            DateTime now = DateTime.Now;
-            if (string.IsNullOrEmpty(text)) {
-                return null;
-            }
-            if (Regex.Match(text, @"\d").Success) {
-                if (text.Length == 8) {
-                    text = text.Substring(0, 4) + "-" + text.Substring(4, 2) + "-" + text.Substring(6);
-                } else if (text.Length == 6) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2, 2) + "-" + text.Substring(4);
-                } else if (text.Length == 5) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2, 1) + "-" + text.Substring(3);
-                } else if (text.Length == 4) {
-                    text = text.Substring(0, 2) + "-" + text.Substring(2);
-                } else if (text.Length == 3) {
-                    text = text.Substring(0, 1) + "-" + text.Substring(1);
-                } else if (text.Length == 2) {
-                    if (int.Parse(text) > DateTime.DaysInMonth(now.Year, now.Month)) {
-                        text = text.Substring(0, 1) + "-" + text.Substring(1);
-                    } else {
-                        text = now.Month + "-" + text;
-                    }
-                } else if (text.Length == 1) {
-                    text = now.Month + "-" + text;
-                }
-            }
-            if (DateTime.TryParse(text, out DateTime date)) {
-                return date;
-            }
-            return null;
-        }
     }
 
     public class FileUtil {
@@ -1068,52 +1036,6 @@ namespace Timeline.Utils {
             Clipboard.SetContent(pkg);
             return true;
         }
-
-        public static KeyValuePair<GoCmd, string> ParseGoCmd(string what) {
-            GoCmd cmd = GoCmd.Empty;
-            string val = "";
-            Match match = Regex.Match(what, "^[\"'](.*)[\"']$");
-            if (match.Success) { // 指定按 GoCmd.Tag 识别
-                if (match.Groups[1].Value.Length > 0) {
-                    cmd = GoCmd.Tag;
-                    val = match.Groups[1].Value;
-                }
-            } else {
-                match = Regex.Match(what, "^([iInNdD])(\\d+)$");
-                if (match.Success) { // 按指定规则识别
-                    switch (match.Groups[1].Value) {
-                        case "i":
-                        case "I":
-                            cmd = GoCmd.Index;
-                            val = Math.Max(int.Parse(match.Groups[2].Value) - 1, 0).ToString(); // 从1开始转换从0开始
-                            break;
-                        case "n":
-                        case "N":
-                            cmd = GoCmd.No;
-                            val = match.Groups[2].Value;
-                            break;
-                        default: // dD
-                            if (DateUtil.ParseDate(match.Groups[2].Value) != null) {
-                                cmd = GoCmd.Date;
-                                val = match.Groups[2].Value;
-                            }
-                            break;
-                    }
-                } else { // 推测
-                    if (DateTime.TryParseExact(what, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out _)) {
-                        cmd = GoCmd.Date;
-                        val = what;
-                    } else if (int.TryParse(what, out int index)) {
-                        cmd = GoCmd.Index;
-                        val = Math.Max(index - 1, 0).ToString(); // 从1开始转换从0开始
-                    } else if (what.Length > 0) { // 其他归为 GoCmd.Tag
-                        cmd = GoCmd.Tag;
-                        val = what;
-                    }
-                }
-            }
-            return new KeyValuePair<GoCmd, string>(cmd, val);
-        }
     }
 
     public static class ImgUtil {
@@ -1190,12 +1112,5 @@ namespace Timeline.Utils {
             isInitialized = true;
             Log.Debug("Initialized Serilog");
         }
-    }
-    public enum GoCmd {
-        Index, // 从1开始的索引
-        No, // 从1开始的序号
-        Date, // 日期
-        Tag, // 标签
-        Empty // 无效值
     }
 }

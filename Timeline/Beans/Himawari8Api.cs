@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Timeline.Beans {
     public class Himawari8Api {
-        // 最新时间
+        // 最新时间（非实时，延迟15~25分钟）
         [JsonProperty(PropertyName = "date")]
         public string Date { set; get; }
 

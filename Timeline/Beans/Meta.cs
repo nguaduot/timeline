@@ -11,6 +11,10 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { set; get; }
 
+        // 序号（非空）
+        [JsonProperty(PropertyName = "no", NullValueHandling = NullValueHandling.Ignore)]
+        public int No { set; get; }
+
         // 原图URL
         [JsonProperty(PropertyName = "uhd", NullValueHandling = NullValueHandling.Ignore)]
         public string Uhd { set; get; }
@@ -31,10 +35,6 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "cate", NullValueHandling = NullValueHandling.Ignore)]
         public string Cate { set; get; }
 
-        // 位置
-        [JsonProperty(PropertyName = "location", NullValueHandling = NullValueHandling.Ignore)]
-        public string Location { set; get; }
-
         // 描述/图文故事
         [JsonProperty(PropertyName = "story", NullValueHandling = NullValueHandling.Ignore)]
         public string Story { set; get; }
@@ -51,6 +51,10 @@ namespace Timeline.Beans {
         [JsonConverter(typeof(DateConverter))]
         [JsonProperty(PropertyName = "date", NullValueHandling = NullValueHandling.Ignore)]
         public DateTime Date { set; get; }
+
+        // 热度分
+        [JsonProperty(PropertyName = "score", NullValueHandling = NullValueHandling.Ignore)]
+        public float Score { set; get; }
 
         // 文件格式
         [JsonProperty(PropertyName = "format", NullValueHandling = NullValueHandling.Ignore)]
@@ -80,11 +84,11 @@ namespace Timeline.Beans {
         public bool Favorite { set; get; }
 
         public bool IsValid() {
-            return !string.IsNullOrEmpty(Id) && Uhd != null;
+            return !string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(Uhd);
         }
 
         public string GetTitleOrCaption() {
-            return Title ?? Caption;
+            return string.IsNullOrEmpty(Title) ? Caption : Title;
         }
 
         public bool ExistsFaceAndAllLeft() {

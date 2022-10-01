@@ -295,7 +295,7 @@ namespace Timeline.Pages {
             await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
                 Album = "rank",
                 Order = "score"
-            }, new KeyValuePair<GoCmd, string>(GoCmd.Index, "0"));
+            }, new Go());
             List<Meta> top = glutton.GetMetas(localIni.Appetite);
             Dictionary<string, double> topProgress = new Dictionary<string, double>();
             if (top.Count == 0) {

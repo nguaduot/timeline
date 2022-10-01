@@ -25,16 +25,14 @@ namespace Timeline.Providers {
                 Id = bean.PhotoCode,
                 Uhd = bean.PhotoUrl,
                 Thumb = bean.PhotoUrl.Replace(".jpg", "_400_0.jpg"),
-                Title = bean.PhotoTopic?.Trim(),
+                Title = (bean.PhotoTopic ?? "").Trim(),
+                Story = (bean.Remark ?? "").Trim(),
                 Copyright = "@" + bean.Author,
                 Format = FileUtil.ParseFormat(bean.PhotoUrl)
             };
 
-            if (!bean.PhotoTopic.Equals(bean.Remark?.Trim())) {
-                meta.Caption = bean.Remark?.Trim();
-            }
-            if (!bean.PhotoTopic.Equals(bean.PhotoLocation?.Trim())) {
-                meta.Location = bean.PhotoLocation?.Trim();
+            if (!string.IsNullOrEmpty(bean.PhotoLocation) && !bean.PhotoLocation.Trim().Equals(meta.Title)) {
+                meta.Caption = bean.PhotoLocation.Trim();
             }
             if (!string.IsNullOrEmpty(bean.CountryCodeStr)) {
                 meta.Copyright += " | " + bean.CountryCodeStr;
@@ -46,7 +44,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
             int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             if (date.Ticks > 0) {
@@ -60,7 +58,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, cmd);
+            await base.LoadData(token, bi, go);
 
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
             string sort = "score".Equals(bi.Order) ? "2" : ("view".Equals(bi.Order) ? "3" : "1");

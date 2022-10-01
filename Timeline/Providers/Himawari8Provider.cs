@@ -15,9 +15,6 @@ using Windows.ApplicationModel;
 
 namespace Timeline.Providers {
     public class Himawari8Provider : BaseProvider {
-        // 下一页索引（从最新UTC时间开始，非实时，延迟15~25分钟）（用于按需加载）
-        private DateTime? nextPage = null;
-
         // 地球位置（0.01~1.00，0.50 为居中，0.01~0.50 偏左，0.50~1.00 偏右）
         private float offsetEarth = 0.5f;
         // 地球大小（0.10~1.00）
@@ -41,61 +38,50 @@ namespace Timeline.Providers {
                 Format = ".png"
             };
             meta.Thumb = meta.Uhd;
-            meta.Date = time.ToLocalTime();
+            meta.Date = time.ToLocalTime(); // UTC转本地时间
             meta.SortFactor = time.Ticks;
             meta.Caption = "🌏 " + meta.Date.ToString("M") + " " + meta.Date.ToString("t");
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
-            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             Himawari8Ini ini = bi as Himawari8Ini;
             offsetEarth = ini.Offset;
             ratioEarth = ini.Ratio;
-            // 无需加载更多
-            if (index < metas.Count && date.Ticks == 0) {
+            await base.LoadData(token, bi, go);
+
+            if (GetCount() > 0) {
                 return true;
             }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return false;
-            }
-            await base.LoadData(token, bi, cmd);
-
-            if (date.Ticks > 0) { // 指定时间
-                metas.Clear();
-                nextPage = date;
-            } else if (nextPage == null) { // 获取最新UTC时间
-                string urlApi = URL_API + DateUtil.CurrentTimeMillis();
-                LogUtil.D("LoadData() provider url: " + urlApi);
-                try {
-                    HttpClient client = new HttpClient();
-                    HttpResponseMessage res = await client.GetAsync(urlApi, token);
-                    string jsonData = await res.Content.ReadAsStringAsync();
-                    //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                    Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
-                    nextPage = DateTime.ParseExact(api.Date, "yyyy-MM-dd HH:mm:ss", new System.Globalization.CultureInfo("en-US"));
-                } catch (Exception e) {
-                    // 情况1：任务被取消
-                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
-                    LogUtil.E("LoadData() " + e.Message);
-                }
-            }
-            if (nextPage != null) {
+            string urlApi = URL_API + DateUtil.CurrentTimeMillis();
+            LogUtil.D("LoadData() provider url: " + urlApi);
+            try {
+                HttpClient client = new HttpClient();
+                HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                string jsonData = await res.Content.ReadAsStringAsync();
+                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
+                DateTime date = DateTime.ParseExact(api.Date, "yyyy-MM-dd HH:mm:ss",
+                    new System.Globalization.CultureInfo("en-US")); // UTC时间（非实时，延迟15~25分钟）
                 List<Meta> metasAdd = new List<Meta>();
                 for (int i = 0; i < 99; i++) {
-                    metasAdd.Add(ParseBean(nextPage.Value.AddHours(-i)));
+                    metasAdd.Add(ParseBean(date.AddHours(-i)));
                 }
-                SortMetas(metasAdd);
-                nextPage = nextPage.Value.AddHours(-99);
-            } else if (metas.Count == 0) {
+                AppendMetas(metasAdd);
+                return true;
+            } catch (Exception e) {
+                // 情况1：任务被取消
+                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                LogUtil.E("LoadData() " + e.Message);
+            }
+
+            if (GetCount() == 0) { // 加载失败，使用备用图
                 StorageFile defaultFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Images\\himawari8-20220521182000.png");
                 List<Meta> metasAdd = new List<Meta>();
                 Meta meta = ParseBean(DateTime.Parse("2022-05-21 18:20:00"));
                 meta.CacheUhd = defaultFile;
                 metasAdd.Add(meta);
-                SortMetas(metasAdd);
+                AppendMetas(metasAdd);
             }
             return true;
         }

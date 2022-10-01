@@ -15,11 +15,6 @@ using Windows.System.UserProfile;
 
 namespace Timeline.Providers {
     public class BingProvider : BaseProvider {
-        // 页数据索引（从0开始）（用于按需加载）
-        private int pageIndex = 0;
-
-        private const int PAGE_SIZE = 8;
-
         private const string URL_API_HOST = "https://global.bing.com";
         private const string URL_CND_HOST = "http://s.cn.bing.net";
         // Bing搜索 官方提供的 API
@@ -35,40 +30,82 @@ namespace Timeline.Providers {
         // uhdheight：uhd置1时生效
         // API 第三方文档：http://www.lib4dev.in/info/facefruit/daily-bing-wallpaper/209719167
         // 语言代码表：http://www.lingoes.net/zh/translator/langcode.htm
-        private readonly string[] URL_API_PAGES = new string[] {
-            URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx=0&n=" + PAGE_SIZE,
-            URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx=7&n=" + PAGE_SIZE
-        };
+        private const string URL_API = URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx={0}&n=8";
 
         private Meta ParseBean(BingApiImg bean, string lang) {
+            // 基础字段：title、copyright（ko-kr 等未支持地区 title 为“Info”）
+            // 扩展字段：caption、desc（en-us 等支持地区，ja-jp 地区 caption 与 title 相同）
+            // copyright：
+            //   zh-cn：在新湾潜水的南露脊鲸，阿根廷瓦尔德斯半岛 (© Gabriel Rojo/Minden Pictures)
+            //   en-us：Infini-D, modeled during the World of WearableArt Awards in 2019 in Wellington, New Zealand (© Hagen Hopkins/Getty Images for World of WearableArt)
+            //   ja-jp：世界ウェアラブルアートショー, ニュージーランド ウェリントン (© Hagen Hopkins/Getty Images for World of WearableArt)
+            //   ko-kr：Johnston Canyon, Banff National Park, Canada (© Jason Hatfield/TANDEM Stills + Motion)
+            string title = !"Info".Equals(bean.Title) ? bean.Title : "";
+            string copyrightTitle = bean.Copyright;
+            string copyright = "";
+            Match match = Regex.Match(bean.Copyright, @"(.+)\(©(.+)\)");
+            if (match.Success) {
+                copyrightTitle = match.Groups[1].Value.Trim();
+                copyright = match.Groups[2].Value.Trim();
+            }
+            string caption = !string.IsNullOrEmpty(bean.Caption) && bean.Caption.Equals(title) ? "" : bean.Caption;
+            string desc = bean.Desc;
+
             bool cn = "zh-cn".Equals(lang) || (string.IsNullOrEmpty(lang) && "CN".Equals(GlobalizationPreferences.HomeGeographicRegion));
             Meta meta = new Meta {
                 Id = bean.Hsh,
                 Uhd = string.Format("{0}{1}_UHD.jpg", cn ? URL_CND_HOST : URL_API_HOST, bean.UrlBase),
                 Thumb = string.Format("{0}{1}_400x240.jpg", cn ? URL_CND_HOST : URL_API_HOST, bean.UrlBase),
-                Title = !"Info".Equals(bean.Title) ? bean.Title : "", // ko-kr等未支持地区为“Info”
-                Story = bean.Desc, // 部分区域无该字段
-                Caption = bean.Copyright
+                Copyright = !string.IsNullOrEmpty(copyright) ? "© " + copyright : ""
             };
-            // zh-cn: 正爬上唐娜·诺克沙滩的灰海豹，英格兰北林肯郡 (© Frederic Desmette/Minden Pictures)
-            // en-us: Aerial view of the island of Mainau on Lake Constance, Germany (© Amazing Aerial Agency/Offset by Shutterstock)
-            // ja-jp: ｢ドナヌックのハイイロアザラシ｣英国, ノースリンカーンシャー (© Frederic Desmette/Minden Pictures)
-            Match match = Regex.Match(meta.Caption, @"(.+)[\(（]©(.+)[\)）]");
-            if (match.Success) {
-                meta.Caption = match.Groups[1].Value.Trim();
-                meta.Copyright = "© " + match.Groups[2].Value.Trim();
-                match = Regex.Match(meta.Caption, @"｢(.+)｣(.+)");
-                if (match.Success) { // 国内版（日本）
-                    meta.Caption = match.Groups[1].Value.Trim();
-                    meta.Location = match.Groups[2].Value.Trim();
-                } else { // 国内版（中国）
-                    match = Regex.Match(meta.Caption, @"(.+)[，](.+)");
-                    if (match.Success) {
-                        meta.Caption = match.Groups[1].Value.Trim();
-                        meta.Location = match.Groups[2].Value.Trim();
+            if (!string.IsNullOrEmpty(title)) {
+                meta.Title = title;
+                if (!string.IsNullOrEmpty(caption)) {
+                    meta.Caption = caption;
+                    if (!string.IsNullOrEmpty(copyrightTitle)) {
+                        if (!string.IsNullOrEmpty(desc)) {
+                            meta.Story = copyrightTitle + "\n" + desc;
+                        } else {
+                            meta.Story = copyrightTitle;
+                        }
+                    } else {
+                        meta.Story = desc;
                     }
+                } else if (!string.IsNullOrEmpty(copyrightTitle)) {
+                    meta.Caption = copyrightTitle;
+                    meta.Story = desc;
+                } else {
+                    meta.Story = desc;
                 }
+            } else if (!string.IsNullOrEmpty(caption)) {
+                meta.Title = caption;
+                if (!string.IsNullOrEmpty(copyrightTitle)) {
+                    meta.Caption = copyrightTitle;
+                    meta.Story = desc;
+                } else {
+                    meta.Story = desc;
+                }
+            } else if (!string.IsNullOrEmpty(copyrightTitle)) {
+                meta.Title = copyrightTitle;
+                meta.Story = desc;
             }
+
+            //Match match = Regex.Match(meta.Caption, @"(.+)\(©(.+)\)");
+            //if (match.Success) {
+            //    meta.Caption = match.Groups[1].Value.Trim();
+            //    meta.Copyright = "© " + match.Groups[2].Value.Trim();
+            //    match = Regex.Match(meta.Caption, @"｢(.+)｣(.+)");
+            //    if (match.Success) { // 国内版（日本）
+            //        meta.Caption = match.Groups[1].Value.Trim();
+            //        meta.Location = match.Groups[2].Value.Trim();
+            //    } else { // 国内版（中国）
+            //        match = Regex.Match(meta.Caption, @"(.+)[，](.+)");
+            //        if (match.Success) {
+            //            meta.Caption = match.Groups[1].Value.Trim();
+            //            meta.Location = match.Groups[2].Value.Trim();
+            //        }
+            //    }
+            //}
 
             if (!bean.CopyrightLink.Contains("filters=HpDate") && DateTime.TryParseExact(bean.FullStartDate, "yyyyMMddHHmm", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime time)) {
                 meta.Src = string.Format("{0}{1}&filters={2}", URL_API_HOST, bean.CopyrightLink,
@@ -86,26 +123,11 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
-            DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
-            if (pageIndex >= URL_API_PAGES.Length) { // 已无更多数据
-                return true;
-            }
-            if (date.Ticks > 0) {
-                if (metas.Count > 0 && date.Date > metas[metas.Count - 1].Date) {
-                    return true;
-                }
-            } else if (index < metas.Count) { // 现有数据未浏览完，无需加载更多
-                return true;
-            }
-            if (!NetworkInterface.GetIsNetworkAvailable()) { // 无网络连接
-                return false;
-            }
-            await base.LoadData(token, bi, cmd);
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+            await base.LoadData(token, bi, go);
 
             BingIni ini = bi as BingIni;
-            string urlApi = URL_API_PAGES[pageIndex];
+            string urlApi = string.Format(URL_API, GetMaxIndex() + 1);
             if (ini.Lang.Length > 0) {
                 urlApi += "&setmkt=" + ini.Lang;
             }
@@ -120,8 +142,7 @@ namespace Timeline.Providers {
                 foreach (BingApiImg img in api.Images) {
                     metasAdd.Add(ParseBean(img, ini.Lang));
                 }
-                SortMetas(metasAdd); // 按时序倒序排列
-                pageIndex += 1;
+                AppendMetas(metasAdd); // 倒序时间
                 return true;
             } catch (Exception e) {
                 // TODO Object reference not set to an instance of an object.

@@ -37,7 +37,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             DateTime date = cmd.Key == GoCmd.Date ? DateUtil.ParseDate(cmd.Value).Value : new DateTime();
             int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
             // 现有数据未浏览完，无需加载更多
@@ -48,7 +48,7 @@ namespace Timeline.Providers {
             if (!NetworkInterface.GetIsNetworkAvailable()) {
                 return false;
             }
-            await base.LoadData(token, bi, cmd);
+            await base.LoadData(token, bi, go);
 
             NasaIni ini = bi as NasaIni;
             nextPage = date.Ticks > 0 ? date : nextPage;

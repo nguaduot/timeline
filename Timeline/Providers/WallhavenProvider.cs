@@ -11,11 +11,11 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class WallhavenProvider : BaseProvider {
-        // 页数据索引（从1开始）（用于按需加载）
-        private int pageIndex = 1;
+        private const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper" +
+            "&order={0}&cate={1}" +
+            "&tag={2}&no={3}&date={6}&score={5}" +
+            "&unaudited={6}&marked={7}";
 
-        private const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}&page={2}&unaudited={3}&marked={4}";
-        
         private Meta ParseBean(WallhavenApiData bean, string order) {
             Meta meta = new Meta {
                 Id = bean.Id,
@@ -40,19 +40,17 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, KeyValuePair<GoCmd, string> cmd) {
-            int index = cmd.Key == GoCmd.Index ? int.Parse(cmd.Value) : 0;
-            // 现有数据未浏览完，无需加载更多
-            if (index < metas.Count) {
-                return true;
-            }
-            // 无网络连接
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                return false;
-            }
-            await base.LoadData(token, bi, cmd);
+        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+            await base.LoadData(token, bi, go);
 
-            string urlApi = string.Format(URL_API, bi.Cate, bi.Order, pageIndex,
+            int no = GetMinNo();
+            no = go.No < no ? go.No : no;
+            DateTime date = GetMinDate();
+            date = go.Date < date ? go.Date : date;
+            float score = GetMinScore();
+            score = go.Score < score ? go.Score : score;
+            string urlApi = string.Format(URL_API, bi.Order, bi.Cate,
+                go.Tag, no, date, score,
                 "unaudited".Equals(bi.Admin) ? SysUtil.GetDeviceId() : "",
                 "marked".Equals(bi.Admin) ? SysUtil.GetDeviceId() : "");
             LogUtil.D("LoadData() provider url: " + urlApi);
@@ -69,12 +67,7 @@ namespace Timeline.Providers {
                 foreach (WallhavenApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item, bi.Order));
                 }
-                if ("date".Equals(bi.Order) || "score".Equals(bi.Order)) { // 有序排列
-                    SortMetas(metasAdd);
-                } else {
-                    AppendMetas(metasAdd);
-                }
-                pageIndex += 1;
+                AppendMetas(metasAdd);
                 return true;
             } catch (Exception e) {
                 // 情况1：任务被取消

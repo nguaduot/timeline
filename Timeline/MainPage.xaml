@@ -766,13 +766,6 @@
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                    Visibility="Collapsed"
                                    Margin="0,8,0,0" />
-                        <TextBlock Name="TextDetailLocation"
-                                   Style="{StaticResource BodyTextBlockStyle}"
-                                   TextWrapping="NoWrap"
-                                   TextTrimming="CharacterEllipsis"
-                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                   Visibility="Collapsed"
-                                   Margin="0,8,0,0" />
                         <TextBlock Name="TextDetailStory"
                                    Style="{StaticResource BodyTextBlockStyle}"
                                    TextWrapping="Wrap"
@@ -784,8 +777,7 @@
                                    Visibility="Collapsed"
                                    TextWrapping="NoWrap"
                                    Tapped="TextDetailCopyright_Tapped"
-                                   TextTrimming="CharacterEllipsis">
-                        </TextBlock>
+                                   TextTrimming="CharacterEllipsis" />
                         <TextBlock Name="TextDetailDate"
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    TextWrapping="NoWrap"

@@ -51,7 +51,7 @@ namespace Timeline {
         private bool providerLspHintOn = true; // LSP图源提示
         private bool providerLspR22On = false; // LSP图源贤者模式开启
         private bool autoStoryPos = false; // TODO：自动调整图文区贴靠位置（需检测图像人脸位置）
-        private KeyValuePair<GoCmd, string> loadCmd = new KeyValuePair<GoCmd, string>(GoCmd.Empty, ""); // 加载参数
+        private Go go = new Go(); // 加载参数
 
         private DispatcherTimer resizeTimer1;
         private DispatcherTimer resizeTimer2;
@@ -103,13 +103,7 @@ namespace Timeline {
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
                 ctsLoad = new CancellationTokenSource();
-                if (pageTimerAction == PageAction.Yesterday) {
-                    _ = LoadYesterdayAsync(ctsLoad.Token);
-                } else if (pageTimerAction == PageAction.Tomorrow) {
-                    _ = LoadTomorrowAsync(ctsLoad.Token);
-                } else if (pageTimerAction == PageAction.Target) {
-                    _ = LoadFocusAsync(ctsLoad.Token);
-                }
+                _ = LoadDatAsync(ctsLoad.Token, go, pageTimerAction);
             };
 
             // 前者会在应用启动时触发多次，后者仅一次
@@ -151,7 +145,7 @@ namespace Timeline {
             // 确保推送服务一直运行
             await RegServiceAsync();
             // 开始加载数据
-            await LoadFocusAsync(ctsLoad.Token);
+            await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
         }
 
         private async Task CheckLaunchAsync() {
@@ -165,7 +159,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        await LoadFocusAsync(ctsLoad.Token);
+                        await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
                 return;
             }
@@ -205,86 +199,96 @@ namespace Timeline {
             }
         }
 
-        private async Task LoadFocusAsync(CancellationToken token) {
-            await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            meta = await provider.Focus();
-            LogUtil.D("LoadFocusAsync() " + meta);
-            if (meta == null) {
-                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-                return;
-            }
+        //private async Task LoadFocusAsync(CancellationToken token) {
+        //    await FileUtil.WriteDosage(ini.Provider);
+        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    meta = await provider.Focus();
+        //    LogUtil.D("LoadFocusAsync() " + meta);
+        //    if (meta == null) {
+        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
+        //        return;
+        //    }
 
-            ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-            if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                await ShowImg(meta, token);
-            }
-        }
+        //    ShowText(meta);
+        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
+        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+        //        await ShowImg(meta, token);
+        //    }
+        //}
 
-        private async Task LoadYesterdayAsync(CancellationToken token) {
-            await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            meta = await provider.Yesterday();
-            LogUtil.D("LoadYesterdayAsync() " + meta);
-            if (meta == null) {
-                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-                return;
-            }
-            ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-            if (token.IsCancellationRequested) {
-                LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
-                return;
-            }
-            if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                await ShowImg(meta, token);
-            }
-        }
+        //private async Task LoadYesterdayAsync(CancellationToken token) {
+        //    await FileUtil.WriteDosage(ini.Provider);
+        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    meta = await provider.Yesterday();
+        //    LogUtil.D("LoadYesterdayAsync() " + meta);
+        //    if (meta == null) {
+        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
+        //        return;
+        //    }
+        //    ShowText(meta);
+        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
+        //    if (token.IsCancellationRequested) {
+        //        LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
+        //        return;
+        //    }
+        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+        //        await ShowImg(meta, token);
+        //    }
+        //}
 
-        private async Task LoadTomorrowAsync(CancellationToken token) {
-            //await FileUtil.WriteDosage(ini.Provider);
-            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            meta = provider.Tomorrow();
-            LogUtil.D("LoadTomorrowAsync() " + meta);
-            if (meta == null) {
-                StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-                return;
-            }
-            ShowText(meta);
-            Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-            if (token.IsCancellationRequested) {
-                return;
-            }
-            if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-                await ShowImg(meta, token);
-            }
-        }
+        //private async Task LoadTomorrowAsync(CancellationToken token) {
+        //    //await FileUtil.WriteDosage(ini.Provider);
+        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    meta = provider.Tomorrow();
+        //    LogUtil.D("LoadTomorrowAsync() " + meta);
+        //    if (meta == null) {
+        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
+        //        return;
+        //    }
+        //    ShowText(meta);
+        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
+        //    if (token.IsCancellationRequested) {
+        //        return;
+        //    }
+        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
+        //        await ShowImg(meta, token);
+        //    }
+        //}
 
-        private async Task LoadTargetAsync(CancellationToken token) {
+        private async Task LoadDatAsync(CancellationToken token, Go go, PageAction action) {
             await FileUtil.WriteDosage();
-            provider.ClearMetas();
-            bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
+            bool res = false;
+            if (NetworkInterface.GetIsNetworkAvailable()) { // 预加载
+                if (action == PageAction.Focus) {
+                    res = await provider.LoadData(token, ini.GetIni(), go);
+                } else if (action == PageAction.Yesterday) {
+                    if (provider.GetIndexFocus() + 2 >= provider.GetCount()) {
+                        res = await provider.LoadData(token, ini.GetIni(), go);
+                    }
+                } else {
+                    // 略
+                }
+            }
             if (token.IsCancellationRequested) {
                 return;
             }
-            if (loadCmd.Key == GoCmd.Index) {
-                meta = provider.Index(int.Parse(loadCmd.Value));
-            } else if (loadCmd.Key == GoCmd.No) {
-                meta = provider.No(int.Parse(loadCmd.Value));
-            } else if (loadCmd.Key == GoCmd.Date) {
-                meta = provider.Target(DateUtil.ParseDate(loadCmd.Value).Value);
-            } else {
+            if (action == PageAction.Focus) {
                 meta = await provider.Focus();
+            } else if (action == PageAction.Yesterday) {
+                meta = await provider.Yesterday();
+            } else if (action == PageAction.Tomorrow) {
+                meta = provider.Tomorrow();
+            } else {
+                meta = null;
             }
             LogUtil.D("LoadTargetAsync() " + meta);
             if (meta == null) {
@@ -359,16 +363,17 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        await LoadFocusAsync(ctsLoad.Token);
+                        await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
             } else {
                 ShowToastI(string.Format(resLoader.GetString("MsgRefresh"), resLoader.GetString("Provider_" + provider.Id)));
             }
 
+            go = new Go();
             ctsLoad.Cancel();
             StatusLoading();
             ctsLoad = new CancellationTokenSource();
-            await LoadFocusAsync(ctsLoad.Token);
+            await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
         }
 
         private void InitProvider() {
@@ -432,9 +437,6 @@ namespace Timeline {
                 TextDetailCaption.Text = "";
             }
             TextDetailCaption.Visibility = TextDetailCaption.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-            // 位置
-            TextDetailLocation.Text = meta.Location ?? "";
-            TextDetailLocation.Visibility = TextDetailLocation.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             // 图文故事
             TextDetailStory.Text = meta.Story ?? "";
             TextDetailStory.Visibility = TextDetailStory.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -581,7 +583,6 @@ namespace Timeline {
 
             TextTitle.Text = resLoader.GetString("AppDesc");
             TextDetailCaption.Visibility = Visibility.Collapsed;
-            TextDetailLocation.Visibility = Visibility.Collapsed;
             TextDetailStory.Visibility = Visibility.Collapsed;
             TextDetailCopyright.Visibility = Visibility.Collapsed;
             TextDetailDate.Visibility = Visibility.Collapsed;
@@ -603,7 +604,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadFocusAsync(ctsLoad.Token);
+                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
                     });
                     break;
                 case LoadStatus.Error:
@@ -612,7 +613,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadFocusAsync(ctsLoad.Token);
+                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
                     });
                     break;
                 case LoadStatus.NoInternet:
@@ -620,7 +621,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadFocusAsync(ctsLoad.Token);
+                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
                     });
                     break;
             }
@@ -1284,14 +1285,12 @@ namespace Timeline {
                 return;
             }
             FlyoutGo.Hide();
-            loadCmd = TextUtil.ParseGoCmd(BoxGo.Text.Trim());
-            LogUtil.I("BoxGo_KeyDown() " + loadCmd);
-            if (loadCmd.Key != GoCmd.Empty) { // 有效值
-                ctsLoad.Cancel();
-                StatusLoading();
-                ctsLoad = new CancellationTokenSource();
-                await LoadTargetAsync(ctsLoad.Token);
-            }
+            Go go = Go.Parse(BoxGo.Text.Trim());
+            LogUtil.I("BoxGo_KeyDown() " + go);
+            ctsLoad.Cancel();
+            StatusLoading();
+            ctsLoad = new CancellationTokenSource();
+            await LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
         }
 
         private void FlyoutMenu_Opened(object sender, object e) {
