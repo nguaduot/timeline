@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Windows.UI.Xaml.Controls;
 
 namespace TimelineService.Utils {
     public sealed class Ini {
@@ -24,16 +25,6 @@ namespace TimelineService.Utils {
         public string ToastProvider { set; get; }
 
         public string TileProvider { set; get; }
-
-        private string theme = "";
-        public string Theme {
-            set => theme = THEME.Contains(value) ? value : "";
-            get => theme;
-        }
-
-        public int Cache { set; get; } = 600;
-
-        public int R18 { set; get; } = 0;
 
         public LocalIni Local { set; get; } = new LocalIni();
 
@@ -259,7 +250,6 @@ namespace TimelineService.Utils {
                 paras = Bing.ToString();
             }
             return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&toastprovider={ToastProvider}&tileprovider={TileProvider}"
-                + $"&theme={Theme}&cache={Cache}&r18={R18}"
                 + (paras.Length > 0 ? "&" : "") + paras;
         }
     }
@@ -315,14 +305,6 @@ namespace TimelineService.Utils {
     }
 
     public sealed class BingIni {
-        private readonly HashSet<string> LANG = new HashSet<string>() { "", "zh-cn", "en-us", "ja-jp", "de-de", "fr-fr" };
-
-        private string lang = "";
-        public string Lang {
-            set => lang = LANG.Contains(value) ? value : "";
-            get => lang;
-        }
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -347,28 +329,12 @@ namespace TimelineService.Utils {
             get => tilePeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&lang={Lang}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "bing";
     }
 
     public sealed class NasaIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-        private readonly HashSet<string> MIRROR = new HashSet<string>() { "", "bjp" };
-
-        private string order = "date";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
-            get => order;
-        }
-
-        private string mirror = "";
-        public string Mirror {
-            set => mirror = MIRROR.Contains(value) ? value : "";
-            get => mirror;
-        }
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -393,68 +359,12 @@ namespace TimelineService.Utils {
             get => tilePeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}&mirror={Mirror}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "nasa";
     }
 
-    public sealed class OneplusIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "view" };
-
-        private string order = "date";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
-            get => order;
-        }
-
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => desktopPeriod;
-        }
-
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => lockPeriod;
-        }
-
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => tostPeriod;
-        }
-
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
-            get => tilePeriod;
-        }
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}";
-
-        public static string GetId() => "oneplus";
-    }
-
     public sealed class TimelineIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-
-        private string order = "date";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
-            get => order;
-        }
-
-        private string cate = "";
-        public string Cate {
-            set => cate = value ?? "";
-            get => cate;
-        }
-
-        public int Unauthorized { set; get; } = 0;
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -479,21 +389,12 @@ namespace TimelineService.Utils {
             get => tilePeriod;
         }
 
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}&cate={Cate}&unauthorized={Unauthorized}";
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "timeline";
     }
 
     public sealed class OneIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "random" };
-
-        private string order = "date";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
-            get => order;
-        }
-
         private int desktopPeriod = 24;
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
@@ -567,11 +468,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class YmyouliIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -612,11 +513,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class QingbzIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -657,11 +558,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class WallhavenIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -702,11 +603,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class WallhereIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -747,11 +648,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class WallpaperupIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -792,11 +693,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class ToopicIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -837,11 +738,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class InfinityIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "random", "score" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "random", "score" };
 
         private string order = "random";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
+            set => order = ORDERS.Contains(value) ? value : "random";
             get => order;
         }
 
@@ -875,55 +776,9 @@ namespace TimelineService.Utils {
         public static string GetId() => "infinity";
     }
 
-    // deprecated
-    public sealed class ObzhiIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
-
-        private string order = "random";
-        public string Order {
-            set => order = ORDER.Contains(value) ? value : "random";
-            get => order;
-        }
-
-        private string cate = "";
-        public string Cate {
-            set => cate = value ?? "";
-            get => cate;
-        }
-
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => desktopPeriod;
-        }
-
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => lockPeriod;
-        }
-
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
-            get => tostPeriod;
-        }
-
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
-            get => tilePeriod;
-        }
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}&cate={Cate}";
-
-        public static string GetId() => "obzhi";
-    }
-
     public sealed class GluttonIni {
         private readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string album = "journal";
         public string Album {
@@ -933,7 +788,7 @@ namespace TimelineService.Utils {
 
         private string order = "date";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
+            set => order = ORDERS.Contains(value) ? value : "date";
             get => order;
         }
 
@@ -968,11 +823,11 @@ namespace TimelineService.Utils {
     }
 
     public sealed class LspIni {
-        private readonly HashSet<string> ORDER = new HashSet<string>() { "date", "score", "random" };
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
         
         private string order = "date";
         public string Order {
-            set => order = ORDER.Contains(value) ? value : "date";
+            set => order = ORDERS.Contains(value) ? value : "date";
             get => order;
         }
 
@@ -1010,5 +865,82 @@ namespace TimelineService.Utils {
             $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "lsp";
+    }
+
+    // deprecated
+    public sealed class OneplusIni {
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
+
+        public static string GetId() => "oneplus";
+    }
+
+    // deprecated
+    public sealed class ObzhiIni {
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDERS.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = value ?? "";
+            get => cate;
+        }
+
+        private int desktopPeriod = 24;
+        public int DesktopPeriod {
+            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => desktopPeriod;
+        }
+
+        private int lockPeriod = 24;
+        public int LockPeriod {
+            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => lockPeriod;
+        }
+
+        private int tostPeriod = 24;
+        public int ToastPeriod {
+            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tostPeriod;
+        }
+
+        private int tilePeriod = 2;
+        public int TilePeriod {
+            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+
+        public static string GetId() => "obzhi";
     }
 }

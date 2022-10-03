@@ -22,9 +22,6 @@ namespace Timeline.Providers {
         // 注：并非都按时间降序排列，因图源配置而异
         protected readonly List<Meta> metas = new List<Meta>();
 
-        // 当前浏览索引
-        protected int indexFocus = 0;
-
         //protected Dictionary<string, int> dicHistory = new Dictionary<string, int>();
         private readonly BackgroundDownloader downloader = new BackgroundDownloader();
 
@@ -96,189 +93,58 @@ namespace Timeline.Providers {
             return metas.Count;
         }
 
-        public int GetIndexFocus() {
-            return indexFocus;
+        public int GetCountNext(Meta meta) {
+            int index = GetIndex(meta);
+            return metas.Count > 0 ? metas.Count - (index + 1) : 0;
         }
 
-        public Meta Focus() {
-            if (metas.Count == 0) {
-                indexFocus = 0;
-                return null;
-            }
-            if (indexFocus >= metas.Count - 1) {
-                indexFocus = metas.Count - 1;
-            } else if (indexFocus < 0) {
-                indexFocus = 0;
-            }
-
-            //// 更新沉底机制数据
-            //if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-            //    dicHistory[metas[indexFocus].Id] += 1;
-            //} else {
-            //    dicHistory[metas[indexFocus].Id] = 1;
-            //}
-            //await FileUtil.SaveHistoryAsync(Id, dicHistory);
-
-            return metas[indexFocus];
-        }
-
-        public Meta GetFocus() {
-            if (metas.Count == 0) {
-                return null;
-            }
-
-            int index = 0;
-            if (indexFocus >= metas.Count - 1) {
-                index = metas.Count - 1;
-            } else if (indexFocus >= 0) {
-                index = indexFocus;
-            }
-            return metas[index];
-        }
-
-        public Meta Yesterday() {
-            if (metas.Count == 0) {
-                indexFocus = 0;
-                return null;
-            }
-            if (indexFocus >= metas.Count - 1) {
-                indexFocus = metas.Count - 1;
-            } else if (indexFocus >= 0) {
-                indexFocus++;
-            } else {
-                indexFocus = 0;
-            }
-
-            //// 更新沉底机制数据
-            //if (dicHistory.ContainsKey(metas[indexFocus].Id)) {
-            //    dicHistory[metas[indexFocus].Id] += 1;
-            //} else {
-            //    dicHistory[metas[indexFocus].Id] = 1;
-            //}
-            //await FileUtil.SaveHistoryAsync(Id, dicHistory);
-
-            return metas[indexFocus];
-        }
-
-        public Meta GetYesterday() {
-            if (metas.Count == 0) {
-                return null;
-            }
-            int index = 0;
-            if (indexFocus >= metas.Count - 1) {
-                index = metas.Count - 1;
-            } else if (indexFocus >= 0) {
-                index = indexFocus + 1;
-            }
-            return metas[index];
-        }
-
-        public Meta Tomorrow() {
-            if (metas.Count == 0) {
-                indexFocus = 0;
-                return null;
-            }
-            if (indexFocus >= metas.Count) {
-                indexFocus = metas.Count - 1;
-            } else if (indexFocus > 0) {
-                indexFocus--;
-            } else {
-                indexFocus = 0;
-            }
-            return metas[indexFocus];
-        }
-
-        public Meta GetTomorrow() {
-            if (metas.Count == 0) {
-                return null;
-            }
-            int index = 0;
-            if (indexFocus >= metas.Count) {
-                index = metas.Count - 1;
-            } else if (indexFocus > 0) {
-                index = indexFocus - 1;
-            }
-            return metas[index];
-        }
-
-        public Meta Index(int index) {
-            if (metas.Count == 0) {
-                indexFocus = 0;
-                return null;
-            }
-            if (index >= metas.Count) {
-                indexFocus = metas.Count - 1;
-            } else if (index >= 0) {
-                indexFocus = index;
-            } else {
-                indexFocus = 0;
-            }
-            return metas[indexFocus];
-        }
-
-        public Meta GetIndex(int index) {
-            if (metas.Count == 0) {
-                return null;
-            }
-            if (index >= metas.Count) {
-                index = metas.Count - 1;
-            } else if (index < 0) {
-                index = 0;
-            }
-            return metas[index];
-        }
-
-        public Meta Target(DateTime date) {
-            Meta target = null;
-            for (int i = 0; i < metas.Count; i++) { // 从近到远取最接近
-                long thisMinutes = Math.Abs(metas[i].Date.Ticks - date.Ticks) / 10000 / 1000 / 60;
-                if (target == null || thisMinutes < Math.Abs(target.Date.Ticks - date.Ticks) / 10000 / 1000 / 60) {
-                    indexFocus = i;
-                    target = metas[i];
+        public int GetIndex(Meta meta) {
+            for (int i = 0; i < metas.Count; ++i) {
+                if (metas[i].Id.Equals(meta?.Id)) {
+                    return i;
                 }
             }
-            return target;
+            return -1;
         }
 
-        public List<Meta> GetMetas(int count) {
-            List<Meta> metasNew = new List<Meta>();
-            for (int i = 0; i < count && i < metas.Count; ++i) {
-                metasNew.Add(metas[i]);
-            }
-            return metasNew;
+        public Meta GetMeta(int index) {
+            index = Math.Max(Math.Min(index, metas.Count - 1), 0);
+            return metas.Count > 0 ? metas[index] : null;
         }
 
-        public List<Meta> GetNext(Meta meta, int count) {
-            List<Meta> nextMetas = new List<Meta>();
-            int start = -1;
-            for (int i = 0; i < metas.Count; i++) {
-                if (meta != null && metas[i].Id.Equals(meta.Id)) {
-                    start = i;
-                    break;
-                }
-            }
-            if (start >= 0) {
-                for (int i = start + 1; i < metas.Count && i < start + 1 + count; i++) {
-                    nextMetas.Add(metas[i]);
-                }
-            }
-            return nextMetas;
+        public Meta GetNextMeta(Meta meta) {
+            int index = GetIndex(meta);
+            index = Math.Min(index + 1, metas.Count - 1);
+            return metas.Count >= 0 ? metas[index] : null;
+        }
+
+        public Meta GetPrevMeta(Meta meta) {
+            int index = GetIndex(meta);
+            index = Math.Max(index - 1, 0);
+            return metas.Count >= 0 ? metas[index] : null;
         }
 
         public int GetMaxIndex() {
-            return metas.Count > 0 ? metas.Count - 1 : 0;
+            return metas.Count - 1;
         }
 
         public int GetMinNo() {
-            return metas.Count > 0 ? metas.Max(x => x.No) : int.MaxValue;
+            return metas.Count > 0 ? metas.Min(x => x.No) : int.MaxValue;
         }
 
-        public DateTime GetMinDate(bool Utc=false) {
-            return metas.Count > 0 ? metas.Min(x => x.Date) : (Utc ? DateTime.UtcNow : DateTime.Now);
+        public DateTime GetMinDate(bool Utc = false) {
+            if (Utc) {
+                return metas.Count > 0 ? metas.Min(x => x.Date).ToUniversalTime() : DateTime.UtcNow;
+            }
+            return metas.Count > 0 ? metas.Min(x => x.Date) : DateTime.Now;
         }
 
         public float GetMinScore() {
             return metas.Count > 0 ? metas.Min(x => x.Score) : int.MaxValue;
+        }
+
+        public List<Meta> GetMetas() {
+            return metas.ToList();
         }
 
         public void ClearMetas() {
@@ -350,7 +216,7 @@ namespace Timeline.Providers {
                 }
             }
             // 缓存后续（不等待）
-            List<Meta> nextMetas = GetNext(meta, POOL_CACHE);
+            List<Meta> nextMetas = metas.Skip(GetIndex(meta) + 1).Take(POOL_CACHE).ToList();
             foreach (Meta m in nextMetas) {
                 if (token.IsCancellationRequested || m.CacheUhd != null) { // 无需缓存
                     continue;

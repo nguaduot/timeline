@@ -62,7 +62,11 @@ namespace Timeline.Providers {
                         metasAdd.Add(await ParseBean(folder, imgFiles[i], imgFiles.Count - i));
                     }
                 }
-                AppendMetas(metasAdd.OrderBy(p => Guid.NewGuid()).ToList());
+                if ("date".Equals(ini.Order)) {
+                    AppendMetas(metasAdd.OrderByDescending(m => m.Date).ToList());
+                } else { // random
+                    AppendMetas(metasAdd.OrderBy(p => Guid.NewGuid()).ToList());
+                }
                 return true;
             } catch (Exception e) {
                 LogUtil.E("LoadData() " + e.Message);

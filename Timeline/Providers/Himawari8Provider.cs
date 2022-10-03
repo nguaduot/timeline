@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Timeline.Utils;
 using Microsoft.Graphics.Canvas;
@@ -15,6 +14,11 @@ using Windows.ApplicationModel;
 
 namespace Timeline.Providers {
     public class Himawari8Provider : BaseProvider {
+        // 最小间隔
+        private const int INTERVAL_MINUTES = 10;
+        // 最大延迟
+        private const int DELAY_MINUTES = 25;
+
         // 地球位置（0.01~1.00，0.50 为居中，0.01~0.50 偏左，0.50~1.00 偏右）
         private float offsetEarth = 0.5f;
         // 地球大小（0.10~1.00）
@@ -23,60 +27,88 @@ namespace Timeline.Providers {
         // 向日葵-8号即時網頁 - NICT
         // https://himawari.asia
         // https://gitee.com/irontec/himawaripy
+        // 最小间隔：10min（可能出现缺失）
+        // 最大延迟：25min
         //private const string URL_API = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/latest.json";
-        //private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
-        //private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/thumbnail/550/{0}/{1}_0_0.png";
-        //private const string URL_IMG = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/{0}/{1}_0_0.png";
-        private const string URL_API = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/FULL_24h/latest.json?_=";
-        private const string URL_IMG = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
+        //private const string URL_API = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/FULL_24h/latest.json?_=";
+        //private const string URL_API = "https://himawari8.nict.go.jp/img/FULL_24h/latest.json?_=";
+        private const string URL_API = "https://himawari8.nict.go.jp/img/D531106/latest.json?_=";
+        // https://himawari8.nict.go.jp/img/D531106/thumbnail/550/2022/10/03/022000_0_0.png
+        private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}_0_0.png";
+        //private const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/thumbnail/550/{0}_0_0.png";
+        //private const string URL_IMG = "https://himawari8-dl.nict.go.jp/himawari8/img/D531106/1d/550/{0}_0_0.png";
+        //private const string URL_IMG = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/D531106/1d/550/{0}_0_0.png";
 
-        private Meta ParseBean(DateTime time) {
-            string index = string.Format("{0}{1}000", time.ToString("HH"), (time.Minute / 10)); // 转整十分钟
+        private Meta ParseBean(DateTime timeUtc) {
+            DateTime timeValid = new DateTime(timeUtc.Ticks
+                / (10000L * 1000 * 60 * INTERVAL_MINUTES) * (10000L * 1000 * 60 * INTERVAL_MINUTES)); // 转整十分钟
             Meta meta = new Meta {
-                Id = time.ToString("yyyyMMdd") + index,
-                Uhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"), index),
+                Id = timeValid.ToString("yyyyMMddHHmmss"),
+                Uhd = string.Format(URL_IMG, timeValid.ToString(@"yyyy\/MM\/dd\/HHmmss")),
                 Format = ".png"
             };
             meta.Thumb = meta.Uhd;
-            meta.Date = time.ToLocalTime(); // UTC转本地时间
+            meta.Date = timeValid.ToLocalTime(); // UTC转本地时间
             meta.Caption = "🌏 " + meta.Date.ToString("M") + " " + meta.Date.ToString("t");
             return meta;
         }
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
-            if (GetCount() > 0) {
-                return true;
-            }
             Himawari8Ini ini = bi as Himawari8Ini;
             offsetEarth = ini.Offset;
             ratioEarth = ini.Ratio;
-            string urlApi = URL_API + DateUtil.CurrentTimeMillis();
-            LogUtil.D("LoadData() provider url: " + urlApi);
-            try {
-                HttpClient client = new HttpClient();
-                HttpResponseMessage res = await client.GetAsync(urlApi, token);
-                string jsonData = await res.Content.ReadAsStringAsync();
-                //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
-                DateTime date = DateTime.ParseExact(api.Date, "yyyy-MM-dd HH:mm:ss",
-                    new System.Globalization.CultureInfo("en-US")); // UTC时间（非实时，延迟15~25分钟）
+            if (GetCount() > 0) { // 加载下一页
+                DateTime timeUtc = GetMinDate(true).AddMinutes(-INTERVAL_MINUTES);
                 List<Meta> metasAdd = new List<Meta>();
                 for (int i = 0; i < 99; i++) {
-                    metasAdd.Add(ParseBean(date.AddHours(-i)));
+                    metasAdd.Add(ParseBean(timeUtc.AddHours(-i)));
                 }
                 AppendMetas(metasAdd);
-                return true;
-            } catch (Exception e) {
-                // 情况1：任务被取消
-                // System.Threading.Tasks.TaskCanceledException: A task was canceled.
-                LogUtil.E("LoadData() " + e.Message);
+            } else if (go.Date.Ticks > 0) { // 加载指定时间数据
+                DateTime timeUtc = go.Date.ToUniversalTime(); // 使用UTC时间
+                timeUtc = timeUtc > DateTime.UtcNow.AddMinutes(-DELAY_MINUTES)
+                    ? DateTime.UtcNow.AddMinutes(-DELAY_MINUTES) : timeUtc;
+                List <Meta> metasAdd = new List<Meta>();
+                for (int i = 0; i < 99; i++) {
+                    metasAdd.Add(ParseBean(timeUtc.AddHours(-i)));
+                }
+                AppendMetas(metasAdd);
+            } else { // 加载最新时间数据
+                string urlApi = URL_API + DateUtil.CurrentTimeMillis();
+                LogUtil.D("LoadData() provider url: " + urlApi);
+                try {
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage res = await client.GetAsync(urlApi, token);
+                    string jsonData = await res.Content.ReadAsStringAsync();
+                    //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
+                    Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
+                    //DateTime date = DateTime.ParseExact(api.Date, "yyyy-MM-dd HH:mm:ss",
+                    //    new System.Globalization.CultureInfo("en-US"));
+                    if (!DateTime.TryParse(api.Date, out DateTime date)) { // UTC时间
+                        date = DateTime.UtcNow.AddMinutes(-DELAY_MINUTES);
+                        Debug.WriteLine("1 " + date.Kind);
+                    } else {
+                        Debug.WriteLine("2 " + date.Kind);
+                    }
+                    List<Meta> metasAdd = new List<Meta>();
+                    for (int i = 0; i < 99; i++) {
+                        metasAdd.Add(ParseBean(date.AddHours(-i)));
+                    }
+                    AppendMetas(metasAdd);
+                } catch (Exception e) {
+                    // 情况1：任务被取消
+                    // System.Threading.Tasks.TaskCanceledException: A task was canceled.
+                    LogUtil.E("LoadData() " + e.Message);
+                }
             }
 
             if (GetCount() == 0) { // 加载失败，使用备用图
-                StorageFile defaultFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\Images\\himawari8-20220521182000.png");
+                DateTime utcDef = new DateTime(2022, 5, 21, 18, 20, 0, DateTimeKind.Utc);
+                string nameDef = "Assets\\Images\\himawari8-" + utcDef.ToString("yyyyMMddHHmmss") + ".png";
+                StorageFile fileDef = await Package.Current.InstalledLocation.GetFileAsync(nameDef);
                 List<Meta> metasAdd = new List<Meta>();
-                Meta meta = ParseBean(DateTime.Parse("2022-05-21 18:20:00"));
-                meta.CacheUhd = defaultFile;
+                Meta meta = ParseBean(utcDef);
+                meta.CacheUhd = fileDef;
                 metasAdd.Add(meta);
                 AppendMetas(metasAdd);
             }
@@ -88,7 +120,7 @@ namespace Timeline.Providers {
             if (meta?.CacheUhd == null) {
                 return null;
             }
-            string tag = String.Format("-offset{0}-ratio{1}",
+            string tag = string.Format("-offset{0}-ratio{1}",
                 (offsetEarth * 100).ToString("000"), (ratioEarth * 100).ToString("000"));
             if (meta.CacheUhd.Path.Contains(tag)) {
                 return meta;

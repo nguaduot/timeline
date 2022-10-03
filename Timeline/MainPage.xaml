@@ -450,30 +450,21 @@
                          x:Uid="BoxGo"
                          MinWidth="168"
                          MaxWidth="320"
+                         BeforeTextChanging="BoxGo_BeforeTextChanging"
+                         TextChanged="BoxGo_TextChanged"
                          KeyDown="BoxGo_KeyDown" />
                 <TextBlock Margin="0,8,0,0"
                            TextWrapping="WrapWholeWords"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                     <Span xml:space="default">
                         <Run x:Uid="TextGoDesc" />
-                        <Hyperlink x:Uid="LinkGoDesc"
-                                   UnderlineStyle="None">
+                        <Hyperlink UnderlineStyle="None"
+                                   Click="LinkGoDesc_Click">
                             <Run x:Uid="TextView" />
                         </Hyperlink>
                     </Span>
                 </TextBlock>
             </StackPanel>
-        </Flyout>
-
-        <Flyout x:Key="FlyoutAdmin"
-                x:Name="FlyoutAdmin"
-                Placement="LeftEdgeAlignedBottom"
-                LightDismissOverlayMode="On">
-            <TextBox Name="BoxAdmin"
-                     x:Uid="BoxAdmin"
-                     MinWidth="168"
-                     MaxWidth="320"
-                     KeyDown="BoxAdmin_KeyDown" />
         </Flyout>
 
         <muxc:TeachingTip x:Name="TipThumb"
@@ -632,9 +623,6 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="O"
-                                     Modifiers="Control"
-                                     Invoked="KeyInvoked" />
-                <KeyboardAccelerator Key="P"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="S"
@@ -810,15 +798,6 @@
                                      Click="BtnInfo_Click" />
                 </muxc:InfoBar.ActionButton>
             </muxc:InfoBar>
-
-            <Rectangle Name="AnchorAdmin"
-                       Width="0"
-                       Height="0"
-                       FlyoutBase.AttachedFlyout="{StaticResource FlyoutAdmin}"
-                       Margin="11,15"
-                       RelativePanel.AlignLeftWithPanel="False"
-                       RelativePanel.AlignRightWithPanel="True"
-                       RelativePanel.AlignBottomWithPanel="True" />
 
             <Rectangle Name="AnchorGo"
                        Width="0"

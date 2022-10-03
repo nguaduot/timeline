@@ -11,10 +11,10 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class NasaProvider : BaseProvider {
-        private const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper" +
-            "&order={0}&mirror={1}" +
-            "&tag={2}&no={3}&date={4}&score={5}" +
-            "&unaudited={6}&marked={7}";
+        private const string URL_API = "https://api.nguaduot.cn/nasa/v2" +
+            "?client=timelinewallpaper&device={0}" +
+            "&order={1}&mirror={2}" +
+            "&tag={3}&no={4}&date={5}&score={6}&admin={7}";
 
         private Meta ParseBean(NasaApiData bean) {
             Meta meta = new Meta {
@@ -25,6 +25,7 @@ namespace Timeline.Providers {
                 Title = bean.Title?.Trim(),
                 Story = bean.Story?.Trim(),
                 Src = bean.SrcUrl,
+                Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (!string.IsNullOrEmpty(bean.Copyright)) {
@@ -42,13 +43,12 @@ namespace Timeline.Providers {
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
-            date = go.Date < date ? go.Date : date;
+            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
             float score = GetMinScore();
             score = go.Score < score ? go.Score : score;
-            string urlApi = string.Format(URL_API, ini.Order, ini.Mirror,
-                go.Tag, no, date, score,
-                "unaudited".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "",
-                "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
+            string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
+                ini.Order, ini.Mirror,
+                go.Tag, no, date, score, go.Admin);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

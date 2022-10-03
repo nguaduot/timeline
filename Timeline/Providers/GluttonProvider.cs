@@ -13,12 +13,14 @@ using Windows.UI.Xaml.Controls;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
-        private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper" +
-            "&order={0}" +
-            "&no={1}&score={2}";
-        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper" +
-            "&order={0}" +
-            "&no={1}&date={2}&score={3}";
+        private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank" +
+            "?client=timelinewallpaper&device={0}" +
+            "&order={1}" +
+            "&no={2}&score={3}&admin={4}";
+        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal" +
+            "?client=timelinewallpaper&device={0}" +
+            "&order={1}" +
+            "&no={2}&date={3}&score={4}&admin={5}";
 
         private Meta ParseBean(GluttonApiData bean, string album) {
             Meta meta = new Meta {
@@ -26,6 +28,7 @@ namespace Timeline.Providers {
                 No = bean.No,
                 Uhd = bean.ImgUrl,
                 Title = bean.Title,
+                Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if ("journal".Equals(album)) {
@@ -51,14 +54,16 @@ namespace Timeline.Providers {
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
-            date = go.Date < date ? go.Date : date;
+            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
             float score = GetMinScore();
             score = go.Score < score ? go.Score : score;
             string urlApi;
             if ("journal".Equals(ini.Album)) {
-                urlApi = string.Format(URL_API_JOURNAL, ini.Order, no, date, score);
+                urlApi = string.Format(URL_API_JOURNAL, SysUtil.GetDeviceId(),
+                    ini.Order, no, date, score, go.Admin);
             } else {
-                urlApi = string.Format(URL_API_RANK, ini.Order, no, score);
+                urlApi = string.Format(URL_API_RANK, SysUtil.GetDeviceId(),
+                    ini.Order, no, score);
             }
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {

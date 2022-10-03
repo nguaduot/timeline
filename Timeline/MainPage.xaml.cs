@@ -2,13 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Timeline.Beans;
@@ -31,7 +27,6 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 namespace Timeline {
     public delegate void BtnInfoHandler();
@@ -51,12 +46,12 @@ namespace Timeline {
         private bool providerLspHintOn = true; // LSP图源提示
         private bool providerLspR22On = false; // LSP图源贤者模式开启
         private bool autoStoryPos = false; // TODO：自动调整图文区贴靠位置（需检测图像人脸位置）
-        private Go go = new Go(); // 加载参数
+        private Go go = new Go(null); // 加载参数
 
         private DispatcherTimer resizeTimer1;
         private DispatcherTimer resizeTimer2;
         private DispatcherTimer pageTimer;
-        private PageAction pageTimerAction = PageAction.Yesterday;
+        private PageAction pageTimerAction = PageAction.Focus;
         private Meta markTimerMeta = null;
         private string markTimerAction = null;
         private Exception exception;
@@ -64,10 +59,7 @@ namespace Timeline {
         private const string BG_TASK_NAME = "PushTask";
         private const string BG_TASK_NAME_TIMER = "PushTaskTimer";
         private enum PageAction {
-            Focus, // LoadFocusAsync
-            Yesterday, // LoadYesterdayAsync
-            Tomorrow, // LoadTomorrowAsync
-            Target // LoadTargetAsync
+            Focus, Yesterday, Tomorrow
         }
         private enum LoadStatus {
             Empty, Error, NoInternet
@@ -103,7 +95,7 @@ namespace Timeline {
             pageTimer.Tick += (sender2, e2) => {
                 pageTimer.Stop();
                 ctsLoad = new CancellationTokenSource();
-                _ = LoadDatAsync(ctsLoad.Token, go, pageTimerAction);
+                _ = LoadDataAsync(ctsLoad.Token, go, pageTimerAction);
             };
 
             // 前者会在应用启动时触发多次，后者仅一次
@@ -145,7 +137,7 @@ namespace Timeline {
             // 确保推送服务一直运行
             await RegServiceAsync();
             // 开始加载数据
-            await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
+            await LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
         }
 
         private async Task CheckLaunchAsync() {
@@ -159,7 +151,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
+                        await LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
                 return;
             }
@@ -199,98 +191,40 @@ namespace Timeline {
             }
         }
 
-        //private async Task LoadFocusAsync(CancellationToken token) {
-        //    await FileUtil.WriteDosage(ini.Provider);
-        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    meta = await provider.Focus();
-        //    LogUtil.D("LoadFocusAsync() " + meta);
-        //    if (meta == null) {
-        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-        //        return;
-        //    }
-
-        //    ShowText(meta);
-        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-        //        await ShowImg(meta, token);
-        //    }
-        //}
-
-        //private async Task LoadYesterdayAsync(CancellationToken token) {
-        //    await FileUtil.WriteDosage(ini.Provider);
-        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    meta = await provider.Yesterday();
-        //    LogUtil.D("LoadYesterdayAsync() " + meta);
-        //    if (meta == null) {
-        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-        //        return;
-        //    }
-        //    ShowText(meta);
-        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-        //    if (token.IsCancellationRequested) {
-        //        LogUtil.W("LoadYesterdayAsync() IsCancellationRequested " + metaCache.Id);
-        //        return;
-        //    }
-        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-        //        await ShowImg(meta, token);
-        //    }
-        //}
-
-        //private async Task LoadTomorrowAsync(CancellationToken token) {
-        //    //await FileUtil.WriteDosage(ini.Provider);
-        //    bool res = await provider.LoadData(token, ini.GetIni(), loadCmd);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    meta = provider.Tomorrow();
-        //    LogUtil.D("LoadTomorrowAsync() " + meta);
-        //    if (meta == null) {
-        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-        //        return;
-        //    }
-        //    ShowText(meta);
-        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-        //        await ShowImg(meta, token);
-        //    }
-        //}
-
-        private async Task LoadDatAsync(CancellationToken token, Go go, PageAction action) {
+        private async Task LoadDataAsync(CancellationToken token, Go go, PageAction action) {
             await FileUtil.WriteDosage();
-            bool res = false;
+            bool res = true;
             if (NetworkInterface.GetIsNetworkAvailable()) { // 预加载
                 if (action == PageAction.Focus) {
-                    res = await provider.LoadData(token, ini.GetIni(), go);
-                } else if (action == PageAction.Yesterday) {
-                    if (provider.GetIndexFocus() + 2 >= provider.GetCount()) {
+                    if (go.Index > 0) {
+                        if (go.Index >= provider.GetCount() - 1) { // 追加图集
+                            res = await provider.LoadData(token, ini.GetIni(), go);
+                        }
+                    } else { // 重刷图集
+                        provider.ClearMetas();
                         res = await provider.LoadData(token, ini.GetIni(), go);
                     }
-                } else {
-                    // 略
+                } else if (action == PageAction.Yesterday) {
+                    if (provider.GetCountNext(meta) < 2) { // 追加图集
+                        res = await provider.LoadData(token, ini.GetIni(), go);
+                    }
+                } else if (action == PageAction.Tomorrow) {
+                    // 不加载
                 }
             }
             if (token.IsCancellationRequested) {
                 return;
             }
             if (action == PageAction.Focus) {
-                meta = provider.Focus();
+                meta = provider.GetMeta(go.Index - 1);
             } else if (action == PageAction.Yesterday) {
-                meta = provider.Yesterday();
+                meta = provider.GetNextMeta(meta);
             } else if (action == PageAction.Tomorrow) {
-                meta = provider.Tomorrow();
+                meta = provider.GetPrevMeta(meta);
             } else {
                 meta = null;
             }
-            LogUtil.D("LoadTargetAsync() " + meta);
+            LogUtil.D("LoadDataAsync() " + meta);
             if (meta == null) {
                 StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
                 return;
@@ -304,50 +238,6 @@ namespace Timeline {
                 await ShowImg(meta, token);
             }
         }
-
-        //private async Task LoadTargetAsync(DateTime date, CancellationToken token) {
-        //    await FileUtil.WriteDosage();
-        //    bool res = await provider.LoadData(token, ini.GetIni(), 0, date);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    meta = provider.Target(date);
-        //    LogUtil.D("LoadTargetAsync() " + meta);
-        //    if (meta == null) {
-        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-        //        return;
-        //    }
-        //    ShowText(meta);
-        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-        //        await ShowImg(meta, token);
-        //    }
-        //}
-
-        //private async Task LoadTargetAsync(int index, CancellationToken token) {
-        //    await FileUtil.WriteDosage();
-        //    bool res = await provider.LoadData(token, ini.GetIni(), index + 1);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    meta = provider.Index(index);
-        //    LogUtil.D("LoadTargetAsync() " + meta);
-        //    if (meta == null) {
-        //        StatusError(res ? LoadStatus.Empty : (NetworkInterface.GetIsNetworkAvailable() ? LoadStatus.Error : LoadStatus.NoInternet));
-        //        return;
-        //    }
-        //    ShowText(meta);
-        //    Meta metaCache = await provider.CacheAsync(meta, autoStoryPos, token);
-        //    if (token.IsCancellationRequested) {
-        //        return;
-        //    }
-        //    if (!token.IsCancellationRequested && metaCache != null && metaCache.Id.Equals(meta.Id)) {
-        //        await ShowImg(meta, token);
-        //    }
-        //}
 
         private async Task Refresh(bool reloadIni) {
             if (reloadIni) {
@@ -363,17 +253,17 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
+                        await LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
             } else {
                 ShowToastI(string.Format(resLoader.GetString("MsgRefresh"), resLoader.GetString("Provider_" + provider.Id)));
             }
+            go = new Go(null);
 
-            go = new Go();
             ctsLoad.Cancel();
             StatusLoading();
             ctsLoad = new CancellationTokenSource();
-            await LoadDatAsync(ctsLoad.Token, go, PageAction.Focus);
+            await LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
         }
 
         private void InitProvider() {
@@ -516,7 +406,7 @@ namespace Timeline {
             int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
             bi.DecodePixelWidth = resize[0];
             bi.DecodePixelHeight = resize[1];
-            Debug.WriteLine("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
+            LogUtil.D("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
                 Math.Round(meta.Dimen.Width), Math.Round(meta.Dimen.Height),
                 Math.Round(ViewMain.ActualWidth), Math.Round(ViewMain.ActualHeight), resize[0], resize[1]);
         }
@@ -527,9 +417,6 @@ namespace Timeline {
             // 调整顶部信息条，与图文块同侧
             RelativePanel.SetAlignLeftWithPanel(Info, !right);
             RelativePanel.SetAlignRightWithPanel(Info, right);
-            // 调整底部管理员参数浮窗至对侧
-            RelativePanel.SetAlignLeftWithPanel(AnchorAdmin, right);
-            RelativePanel.SetAlignRightWithPanel(AnchorAdmin, !right);
             // 调整底部跳转浮窗至对侧
             RelativePanel.SetAlignLeftWithPanel(AnchorGo, right);
             RelativePanel.SetAlignRightWithPanel(AnchorGo, !right);
@@ -604,7 +491,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
+                        _ = LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
                     break;
                 case LoadStatus.Error:
@@ -613,7 +500,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
+                        _ = LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
                     break;
                 case LoadStatus.NoInternet:
@@ -621,7 +508,7 @@ namespace Timeline {
                         ctsLoad.Cancel();
                         StatusLoading();
                         ctsLoad = new CancellationTokenSource();
-                        _ = LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
+                        _ = LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
                     });
                     break;
             }
@@ -787,26 +674,13 @@ namespace Timeline {
                 return;
             }
             HideFlyouts();
-            BoxGo.PlaceholderText = string.Format(resLoader.GetString("CurIndex"),
-                provider.GetIndexFocus() + 1, provider.GetCount());
+            BoxGo.PlaceholderText = meta != null
+                ? Go.Generate(provider.GetIndex(meta) + 1, meta.No, meta.Date, meta.Score) : "";
+            //BoxGo.SelectAll();
             BoxGo.Text = "";
             FlyoutGo.Placement = RelativePanel.GetAlignRightWithPanel(AnchorGo)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorGo);
-        }
-
-        private void ShowFlyoutAdmin() {
-            if (FlyoutAdmin.IsOpen) {
-                FlyoutAdmin.Hide();
-                return;
-            }
-            HideFlyouts();
-            BoxAdmin.PlaceholderText = string.Join(", ", BaseIni.ADMIN.GetRange(1, BaseIni.ADMIN.Count - 1));
-            BoxAdmin.Text = string.IsNullOrEmpty(ini.GetIni().Admin) ? BaseIni.ADMIN[1] : ini.GetIni().Admin;
-            BoxAdmin.SelectAll();
-            FlyoutAdmin.Placement = RelativePanel.GetAlignRightWithPanel(AnchorAdmin)
-                ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
-            FlyoutBase.ShowAttachedFlyout(AnchorAdmin);
         }
 
         private async Task ShowFlyoutMarkCate() {
@@ -900,9 +774,6 @@ namespace Timeline {
             CloseToast();
             if (FlyoutGo.IsOpen) {
                 FlyoutGo.Hide();
-            }
-            if (FlyoutAdmin.IsOpen) {
-                FlyoutAdmin.Hide();
             }
             if (FlyoutMarkCate.IsOpen) {
                 FlyoutMarkCate.Hide();
@@ -1271,26 +1142,40 @@ namespace Timeline {
             args.Handled = true;
         }
 
-        private async void BoxAdmin_KeyDown(object sender, KeyRoutedEventArgs e) {
-            if (e.Key != VirtualKey.Enter) {
-                return;
-            }
-            FlyoutAdmin.Hide();
-            ini.GetIni().Admin = BoxAdmin.Text.ToString();
-            await Refresh(false);
-        }
-
         private async void BoxGo_KeyDown(object sender, KeyRoutedEventArgs e) {
             if (e.Key != VirtualKey.Enter) {
                 return;
             }
             FlyoutGo.Hide();
-            Go go = Go.Parse(BoxGo.Text.Trim());
+            go = Go.Parse(BoxGo.Text.Trim());
             LogUtil.I("BoxGo_KeyDown() " + go);
+            pageTimerAction = PageAction.Focus;
             ctsLoad.Cancel();
             StatusLoading();
             ctsLoad = new CancellationTokenSource();
-            await LoadDatAsync(ctsLoad.Token, go, PageAction.Target);
+            await LoadDataAsync(ctsLoad.Token, go, pageTimerAction);
+        }
+
+        private void BoxGo_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args) {
+            sender.Tag = sender.Text;
+        }
+
+        private void BoxGo_TextChanged(object sender, TextChangedEventArgs e) {
+            if (BoxGo.Tag == null || BoxGo.Text.Length <= BoxGo.Tag.ToString().Length) {
+                return;
+            }
+            // 输入引号时补全引号
+            if (BoxGo.Text.EndsWith("\"") && !BoxGo.Tag.ToString().EndsWith("\"")) {
+                BoxGo.Text += "\"";
+                BoxGo.SelectionStart = BoxGo.Text.Length - 1;
+            } else if (BoxGo.Text.EndsWith("'") && !BoxGo.Tag.ToString().EndsWith("'")) {
+                BoxGo.Text += "'";
+                BoxGo.SelectionStart = BoxGo.Text.Length - 1;
+            }
+        }
+
+        private async void LinkGoDesc_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
+            await FileUtil.LaunchFileAsync(await FileUtil.GetDocGoFile());
         }
 
         private void FlyoutMenu_Opened(object sender, object e) {
@@ -1372,7 +1257,8 @@ namespace Timeline {
             CloseToast();
             switch (sender.Key) {
                 case VirtualKey.F1: // F1
-                    await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("LinkOpenSource/NavigateUri")));
+                    //await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("LinkOpenSource/NavigateUri")));
+                    await FileUtil.LaunchFileAsync(await FileUtil.GetDocShortcutFile());
                     break;
                 case VirtualKey.F3: // F3
                 case VirtualKey.F: // Ctrl + F
@@ -1435,9 +1321,6 @@ namespace Timeline {
                 case VirtualKey.O: // Ctrl + O
                     await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                         CreationCollisionOption.OpenIfExists));
-                    break;
-                case VirtualKey.P: // Ctrl + P
-                    ShowFlyoutAdmin();
                     break;
                 case VirtualKey.S: // Ctrl + S
                 case VirtualKey.D: // Ctrl + D

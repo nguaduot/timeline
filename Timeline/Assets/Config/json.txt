@@ -1,4 +1,4 @@
-﻿{
+{
   "app": {
     "r18": false,
     "provider": "bing",
@@ -10,146 +10,146 @@
     "cache": 600
   },
   "provider": {
-	"local": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "folder": "",
-	  "depth": 0,
-	  "appetite": 20
-	},
-	"bing": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "lang": ""
-	},
-	"nasa": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "date",
-	  "mirror": "bjp"
-	},
-	"oneplus": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "date"
-	},
-	"timeline": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "date",
-	  "cate": "",
-	  "unauthorized": false
-	},
-	"one": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "date"
-	},
-	"himawari8": {
-	  "desktopperiod": 1,
-	  "lockperiod": 2,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "offset": 0.5,
-	  "ratio": 0.5
-	},
-	"ymyouli": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"qingbz": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"wallhaven": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"wallhere": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"wallpaperup": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"toopic": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"infinity": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random"
-	},
-	"obzhi": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	},
-	"glutton": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "album": "journal",
-	  "order": "date"
-	},
-	"lsp": {
-	  "desktopperiod": 24,
-	  "lockperiod": 24,
-	  "toastperiod": 24,
-	  "tileperiod": 2,
-	  "order": "random",
-	  "cate": ""
-	}
+    "local": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "folder": "",
+      "depth": 0,
+      "appetite": 20
+    },
+    "bing": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "lang": ""
+    },
+    "nasa": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date",
+      "mirror": "bjp"
+    },
+    "timeline": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date",
+      "cate": "",
+      "unauthorized": false
+    },
+    "one": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
+    "himawari8": {
+      "desktopperiod": 1,
+      "lockperiod": 2,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "offset": 0.5,
+      "ratio": 0.5
+    },
+    "ymyouli": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "qingbz": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "wallhaven": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "wallhere": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "wallpaperup": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "toopic": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "infinity": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random"
+    },
+    "glutton": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "album": "journal",
+      "order": "date"
+    },
+    "lsp": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "oneplus": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
+    "obzhi": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    }
   },
   "about": {
-    "version": "7.2",
-	"doc": "https://gitee.com/nguaduot/timeline",
-	"download": "https://www.microsoft.com/store/apps/9N7VHQ989BB7",
-	"contact": "nguaduot@163.com"
+    "version": "7.4",
+    "doc": "https://gitee.com/nguaduot/timeline",
+    "download": "https://www.microsoft.com/store/apps/9N7VHQ989BB7",
+    "contact": "nguaduot@163.com"
   }
 }

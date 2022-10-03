@@ -549,9 +549,6 @@
   <data name="ActionExit" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="CurIndex" xml:space="preserve">
-    <value>i: {0}, [1, {1}]</value>
-  </data>
   <data name="MenuMark404.Text" xml:space="preserve">
     <value>404</value>
   </data>
@@ -789,9 +786,6 @@
   <data name="TextWallpaperupCate.Text" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="BoxAdmin.Header" xml:space="preserve">
-    <value>Admin command</value>
-  </data>
   <data name="SettingsBbsDesc.Text" xml:space="preserve">
     <value>Messages from the developer</value>
   </data>
@@ -833,9 +827,6 @@
   </data>
   <data name="MsgCopiedUrl" xml:space="preserve">
     <value>URL copied.</value>
-  </data>
-  <data name="LinkGoDesc.NavigateUri" xml:space="preserve">
-    <value>https://gitee.com/nguaduot/timeline/wikis/%E8%B7%B3%E8%BD%AC</value>
   </data>
   <data name="OrderDate.Content" xml:space="preserve">
     <value>Date</value>

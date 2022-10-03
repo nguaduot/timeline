@@ -123,6 +123,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Beans\BingApi.cs" />
+    <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\NasaApiItem.cs" />
     <Compile Include="Beans\OneplusApi.cs" />
     <Compile Include="Beans\StatsApiReq.cs" />

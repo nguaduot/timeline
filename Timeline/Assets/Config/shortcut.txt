@@ -1,9 +1,13 @@
-﻿快捷键
+拾光 / Timeline v7.4
+Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
+Gitee：https://gitee.com/nguaduot/timeline
+E-mail：nguaduot@163.com
 
-1. for 用户
+文档 - 快捷键
+
+1. 基本
 
 + 菜单：鼠标右键 / 触屏长按图片
-+ 设置：F10
 + 回顾：向左键 / 向上键 / 鼠标滚轮上滚 / 触屏左滑 / 触摸板双指左滑 / 菜单“回顾”
 + 预览：向右键 / 向下键 / 鼠标滚轮下滚 / 触屏右滑 / 触摸板双指右滑
 + 切换全屏/窗口：F11 / Enter / Esc / 双击鼠标左键
@@ -11,16 +15,26 @@
 + 用作桌面背景：Ctrl + B
 + 用作锁屏背景：Ctrl + L
 + 添加收藏：Ctrl + D / Ctrl + S
-+ 复制图片：Ctrl + C
 + 刷新：F5 / Ctrl + R
+
+2. 进阶
+
++ 复制图片：Ctrl + C
++ 复制JSON：Ctrl + Shift + C
++ 复制URL：Ctrl + Alt + C
 + 我的收藏：Ctrl + O
 + 切换下一个图源：Ctrl + Tab
 + 切换上一个图源：Shift + Ctrl + Tab
++ 跳转：F3 / Ctrl + F / Ctrl + G
 + 关闭应用：Ctrl + W
 + 优化窗口尺寸：F8
-+ 跳转开源页面：F1
++ 快捷键文档：F1
++ 打开配置文件：Ctrl + I
++ 打开日志位置：F12
++ 检查缩略图：Ctrl + 0
++ 设置：F10
 
-2. for 管理员
+3. 管理员
 
 + 标记“不喜欢”：Backspace / Delete / Ctrl + 1
 + 标记“无法显示”：Ctrl + 2
@@ -29,11 +43,4 @@
 + 标记“有色气”：5 / Ctrl + 5
 + 标记“已审查”：Ctrl + 6
 + 标记“周选集”：Ctrl + 7
-+ 复制JSON：Ctrl + Shift + C
-+ 复制URL：Ctrl + Alt + C
-+ 跳转：F3 / Ctrl + F / Ctrl + G
 + 标记分类：0
-+ 检查缩略图：Ctrl + 0
-+ 打开配置文件：Ctrl + I
-+ 打开日志位置：F12
-+ 配置管理员参数：Ctrl + P

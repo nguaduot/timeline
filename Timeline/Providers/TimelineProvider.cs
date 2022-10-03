@@ -11,15 +11,12 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class TimelineProvider : BaseProvider {
-        // 下一页数据索引（从今日开始）（用于按需加载）
-        //private DateTime nextPage = DateTime.UtcNow.AddHours(8);
-
         // 自建图源
         // https://github.com/nguaduot/TimelineApi
-        private const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper" +
-            "&order={0}&cate={1}" +
-            "&tag={2}&no={3}&date={4}&score={5}" +
-            "&unauthorized={6}&marked={7}";
+        private const string URL_API = "https://api.nguaduot.cn/timeline/v2" +
+            "?client=timelinewallpaper&device={0}" +
+            "&order={1}&cate={2}&unauthorized={3}" +
+            "&tag={4}&no={5}&date={6}&score={7}&admin={8}";
 
         private Meta ParseBean(TimelineApiData bean) {
             Meta meta = new Meta {
@@ -31,6 +28,7 @@ namespace Timeline.Providers {
                 Cate = bean.CateName,
                 Story = bean.Story?.Trim(),
                 Src = bean.SrcUrl,
+                Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (bean.Unauthorized != 0) {
@@ -54,12 +52,12 @@ namespace Timeline.Providers {
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
-            date = go.Date < date ? go.Date : date;
+            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
             float score = GetMinScore();
             score = go.Score < score ? go.Score : score;
-            string urlApi = string.Format(URL_API, bi.Order, bi.Cate,
-                go.Tag, no, date, score,
-                ini.Unauthorized, "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
+            string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
+                bi.Order, bi.Cate, ini.Unauthorized,
+                go.Tag, no, date, score, go.Admin);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

@@ -102,7 +102,6 @@ namespace Timeline.Utils {
         private readonly List<string> tags = new List<string>();
         private string order;
         private string cate = ""; // 非null，""为全部
-        private string admin = ""; // 管理员用途，非null，""为普通用户内容
         private int desktopPeriod = 24;
         private int lockPeriod = 24;
         private int toastPeriod = 24;
@@ -147,11 +146,6 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public string Admin {
-            set => admin = value ?? "";
-            get => admin;
-        }
-
         public int DesktopPeriod {
             set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
             get => desktopPeriod;
@@ -179,12 +173,15 @@ namespace Timeline.Utils {
 
     public class LocalIni : BaseIni {
         public const string ID = "local";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
         private int appetite = 20;
         private string folder = ""; // 非null
         private int depth = 0;
 
         public LocalIni() {
             Id = ID;
+            Orders = ORDERS;
+            Order = "random";
         }
 
         public int Appetite {

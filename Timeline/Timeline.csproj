@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Config\config.txt" />
+    <Content Include="Assets\Config\go.txt" />
     <Content Include="Assets\Config\json.txt" />
     <Content Include="Assets\Config\shortcut.txt" />
     <Content Include="Assets\Icons\LargeTile.scale-100.png" />

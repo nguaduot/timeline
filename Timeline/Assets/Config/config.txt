@@ -1,474 +1,474 @@
-; Ê°¹â / Timeline v7.2
-; Microsoft Store£ºhttps://www.microsoft.com/store/apps/9N7VHQ989BB7
-; Gitee£ºhttps://gitee.com/nguaduot/timeline
-; nguaduot@163.com
+; æ‹¾å…‰ / Timeline v7.4
+; Microsoft Storeï¼šhttps://www.microsoft.com/store/apps/9N7VHQ989BB7
+; Giteeï¼šhttps://gitee.com/nguaduot/timeline
+; E-mailï¼šnguaduot@163.com
 
 [app]
 
 r18=0
-; r18={n}  R18ÄÚÈİ£º0»ò1£¬ÖÃÎª1¿ÉÆôÓÃÍ¼Ô´¡°LSP¡±£¨Ä¬ÈÏÎª0£¬²»ÆôÓÃ£©
+; r18={n}  R18å†…å®¹ï¼š0æˆ–1ï¼Œç½®ä¸º1å¯å¯ç”¨å›¾æºâ€œLSPâ€ï¼ˆé»˜è®¤ä¸º0ï¼Œä¸å¯ç”¨ï¼‰
 
 provider=bing
-; provider=local        Í¼Ô´£º±¾µØÍ¼¿â - ÎÒµÄ¾«Ñ¡
-; provider=bing         Í¼Ô´£ºMicrosoft Bing - Ã¿Ìì·¢ÏÖÒ»¸öĞÂµØ·½ https://cn.bing.com
-; provider=nasa         Í¼Ô´£ºNASA - Ã¿ÈÕÌìÎÄÒ»Í¼ https://apod.nasa.gov/apod
-; provider=oneplus      Í¼Ô´£ºOnePlus - Shot on OnePlus https://photos.oneplus.com
-; provider=timeline     Í¼Ô´£ºÊ°¹â - Ê±¹âÈç¸è£¬ËêÔÂÈçÊ« https://api.nguaduot.cn/timeline
-; provider=one          Í¼Ô´£ºONE ¡¤ Ò»¸ö - ¸´ÔÓÊÀ½çÀï£¬Ò»¸ö¾Í¹»ÁË http://m.wufazhuce.com/one
-; provider=himawari8    Í¼Ô´£ºÏòÈÕ¿û8ºÅ - ÊµÊ±µØÇò https://himawari.asia
-; provider=ymyouli      Í¼Ô´£ºÒ»ÃÎÓÄÀè - 8KÓÅÖÊ±ÚÖ½×ÊÔ´ https://www.ymyouli.com
-; provider=qingbz       Í¼Ô´£ºÇá±ÚÖ½ - 4K±ÚÖ½·ÖÏíÕ¾ https://bz.qinggongju.com
-; provider=wallhaven    Í¼Ô´£ºwallhaven - The best wallpapers on the Net https://wallhaven.cc
-; provider=wallhere     Í¼Ô´£ºWallHere - One of the best hd wallpapers site https://wallhere.com
-; provider=wallpaperup  Í¼Ô´£ºWallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
-; provider=toopic       Í¼Ô´£º±ÚÖ½Éç - ×ÀÃæ¸ßÇå±ÚÖ½ https://www.toopic.cn
-; provider=infinity     Í¼Ô´£ºInfinity - ¾«Ñ¡¸ßÇå±ÚÖ½ http://cn.infinitynewtab.com
-; provider=obzhi        Í¼Ô´£ºÎÚÔÆ±ÚÖ½ - ¸ßÇå±ÚÖ½Õ¾ https://www.obzhi.com
-; provider=glutton      Í¼Ô´£»Ì°Ê³¹í - ÷Ò÷ÑÊ¢Ñç
-; provider=lsp          Í¼Ô´£ºLSP - ²»¿ÉÃèÊö
+; provider=local        å›¾æºï¼šæœ¬åœ°å›¾åº“ - æˆ‘çš„ç²¾é€‰
+; provider=bing         å›¾æºï¼šMicrosoft Bing - æ¯å¤©å‘ç°ä¸€ä¸ªæ–°åœ°æ–¹ https://cn.bing.com
+; provider=nasa         å›¾æºï¼šNASA - æ¯æ—¥å¤©æ–‡ä¸€å›¾ https://apod.nasa.gov/apod
+; provider=timeline     å›¾æºï¼šæ‹¾å…‰ - æ—¶å…‰å¦‚æ­Œï¼Œå²æœˆå¦‚è¯— https://api.nguaduot.cn/timeline
+; provider=one          å›¾æºï¼šONE Â· ä¸€ä¸ª - å¤æ‚ä¸–ç•Œé‡Œï¼Œä¸€ä¸ªå°±å¤Ÿäº† http://m.wufazhuce.com/one
+; provider=himawari8    å›¾æºï¼šå‘æ—¥è‘µ8å· - å®æ—¶åœ°çƒ https://himawari.asia
+; provider=ymyouli      å›¾æºï¼šä¸€æ¢¦å¹½é» - 8Kä¼˜è´¨å£çº¸èµ„æº https://www.ymyouli.com
+; provider=qingbz       å›¾æºï¼šè½»å£çº¸ - 4Kå£çº¸åˆ†äº«ç«™ https://bz.qinggongju.com
+; provider=wallhaven    å›¾æºï¼šwallhaven - The best wallpapers on the Net https://wallhaven.cc
+; provider=wallhere     å›¾æºï¼šWallHere - One of the best hd wallpapers site https://wallhere.com
+; provider=wallpaperup  å›¾æºï¼šWallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
+; provider=toopic       å›¾æºï¼šå£çº¸ç¤¾ - æ¡Œé¢é«˜æ¸…å£çº¸ https://www.toopic.cn
+; provider=infinity     å›¾æºï¼šInfinity - ç²¾é€‰é«˜æ¸…å£çº¸ http://cn.infinitynewtab.com
+; provider=glutton      å›¾æºï¼›è´ªé£Ÿé¬¼ - é¥•é¤®ç››å®´
+; provider=lsp          å›¾æºï¼šLSP - ä¸å¯æè¿°
+; provider=oneplus      å›¾æº(å¼ƒç”¨)ï¼šOnePlus - Shot on OnePlus https://photos.oneplus.com
+; provider=obzhi        å›¾æº(å¼ƒç”¨)ï¼šä¹Œäº‘å£çº¸ - é«˜æ¸…å£çº¸ç«™ https://www.obzhi.com
 
 desktopprovider=
-; desktopprovider={provider}  ×ÀÃæ±³¾°ÍÆËÍÍ¼Ô´£º²ÎÊı²Î¿¼ provider£¨ÖÃ¿ÕÔò¹Ø±ÕÍÆËÍ£©
+; desktopprovider={provider}  æ¡Œé¢èƒŒæ™¯æ¨é€å›¾æºï¼šå‚æ•°å‚è€ƒ providerï¼ˆç½®ç©ºåˆ™å…³é—­æ¨é€ï¼‰
 
 lockprovider=
-; lockprovider={provider}  ËøÆÁ±³¾°ÍÆËÍÍ¼Ô´£º²ÎÊı²Î¿¼ provider£¨ÖÃ¿ÕÔò¹Ø±ÕÍÆËÍ£©
+; lockprovider={provider}  é”å±èƒŒæ™¯æ¨é€å›¾æºï¼šå‚æ•°å‚è€ƒ providerï¼ˆç½®ç©ºåˆ™å…³é—­æ¨é€ï¼‰
 
 toastprovider=
-; toastprovider={provider}  Í¨ÖªÍÆËÍÍ¼Ô´£º²ÎÊı²Î¿¼ provider£¨ÖÃ¿ÕÔò¹Ø±ÕÍÆËÍ£©
+; toastprovider={provider}  é€šçŸ¥æ¨é€å›¾æºï¼šå‚æ•°å‚è€ƒ providerï¼ˆç½®ç©ºåˆ™å…³é—­æ¨é€ï¼‰
 
 tileprovider=
-; tileprovider={provider}  ´ÅÌùÍÆËÍÍ¼Ô´£º½öÏŞ Windows 10£¬²ÎÊı²Î¿¼ provider£¨ÖÃ¿ÕÔòÓëµ±Ç°Í¼Ô´Ò»ÖÂ£©
+; tileprovider={provider}  ç£è´´æ¨é€å›¾æºï¼šä»…é™ Windows 10ï¼Œå‚æ•°å‚è€ƒ providerï¼ˆç½®ç©ºåˆ™ä¸å½“å‰å›¾æºä¸€è‡´ï¼‰
 
 theme=
-; theme=       Ö÷Ìâ£º¸úËæÏµÍ³£¨Ä¬ÈÏ£©
-; theme=light  Ö÷Ìâ£ºÁÁÉ«
-; theme=dark   Ö÷Ìâ£º°µÉ«
+; theme=       ä¸»é¢˜ï¼šè·Ÿéšç³»ç»Ÿï¼ˆé»˜è®¤ï¼‰
+; theme=light  ä¸»é¢˜ï¼šäº®è‰²
+; theme=dark   ä¸»é¢˜ï¼šæš—è‰²
 
 cache=600
-; cache={n}  ±¾µØ»º´æãĞÖµ£ºÄ¬ÈÏ600ÕÅ£¬³¬¹ıãĞÖµ×Ô¶¯ÇåÀí
+; cache={n}  æœ¬åœ°ç¼“å­˜é˜ˆå€¼ï¼šé»˜è®¤600å¼ ï¼Œè¶…è¿‡é˜ˆå€¼è‡ªåŠ¨æ¸…ç†
 
 [local]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 folder=
-; folder=  Í¼¿âÂ·¾¶£ºÄ¬ÈÏÁô¿Õ£¨ÓëÊÕ²ØÎÄ¼ş¼ĞÏàÍ¬£©
+; folder=  å›¾åº“è·¯å¾„ï¼šé»˜è®¤ç•™ç©ºï¼ˆä¸æ”¶è—æ–‡ä»¶å¤¹ç›¸åŒï¼‰
 
 depth=0
-; depth={n}  Í¼¿âÉî¶È£º¶ÁÈ¡×ÓÎÄ¼ş¼Ğ²ãÊı£¬×î´ó2£¨Ä¬ÈÏÎª0£¬²»¶ÁÈ¡×ÓÎÄ¼ş¼Ğ£©
+; depth={n}  å›¾åº“æ·±åº¦ï¼šè¯»å–å­æ–‡ä»¶å¤¹å±‚æ•°ï¼Œæœ€å¤§2ï¼ˆé»˜è®¤ä¸º0ï¼Œä¸è¯»å–å­æ–‡ä»¶å¤¹ï¼‰
 
 appetite=20
-; appetite={n}  µ¼ÈëÁ¿£º´Ó¡°Ì°Ê³¹í¡±Í¼Ô´ÈÈ¶È¼¯µ¼ÈëÍ¼Æ¬Á¿£¨Ä¬ÈÏÎª20ÕÅ£©
+; appetite={n}  å¯¼å…¥é‡ï¼šä»â€œè´ªé£Ÿé¬¼â€å›¾æºçƒ­åº¦é›†å¯¼å…¥å›¾ç‰‡é‡ï¼ˆé»˜è®¤ä¸º20å¼ ï¼‰
 
 [bing]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lang=
-; lang=       ÓïÑÔ´úÂë£º×Ô¶¯Ê¶±ğ£¨Ä¬ÈÏ£©
-; lang=zh-cn  ÓïÑÔ´úÂë£ºÖĞÎÄ
-; lang=en-us  ÓïÑÔ´úÂë£ºÓ¢ÎÄ
-; lang=ja-jp  ÓïÑÔ´úÂë£ºÈÕÓï
-; lang=de-de  ÓïÑÔ´úÂë£ºµÂÓï
-; lang=fr-fr  ÓïÑÔ´úÂë£º·¨Óï
+; lang=       è¯­è¨€ä»£ç ï¼šè‡ªåŠ¨è¯†åˆ«ï¼ˆé»˜è®¤ï¼‰
+; lang=zh-cn  è¯­è¨€ä»£ç ï¼šä¸­æ–‡
+; lang=en-us  è¯­è¨€ä»£ç ï¼šè‹±æ–‡
+; lang=ja-jp  è¯­è¨€ä»£ç ï¼šæ—¥è¯­
+; lang=de-de  è¯­è¨€ä»£ç ï¼šå¾·è¯­
+; lang=fr-fr  è¯­è¨€ä»£ç ï¼šæ³•è¯­
 
 [nasa]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=date
-; order=date    ÅÅĞò£ºÊÕÂ¼£¨Ä¬ÈÏ£©
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ
+; order=date    æ’åºï¼šæ”¶å½•ï¼ˆé»˜è®¤ï¼‰
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜
 
 mirror=bjp
-; mirror=     ¾µÏñ£º¹Ù·½
-; mirror=bjp  ¾µÏñ£º±±¾©ÌìÎÄ¹İ£¨Ä¬ÈÏ£© http://www.bjp.org.cn/mryt
-
-[oneplus]
-
-desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-order=date
-; order=date   ÅÅĞò£ºÊÕÂ¼£¨Ä¬ÈÏ£©
-; order=score  ÅÅĞò£ºÏ²»¶
-; order=view   ÅÅĞò£ºä¯ÀÀ
+; mirror=     é•œåƒï¼šå®˜æ–¹
+; mirror=bjp  é•œåƒï¼šåŒ—äº¬å¤©æ–‡é¦†ï¼ˆé»˜è®¤ï¼‰ http://www.bjp.org.cn/mryt
 
 [timeline]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=date
-; order=date    ÅÅĞò£ºÈÕÆÚ£¨Ä¬ÈÏ£©
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ
+; order=date    æ’åºï¼šæ—¥æœŸï¼ˆé»˜è®¤ï¼‰
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜
 
 cate=
-; cate=           Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=landscape  Àà±ğ£º·ç¹âÉãÓ°
-; cate=culture    Àà±ğ£ºÈËÎÄÉãÓ°
-; cate=portrait   Àà±ğ£ºÈËÏñÉãÓ°
-; cate=still      Àà±ğ£º¾²ÎïÉãÓ°
-; cate=term       Àà±ğ£º½ÚÆøÉãÓ°
-; cate=painting   Àà±ğ£º»æ»­
+; cate=           ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=landscape  ç±»åˆ«ï¼šé£å…‰æ‘„å½±
+; cate=culture    ç±»åˆ«ï¼šäººæ–‡æ‘„å½±
+; cate=portrait   ç±»åˆ«ï¼šäººåƒæ‘„å½±
+; cate=still      ç±»åˆ«ï¼šé™ç‰©æ‘„å½±
+; cate=term       ç±»åˆ«ï¼šèŠ‚æ°”æ‘„å½±
+; cate=painting   ç±»åˆ«ï¼šç»˜ç”»
 
 unauthorized=0
-; unauthorized={n}  Î´ÊÚÈ¨ÄÚÈİ£º0»ò1£¨Ä¬ÈÏÎª0£¬½öÕ¹Ê¾ÒÑÊÚÈ¨ÄÚÈİ£©
+; unauthorized={n}  æœªæˆæƒå†…å®¹ï¼š0æˆ–1ï¼ˆé»˜è®¤ä¸º0ï¼Œä»…å±•ç¤ºå·²æˆæƒå†…å®¹ï¼‰
 
 [one]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=date
-; order=date    ÅÅĞò£ºÈÕÆÚ£¨Ä¬ÈÏ£©
-; order=random  ÅÅĞò£ºËæÔµ
+; order=date    æ’åºï¼šæ—¥æœŸï¼ˆé»˜è®¤ï¼‰
+; order=random  æ’åºï¼šéšç¼˜
 
 [himawari8]
 
 desktopperiod=1
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª1h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º1h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=2
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 offset=0.50
-; offset={n}  µØÇòÎ»ÖÃ£º0.01~1.00£¨Ä¬ÈÏÎª0.50£¬¾ÓÖĞ£¬Ğ¡ÓÚ0.50Æ«×ó£¬´óÓÚ0.50Æ«ÓÒ£©
+; offset={n}  åœ°çƒä½ç½®ï¼š0.01~1.00ï¼ˆé»˜è®¤ä¸º0.50ï¼Œå±…ä¸­ï¼Œå°äº0.50åå·¦ï¼Œå¤§äº0.50åå³ï¼‰
 
 ratio=0.50
-; ratio={n}  µØÇò´óĞ¡£º0.10~1.00£¨Ä¬ÈÏÎª0.50£¬°ëÆÁ´óĞ¡£©
+; ratio={n}  åœ°çƒå¤§å°ï¼š0.10~1.00ï¼ˆé»˜è®¤ä¸º0.50ï¼ŒåŠå±å¤§å°ï¼‰
 
 [ymyouli]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=              Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acgcharacter  Àà±ğ£º¶¯ÂşÈËÎï
-; cate=acgscene      Àà±ğ£º¶¯Âş³¡¾°
-; cate=sky           Àà±ğ£ºÈÕÄºÔÆÌì
-; cate=war           Àà±ğ£ºÕ½³¡Õ½Õù
-; cate=sword         Àà±ğ£ºµ¶¹â½£Ó°
-; cate=artistry      Àà±ğ£ºÒâ¾³
-; cate=car           Àà±ğ£º»ú³µ
-; cate=portrait      Àà±ğ£ºÈËÏñ
-; cate=animal        Àà±ğ£º¶¯Îï
-; cate=delicacy      Àà±ğ£ºÃÀÊ³Êß¹û
-; cate=nature        Àà±ğ£ºÉ½Ë®»¨²İ
+; cate=              ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acgcharacter  ç±»åˆ«ï¼šåŠ¨æ¼«äººç‰©
+; cate=acgscene      ç±»åˆ«ï¼šåŠ¨æ¼«åœºæ™¯
+; cate=sky           ç±»åˆ«ï¼šæ—¥æš®äº‘å¤©
+; cate=war           ç±»åˆ«ï¼šæˆ˜åœºæˆ˜äº‰
+; cate=sword         ç±»åˆ«ï¼šåˆ€å…‰å‰‘å½±
+; cate=artistry      ç±»åˆ«ï¼šæ„å¢ƒ
+; cate=car           ç±»åˆ«ï¼šæœºè½¦
+; cate=portrait      ç±»åˆ«ï¼šäººåƒ
+; cate=animal        ç±»åˆ«ï¼šåŠ¨ç‰©
+; cate=delicacy      ç±»åˆ«ï¼šç¾é£Ÿè”¬æœ
+; cate=nature        ç±»åˆ«ï¼šå±±æ°´èŠ±è‰
 
 [qingbz]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=          Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=portrait  Àà±ğ£ºÈËÎïÇ½
-; cate=star      Àà±ğ£ºÃ÷ĞÇÇø
-; cate=nature    Àà±ğ£º×ÔÈ»½ç
-; cate=acg       Àà±ğ£º¶ş´ÎÔª
-; cate=color     Àà±ğ£ºÑÕÉ«Ïµ
-; cate=car       Àà±ğ£ºÆû³µÃÔ
-; cate=game      Àà±ğ£ºÓÎÏ·ÃÔ
-; cate=animal    Àà±ğ£º¶¯ÎïÃÈ³è
+; cate=          ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=portrait  ç±»åˆ«ï¼šäººç‰©å¢™
+; cate=star      ç±»åˆ«ï¼šæ˜æ˜ŸåŒº
+; cate=nature    ç±»åˆ«ï¼šè‡ªç„¶ç•Œ
+; cate=acg       ç±»åˆ«ï¼šäºŒæ¬¡å…ƒ
+; cate=color     ç±»åˆ«ï¼šé¢œè‰²ç³»
+; cate=car       ç±»åˆ«ï¼šæ±½è½¦è¿·
+; cate=game      ç±»åˆ«ï¼šæ¸¸æˆè¿·
+; cate=animal    ç±»åˆ«ï¼šåŠ¨ç‰©èŒå® 
 
 [wallhaven]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=            Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg         Àà±ğ£ºAnime
-; cate=photograph  Àà±ğ£ºGeneral
+; cate=            ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg         ç±»åˆ«ï¼šAnime
+; cate=photograph  ç±»åˆ«ï¼šGeneral
 
 [wallhere]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=           Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg        Àà±ğ£ºACG
-; cate=animal     Àà±ğ£º¶¯Îï
-; cate=art        Àà±ğ£º´´Òâ
-; cate=landscape  Àà±ğ£º·ç¹â
-; cate=portrait   Àà±ğ£ºÈËÏñ
-; cate=still      Àà±ğ£º¾²Îï
+; cate=           ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg        ç±»åˆ«ï¼šACG
+; cate=animal     ç±»åˆ«ï¼šåŠ¨ç‰©
+; cate=art        ç±»åˆ«ï¼šåˆ›æ„
+; cate=landscape  ç±»åˆ«ï¼šé£å…‰
+; cate=portrait   ç±»åˆ«ï¼šäººåƒ
+; cate=still      ç±»åˆ«ï¼šé™ç‰©
 
 [wallpaperup]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=           Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg        Àà±ğ£ºACG
-; cate=animal     Àà±ğ£º¶¯Îï
-; cate=art        Àà±ğ£º´´Òâ
-; cate=landscape  Àà±ğ£º·ç¹â
-; cate=portrait   Àà±ğ£ºÈËÏñ
-; cate=still      Àà±ğ£º¾²Îï
+; cate=           ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg        ç±»åˆ«ï¼šACG
+; cate=animal     ç±»åˆ«ï¼šåŠ¨ç‰©
+; cate=art        ç±»åˆ«ï¼šåˆ›æ„
+; cate=landscape  ç±»åˆ«ï¼šé£å…‰
+; cate=portrait   ç±»åˆ«ï¼šäººåƒ
+; cate=still      ç±»åˆ«ï¼šé™ç‰©
 
 [toopic]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=           Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg        Àà±ğ£ºACG
-; cate=animal     Àà±ğ£º¶¯Îï
-; cate=art        Àà±ğ£º´´Òâ
-; cate=landscape  Àà±ğ£º·ç¹â
-; cate=portrait   Àà±ğ£ºÈËÏñ
-; cate=still      Àà±ğ£º¾²Îï
-; cate=lol        Àà±ğ£ºLOL
+; cate=           ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg        ç±»åˆ«ï¼šACG
+; cate=animal     ç±»åˆ«ï¼šåŠ¨ç‰©
+; cate=art        ç±»åˆ«ï¼šåˆ›æ„
+; cate=landscape  ç±»åˆ«ï¼šé£å…‰
+; cate=portrait   ç±»åˆ«ï¼šäººåƒ
+; cate=still      ç±»åˆ«ï¼šé™ç‰©
+; cate=lol        ç±»åˆ«ï¼šLOL
 
 [infinity]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
-
-[obzhi]
-
-desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
-
-order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
-
-cate=
-; cate=          Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg       Àà±ğ£º¶¯Âş
-; cate=specific  Àà±ğ£ºÁíÀà
-; cate=concise   Àà±ğ£º¼òÔ¼
-; cate=nature    Àà±ğ£º·ç¾°
-; cate=portrait  Àà±ğ£ºÈËÎï
-; cate=game      Àà±ğ£ºÓÎÏ·
-; cate=animal    Àà±ğ£º¶¯Îï
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 [glutton]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 album=journal
-; album=journal  ¼¯£ºÖÜÑ¡¼¯£¨Ä¬ÈÏ£©
-; album=rank     ¼¯£ºÈÈ¶È¼¯
+; album=journal  é›†ï¼šå‘¨é€‰é›†ï¼ˆé»˜è®¤ï¼‰
+; album=rank     é›†ï¼šçƒ­åº¦é›†
 
 order=date
-; order=date    ÅÅĞò£ºÊÕÂ¼£¨Ä¬ÈÏ£¬ÈÈ¶È¼¯ÎŞ¸ÃÏî£©
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ
+; order=date    æ’åºï¼šæ”¶å½•ï¼ˆé»˜è®¤ï¼Œçƒ­åº¦é›†æ— è¯¥é¡¹ï¼‰
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜
 
 [lsp]
 
 desktopperiod=24
-; desktopperiod={n}  ×ÀÃæ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 lockperiod=24
-; lockperiod={n}  ËøÆÁ±³¾°ÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 toastperiod=24
-; lockperiod={n}  Í¨ÖªÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª24h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 tileperiod=2
-; lockperiod={n}  ´ÅÌùÍÆËÍÖÜÆÚ£º1~24£¨Ä¬ÈÏÎª2h/´Î£¬¿ªÆôÍÆËÍºóÉúĞ§£©
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
 
 order=random
-; order=date    ÅÅĞò£ºÊÕÂ¼
-; order=score   ÅÅĞò£ºÏ²»¶
-; order=random  ÅÅĞò£ºËæÔµ£¨Ä¬ÈÏ£©
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
 
 cate=
-; cate=            Àà±ğ£ºÈ«²¿£¨Ä¬ÈÏ£©
-; cate=acg         Àà±ğ£ºÖ½Æ¬
-; cate=photograph  Àà±ğ£ºÉãÓ°
+; cate=            ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg         ç±»åˆ«ï¼šçº¸ç‰‡
+; cate=photograph  ç±»åˆ«ï¼šæ‘„å½±
+
+[oneplus]
+
+desktopperiod=24
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+lockperiod=24
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+toastperiod=24
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+tileperiod=2
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+order=date
+; order=date   æ’åºï¼šæ”¶å½•ï¼ˆé»˜è®¤ï¼‰
+; order=score  æ’åºï¼šå–œæ¬¢
+; order=view   æ’åºï¼šæµè§ˆ
+
+[obzhi]
+
+desktopperiod=24
+; desktopperiod={n}  æ¡Œé¢èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+lockperiod=24
+; lockperiod={n}  é”å±èƒŒæ™¯æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+toastperiod=24
+; lockperiod={n}  é€šçŸ¥æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º24h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+tileperiod=2
+; lockperiod={n}  ç£è´´æ¨é€å‘¨æœŸï¼š1~24ï¼ˆé»˜è®¤ä¸º2h/æ¬¡ï¼Œå¼€å¯æ¨é€åç”Ÿæ•ˆï¼‰
+
+order=random
+; order=date    æ’åºï¼šæ”¶å½•
+; order=score   æ’åºï¼šå–œæ¬¢
+; order=random  æ’åºï¼šéšç¼˜ï¼ˆé»˜è®¤ï¼‰
+
+cate=
+; cate=          ç±»åˆ«ï¼šå…¨éƒ¨ï¼ˆé»˜è®¤ï¼‰
+; cate=acg       ç±»åˆ«ï¼šåŠ¨æ¼«
+; cate=specific  ç±»åˆ«ï¼šå¦ç±»
+; cate=concise   ç±»åˆ«ï¼šç®€çº¦
+; cate=nature    ç±»åˆ«ï¼šé£æ™¯
+; cate=portrait  ç±»åˆ«ï¼šäººç‰©
+; cate=game      ç±»åˆ«ï¼šæ¸¸æˆ
+; cate=animal    ç±»åˆ«ï¼šåŠ¨ç‰©

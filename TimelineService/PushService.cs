@@ -585,13 +585,15 @@ namespace TimelineService {
 
         private async Task<bool> LoadBingAsync(Action action) {
             const string URL_API_HOST = "https://global.bing.com";
+            const string URL_CND_HOST = "http://s.cn.bing.net";
             const string URL_API = URL_API_HOST + "/HPImageArchive.aspx?pid=hp&format=js&uhd=1&idx=0&n=1";
             LogUtil.I("LoadBingAsync() api url: " + URL_API);
+            bool cn = "CN".Equals(GlobalizationPreferences.HomeGeographicRegion);
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(URL_API);
             BingApi api = JsonConvert.DeserializeObject<BingApi>(jsonData);
             if (action == Action.Toast || action == Action.Tile) {
-                string urlThumb = string.Format("{0}{1}_400x240.jpg", URL_API_HOST, api.Images[0].UrlBase);
+                string urlThumb = string.Format("{0}{1}_400x240.jpg", cn ? URL_CND_HOST : URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBingAsync() thumb url: " + urlThumb);
                 if (action == Action.Toast) {
                     return ShowToast(urlThumb);
@@ -599,7 +601,7 @@ namespace TimelineService {
                     return SetTileBg(urlThumb);
                 }
             } else {
-                string urlUhd = string.Format("{0}{1}_UHD.jpg", URL_API_HOST, api.Images[0].UrlBase);
+                string urlUhd = string.Format("{0}{1}_UHD.jpg", cn ? URL_CND_HOST : URL_API_HOST, api.Images[0].UrlBase);
                 LogUtil.I("LoadBingAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
@@ -612,7 +614,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadNasaAsync(Action action) {
             NasaApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(NasaIni.GetId(), ini.Nasa.Order, ini.Nasa.Mirror);
+            string jsonData = await FileUtil.ReadProviderCache(NasaIni.GetId(), "date", "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
@@ -623,14 +625,13 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper&order={0}&mirror={1}";
-                string urlApi = string.Format(URL_API, ini.Nasa.Order, ini.Nasa.Mirror);
-                LogUtil.I("LoadNasaAsync() api url: " + urlApi);
+                const string URL_API = "https://api.nguaduot.cn/nasa/v2?client=timelinewallpaper&order=date";
+                LogUtil.I("LoadNasaAsync() api url: " + URL_API);
                 HttpClient client = new HttpClient();
-                jsonData = await client.GetStringAsync(urlApi);
+                jsonData = await client.GetStringAsync(URL_API);
                 NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(NasaIni.GetId(), ini.Nasa.Order, ini.Nasa.Mirror, jsonData);
+                await FileUtil.WriteProviderCache(NasaIni.GetId(), "date", "", jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadNasaAsync() thumb url: " + data.ThumbUrl);
@@ -650,45 +651,9 @@ namespace TimelineService {
             }
         }
 
-        private async Task<bool> LoadOneplusAsync(Action action) {
-            OneplusRequest request = new OneplusRequest {
-                PageSize = 1,
-                CurrentPage = 1,
-                SortMethod = "1" // 默认按：最新添加
-            };
-            string requestStr = JsonConvert.SerializeObject(request);
-            const string URL_API = "https://photos.oneplus.com/cn/shot/photo/schedule";
-            LogUtil.I("LoadOneplusAsync() api url: " + URL_API + " " + requestStr);
-            HttpClient client = new HttpClient();
-            HttpContent content = new StringContent(requestStr);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = await client.PostAsync(URL_API, content);
-            _ = response.EnsureSuccessStatusCode();
-            string jsonData = await response.Content.ReadAsStringAsync();
-            OneplusApi oneplusApi = JsonConvert.DeserializeObject<OneplusApi>(jsonData);
-            if (action == Action.Toast || action == Action.Tile) {
-                string urlThumb = oneplusApi.Items[0].PhotoUrl.Replace(".jpg", "_400_0.jpg");
-                LogUtil.I("LoadOneplusAsync() thumb url: " + urlThumb);
-                if (action == Action.Toast) {
-                    return ShowToast(urlThumb);
-                } else {
-                    return SetTileBg(urlThumb);
-                }
-            } else {
-                string urlUhd = oneplusApi.Items[0].PhotoUrl;
-                LogUtil.I("LoadOneplusAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
-                if (action == Action.Lock) {
-                    return await SetLockBgAsync(fileImg);
-                } else {
-                    return await SetDesktopBgAsync(fileImg);
-                }
-            }
-        }
-
         private async Task<bool> LoadTimelineAsync(Action action) {
             TimelineApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(TimelineIni.GetId(), "", "date");
+            string jsonData = await FileUtil.ReadProviderCache(TimelineIni.GetId(), "date", "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
@@ -698,12 +663,12 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&cate=&order=date";
+                const string URL_API = "https://api.nguaduot.cn/timeline/v2?client=timelinewallpaper&order=date&cate=";
                 LogUtil.I("LoadTimelineAsync() api url: " + URL_API);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(URL_API);
                 data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
-                await FileUtil.WriteProviderCache(TimelineIni.GetId(), "", "date", jsonData);
+                await FileUtil.WriteProviderCache(TimelineIni.GetId(), "date", "", jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadTimelineAsync() thumb url: " + data.ThumbUrl);
@@ -754,17 +719,20 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadHimawari8Async(Action action) {
-            const string URL_API = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/FULL_24h/latest.json?_=";
-            const string URL_IMG = "https://ncthmwrwbtst.cr.chiba-u.ac.jp/img/D531106/1d/550/{0}/{1}_0_0.png";
+            const string URL_API = "https://himawari8.nict.go.jp/img/D531106/latest.json?_=";
+            const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}_0_0.png";
             string urlApi = URL_API + DateUtil.CurrentTimeMillis();
             LogUtil.I("LoadHimawari8Async() api url: " + urlApi);
             HttpClient client = new HttpClient();
             string jsonData = await client.GetStringAsync(urlApi);
-            Match match = Regex.Match(jsonData, @"""date"": ?""(.+?)""");
-            DateTime time = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd HH:mm:ss",
-                new System.Globalization.CultureInfo("en-US"));
-            string urlUhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd"),
-                string.Format("{0}{1}000", time.ToString("HH"), time.Minute / 10));
+            //Match match = Regex.Match(jsonData, @"""date"": ?""(.+?)""");
+            //DateTime time = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd HH:mm:ss",
+            //    new System.Globalization.CultureInfo("en-US"));
+            Himawari8Api api = JsonConvert.DeserializeObject<Himawari8Api>(jsonData);
+            if (!DateTime.TryParse(api.Date, out DateTime time)) { // UTC时间
+                time = DateTime.UtcNow.AddMinutes(-25);
+            }
+            string urlUhd = string.Format(URL_IMG, time.ToString(@"yyyy\/MM\/dd\/HHmmss"));
             LogUtil.I("LoadHimawari8Async() img url: " + urlUhd);
             if (action == Action.Toast || action == Action.Tile) {
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
@@ -785,7 +753,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadYmyouliAsync(Action action) {
             YmyouliApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Cate, ini.Ymyouli.Order);
+            string jsonData = await FileUtil.ReadProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Order, ini.Ymyouli.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
@@ -796,14 +764,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/ymyouli/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Ymyouli.Cate, ini.Ymyouli.Order);
+                const string URL_API = "https://api.nguaduot.cn/ymyouli/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Ymyouli.Order, ini.Ymyouli.Cate);
                 LogUtil.I("LoadYmyouliAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Cate, ini.Ymyouli.Order, jsonData);
+                await FileUtil.WriteProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Order, ini.Ymyouli.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadYmyouliAsync() thumb url: " + data.ThumbUrl);
@@ -826,7 +794,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadQingbzAsync(Action action) {
             QingbzApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order);
+            string jsonData = await FileUtil.ReadProviderCache(QingbzIni.GetId(), ini.Qingbz.Order, ini.Qingbz.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
@@ -837,14 +805,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Qingbz.Cate, ini.Qingbz.Order);
+                const string URL_API = "https://api.nguaduot.cn/qingbz/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Qingbz.Order, ini.Qingbz.Cate);
                 LogUtil.I("LoadQingbzAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(QingbzIni.GetId(), ini.Qingbz.Cate, ini.Qingbz.Order, jsonData);
+                await FileUtil.WriteProviderCache(QingbzIni.GetId(), ini.Qingbz.Order, ini.Qingbz.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadQingbzAsync() thumb url: " + data.ThumbUrl);
@@ -866,7 +834,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadWallhavenAsync(Action action) {
             WallhavenApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order);
+            string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Order, ini.Wallhaven.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
@@ -877,14 +845,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Wallhaven.Cate, ini.Wallhaven.Order);
+                const string URL_API = "https://api.nguaduot.cn/wallhaven/v2?client=timelinewallpaper&&order={0}cate={1}";
+                string urlApi = string.Format(URL_API, ini.Wallhaven.Order, ini.Wallhaven.Cate);
                 LogUtil.I("LoadWallhaven() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Cate, ini.Wallhaven.Order, jsonData);
+                await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Order, ini.Wallhaven.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadWallhaven() thumb url: " + data.ThumbUrl);
@@ -906,7 +874,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadWallhereAsync(Action action) {
             WallhereApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order);
+            string jsonData = await FileUtil.ReadProviderCache(WallhereIni.GetId(), ini.Wallhere.Order, ini.Wallhere.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
@@ -917,14 +885,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Wallhere.Cate, ini.Wallhere.Order);
+                const string URL_API = "https://api.nguaduot.cn/wallhere/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Wallhere.Order, ini.Wallhere.Cate);
                 LogUtil.I("LoadWallhereAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(WallhereIni.GetId(), ini.Wallhere.Cate, ini.Wallhere.Order, jsonData);
+                await FileUtil.WriteProviderCache(WallhereIni.GetId(), ini.Wallhere.Order, ini.Wallhere.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadWallhereAsync() thumb url: " + data.ThumbUrl);
@@ -946,7 +914,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadWallpaperupAsync(Action action) {
             WallpaperupApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Cate, ini.Wallpaperup.Order);
+            string jsonData = await FileUtil.ReadProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Order, ini.Wallpaperup.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
@@ -957,14 +925,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/wallpaperup/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Wallpaperup.Cate, ini.Wallpaperup.Order);
+                const string URL_API = "https://api.nguaduot.cn/wallpaperup/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Wallpaperup.Order, ini.Wallpaperup.Cate);
                 LogUtil.I("LoadWallpaperupAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Cate, ini.Wallpaperup.Order, jsonData);
+                await FileUtil.WriteProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Order, ini.Wallpaperup.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadWallpaperupAsync() thumb url: " + data.ThumbUrl);
@@ -986,7 +954,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadToopicAsync(Action action) {
             ToopicApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(ToopicIni.GetId(), ini.Toopic.Cate, ini.Toopic.Order);
+            string jsonData = await FileUtil.ReadProviderCache(ToopicIni.GetId(), ini.Toopic.Order, ini.Toopic.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
@@ -997,14 +965,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/toopic/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Toopic.Cate, ini.Toopic.Order);
+                const string URL_API = "https://api.nguaduot.cn/toopic/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Toopic.Order, ini.Toopic.Cate);
                 LogUtil.I("LoadToopicAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(ToopicIni.GetId(), ini.Toopic.Cate, ini.Toopic.Order, jsonData);
+                await FileUtil.WriteProviderCache(ToopicIni.GetId(), ini.Toopic.Order, ini.Toopic.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadToopicAsync() thumb url: " + data.ThumbUrl);
@@ -1060,46 +1028,6 @@ namespace TimelineService {
             }
         }
 
-        private async Task<bool> LoadObzhiAsync(Action action) {
-            ObzhiApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(ObzhiIni.GetId(), ini.Obzhi.Cate, ini.Obzhi.Order);
-            if (!string.IsNullOrEmpty(jsonData)) {
-                try {
-                    ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
-                    data = api.Data[new Random().Next(api.Data.Count)];
-                    LogUtil.I("LoadObzhiAsync() cache from disk");
-                } catch (Exception e) {
-                    LogUtil.E("LoadObzhiAsync() " + e.Message);
-                }
-            }
-            if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Obzhi.Cate, ini.Obzhi.Order);
-                LogUtil.I("LoadObzhiAsync() api url: " + urlApi);
-                HttpClient client = new HttpClient();
-                jsonData = await client.GetStringAsync(urlApi);
-                ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
-                data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(ObzhiIni.GetId(), ini.Obzhi.Cate, ini.Obzhi.Order, jsonData);
-            }
-            if (action == Action.Toast || action == Action.Tile) {
-                LogUtil.I("LoadObzhiAsync() thumb url: " + data.ThumbUrl);
-                if (action == Action.Toast) {
-                    return ShowToast(data.ThumbUrl);
-                } else {
-                    return SetTileBg(data.ThumbUrl);
-                }
-            } else {
-                LogUtil.I("LoadObzhiAsync() img url: " + data.ImgUrl);
-                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
-                if (action == Action.Lock) {
-                    return await SetLockBgAsync(fileImg);
-                } else {
-                    return await SetDesktopBgAsync(fileImg);
-                }
-            }
-        }
-
         private async Task<bool> LoadGluttonAsync(Action action) {
             const int PHASE_SIZE = 10; // 每期图片数
             GluttonApiData data = null;
@@ -1127,8 +1055,8 @@ namespace TimelineService {
                     GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
                     data = api.Data[new Random().Next(Math.Min(api.Data.Count, PHASE_SIZE))];
                 } else { // rank or null
-                    const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper&order={0}";
-                    string urlApi = string.Format(URL_API_RANK, ini.Glutton.Order);
+                    const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper";
+                    string urlApi = string.Format(URL_API_RANK);
                     LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
                     HttpClient client = new HttpClient();
                     jsonData = await client.GetStringAsync(urlApi);
@@ -1169,7 +1097,7 @@ namespace TimelineService {
 
         private async Task<bool> LoadLspAsync(Action action) {
             LspApiData data = null;
-            string jsonData = await FileUtil.ReadProviderCache(LspIni.GetId(), ini.Lsp.Cate, ini.Lsp.Order);
+            string jsonData = await FileUtil.ReadProviderCache(LspIni.GetId(), ini.Lsp.Order, ini.Lsp.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
@@ -1180,14 +1108,14 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&cate={0}&order={1}";
-                string urlApi = string.Format(URL_API, ini.Lsp.Cate, ini.Lsp.Order);
+                const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Lsp.Order, ini.Lsp.Cate);
                 LogUtil.I("LoadLspAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
                 LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
-                await FileUtil.WriteProviderCache(LspIni.GetId(), ini.Lsp.Cate, ini.Lsp.Order, jsonData);
+                await FileUtil.WriteProviderCache(LspIni.GetId(), ini.Lsp.Order, ini.Lsp.Cate, jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
                 LogUtil.I("LoadLspAsync() thumb url: " + data.ThumbUrl);
@@ -1198,6 +1126,82 @@ namespace TimelineService {
                 }
             } else {
                 LogUtil.I("LoadLspAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadOneplusAsync(Action action) {
+            OneplusRequest request = new OneplusRequest {
+                PageSize = 1,
+                CurrentPage = 1,
+                SortMethod = "1" // 默认按：最新添加
+            };
+            string requestStr = JsonConvert.SerializeObject(request);
+            const string URL_API = "https://photos.oneplus.com/cn/shot/photo/schedule";
+            LogUtil.I("LoadOneplusAsync() api url: " + URL_API + " " + requestStr);
+            HttpClient client = new HttpClient();
+            HttpContent content = new StringContent(requestStr);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await client.PostAsync(URL_API, content);
+            _ = response.EnsureSuccessStatusCode();
+            string jsonData = await response.Content.ReadAsStringAsync();
+            OneplusApi oneplusApi = JsonConvert.DeserializeObject<OneplusApi>(jsonData);
+            if (action == Action.Toast || action == Action.Tile) {
+                string urlThumb = oneplusApi.Items[0].PhotoUrl.Replace(".jpg", "_400_0.jpg");
+                LogUtil.I("LoadOneplusAsync() thumb url: " + urlThumb);
+                if (action == Action.Toast) {
+                    return ShowToast(urlThumb);
+                } else {
+                    return SetTileBg(urlThumb);
+                }
+            } else {
+                string urlUhd = oneplusApi.Items[0].PhotoUrl;
+                LogUtil.I("LoadOneplusAsync() img url: " + urlUhd);
+                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadObzhiAsync(Action action) {
+            ObzhiApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(ObzhiIni.GetId(), ini.Obzhi.Order, ini.Obzhi.Cate);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadObzhiAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadObzhiAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/obzhi/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Obzhi.Order, ini.Obzhi.Cate);
+                LogUtil.I("LoadObzhiAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(ObzhiIni.GetId(), ini.Obzhi.Order, ini.Obzhi.Cate, jsonData);
+            }
+            if (action == Action.Toast || action == Action.Tile) {
+                LogUtil.I("LoadObzhiAsync() thumb url: " + data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
+            } else {
+                LogUtil.I("LoadObzhiAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBgAsync(fileImg);

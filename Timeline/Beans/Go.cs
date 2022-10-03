@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -9,23 +10,46 @@ using System.Threading.Tasks;
 
 namespace Timeline.Beans {
     public class Go {
-        private int index = 1; // 从1开始的索引
-        public int Index {
-            set => index = Math.Max(1, value);
-            get => index;
-        }
+        // 索引（从1开始），大于0则忽略其他参数（互斥）
+        public int Index { set; get; } = 0;
 
+        // 最大序号（从1开始）
         public int No { set; get; } = int.MaxValue; // 从1开始的序号
 
+        // 最大日期（Ticks > 0 有效）
         [JsonConverter(typeof(DateConverter))]
-        public DateTime Date { set; get; } = DateTime.Now; // 日期（Ticks > 0 有效）
+        public DateTime Date { set; get; }
 
-        public int Score { set; get; } = int.MaxValue; // 热度分
+        // 最大热度分
+        public int Score { set; get; } = int.MaxValue;
 
-        private string tag; // 标签
+        // 关键词
+        private string tag = "";
         public string Tag {
-            set => tag = (tag ?? "").Trim();
+            set => tag = (value ?? "").Trim();
             get => tag;
+        }
+
+        // 管理员参数
+        private string admin = "";
+        public string Admin {
+            set => admin = (value ?? "").Trim();
+            get => admin;
+        }
+
+        // 源文本
+        private string source;
+        public string Source {
+            set => source = (value ?? "").Trim();
+            get => source;
+        }
+
+        public Go(string source) {
+            Source = source;
+        }
+
+        public override string ToString() {
+            return JsonConvert.SerializeObject(this);
         }
 
         public static DateTime ParseDate(string text) {
@@ -61,33 +85,64 @@ namespace Timeline.Beans {
         }
 
         public static Go Parse(string text) {
-            Go go = new Go();
+            Go go = new Go(text);
             Match match = Regex.Match(text, "^[\"'](.*)[\"']$");
             if (match.Success) { // 指定按 Tag 识别
                 go.Tag = match.Groups[1].Value;
             } else {
-                MatchCollection mc = Regex.Matches(text, "([iInN#dDsS])(\\d+)");
-                foreach (Match m in mc.Cast<Match>()) { // 按指定规则识别
+                MatchCollection mc1 = Regex.Matches(text, "([iInN#dDsStTaA])[\"']([^\"']+)[\"']");
+                foreach (Match m in mc1.Cast<Match>()) { // 按指定规则识别
                     switch (m.Groups[1].Value) {
                         case "i":
                         case "I":
-                            go.Index = int.Parse(match.Groups[2].Value);
+                            go.Index = int.Parse(m.Groups[2].Value);
                             break;
                         case "n":
                         case "N":
                         case "#":
-                            go.No = int.Parse(match.Groups[2].Value);
+                            go.No = int.Parse(m.Groups[2].Value);
+                            break;
+                        case "d":
+                        case "D":
+                            go.Date = ParseDate(m.Groups[2].Value);
                             break;
                         case "s":
                         case "S":
-                            go.Score = int.Parse(match.Groups[2].Value);
+                            go.Score = int.Parse(m.Groups[2].Value);
                             break;
-                        default: // dD
-                            go.Date = ParseDate(match.Groups[2].Value);
+                        case "t":
+                        case "T":
+                            go.Tag = m.Groups[2].Value;
+                            break;
+                        case "a":
+                        case "A":
+                            go.Admin = m.Groups[2].Value;
                             break;
                     }
                 }
-                if (mc.Count == 0) { // 推测
+                MatchCollection mc2 = Regex.Matches(text, "([iInN#dDsS])(\\d+)");
+                foreach (Match m in mc2.Cast<Match>()) { // 按指定规则识别
+                    switch (m.Groups[1].Value) {
+                        case "i":
+                        case "I":
+                            go.Index = int.Parse(m.Groups[2].Value);
+                            break;
+                        case "n":
+                        case "N":
+                        case "#":
+                            go.No = int.Parse(m.Groups[2].Value);
+                            break;
+                        case "d":
+                        case "D":
+                            go.Date = ParseDate(m.Groups[2].Value);
+                            break;
+                        case "s":
+                        case "S":
+                            go.Score = int.Parse(m.Groups[2].Value);
+                            break;
+                    }
+                }
+                if (mc1.Count + mc2.Count == 0) { // 未识别到标准规则，进行推测
                     if (DateTime.TryParseExact(text, "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date)) {
                         go.Date = date;
                     } else if (int.TryParse(text, out int index)) {
@@ -97,7 +152,28 @@ namespace Timeline.Beans {
                     }
                 }
             }
+            if (go.Index > 0) { // Index 与其他参数互斥
+                return new Go(text) { Index = go.Index };
+            }
             return go;
+        }
+
+        public static string Generate(int index, int no, DateTime date, float score) {
+            string text = "i" + index; // 从1开始
+            if (no > 0) {
+                text += " n" + no; // 从1开始
+            }
+            if (date.Ticks > 0) {
+                if (date.Year == DateTime.Now.Year) {
+                    text += " d" + date.ToString("MMdd");
+                } else {
+                    text += " d" + date.ToString("yyyyMMdd");
+                }
+            }
+            if (score > 0) {
+                text += " s" + (int)Math.Ceiling(score);
+            }
+            return text;
         }
     }
 }

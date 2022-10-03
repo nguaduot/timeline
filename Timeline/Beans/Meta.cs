@@ -47,7 +47,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "src", NullValueHandling = NullValueHandling.Ignore)]
         public string Src { set; get; }
 
-        // 收录日期（非null，默认Ticks为0）
+        // 收录日期（本地时间，非null，默认Ticks为0）
         [JsonConverter(typeof(DateConverter))]
         [JsonProperty(PropertyName = "date", NullValueHandling = NullValueHandling.Ignore)]
         public DateTime Date { set; get; }

@@ -295,8 +295,8 @@ namespace Timeline.Pages {
             await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
                 Album = "rank",
                 Order = "score"
-            }, new Go());
-            List<Meta> top = glutton.GetMetas(localIni.Appetite);
+            }, new Go(null));
+            List<Meta> top = glutton.GetMetas().Take(localIni.Appetite).ToList();
             Dictionary<string, double> topProgress = new Dictionary<string, double>();
             if (top.Count == 0) {
                 BtnLocalImport.IsEnabled = true;

@@ -11,10 +11,10 @@ using System.Threading;
 
 namespace Timeline.Providers {
     public class LspProvider : BaseProvider {
-        private const string URL_API = "https://api.nguaduot.cn/lsp/v2?client=timelinewallpaper" +
-            "&order={0}&cate={1}" +
-            "&tag={2}&no={3}&date={4}&score={5}" +
-            "&r22={6}&unaudited={7}&marked={8}";
+        private const string URL_API = "https://api.nguaduot.cn/lsp/v2" +
+            "?client=timelinewallpaper&device={0}" +
+            "&order={1}&cate={2}&r22={3}" +
+            "&tag={4}&no={5}&date={6}&score={7}&admin={8}";
 
         private Meta ParseBean(LspApiData bean, string order) {
             Meta meta = new Meta {
@@ -25,6 +25,7 @@ namespace Timeline.Providers {
                 Title = bean.Album,
                 Caption = bean.Title,
                 Cate = bean.CateName,
+                Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
             if (bean.R22 != 0) {
@@ -52,14 +53,12 @@ namespace Timeline.Providers {
             int no = GetMinNo();
             no = go.No < no ? go.No : no;
             DateTime date = GetMinDate();
-            date = go.Date < date ? go.Date : date;
+            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
             float score = GetMinScore();
             score = go.Score < score ? go.Score : score;
-            string urlApi = string.Format(URL_API, bi.Order, bi.Cate,
-                go.Tag, no, date, score,
-                ini.R22 ? SysUtil.GetDeviceId() : "",
-                "unaudited".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "",
-                "marked".Equals(ini.Admin) ? SysUtil.GetDeviceId() : "");
+            string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
+                bi.Order, bi.Cate, ini.R22 ? 1 : 0,
+                go.Tag, no, date, score, go.Admin);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
