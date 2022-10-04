@@ -4,8 +4,8 @@
 
 [![store](https://img.shields.io/badge/microsoft%20store-v7.4-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
 [![release](https://img.shields.io/badge/release-v7.4.221004-blue)](https://gitee.com/nguaduot/timeline/releases)
+![platform](https://img.shields.io/badge/platform-Windows%2011%20%26%2010-lightgrey)
 [![star](https://gitee.com/nguaduot/timeline/badge/star.svg?theme=dark)](https://gitee.com/nguaduot/timeline)
-![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
 
@@ -130,7 +130,7 @@
 
 ## 更新日志
 
-[CHANGELOG.md](./CHANGELOG.md)
+前往浏览：[CHANGELOG.md](./CHANGELOG.md)
 
 ## 反馈
 
@@ -140,6 +140,8 @@
 + Telegram [@nguaduot](https://t.me/nguaduot)
 
 ## 截图
+
+![宣传](./sample/ad.png)
 
 ![Microsoft Store](./sample/store.png)
 
