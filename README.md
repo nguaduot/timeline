@@ -1,6 +1,6 @@
 ![icon](./sample/icon.png)
 
-# 拾光 for Windows 11
+# 拾光
 
 [![store](https://img.shields.io/badge/microsoft%20store-v7.4-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
 [![release](https://img.shields.io/badge/release-v7.4.221004-blue)](https://gitee.com/nguaduot/timeline/releases)
@@ -15,21 +15,17 @@
 
 提供以下两种安装方式：
 
-+ 从 Microsoft Store 安装
-  
++ 从 Microsoft Store 安装  
   在 Microsoft Store 搜索 `拾光壁纸` 进行安装。直达链接：[拾光壁纸 - Microsoft Store](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
-
-+ 下载安装包手动安装
-  
-  在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。
-
++ 下载安装包手动安装    
+  在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。  
   如无法顺利安装，请参考：[Issues #I5AQTO](https://gitee.com/nguaduot/timeline/issues/I5AQTO)
 
 ## 图源
 
 自建图源：
-+ [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗
-  API 官网：[api.nguaduot.cn/timeline](https://api.nguaduot.cn/timeline/doc)
++ [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗  
+  展示图片均已获作者授权；API 文档：[api.nguaduot.cn/timeline/doc](https://api.nguaduot.cn/timeline/doc)
 + 贪食鬼 - 饕餮盛宴
 
 三方图源：
@@ -50,8 +46,6 @@
 
 本地图源：
 + 本地图库 - 我的精选
-
-*特别注明：三方图源均为来自网络，本应用无权且不提供商用授权，所以请勿用于商业用途，仅供学习交流。欢迎分享图源*
 
 ## 推送
 
@@ -113,8 +107,7 @@
 
 ## 快捷键
 
-打开 `拾光`，快捷键 `F1` 可查看。
-
+打开 `拾光`，快捷键 `F1` 可查看。  
 或前往浏览：[Wiki / 快捷键](https://gitee.com/nguaduot/timeline/wikis/%E5%BF%AB%E6%8D%B7%E9%94%AE)
 
 ## 进阶
@@ -131,6 +124,12 @@
 ## 更新日志
 
 前往浏览：[CHANGELOG.md](./CHANGELOG.md)
+
+## 声明
+
+`拾光` 为非营利性项目，所有图片来自网络，仅供分享交流。  
+如有侵权，请联系我进行删除，在诚挚致歉。  
+本项目无权且不提供商用授权，所以请勿擅自用于商业用途。
 
 ## 反馈
 
