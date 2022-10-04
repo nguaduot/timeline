@@ -2,7 +2,7 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v7.1-brightgreen)
+![developing](https://img.shields.io/badge/developing-v7.4-brightgreen)
 [![release](https://img.shields.io/badge/release-v7.0.220917-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
@@ -78,6 +78,7 @@
   + 本地图库
     + `图库路径`：支持
     + `图库深度`：支持
+    + `排序`：忽略，默认 `随缘`
   + 一梦幽黎
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
@@ -104,7 +105,7 @@
   + LSP
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机
-    + `贤者模式`：不支持
+    + `贤者模式`：忽略，默认 `0`
   + 乌云壁纸
     + `类别`：支持
     + `排序`：取当前排序结果第一页随机

@@ -40,15 +40,19 @@ namespace Timeline.Providers {
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             NasaIni ini = bi as NasaIni;
-            int no = GetMinNo();
-            no = go.No < no ? go.No : no;
-            DateTime date = GetMinDate();
-            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
-            float score = GetMinScore();
-            score = go.Score < score ? go.Score : score;
+            int no = go.No;
+            DateTime date = go.Date.Ticks > 0 ? go.Date : DateTime.Now;
+            float score = go.Score;
+            if ("date".Equals(ini.Order)) {
+                no = Math.Min(no, GetMinNo());
+                date = GetMinDate() < date ? GetMinDate() : date;
+                score = Math.Min(score, GetMinScore());
+            } else if ("score".Equals(ini.Order)) {
+                score = Math.Min(score, GetMinScore());
+            }
             string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
                 ini.Order, ini.Mirror,
-                go.Tag, no, date, score, go.Admin);
+                go.Tag, no, date.ToString("yyyyMMdd"), score, go.Admin);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();

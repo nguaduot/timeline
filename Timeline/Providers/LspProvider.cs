@@ -16,7 +16,7 @@ namespace Timeline.Providers {
             "&order={1}&cate={2}&r22={3}" +
             "&tag={4}&no={5}&date={6}&score={7}&admin={8}";
 
-        private Meta ParseBean(LspApiData bean, string order) {
+        private Meta ParseBean(LspApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 No = bean.No,
@@ -50,15 +50,19 @@ namespace Timeline.Providers {
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             LspIni ini = bi as LspIni;
-            int no = GetMinNo();
-            no = go.No < no ? go.No : no;
-            DateTime date = GetMinDate();
-            date = go.Date.Ticks > 0 && go.Date < date ? go.Date : date;
-            float score = GetMinScore();
-            score = go.Score < score ? go.Score : score;
+            int no = go.No;
+            DateTime date = go.Date.Ticks > 0 ? go.Date : DateTime.Now;
+            float score = go.Score;
+            if ("date".Equals(ini.Order)) {
+                no = Math.Min(no, GetMinNo());
+                date = GetMinDate() < date ? GetMinDate() : date;
+                score = Math.Min(score, GetMinScore());
+            } else if ("score".Equals(ini.Order)) {
+                score = Math.Min(score, GetMinScore());
+            }
             string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
                 bi.Order, bi.Cate, ini.R22 ? 1 : 0,
-                go.Tag, no, date, score, go.Admin);
+                go.Tag, no, date.ToString("yyyyMMdd"), score, go.Admin);
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
                 HttpClient client = new HttpClient();
@@ -71,7 +75,7 @@ namespace Timeline.Providers {
                 }
                 List<Meta> metasAdd = new List<Meta>();
                 foreach (LspApiData item in api.Data) {
-                    metasAdd.Add(ParseBean(item, ini.Order));
+                    metasAdd.Add(ParseBean(item));
                 }
                 AppendMetas(metasAdd);
                 return true;

@@ -18,7 +18,7 @@ namespace Timeline.Beans {
 
         // 最大日期（Ticks > 0 有效）
         [JsonConverter(typeof(DateConverter))]
-        public DateTime Date { set; get; }
+        public DateTime Date { set; get; } = DateTime.Now;
 
         // 最大热度分
         public int Score { set; get; } = int.MaxValue;
@@ -158,8 +158,9 @@ namespace Timeline.Beans {
             return go;
         }
 
-        public static string Generate(int index, int no, DateTime date, float score) {
+        public static string Generate(int count, int index, int no, DateTime date, float score) {
             string text = "i" + index; // 从1开始
+            text += "..." + count;
             if (no > 0) {
                 text += " n" + no; // 从1开始
             }

@@ -674,10 +674,10 @@ namespace Timeline {
                 return;
             }
             HideFlyouts();
-            BoxGo.PlaceholderText = meta != null
-                ? Go.Generate(provider.GetIndex(meta) + 1, meta.No, meta.Date, meta.Score) : "";
-            //BoxGo.SelectAll();
-            BoxGo.Text = "";
+            BoxGo.PlaceholderText = meta == null ? ""
+                : Go.Generate(provider.GetCount(), provider.GetIndex(meta) + 1, meta.No, meta.Date, meta.Score);
+            BoxGo.SelectAll();
+            //BoxGo.Text = "";
             FlyoutGo.Placement = RelativePanel.GetAlignRightWithPanel(AnchorGo)
                 ? FlyoutPlacementMode.LeftEdgeAlignedBottom : FlyoutPlacementMode.RightEdgeAlignedBottom;
             FlyoutBase.ShowAttachedFlyout(AnchorGo);

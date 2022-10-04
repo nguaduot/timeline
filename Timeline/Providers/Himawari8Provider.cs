@@ -64,7 +64,7 @@ namespace Timeline.Providers {
                     metasAdd.Add(ParseBean(timeUtc.AddHours(-i)));
                 }
                 AppendMetas(metasAdd);
-            } else if (go.Date.Ticks > 0) { // 加载指定时间数据
+            } else if (!go.Date.ToString("yyyyMMdd").Equals(DateTime.Now.ToString("yyyyMMdd"))) { // 加载指定时间数据
                 DateTime timeUtc = go.Date.ToUniversalTime(); // 使用UTC时间
                 timeUtc = timeUtc > DateTime.UtcNow.AddMinutes(-DELAY_MINUTES)
                     ? DateTime.UtcNow.AddMinutes(-DELAY_MINUTES) : timeUtc;
