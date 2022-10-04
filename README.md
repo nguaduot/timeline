@@ -2,8 +2,9 @@
 
 # 拾光 for Windows 11
 
-![developing](https://img.shields.io/badge/developing-v7.5-brightgreen)
+[![store](https://img.shields.io/badge/microsoft%20store-v7.4-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
 [![release](https://img.shields.io/badge/release-v7.4.221004-blue)](https://gitee.com/nguaduot/timeline/releases)
+[![star](https://gitee.com/nguaduot/timeline/badge/star.svg?theme=dark)](https://gitee.com/nguaduot/timeline)
 ![platform](https://img.shields.io/badge/platform-windows%2011%20%26%2010-lightgrey)
 
 > 时光如歌，岁月如诗。拾光，每日一景
@@ -30,12 +31,10 @@
 + [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗
   API 官网：[api.nguaduot.cn/timeline](https://api.nguaduot.cn/timeline/doc)
 + 贪食鬼 - 饕餮盛宴
-+ 本地图源 - 我的精选
 
 三方图源：
 + [Microsoft Bing](https://cn.bing.com) - 每天发现一个新地方
 + [NASA](https://apod.nasa.gov/apod) - 每日天文一图
-+ [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari.asia/) - 实时地球
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源
@@ -46,6 +45,8 @@
 + [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
++ [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
++ [乌云壁纸](https://www.obzhi.com) - 高清壁纸站
 
 本地图源：
 + 本地图库 - 我的精选
@@ -113,7 +114,8 @@
 ## 快捷键
 
 打开 `拾光`，快捷键 `F1` 可查看。
-或前往浏览：[wiki / 快捷键](https://gitee.com/nguaduot/timeline/wikis/%E5%BF%AB%E6%8D%B7%E9%94%AE)
+
+或前往浏览：[Wiki / 快捷键](https://gitee.com/nguaduot/timeline/wikis/%E5%BF%AB%E6%8D%B7%E9%94%AE)
 
 ## 进阶
 
