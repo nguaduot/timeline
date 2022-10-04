@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Timeline.Utils;
 using System.Threading;
@@ -41,14 +40,15 @@ namespace Timeline.Providers {
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             NasaIni ini = bi as NasaIni;
             int no = go.No;
-            DateTime date = go.Date.Ticks > 0 ? go.Date : DateTime.Now;
+            DateTime date = go.Date;
             float score = go.Score;
-            if ("date".Equals(ini.Order)) {
-                no = Math.Min(no, GetMinNo());
-                date = GetMinDate() < date ? GetMinDate() : date;
-                score = Math.Min(score, GetMinScore());
-            } else if ("score".Equals(ini.Order)) {
-                score = Math.Min(score, GetMinScore());
+            if (GetCount() > 0) {
+                if ("date".Equals(ini.Order)) {
+                    no = Math.Min(no, GetMinNo());
+                    date = GetMinDate() < date ? GetMinDate() : date;
+                } else if ("score".Equals(ini.Order)) {
+                    score = Math.Min(score, GetMinScore());
+                }
             }
             string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
                 ini.Order, ini.Mirror,

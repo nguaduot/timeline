@@ -3,16 +3,13 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Timeline.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Net;
 using System.Threading;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Timeline.Providers {
     public class OneProvider : BaseProvider {
@@ -150,10 +147,12 @@ namespace Timeline.Providers {
                 }
                 int no;
                 if ("random".Equals(bi.Order)) {
-                    no = (3012 + new Random().Next((DateTime.Now - DateTime.Parse("2020-11-10")).Days));
+                    // ID 非连续，会有少量缺失，通过系数修正
+                    no = (3012 + new Random().Next((int)((DateTime.Now - DateTime.Parse("2020-11-10")).Days * 1.02449)));
                 } else {
                     no = GetMinNo();
-                    no = go.No + 1 < no ? go.No + 1 : no; // 不含，需+1
+                    // 不含，需+1；注意 int.MaxValue + 1 为负
+                    no = go.No < int.MaxValue && go.No + 1 < no ? go.No + 1 : no;
                 }
                 string urlApi = string.Format(URL_API, no, tokenOne);
                 LogUtil.D("LoadData() provider url: " + urlApi);

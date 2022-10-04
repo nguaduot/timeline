@@ -359,7 +359,7 @@ namespace Timeline.Pages {
                     Progress<DownloadOperation> progress = new Progress<DownloadOperation>((op) => {
                         if (op.Progress.TotalBytesToReceive > 0 && op.Progress.BytesReceived > 0) {
                             ulong value = op.Progress.BytesReceived * 100 / op.Progress.TotalBytesToReceive;
-                            Debug.WriteLine(op.ResultFile.Name + " progress: " + value + "%");
+                            //Debug.WriteLine(op.ResultFile.Name + " progress: " + value + "%");
                             topProgress[meta.Uhd] = op.Progress.BytesReceived * 1.0 / op.Progress.TotalBytesToReceive;
                             PbImport.Value = SumProgress(topProgress);
                             PbImport.IsIndeterminate = false;
@@ -367,7 +367,7 @@ namespace Timeline.Pages {
                     });
                     _ = await meta.Do.AttachAsync().AsTask(progress);
                     if (meta.Do.Progress.Status == BackgroundTransferStatus.Completed) {
-                        Debug.WriteLine("ImportAsync() downloaded " + meta.Do.ResultFile.Name);
+                        //Debug.WriteLine("ImportAsync() downloaded " + meta.Do.ResultFile.Name);
                         string localName = string.Format("{0}-{1}{2}", resLoader.GetString("Provider_" + glutton.Id), meta.Id, meta.Format);
                         await meta.Do.ResultFile.CopyAsync(folderLocal, localName, NameCollisionOption.ReplaceExisting);
                         topProgress[meta.Uhd] = 1;

@@ -385,9 +385,6 @@
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="nasa"
                                       GroupName="Provider" />
-            <!--<muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
-                                      Tag="oneplus"
-                                      GroupName="Provider" />-->
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="timeline"
                                       GroupName="Provider" />
@@ -617,6 +614,9 @@
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="R"
+                                     Modifiers="Control"
+                                     Invoked="KeyInvoked" />
+                <KeyboardAccelerator Key="T"
                                      Modifiers="Control"
                                      Invoked="KeyInvoked" />
                 <KeyboardAccelerator Key="I"

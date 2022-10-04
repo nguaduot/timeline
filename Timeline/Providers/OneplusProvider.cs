@@ -3,7 +3,6 @@ using Timeline.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.Http;

@@ -11,18 +11,22 @@ using Windows.Storage;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.ApplicationModel;
+using System.Net;
 
 namespace Timeline.Providers {
     public class Himawari8Provider : BaseProvider {
-        // 最小间隔
-        private const int INTERVAL_MINUTES = 10;
-        // 最大延迟
-        private const int DELAY_MINUTES = 25;
-
         // 地球位置（0.01~1.00，0.50 为居中，0.01~0.50 偏左，0.50~1.00 偏右）
         private float offsetEarth = 0.5f;
         // 地球大小（0.10~1.00）
         private float ratioEarth = 0.5f;
+        // 次页加载量
+        private const int PAGE_SIZE = 12;
+        // 首页加载量（减少量以节省HEAD校验时间）
+        private const int PAGE_SIZE_FIRST = 3;
+        // 最小间隔
+        private const int INTERVAL_MINUTES = 10;
+        // 最大延迟
+        private const int DELAY_MINUTES = 25;
 
         // 向日葵-8号即時網頁 - NICT
         // https://himawari.asia
@@ -57,27 +61,25 @@ namespace Timeline.Providers {
             Himawari8Ini ini = bi as Himawari8Ini;
             offsetEarth = ini.Offset;
             ratioEarth = ini.Ratio;
+            List<Meta> metasTodo = new List<Meta>();
+            HttpClient client = null;
             if (GetCount() > 0) { // 加载下一页
-                DateTime timeUtc = GetMinDate(true).AddMinutes(-INTERVAL_MINUTES);
-                List<Meta> metasAdd = new List<Meta>();
-                for (int i = 0; i < 99; i++) {
-                    metasAdd.Add(ParseBean(timeUtc.AddHours(-i)));
+                DateTime timeUtc = GetMinDate(true).AddHours(-1); // -1 避免重复加载衔接图
+                for (int i = 0; i < PAGE_SIZE; i++) {
+                    metasTodo.Add(ParseBean(timeUtc.AddHours(-i)));
                 }
-                AppendMetas(metasAdd);
             } else if (!go.Date.ToString("yyyyMMdd").Equals(DateTime.Now.ToString("yyyyMMdd"))) { // 加载指定时间数据
                 DateTime timeUtc = go.Date.ToUniversalTime(); // 使用UTC时间
                 timeUtc = timeUtc > DateTime.UtcNow.AddMinutes(-DELAY_MINUTES)
                     ? DateTime.UtcNow.AddMinutes(-DELAY_MINUTES) : timeUtc;
-                List <Meta> metasAdd = new List<Meta>();
-                for (int i = 0; i < 99; i++) {
-                    metasAdd.Add(ParseBean(timeUtc.AddHours(-i)));
+                for (int i = 0; i < PAGE_SIZE; i++) {
+                    metasTodo.Add(ParseBean(timeUtc.AddHours(-i)));
                 }
-                AppendMetas(metasAdd);
             } else { // 加载最新时间数据
                 string urlApi = URL_API + DateUtil.CurrentTimeMillis();
                 LogUtil.D("LoadData() provider url: " + urlApi);
                 try {
-                    HttpClient client = new HttpClient();
+                    client = new HttpClient();
                     HttpResponseMessage res = await client.GetAsync(urlApi, token);
                     string jsonData = await res.Content.ReadAsStringAsync();
                     //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
@@ -90,11 +92,9 @@ namespace Timeline.Providers {
                     } else {
                         Debug.WriteLine("2 " + date.Kind);
                     }
-                    List<Meta> metasAdd = new List<Meta>();
-                    for (int i = 0; i < 99; i++) {
-                        metasAdd.Add(ParseBean(date.AddHours(-i)));
+                    for (int i = 0; i < PAGE_SIZE_FIRST; i++) {
+                        metasTodo.Add(ParseBean(date.AddHours(-i)));
                     }
-                    AppendMetas(metasAdd);
                 } catch (Exception e) {
                     // 情况1：任务被取消
                     // System.Threading.Tasks.TaskCanceledException: A task was canceled.
@@ -102,15 +102,41 @@ namespace Timeline.Providers {
                 }
             }
 
+            if (metasTodo.Count > 0) { // 检查有效性
+                // 多连接优化
+                // https://www.cnblogs.com/dudu/p/csharp-httpclient-attention.html
+                client = client ?? new HttpClient();
+                client.DefaultRequestHeaders.Connection.Add("keep-alive");
+                List<Meta> metasAdd = new List<Meta>();
+                foreach (Meta m in metasTodo) {
+                    if (token.IsCancellationRequested) {
+                        break;
+                    }
+                    try {
+                        HttpRequestMessage reqMsg = new HttpRequestMessage(HttpMethod.Head, m.Uhd);
+                        HttpResponseMessage resMsg = await client.SendAsync(reqMsg, token);
+                        if (resMsg.StatusCode == HttpStatusCode.OK && (resMsg.Content.Headers.ContentLength ?? 0) > 10 * 1024) {
+                            metasAdd.Add(m);
+                        } else { // 再尝试一次
+                            Meta metaAlt = ParseBean(m.Date.ToUniversalTime().AddMinutes(-INTERVAL_MINUTES));
+                            reqMsg = new HttpRequestMessage(HttpMethod.Head, metaAlt.Uhd);
+                            resMsg = await client.SendAsync(reqMsg, token);
+                            if (resMsg.StatusCode == HttpStatusCode.OK && (resMsg.Content.Headers.ContentLength ?? 0) > 10 * 1024) {
+                                metasAdd.Add(metaAlt);
+                            }
+                        }
+                    } catch (Exception) { }
+                }
+                AppendMetas(metasAdd);
+                LogUtil.I("LoadData() head pass " + metasAdd.Count + "/" + metasTodo.Count);
+            }
             if (GetCount() == 0) { // 加载失败，使用备用图
                 DateTime utcDef = new DateTime(2022, 5, 21, 18, 20, 0, DateTimeKind.Utc);
                 string nameDef = "Assets\\Images\\himawari8-" + utcDef.ToString("yyyyMMddHHmmss") + ".png";
                 StorageFile fileDef = await Package.Current.InstalledLocation.GetFileAsync(nameDef);
-                List<Meta> metasAdd = new List<Meta>();
                 Meta meta = ParseBean(utcDef);
                 meta.CacheUhd = fileDef;
-                metasAdd.Add(meta);
-                AppendMetas(metasAdd);
+                AppendMetas(new List<Meta>() { meta });
             }
             return true;
         }

@@ -4,12 +4,10 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml.Controls;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
@@ -52,14 +50,15 @@ namespace Timeline.Providers {
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             GluttonIni ini = bi as GluttonIni;
             int no = go.No;
-            DateTime date = go.Date.Ticks > 0 ? go.Date : DateTime.Now;
+            DateTime date = go.Date;
             float score = go.Score;
-            if ("date".Equals(ini.Order)) {
-                no = Math.Min(no, GetMinNo());
-                date = GetMinDate() < date ? GetMinDate() : date;
-                score = Math.Min(score, GetMinScore());
-            } else if ("score".Equals(ini.Order)) {
-                score = Math.Min(score, GetMinScore());
+            if (GetCount() > 0) {
+                if ("date".Equals(ini.Order)) {
+                    no = Math.Min(no, GetMinNo());
+                    date = GetMinDate() < date ? GetMinDate() : date;
+                } else if ("score".Equals(ini.Order)) {
+                    score = Math.Min(score, GetMinScore());
+                }
             }
             string urlApi;
             if ("journal".Equals(ini.Album)) {

@@ -194,19 +194,27 @@ namespace Timeline {
         private async Task LoadDataAsync(CancellationToken token, Go go, PageAction action) {
             await FileUtil.WriteDosage();
             bool res = true;
-            if (NetworkInterface.GetIsNetworkAvailable()) { // 预加载
+            if (NetworkInterface.GetIsNetworkAvailable()) { // 加载
                 if (action == PageAction.Focus) {
                     if (go.Index > 0) {
-                        if (go.Index >= provider.GetCount() - 1) { // 追加图集
-                            res = await provider.LoadData(token, ini.GetIni(), go);
+                        if (go.Index >= provider.GetCount() - 1) {
+                            if (go.Index > provider.GetCount()) { // 立即加载
+                                res = await provider.LoadData(token, ini.GetIni(), go);
+                            } else { // 预加载
+                                _ = provider.LoadData(token, ini.GetIni(), go);
+                            }
                         }
-                    } else { // 重刷图集
+                    } else { // 立即重新加载
                         provider.ClearMetas();
                         res = await provider.LoadData(token, ini.GetIni(), go);
                     }
                 } else if (action == PageAction.Yesterday) {
-                    if (provider.GetCountNext(meta) < 2) { // 追加图集
-                        res = await provider.LoadData(token, ini.GetIni(), go);
+                    if (provider.GetCountNext(meta) <= 2) {
+                        if (provider.GetCountNext(meta) == 0) { // 立即加载
+                            res = await provider.LoadData(token, ini.GetIni(), go);
+                        } else { // 预加载
+                            _ = provider.LoadData(token, ini.GetIni(), go);
+                        }
                     }
                 } else if (action == PageAction.Tomorrow) {
                     // 不加载
@@ -1301,12 +1309,8 @@ namespace Timeline {
                 case VirtualKey.Number9: // Ctrl + 9
                     await ShowFlyoutMarkTag();
                     break;
-                case VirtualKey.Number0:
-                    if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + 0
-                        ShowThumbAsync();
-                    } else { // 0
-                        await ShowFlyoutMarkCate();
-                    }
+                case VirtualKey.Number0: // 0 / Ctrl + 0
+                    await ShowFlyoutMarkCate();
                     break;
                 case VirtualKey.Tab:
                     if (sender.Modifiers == VirtualKeyModifiers.Control) { // Ctrl + Tab
@@ -1314,6 +1318,9 @@ namespace Timeline {
                     } else { // Shift + Ctrl + Tab
                         SwitchProvider(false); // 切换上个图源
                     }
+                    break;
+                case VirtualKey.T: // Ctrl + T
+                    ShowThumbAsync();
                     break;
                 case VirtualKey.I: // Ctrl + I
                     await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());

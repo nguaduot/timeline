@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
@@ -41,14 +40,15 @@ namespace Timeline.Providers {
 
         public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
             int no = go.No;
-            DateTime date = go.Date.Ticks > 0 ? go.Date : DateTime.Now;
+            DateTime date = go.Date;
             float score = go.Score;
-            if ("date".Equals(bi.Order)) {
-                no = Math.Min(no, GetMinNo());
-                date = GetMinDate() < date ? GetMinDate() : date;
-                score = Math.Min(score, GetMinScore());
-            } else if ("score".Equals(bi.Order)) {
-                score = Math.Min(score, GetMinScore());
+            if (GetCount() > 0) {
+                if ("date".Equals(bi.Order)) {
+                    no = Math.Min(no, GetMinNo());
+                    date = GetMinDate() < date ? GetMinDate() : date;
+                } else if ("score".Equals(bi.Order)) {
+                    score = Math.Min(score, GetMinScore());
+                }
             }
             string urlApi = string.Format(URL_API, SysUtil.GetDeviceId(),
                 bi.Order, bi.Cate,
