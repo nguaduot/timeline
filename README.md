@@ -49,7 +49,7 @@
 
 ## 推送
 
-前往浏览：[Wiki / 快捷键](https://gitee.com/nguaduot/timeline/wikis/%E6%8E%A8%E9%80%81)
+前往浏览：[Wiki / 推送](https://gitee.com/nguaduot/timeline/wikis/%E6%8E%A8%E9%80%81)
 
 ## 快捷键
 

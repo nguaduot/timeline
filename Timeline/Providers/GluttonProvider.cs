@@ -66,7 +66,7 @@ namespace Timeline.Providers {
                     ini.Order, no, date.ToString("yyyyMMdd"), score, go.Admin);
             } else {
                 urlApi = string.Format(URL_API_RANK, SysUtil.GetDeviceId(),
-                    ini.Order, no, score);
+                    ini.Order, no, score, go.Admin);
             }
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {
