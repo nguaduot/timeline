@@ -39,6 +39,7 @@
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers
 + [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸
++ [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
@@ -103,7 +104,7 @@ A：`LSP` 为不可描述内容，默认不可见，若手动开启，则视为�
 
 诚挚感谢诸君的喜爱与支持，共勉共进。
 
-![评分&评价](./sample/review.png)
+![评分&评价](./sample/review.jpg)
 
 ## 截图
 
