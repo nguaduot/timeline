@@ -806,7 +806,7 @@ namespace Timeline {
                 TaskEntryPoint = typeof(PushService).FullName
             };
             // 触发任务的事件
-            builder.SetTrigger(new TimeTrigger(60, false)); // 周期执行（不低于15min）
+            builder.SetTrigger(new TimeTrigger(15, false)); // 周期执行（不低于15min）
             // 触发任务的先决条件
             builder.AddCondition(new SystemCondition(SystemConditionType.SessionConnected)); // Internet 必须连接
             _ = builder.Register();

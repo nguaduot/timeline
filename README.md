@@ -61,7 +61,7 @@
 **Q：如何使用配置文件？**
 
 A：打开 `拾光`，右键菜单点击 `设置` 图标，设置页下滑找到 `配置文件` 项，展开后点击 `打开` 按钮即可。  
-或使用快捷键：`Ctrl` + `I`。详细玩法：[Wiki / 快捷键](https://gitee.com/nguaduot/timeline/wikis/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+或使用快捷键：`Ctrl` + `I`。详细玩法：[Wiki / 配置文件](https://gitee.com/nguaduot/timeline/wikis/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
 
 **Q：如何调高桌面壁纸推送频率？**
 

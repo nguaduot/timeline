@@ -480,7 +480,7 @@
                PaneOpened="ViewSplit_PaneOpened"
                DisplayMode="Overlay"
                PaneBackground="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-               OpenPaneLength="360">
+               OpenPaneLength="356">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -498,7 +498,7 @@
                         <Setter Target="ViewBar.CornerRadius"
                                 Value="14" />
                         <Setter Target="Info.Margin"
-                                Value="23,48,23,24" />
+                                Value="29,44,29,12" />
                         <Setter Target="AnchorAdmin.Margin"
                                 Value="24,28" />
                         <Setter Target="AnchorGo.Margin"
@@ -785,12 +785,13 @@
                 </StackPanel>
             </RelativePanel>
 
+            <!-- 标题栏高度：32dp -->
             <muxc:InfoBar Name="Info"
                           Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                           RelativePanel.AlignLeftWithPanel="True"
                           RelativePanel.AlignRightWithPanel="False"
                           IsOpen="False"
-                          Margin="11,42,11,12">
+                          Margin="15,40,15,12">
                 <muxc:InfoBar.ActionButton>
                     <HyperlinkButton Name="BtnInfo"
                                      Visibility="Collapsed"

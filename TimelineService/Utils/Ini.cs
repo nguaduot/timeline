@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Windows.UI.Xaml.Controls;
 
@@ -60,7 +61,7 @@ namespace TimelineService.Utils {
 
         public LspIni Lsp { set; get; } = new LspIni();
 
-        public int GetDesktopPeriod(string provider) {
+        public float GetDesktopPeriod(string provider) {
             if (LocalIni.GetId().Equals(provider)) {
                 return Local.DesktopPeriod;
             } else if (NasaIni.GetId().Equals(provider)) {
@@ -98,7 +99,7 @@ namespace TimelineService.Utils {
             }
         }
 
-        public int GetLockPeriod(string provider) {
+        public float GetLockPeriod(string provider) {
             if (LocalIni.GetId().Equals(provider)) {
                 return Local.LockPeriod;
             } else if (NasaIni.GetId().Equals(provider)) {
@@ -136,7 +137,7 @@ namespace TimelineService.Utils {
             }
         }
 
-        public int GetToastPeriod(string provider) {
+        public float GetToastPeriod(string provider) {
             if (LocalIni.GetId().Equals(provider)) {
                 return Local.ToastPeriod;
             } else if (NasaIni.GetId().Equals(provider)) {
@@ -174,7 +175,7 @@ namespace TimelineService.Utils {
             }
         }
 
-        public int GetTilePeriod(string provider) {
+        public float GetTilePeriod(string provider) {
             if (LocalIni.GetId().Equals(provider)) {
                 return Local.TilePeriod;
             } else if (NasaIni.GetId().Equals(provider)) {
@@ -274,27 +275,27 @@ namespace TimelineService.Utils {
             get => depth;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -305,27 +306,27 @@ namespace TimelineService.Utils {
     }
 
     public sealed class BingIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -335,27 +336,27 @@ namespace TimelineService.Utils {
     }
 
     public sealed class NasaIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -365,27 +366,27 @@ namespace TimelineService.Utils {
     }
 
     public sealed class TimelineIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -395,27 +396,27 @@ namespace TimelineService.Utils {
     }
 
     public sealed class OneIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -437,27 +438,27 @@ namespace TimelineService.Utils {
             get => ratio;
         }
 
-        private int desktopPeriod = 1;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 1;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 2;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 2;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -482,27 +483,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -527,27 +528,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -572,27 +573,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -617,27 +618,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -662,27 +663,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -707,27 +708,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -746,27 +747,27 @@ namespace TimelineService.Utils {
             get => order;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -792,27 +793,27 @@ namespace TimelineService.Utils {
             get => order;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -837,27 +838,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -869,27 +870,27 @@ namespace TimelineService.Utils {
 
     // deprecated
     public sealed class OneplusIni {
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -914,27 +915,27 @@ namespace TimelineService.Utils {
             get => cate;
         }
 
-        private int desktopPeriod = 24;
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        private int lockPeriod = 24;
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        private int tostPeriod = 24;
-        public int ToastPeriod {
-            set => tostPeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tostPeriod;
         }
 
-        private int tilePeriod = 2;
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 

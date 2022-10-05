@@ -15,7 +15,6 @@ using TimelineService.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
-using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
@@ -31,10 +30,10 @@ namespace TimelineService {
         BackgroundTaskDeferral _deferral;
         private ApplicationDataContainer localSettings;
         private Ini ini;
-        private int periodDesktop = 24;
-        private int periodLock = 24;
-        private int periodToast = 24;
-        private int periodTile = 2;
+        private float periodDesktop = 24;
+        private float periodLock = 24;
+        private float periodToast = 24;
+        private float periodTile = 2;
         private string tagDesktop; // 免重复推送桌面背景标记
         private string tagLock; // 免重复推送锁屏背景标记
         private string tagToast; // 免重复推送磁贴背景标记
@@ -108,14 +107,14 @@ namespace TimelineService {
             periodLock = ini.GetLockPeriod(ini.LockProvider);
             periodToast = ini.GetToastPeriod(ini.ToastProvider);
             periodTile = ini.GetTilePeriod(ini.TileProvider);
-            tagDesktop = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                DateTime.Now.Hour / periodDesktop, ini.DesktopProvider);
+            tagDesktop = string.Format("{0}{1:}-{2}", DateTime.Now.ToString("yyyyMMdd"),
+                Math.Ceiling(DateTime.Now.Hour / periodDesktop), ini.DesktopProvider);
             tagLock = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                DateTime.Now.Hour / periodLock, ini.LockProvider);
+                Math.Ceiling(DateTime.Now.Hour / periodLock), ini.LockProvider);
             tagToast = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                DateTime.Now.Hour / periodToast, ini.ToastProvider);
+                Math.Ceiling(DateTime.Now.Hour / periodToast), ini.ToastProvider);
             tagTile = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                DateTime.Now.Hour / periodTile, !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider);
+                Math.Ceiling(DateTime.Now.Hour / periodTile), !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider);
 
             if (localSettings == null) {
                 localSettings = ApplicationData.Current.LocalSettings;
@@ -1036,7 +1035,8 @@ namespace TimelineService {
                 try {
                     GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
                     if ("journal".Equals(ini.Glutton.Album)) {
-                        data = api.Data[new Random().Next(Math.Min(api.Data.Count, PHASE_SIZE))];
+                        int count = Math.Min(api.Data.Count, "date".Equals(ini.Glutton.Order) ? PHASE_SIZE : api.Data.Count);
+                        data = api.Data[new Random().Next(count)];
                     } else { // rank or null
                         data = api.Data[new Random().Next(api.Data.Count)];
                     }
@@ -1053,7 +1053,9 @@ namespace TimelineService {
                     HttpClient client = new HttpClient();
                     jsonData = await client.GetStringAsync(urlApi);
                     GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    data = api.Data[new Random().Next(Math.Min(api.Data.Count, PHASE_SIZE))];
+                    // 若为“收录”排序，则仅推送当期
+                    int count = Math.Min(api.Data.Count, "date".Equals(ini.Glutton.Order) ? PHASE_SIZE : api.Data.Count);
+                    data = api.Data[new Random().Next(count)];
                 } else { // rank or null
                     const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper";
                     string urlApi = string.Format(URL_API_RANK);

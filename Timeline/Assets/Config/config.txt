@@ -1,4 +1,4 @@
-; 拾光 / Timeline v7.4
+; 拾光 / Timeline v7.5
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; E-mail：nguaduot@163.com
@@ -6,7 +6,7 @@
 [app]
 
 r18=0
-; r18={n}  R18内容：0或1，置为1可启用图源“LSP”（默认为0，不启用）
+; r18={bool}  R18内容：0或1，置为1可启用图源“LSP”（默认为0，不启用）
 
 provider=bing
 ; provider=local        图源：本地图库 - 我的精选
@@ -45,21 +45,21 @@ theme=
 ; theme=dark   主题：暗色
 
 cache=600
-; cache={n}  本地缓存阈值：默认600张，超过阈值自动清理
+; cache={int}  本地缓存阈值：默认600张，超过阈值自动清理
 
 [local]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -69,24 +69,24 @@ folder=
 ; folder=  图库路径：默认留空（与收藏文件夹相同）
 
 depth=0
-; depth={n}  图库深度：读取子文件夹层数，最大2（默认为0，不读取子文件夹）
+; depth={int}  图库深度：读取子文件夹层数，最大2（默认为0，不读取子文件夹）
 
 appetite=20
-; appetite={n}  导入量：从“贪食鬼”图源热度集导入图片量（默认为20张）
+; appetite={int}  导入量：从“贪食鬼”图源热度集导入图片量（默认为20张）
 
 [bing]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 lang=
 ; lang=       语言代码：自动识别（默认）
@@ -99,16 +99,16 @@ lang=
 [nasa]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date    排序：收录（默认）
@@ -122,16 +122,16 @@ mirror=bjp
 [timeline]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date    排序：日期（默认）
@@ -148,21 +148,21 @@ cate=
 ; cate=painting   类别：绘画
 
 unauthorized=0
-; unauthorized={n}  未授权内容：0或1（默认为0，仅展示已授权内容）
+; unauthorized={bool}  未授权内容：0或1（默认为0，仅展示已授权内容）
 
 [one]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date    排序：日期（默认）
@@ -171,36 +171,36 @@ order=date
 [himawari8]
 
 desktopperiod=1
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为1h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为1h/次，开启推送后生效）
 
 lockperiod=2
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 offset=0.50
-; offset={n}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
+; offset={float}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
 
 ratio=0.50
-; ratio={n}  地球大小：0.10~1.00（默认为0.50，半屏大小）
+; ratio={float}  地球大小：0.10~1.00（默认为0.50，半屏大小）
 
 [ymyouli]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -224,16 +224,16 @@ cate=
 [qingbz]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -254,16 +254,16 @@ cate=
 [wallhaven]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -278,16 +278,16 @@ cate=
 [wallhere]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -306,16 +306,16 @@ cate=
 [wallpaperup]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -334,16 +334,16 @@ cate=
 [toopic]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -363,16 +363,16 @@ cate=
 [infinity]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=score   排序：喜欢
@@ -381,16 +381,16 @@ order=random
 [glutton]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 album=journal
 ; album=journal  集：周选集（默认）
@@ -404,16 +404,16 @@ order=date
 [lsp]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录
@@ -428,16 +428,16 @@ cate=
 [oneplus]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
 ; order=date   排序：收录（默认）
@@ -447,16 +447,16 @@ order=date
 [obzhi]
 
 desktopperiod=24
-; desktopperiod={n}  桌面背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 lockperiod=24
-; lockperiod={n}  锁屏背景推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 toastperiod=24
-; lockperiod={n}  通知推送周期：1~24（默认为24h/次，开启推送后生效）
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 tileperiod=2
-; lockperiod={n}  磁贴推送周期：1~24（默认为2h/次，开启推送后生效）
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
 ; order=date    排序：收录

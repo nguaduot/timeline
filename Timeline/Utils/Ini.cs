@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Timeline.Beans;
 using Timeline.Providers;
 
@@ -102,10 +101,10 @@ namespace Timeline.Utils {
         private readonly List<string> tags = new List<string>();
         private string order;
         private string cate = ""; // 非null，""为全部
-        private int desktopPeriod = 24;
-        private int lockPeriod = 24;
-        private int toastPeriod = 24;
-        private int tilePeriod = 2;
+        private float desktopPeriod = 24;
+        private float lockPeriod = 24;
+        private float toastPeriod = 24;
+        private float tilePeriod = 2;
 
         public string Id {
             set => id = value ?? "base";
@@ -146,23 +145,23 @@ namespace Timeline.Utils {
             get => cate;
         }
 
-        public int DesktopPeriod {
-            set => desktopPeriod = value <= 0 || value > 24 ? 24 : value;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => desktopPeriod;
         }
 
-        public int LockPeriod {
-            set => lockPeriod = value <= 0 || value > 24 ? 24 : value;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => lockPeriod;
         }
 
-        public int ToastPeriod {
-            set => toastPeriod = value <= 0 || value > 24 ? 24 : value;
+        public float ToastPeriod {
+            set => toastPeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => toastPeriod;
         }
 
-        public int TilePeriod {
-            set => tilePeriod = value <= 0 || value > 24 ? 24 : value;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
             get => tilePeriod;
         }
 
@@ -203,7 +202,7 @@ namespace Timeline.Utils {
         public override BaseProvider GenerateProvider() => new LocalProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&appetite={Appetite}&folder={Folder}";
+            $"&folder={Folder}&depth={Depth}&appetite={Appetite}";
     }
 
     public class BingIni : BaseIni {
@@ -517,7 +516,7 @@ namespace Timeline.Utils {
         public override BaseProvider GenerateProvider() => new GluttonProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&album={Album}";
+            $"&album={Album}&order={Order}";
     }
 
     public class LspIni : BaseIni {
