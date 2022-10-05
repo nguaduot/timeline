@@ -1367,6 +1367,130 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderNetbian"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="netbian"
+                               Expanding="ExpanderDynamicProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderNetbian.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderNetbian.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid Name="GridNetbianOrder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Uid="OrderDate"
+                                              Tag="date"
+                                              Margin="0,0,4,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbNetbianOrder_Click" />
+                                <ToggleButton Grid.Column="1"
+                                              x:Uid="OrderScore"
+                                              Tag="score"
+                                              Margin="2,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbNetbianOrder_Click" />
+                                <ToggleButton Grid.Column="2"
+                                              x:Uid="OrderRandom"
+                                              Tag="random"
+                                              Margin="4,0,0,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbNetbianOrder_Click" />
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextNetbianCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxNetbianCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listNetbianCate}"
+                                          SelectionChanged="BoxNetbianCate_SelectionChanged" />
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE95E;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextNetbianDonate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="2"
+                                        Name="BtnNetbianDonate"
+                                        x:Uid="BtnProviderDonate"
+                                        Click="BtnNetbianDonate_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderInfinity"
                                ExpandDirection="Down"
                                IsExpanded="False"

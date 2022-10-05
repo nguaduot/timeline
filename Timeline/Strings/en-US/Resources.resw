@@ -840,4 +840,19 @@
   <data name="OrderView.Content" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="Provider_netbian" xml:space="preserve">
+    <value>彼岸图网</value>
+  </data>
+  <data name="Slogan_netbian" xml:space="preserve">
+    <value>4K高清壁纸</value>
+  </data>
+  <data name="TextNetbianCate.Text" xml:space="preserve">
+    <value>Categopry</value>
+  </data>
+  <data name="TextNetbianDonate.Text" xml:space="preserve">
+    <value>Buy me a coffee</value>
+  </data>
+  <data name="UrlNetbian" xml:space="preserve">
+    <value>https://pic.netbian.com/</value>
+  </data>
 </root>

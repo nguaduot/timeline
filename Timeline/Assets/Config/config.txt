@@ -21,6 +21,7 @@ provider=bing
 ; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com
 ; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
 ; provider=toopic       图源：壁纸社 - 桌面高清壁纸 https://www.toopic.cn
+; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
 ; provider=glutton      图源；贪食鬼 - 饕餮盛宴
 ; provider=lsp          图源：LSP - 不可描述
@@ -359,6 +360,34 @@ cate=
 ; cate=portrait   类别：人像
 ; cate=still      类别：静物
 ; cate=lol        类别：LOL
+
+[netbian]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=           类别：全部（默认）
+; cate=acg        类别：ACG
+; cate=animal     类别：动物
+; cate=art        类别：创意
+; cate=landscape  类别：风光
+; cate=portrait   类别：人像
+; cate=still      类别：静物
 
 [infinity]
 

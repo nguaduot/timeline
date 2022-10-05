@@ -152,6 +152,13 @@ namespace TimelineService.Utils {
             ini.Toopic.Order = GetPrivateProfileString(ToopicIni.GetId(), "order", "random", iniFile);
             ini.Toopic.Cate = GetPrivateProfileString(ToopicIni.GetId(), "cate", "", iniFile);
 
+            ini.Netbian.DesktopPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Netbian.LockPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Netbian.ToastPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Netbian.TilePeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Netbian.Order = GetPrivateProfileString(NetbianIni.GetId(), "order", "random", iniFile);
+            ini.Netbian.Cate = GetPrivateProfileString(NetbianIni.GetId(), "cate", "", iniFile);
+
             ini.Infinity.DesktopPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Infinity.LockPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "lockperiod", 24, iniFile);
             ini.Infinity.ToastPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "toastperiod", 24, iniFile);

@@ -65,6 +65,23 @@ namespace Timeline.Utils {
             return defValue;
         }
 
+        private static string[] GetPrivateProfileKeys(string section, string filePath) {
+            byte[] buffer = new byte[1024];
+            int count = GetPrivateProfileString(
+                Encoding.GetEncoding("utf-8").GetBytes(section),
+                null, null, buffer, 1024, filePath);
+            string keys = Encoding.GetEncoding("utf-8").GetString(buffer, 0, count).Trim('\0');
+            return keys.Length > 0 ? keys.Split('\0') : new string[0];
+        }
+
+        private static string[] GetPrivateProfileSections(string filePath) {
+            byte[] buffer = new byte[1024];
+            int count = GetPrivateProfileString(
+                null, null, null, buffer, 1024, filePath);
+            string sections = Encoding.GetEncoding("utf-8").GetString(buffer, 0, count).Trim('\0');
+            return sections.Length > 0 ? sections.Split('\0') : new string[0];
+        }
+
         private static bool WritePrivateProfileString(string section, string key, string value, string filePath) {
             // WritePrivateProfileString 默认使用GB2313编码，封装使支持UTF-8
             return WritePrivateProfileString(
@@ -103,7 +120,6 @@ namespace Timeline.Utils {
             JObject data = JObject.Parse(await FileIO.ReadTextAsync(configFile));
             JObject dataApp = data.Value<JObject>("app");
             JObject dataProvider = data.Value<JObject>("provider");
-            StringBuilder sb = new StringBuilder(1024);
             // 全局配置
             foreach (var item in dataApp) {
                 string value = item.Value != null
@@ -271,6 +287,16 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(ToopicIni.ID, "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveNetbianOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(NetbianIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveNetbianCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(NetbianIni.ID, "cate", cate, iniFile.Path);
+        }
+
         public static async Task SaveLspOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LspIni.ID, "order", order, iniFile.Path);
@@ -397,6 +423,14 @@ namespace Timeline.Utils {
                 Order = GetPrivateProfileString(ToopicIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(ToopicIni.ID, "cate", "", iniFile)
             });
+            ini.SetIni(NetbianIni.ID, new NetbianIni {
+                DesktopPeriod = GetPrivateProfileFloat(NetbianIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(NetbianIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(NetbianIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(NetbianIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(NetbianIni.ID, "order", "random", iniFile),
+                Cate = GetPrivateProfileString(NetbianIni.ID, "cate", "", iniFile)
+            });
             ini.SetIni(InfinityIni.ID, new InfinityIni {
                 DesktopPeriod = GetPrivateProfileFloat(InfinityIni.ID, "desktopperiod", 24, iniFile),
                 LockPeriod = GetPrivateProfileFloat(InfinityIni.ID, "lockperiod", 24, iniFile),
@@ -435,6 +469,27 @@ namespace Timeline.Utils {
                 Order = GetPrivateProfileString(ObzhiIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(ObzhiIni.ID, "cate", "", iniFile)
             });
+
+            List<string> sections = new List<string>();
+            foreach (string section in GetPrivateProfileSections(iniFile)) {
+                if (!"app".Equals(section) && !ini.ContainsProvider(section)) {
+                    sections.Add(section);
+                }
+            }
+            foreach (string section in sections) {
+                ini.SetIni(section, new GeneralIni {
+                    Id = section,
+                    DesktopPeriod = GetPrivateProfileFloat(section, "desktopperiod", 24, iniFile),
+                    LockPeriod = GetPrivateProfileFloat(section, "lockperiod", 24, iniFile),
+                    ToastPeriod = GetPrivateProfileFloat(section, "toastperiod", 24, iniFile),
+                    TilePeriod = GetPrivateProfileFloat(section, "tileperiod", 2, iniFile),
+                    Order = GetPrivateProfileString(section, "order", "random", iniFile),
+                    Cate = GetPrivateProfileString(section, "cate", "", iniFile),
+                    Name = GetPrivateProfileString(section, "name", "", iniFile),
+                    Slogan = GetPrivateProfileString(section, "slogan", "", iniFile),
+                    UrlApi = GetPrivateProfileString(section, "urlapi", "", iniFile)
+                });
+            }
             return ini;
         }
 

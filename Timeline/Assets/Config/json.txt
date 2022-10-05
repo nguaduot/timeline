@@ -107,6 +107,14 @@
       "order": "random",
       "cate": ""
     },
+    "netbian": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
     "infinity": {
       "desktopperiod": 24,
       "lockperiod": 24,

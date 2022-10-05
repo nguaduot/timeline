@@ -413,6 +413,9 @@
                                       Tag="toopic"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="netbian"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="infinity"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
