@@ -25,6 +25,7 @@ namespace Timeline.Providers {
                 Id = bean.Id,
                 No = bean.No,
                 Uhd = bean.ImgUrl,
+                Thumb = bean.ThumbUrl,
                 Title = bean.Title,
                 Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)

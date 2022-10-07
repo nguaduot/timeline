@@ -44,5 +44,9 @@ namespace Timeline.Beans {
         // 图片URL
         [JsonProperty(PropertyName = "imgurl")]
         public string ImgUrl { set; get; }
+
+        // 缩略图URL（可能为null）
+        [JsonProperty(PropertyName = "thumburl")]
+        public string ThumbUrl { set; get; }
     }
 }
