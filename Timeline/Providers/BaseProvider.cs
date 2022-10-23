@@ -163,12 +163,12 @@ namespace Timeline.Providers {
                 string cacheName = string.Format("{0}-{1}{2}", Id, meta.Id, meta.Format);
                 StorageFile cacheFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(cacheName, CreationCollisionOption.OpenIfExists);
                 if ((await cacheFile.GetBasicPropertiesAsync()).Size > 0) { // 已缓存过
-                    LogUtil.D("CacheAsync() cache from disk: " + cacheFile.Path);
+                    Debug.WriteLine("CacheAsync() cache from disk: " + cacheFile.Path);
                     meta.CacheUhd = cacheFile;
                 } else if (meta.Uhd != null) { // 未缓存
                     Uri uriUhd = new Uri(meta.Uhd);
                     if (uriUhd.IsFile) { // 开始复制
-                        LogUtil.D("CacheAsync() cache from file: " + cacheFile.Path);
+                        Debug.WriteLine("CacheAsync() cache from file: " + cacheFile.Path);
                         StorageFile srcFile = await StorageFile.GetFileFromPathAsync(meta.Uhd);
                         await srcFile.CopyAndReplaceAsync(cacheFile);
                         meta.CacheUhd = cacheFile;
@@ -190,13 +190,13 @@ namespace Timeline.Providers {
                         try {
                             long start = DateTime.Now.Ticks;
                             if (meta.Do != null) { // 从历史中恢复任务
-                                LogUtil.D("CacheAsync() cache from history: " + meta.Uhd);
+                                Debug.WriteLine("CacheAsync() cache from history: " + meta.Uhd);
                                 if (meta.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                                     meta.Do.Resume();
                                 }
                                 await meta.Do.AttachAsync().AsTask(token);
                             } else { // 新建下载任务
-                                LogUtil.D("CacheAsync() cache from network: " + meta.Uhd);
+                                Debug.WriteLine("CacheAsync() cache from network: " + meta.Uhd);
                                 meta.Do = downloader.CreateDownload(uriUhd, cacheFile);
                                 await meta.Do.StartAsync().AsTask(token);
                             }
@@ -225,7 +225,7 @@ namespace Timeline.Providers {
                 StorageFile cacheFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(cacheName, CreationCollisionOption.OpenIfExists);
                 if ((await cacheFile.GetBasicPropertiesAsync()).Size > 0) { // 已缓存过
                     m.CacheUhd = cacheFile;
-                    LogUtil.D("CacheAsync() cache from disk: " + cacheFile.Path);
+                    Debug.WriteLine("CacheAsync() cache from disk: " + cacheFile.Path);
                 } else if (m.Do != null) { // 下载中
                     if (m.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                         m.Do.Resume();
@@ -233,7 +233,7 @@ namespace Timeline.Providers {
                 } else if (m.Uhd != null && !new Uri(m.Uhd).IsFile) { // 未下载
                     foreach (DownloadOperation o in downloading) { // 从历史中恢复任务
                         if (m.Uhd.Equals(o.RequestedUri)) {
-                            LogUtil.D("CacheAsync() cache from history: " + m.Uhd);
+                            Debug.WriteLine("CacheAsync() cache from history: " + m.Uhd);
                             m.Do = o;
                             if (m.Do.Progress.Status == BackgroundTransferStatus.PausedByApplication) {
                                 m.Do.Resume();
@@ -242,7 +242,7 @@ namespace Timeline.Providers {
                         }
                     }
                     if (m.Do == null) { // 新建下载任务
-                        LogUtil.D("CacheAsync() cache from network: " + m.Uhd);
+                        Debug.WriteLine("CacheAsync() cache from network: " + m.Uhd);
                         m.Do = downloader.CreateDownload(new Uri(m.Uhd), cacheFile);
                         _ = m.Do.StartAsync();
                     }
