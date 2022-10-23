@@ -41,7 +41,7 @@
 + [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸 [[DEMO]](https://api.nguaduot.cn/toopic/demo)
 + [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[DEMO]](https://api.nguaduot.cn/netbian/demo)
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
-+ LSP - 不可描述 [[DEMO]](https://api.nguaduot.cn/lsp/demo)
++ LSP - 不可描述
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
 + [乌云壁纸](https://www.obzhi.com) - 高清壁纸站 [[DEMO]](https://api.nguaduot.cn/obzhi/demo)
 
