@@ -2078,6 +2078,17 @@
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">
                                 <Span xml:space="default">
+                                    <Run x:Uid="TextThankServer" />
+                                    <Hyperlink x:Uid="LinkGhxi"
+                                               UnderlineStyle="None">
+                                        <Run x:Uid="TextLink" />
+                                    </Hyperlink>
+                                </Span>
+                            </TextBlock>
+                            <TextBlock TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0">
+                                <Span xml:space="default">
                                     <Run x:Uid="TextThankAd1" />
                                     <Hyperlink x:Uid="LinkAd1"
                                                UnderlineStyle="None">

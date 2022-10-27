@@ -855,4 +855,13 @@
   <data name="UrlNetbian" xml:space="preserve">
     <value>https://pic.netbian.com/vip.html</value>
   </data>
+  <data name="LinkGhxi.NavigateUri" xml:space="preserve">
+    <value>https://www.ghxi.com</value>
+  </data>
+  <data name="TextLink.Text" xml:space="preserve">
+    <value>Visit</value>
+  </data>
+  <data name="TextThankServer.Text" xml:space="preserve">
+    <value>Thank 果核剥壳 for server.</value>
+  </data>
 </root>
