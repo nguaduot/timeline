@@ -101,7 +101,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             if (go.Tag.Length > 0) {
                 int page = (int)Math.Ceiling(GetCount() * 1.0 / PAGE_SIZE) + 1; // 从1开始
                 string urlApi = string.Format(URL_API_SEARCH, Uri.EscapeDataString(go.Tag), page);

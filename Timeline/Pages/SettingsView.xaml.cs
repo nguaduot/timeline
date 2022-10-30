@@ -294,7 +294,7 @@ namespace Timeline.Pages {
             PbImport.Visibility = Visibility.Visible;
             GluttonProvider glutton = ini.GenerateProvider(GluttonIni.ID) as GluttonProvider;
             LocalIni localIni = ini.GetIni(LocalIni.ID) as LocalIni;
-            await glutton.LoadData(new CancellationTokenSource().Token, new GluttonIni() {
+            await glutton.LoadData(new CancellationTokenSource().Token, null, new GluttonIni() {
                 Album = "rank",
                 Order = "score"
             }, new Go(null));
@@ -432,13 +432,33 @@ namespace Timeline.Pages {
             await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
         }
 
+        private async void BtnSavePick_Click(object sender, RoutedEventArgs e) {
+            FolderPicker picker = new FolderPicker();
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add("*");
+
+            StorageFolder folder = await picker.PickSingleFolderAsync();
+            if (folder != null) {
+                // Application now has read/write access to all contents in the picked folder
+                // (including other sub-folder contents)
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace("SaveFolderToken", folder);
+
+                ini.Folder = folder.Path;
+                await IniUtil.SaveFolderAsync(ini.Folder);
+            }
+        }
+
         private async void BtnShowSave_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(resLoader.GetString("AppNameShort"),
                 CreationCollisionOption.OpenIfExists));
         }
 
-        private async void BtnShowCache_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchFolderAsync(ApplicationData.Current.TemporaryFolder);
+        private async void BtnShowCacheView_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchFolderAsync(FileUtil.GetCacheFolderAsync());
+        }
+
+        private async void BtnShowCachePush_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchFolderAsync(await FileUtil.GetWallpaperFolderAsync());
         }
 
         private async void BtnReview_Click(object sender, RoutedEventArgs e) {
@@ -966,7 +986,7 @@ namespace Timeline.Pages {
 
         private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
             LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
-            StorageFolder folder = await FileUtil.GetGalleryFolder(bi.Folder);
+            StorageFolder folder = await FileUtil.GetGalleryFolder(bi.Folder, ini.Folder);
             if (folder == null) {
                 return;
             }

@@ -381,8 +381,8 @@
   <data name="SettingsSaveTitle.Text" xml:space="preserve">
     <value>我的收藏</value>
   </data>
-  <data name="TextCache.Text" xml:space="preserve">
-    <value>查看已缓存的图片</value>
+  <data name="TextCacheView.Text" xml:space="preserve">
+    <value>拾取历史浏览图片</value>
   </data>
   <data name="TextHimawari8Offset.Text" xml:space="preserve">
     <value>地球位置</value>
@@ -865,6 +865,15 @@
     <value>友链</value>
   </data>
   <data name="TextThankServer.Text" xml:space="preserve">
-    <value>果核剥壳：提供服务器</value>
+    <value>果核剥壳：无偿提供云服务器</value>
+  </data>
+  <data name="BtnSavePick.Content" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="TextCachePush.Text" xml:space="preserve">
+    <value>拾取历史推送图片</value>
+  </data>
+  <data name="TextSavePick.Text" xml:space="preserve">
+    <value>更改收藏夹</value>
   </data>
 </root>

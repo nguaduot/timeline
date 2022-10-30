@@ -160,6 +160,11 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString("app", "theme", theme, iniFile.Path);
         }
 
+        public static async Task SaveFolderAsync(string folder) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString("app", "folder", folder, iniFile.Path);
+        }
+
         public static async Task SaveLocalFolderAsync(string folder) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LocalIni.ID, "folder", folder, iniFile.Path);
@@ -323,6 +328,7 @@ namespace Timeline.Utils {
             ini.ToastProvider = GetPrivateProfileString("app", "toastprovider", "", iniFile);
             ini.TileProvider = GetPrivateProfileString("app", "tileprovider", "", iniFile);
             ini.Theme = GetPrivateProfileString("app", "theme", "", iniFile);
+            ini.Folder = GetPrivateProfileString("app", "folder", "", iniFile);
             ini.Cache = GetPrivateProfileInt("app", "cache", 600, iniFile);
             ini.R18 = GetPrivateProfileInt("app", "r18", 0, iniFile);
 
@@ -652,12 +658,16 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task<StorageFolder> GetLogFolderAsync() {
-            // LocalCache folder can be relied upon until it's deleted,
-            // whereas TempState folder cannot be relied upon at a later time
-            // as it's subject to deletion by external factors such as disk clean - up,
-            // or by the operating system on running low on storage space.
-            return await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
+        //public static async Task<StorageFolder> GetLogFolderAsync() {
+        //    // LocalCache folder can be relied upon until it's deleted,
+        //    // whereas TempState folder cannot be relied upon at a later time
+        //    // as it's subject to deletion by external factors such as disk clean - up,
+        //    // or by the operating system on running low on storage space.
+        //    return await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("logs", CreationCollisionOption.OpenIfExists);
+        //}
+
+        public static StorageFolder GetCacheFolderAsync() {
+            return ApplicationData.Current.TemporaryFolder;
         }
 
         public static async Task<StorageFolder> GetWallpaperFolderAsync() {
@@ -713,8 +723,7 @@ namespace Timeline.Utils {
                         count_clear++;
                     }
                     // 清理壁纸缓存文件夹
-                    folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
-                        CreationCollisionOption.OpenIfExists); // 壁纸缓存文件夹
+                    folder = await GetWallpaperFolderAsync(); // 壁纸缓存文件夹
                     files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
                     Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
                     int count_clear2 = 0;
@@ -748,11 +757,24 @@ namespace Timeline.Utils {
         //    return folder;
         //}
 
-        public static async Task<StorageFolder> GetGalleryFolder(string pathDir = null) {
+        public static async Task<StorageFolder> GetGalleryFolder(string dir = null, string dirDef = null) {
             StorageFolder folder = null;
-            if (!string.IsNullOrEmpty(pathDir)) {
+            if (!string.IsNullOrEmpty(dir)) {
                 try {
-                    folder = await StorageFolder.GetFolderFromPathAsync(pathDir.Replace("/", "\\"));
+                    folder = await StorageFolder.GetFolderFromPathAsync(dir.Replace("/", "\\"));
+                } catch (FileNotFoundException ex) { // 指定的文件夹不存在
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                } catch (UnauthorizedAccessException ex) { // 您无权访问指定文件夹
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                } catch (ArgumentException ex) { // 路径不能是相对路径或 URI
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                } catch (Exception ex) {
+                    LogUtil.E("GetGalleryFolder() " + ex.Message);
+                }
+            }
+            if (folder == null && !string.IsNullOrEmpty(dirDef)) {
+                try {
+                    folder = await StorageFolder.GetFolderFromPathAsync(dirDef.Replace("/", "\\"));
                 } catch (FileNotFoundException ex) { // 指定的文件夹不存在
                     LogUtil.E("GetGalleryFolder() " + ex.Message);
                 } catch (UnauthorizedAccessException ex) { // 您无权访问指定文件夹

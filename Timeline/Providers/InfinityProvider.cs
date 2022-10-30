@@ -42,7 +42,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             string urlApi;
             if ("score".Equals(bi.Order)) {
                 urlApi = string.Format(URL_API, (int)Math.Ceiling(GetCount() * 1.0 / PAGE_SIZE));

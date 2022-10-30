@@ -199,21 +199,21 @@ namespace Timeline {
                     if (go.Index > 0) {
                         if (go.Index >= provider.GetCount() - 1) {
                             if (go.Index > provider.GetCount()) { // 立即加载
-                                res = await provider.LoadData(token, ini.GetIni(), go);
+                                res = await provider.LoadData(token, ini, ini.GetIni(), go);
                             } else { // 预加载
-                                _ = provider.LoadData(token, ini.GetIni(), go);
+                                _ = provider.LoadData(token, ini, ini.GetIni(), go);
                             }
                         }
                     } else { // 立即重新加载
                         provider.ClearMetas();
-                        res = await provider.LoadData(token, ini.GetIni(), go);
+                        res = await provider.LoadData(token, ini, ini.GetIni(), go);
                     }
                 } else if (action == PageAction.Yesterday) {
                     if (provider.GetCountNext(meta) <= 2) {
                         if (provider.GetCountNext(meta) == 0) { // 立即加载
-                            res = await provider.LoadData(token, ini.GetIni(), go);
+                            res = await provider.LoadData(token, ini, ini.GetIni(), go);
                         } else { // 预加载
-                            _ = provider.LoadData(token, ini.GetIni(), go);
+                            _ = provider.LoadData(token, ini, ini.GetIni(), go);
                         }
                     }
                 } else if (action == PageAction.Tomorrow) {
@@ -579,12 +579,12 @@ namespace Timeline {
 
         private async Task DownloadAsync() {
             ShowToastI(resLoader.GetString("MsgSave"));
-            StorageFile file = await provider.DownloadAsync(meta, resLoader.GetString("Provider_" + provider.Id));
+            StorageFolder folderSave = await FileUtil.GetGalleryFolder(ini.Folder);
+            StorageFile file = await provider.DownloadAsync(folderSave, meta, resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 meta.Favorite = true;
                 ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionView"), async () => {
-                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                        CreationCollisionOption.OpenIfExists), file);
+                    await FileUtil.LaunchFolderAsync(folderSave, file);
                 });
             } else {
                 ShowToastE(resLoader.GetString("MsgSave0"));
@@ -1298,7 +1298,7 @@ namespace Timeline {
                     ToggleFullscreenMode();
                     break;
                 case VirtualKey.F12: // F12
-                    await FileUtil.LaunchFolderAsync(await FileUtil.GetLogFolderAsync());
+                    await FileUtil.LaunchFolderAsync(ApplicationData.Current.LocalFolder);
                     break;
                 case VirtualKey.Number6: // Ctrl + 6
                     await Mark("audited", resLoader.GetString("MarkAudited"));
@@ -1326,12 +1326,13 @@ namespace Timeline {
                     await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
                     break;
                 case VirtualKey.O: // Ctrl + O
-                    await FileUtil.LaunchFolderAsync(await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
-                        CreationCollisionOption.OpenIfExists));
+                    await FileUtil.LaunchFolderAsync(await FileUtil.GetGalleryFolder(ini.Folder));
                     break;
                 case VirtualKey.S: // Ctrl + S
                 case VirtualKey.D: // Ctrl + D
-                    MenuSave_Click(null, null);
+                    if (!LocalIni.ID.Equals(ini.Provider)) { // 图源为“本地图库”时禁用收藏功能
+                        MenuSave_Click(null, null);
+                    }
                     break;
                 case VirtualKey.L: // Ctrl + L
                     MenuSetLock_Click(null, null);

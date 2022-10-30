@@ -351,8 +351,8 @@
   <data name="SettingsSaveTitle.Text" xml:space="preserve">
     <value>Save location</value>
   </data>
-  <data name="TextCache.Text" xml:space="preserve">
-    <value>Cache location</value>
+  <data name="TextCacheView.Text" xml:space="preserve">
+    <value>Recently viewed</value>
   </data>
   <data name="TextHimawari8Offset.Text" xml:space="preserve">
     <value>Earth position</value>
@@ -863,5 +863,17 @@
   </data>
   <data name="TextThankServer.Text" xml:space="preserve">
     <value>Thank 果核剥壳 for server.</value>
+  </data>
+  <data name="BtnSavePick.Content" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="DlgReview.Title" xml:space="preserve">
+    <value>Buy me a coffee</value>
+  </data>
+  <data name="TextCachePush.Text" xml:space="preserve">
+    <value>Recently pushed</value>
+  </data>
+  <data name="TextSavePick.Text" xml:space="preserve">
+    <value>New folder</value>
   </data>
 </root>

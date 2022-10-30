@@ -1,4 +1,4 @@
-; 拾光 / Timeline v7.5
+; 拾光 / Timeline v7.6
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; Gitee：https://gitee.com/nguaduot/timeline
 ; E-mail：nguaduot@163.com
@@ -6,7 +6,7 @@
 [app]
 
 r18=0
-; r18={bool}  R18内容：0或1，置为1可启用图源“LSP”（默认为0，不启用）
+; r18={bool}  R18内容：0或1，置为1可启用图源「LSP」（默认为0，不启用）
 
 provider=bing
 ; provider=local        图源：本地图库 - 我的精选
@@ -24,7 +24,7 @@ provider=bing
 ; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
 ; provider=glutton      图源；贪食鬼 - 饕餮盛宴
-; provider=lsp          图源：LSP - 不可描述
+; provider=lsp          图源(隐藏)：LSP - 不可描述
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com
 ; provider=obzhi        图源(弃用)：乌云壁纸 - 高清壁纸站 https://www.obzhi.com
 
@@ -45,8 +45,11 @@ theme=
 ; theme=light  主题：亮色
 ; theme=dark   主题：暗色
 
+folder=
+; folder=  收藏夹路径：默认留空，为系统「图片」文件夹下以本应用名命名的子文件夹
+
 cache=600
-; cache={int}  本地缓存阈值：默认600张，超过阈值自动清理
+; cache={int}  缓存阈值：包括浏览图片与推送图片，超过阈值自动清理（默认各600张）
 
 [local]
 
@@ -67,13 +70,13 @@ order=random
 ; order=random  排序：随缘（默认）
 
 folder=
-; folder=  图库路径：默认留空（与收藏文件夹相同）
+; folder=  图库路径：默认留空，可保持与收藏夹路径相同
 
 depth=0
 ; depth={int}  图库深度：读取子文件夹层数，最大2（默认为0，不读取子文件夹）
 
 appetite=20
-; appetite={int}  导入量：从“贪食鬼”图源热度集导入图片量（默认为20张）
+; appetite={int}  导入量：从「贪食鬼」图源热度集导入图片量（默认为20张）
 
 [bing]
 

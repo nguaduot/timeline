@@ -79,7 +79,7 @@ namespace Timeline.Providers {
         //    AppendMetas(metasAdd);
         //}
 
-        public virtual async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public virtual async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             //dicHistory.Clear();
             //Dictionary<string, int> dicNew = await FileUtil.GetHistoryAsync(Id);
             //foreach (var item in dicNew) {
@@ -299,14 +299,12 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public async Task<StorageFile> DownloadAsync(Meta meta, string provider) {
+        public async Task<StorageFile> DownloadAsync(StorageFolder folder, Meta meta, string provider) {
             if (meta?.CacheUhd == null) {
                 return null;
             }
             string appName = AppInfo.Current.DisplayInfo.DisplayName;
             try {
-                StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(appName,
-                    CreationCollisionOption.OpenIfExists);
                 string name = string.Format("{0}_{1}_{2}{3}", appName, provider, meta.Id, meta.Format);
                 name = FileUtil.MakeValidFileName(name, "");
                 return await meta.CacheUhd.CopyAsync(folder, name, NameCollisionOption.ReplaceExisting);

@@ -137,7 +137,7 @@
                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                                           FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                           FontSize="16"
-                                          Glyph="&#xE8AC;" />
+                                          Glyph="&#xE70F;" />
                                 <TextBlock Grid.Column="1"
                                            x:Uid="TextLocalPick"
                                            VerticalAlignment="Center"
@@ -1888,15 +1888,15 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Uid="TextCache"
+                            <TextBlock x:Uid="TextSavePick"
                                        VerticalAlignment="Center"
                                        Style="{StaticResource BodyTextBlockStyle}" />
                             <Button Grid.Column="1"
-                                    Name="BtnShowCache"
-                                    x:Uid="BtnShowCache"
+                                    Name="BtnSavePick"
+                                    x:Uid="BtnSavePick"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Click="BtnShowCache_Click" />
+                                    Click="BtnSavePick_Click" />
                         </Grid>
                     </muxc:Expander.Content>
                 </muxc:Expander>
@@ -1910,6 +1910,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <FontIcon Margin="0,0,12,0"
                                       VerticalAlignment="Center"
@@ -1927,24 +1928,46 @@
                                            Style="{StaticResource CaptionTextBlockStyle}"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <Grid Margin="28,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Uid="TextIni"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
-                            <Button Grid.Column="1"
+                            <Button Grid.Column="2"
                                     Name="BtnIni"
                                     x:Uid="BtnIni"
-                                    HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Click="BtnIni_Click" />
                         </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid Margin="28,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="TextCacheView"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="1"
+                                    Name="BtnShowCacheView"
+                                    x:Uid="BtnShowCache"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Click="BtnShowCacheView_Click" />
+                            </Grid>
+                            <Grid Margin="28,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="TextCachePush"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource BodyTextBlockStyle}" />
+                                <Button Grid.Column="1"
+                                    Name="BtnShowCachePush"
+                                    x:Uid="BtnShowCache"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Click="BtnShowCachePush_Click" />
+                            </Grid>
+                        </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
 
@@ -2085,7 +2108,7 @@
                                     </Hyperlink>
                                 </Span>
                             </TextBlock>
-                            <TextBlock TextWrapping="WrapWholeWords"
+                            <!--<TextBlock TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">
                                 <Span xml:space="default">
@@ -2117,7 +2140,7 @@
                                         <Run x:Uid="TextView" />
                                     </Hyperlink>
                                 </Span>
-                            </TextBlock>
+                            </TextBlock>-->
                             <TextBlock Name="TextThankDonate"
                                        TextWrapping="WrapWholeWords"
                                        Visibility="Collapsed"

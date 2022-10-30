@@ -39,7 +39,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             // "1"：最新添加，"2"：点赞最多，"3"：浏览最多
             string sort = "score".Equals(bi.Order) ? "2" : ("view".Equals(bi.Order) ? "3" : "1");
             int page = (int)Math.Ceiling(GetCount() * 1.0 / PAGE_SIZE) + 1;

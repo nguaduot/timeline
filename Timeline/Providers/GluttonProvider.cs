@@ -48,7 +48,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             GluttonIni ini = bi as GluttonIni;
             int no = go.No;
             DateTime date = go.Date;

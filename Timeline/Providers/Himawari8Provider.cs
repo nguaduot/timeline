@@ -57,7 +57,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             Himawari8Ini ini = bi as Himawari8Ini;
             offsetEarth = ini.Offset;
             ratioEarth = ini.Ratio;

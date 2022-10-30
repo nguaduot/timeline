@@ -32,6 +32,7 @@ namespace Timeline.Utils {
         private string toastProvider = ""; // 非null
         private string tileProvider = ""; // 非null
         private string theme = ""; // 非null
+        private string folder = ""; // 非null
 
         public string Provider {
             set => provider = Inis.ContainsKey(value) ? value : BingIni.ID;
@@ -61,6 +62,12 @@ namespace Timeline.Utils {
         public string Theme {
             set => theme = THEME.Contains(value) ? value : "";
             get => theme;
+        }
+
+        public string Folder {
+            //set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            set => folder = value ?? "";
+            get => folder;
         }
 
         public int Cache { set; get; } = 600;
@@ -96,7 +103,7 @@ namespace Timeline.Utils {
         override public string ToString() {
             string paras = Inis[provider].ToString();
             return $"/{Provider}?desktopprovider={DesktopProvider}&lockprovider={LockProvider}&toastprovider={ToastProvider}&tileprovider={TileProvider}"
-                + $"&theme={Theme}&cache={Cache}&r18={R18}"
+                + $"&theme={Theme}&folder={Folder}&cache={Cache}&r18={R18}"
                 + (paras.Length > 0 ? "&" : "") + paras;
         }
     }

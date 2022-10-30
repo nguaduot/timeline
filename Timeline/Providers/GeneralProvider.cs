@@ -33,7 +33,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             GeneralIni ini = bi as GeneralIni;
             if (string.IsNullOrEmpty(ini.UrlApi)) {
                 return false;

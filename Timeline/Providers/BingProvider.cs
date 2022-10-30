@@ -122,7 +122,7 @@ namespace Timeline.Providers {
             return meta;
         }
 
-        public override async Task<bool> LoadData(CancellationToken token, BaseIni bi, Go go) {
+        public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
             BingIni ini = bi as BingIni;
             string urlApi = string.Format(URL_API, GetMaxIndex() + 1);
             if (ini.Lang.Length > 0) {
