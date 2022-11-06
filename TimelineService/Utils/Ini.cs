@@ -248,7 +248,7 @@ namespace TimelineService.Utils {
             } else if (QingbzIni.GetId().Equals(provider)) {
                 paras = Qingbz.ToString();
             } else if (WallhavenIni.GetId().Equals(provider)) {
-                return Wallhaven.ToString();
+                paras = Qingbz.ToString();
             } else if (WallhereIni.GetId().Equals(provider)) {
                 paras = Wallhere.ToString();
             } else if (WallpaperupIni.GetId().Equals(provider)) {
