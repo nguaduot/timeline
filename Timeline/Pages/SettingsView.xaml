@@ -2090,24 +2090,22 @@
                     </muxc:Expander.Header>
                     <muxc:Expander.Content>
                         <StackPanel Margin="28,0,0,0">
+                            <Image Source="ms-appx:///Assets/Images/ghxi_logo.png"
+                                   HorizontalAlignment="Left"
+                                   Tapped="ImgGhxi_Tapped"
+                                   Height="24" />
+                            <TextBlock x:Uid="TextThankServer"
+                                       TextWrapping="WrapWholeWords"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0" />
                             <TextBlock x:Uid="TextThankIcon"
                                        TextWrapping="WrapWholeWords"
-                                       Style="{StaticResource BodyTextBlockStyle}" />
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="0,8,0,0" />
                             <TextBlock x:Uid="TextThankCode"
                                        TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0" />
-                            <TextBlock TextWrapping="WrapWholeWords"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0">
-                                <Span xml:space="default">
-                                    <Run x:Uid="TextThankServer" />
-                                    <Hyperlink x:Uid="LinkGhxi"
-                                               UnderlineStyle="None">
-                                        <Run x:Uid="TextLink" />
-                                    </Hyperlink>
-                                </Span>
-                            </TextBlock>
                             <!--<TextBlock TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0">

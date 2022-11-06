@@ -539,6 +539,19 @@ namespace TimelineService {
                     LogUtil.E("LoadLocalAsync() " + ex.Message);
                 }
             }
+            if (folder == null && !string.IsNullOrEmpty(ini.Folder)) {
+                try {
+                    folder = await StorageFolder.GetFolderFromPathAsync(ini.Folder.Replace("/", "\\"));
+                } catch (FileNotFoundException ex) { // 指定的文件夹不存在
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (UnauthorizedAccessException ex) { // 您无权访问指定文件夹
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (ArgumentException ex) { // 路径不能是相对路径或 URI
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                } catch (Exception ex) {
+                    LogUtil.E("LoadLocalAsync() " + ex.Message);
+                }
+            }
             if (folder == null) {
                 folder = await KnownFolders.PicturesLibrary.CreateFolderAsync(AppInfo.Current.DisplayInfo.DisplayName,
                     CreationCollisionOption.OpenIfExists);

@@ -75,6 +75,7 @@ namespace TimelineService.Utils {
             ini.LockProvider = GetPrivateProfileString("app", "lockprovider", "", iniFile);
             ini.ToastProvider = GetPrivateProfileString("app", "toastprovider", "", iniFile);
             ini.TileProvider = GetPrivateProfileString("app", "tileprovider", "", iniFile);
+            ini.Folder = GetPrivateProfileString("app", "folder", "", iniFile);
 
             ini.Local.DesktopPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Local.LockPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "lockperiod", 24, iniFile);

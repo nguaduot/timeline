@@ -18,6 +18,13 @@ namespace TimelineService.Utils {
             get => provider;
         }
 
+        private string folder = "";
+        public string Folder {
+            //set => folder = string.Concat((value ?? "").Split(Path.GetInvalidFileNameChars()));
+            set => folder = value ?? "";
+            get => folder;
+        }
+
         public string DesktopProvider { set; get; }
 
         public string LockProvider { set; get; }

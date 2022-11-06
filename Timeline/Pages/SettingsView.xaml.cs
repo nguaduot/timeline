@@ -1023,6 +1023,10 @@ namespace Timeline.Pages {
             await ImportAsync();
         }
 
+        private async void ImgGhxi_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlGhxi")));
+        }
+
         private string GenerateProviderTitle(object tag) {
             // 生成图源 Expander 标题
             return resLoader.GetString("Provider_" + tag);
