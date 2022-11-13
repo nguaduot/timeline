@@ -158,7 +158,7 @@ namespace Timeline {
             }
             // 检查菜单提示
             if (!localSettings.Values.ContainsKey("MenuLearned")) {
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 ShowToastI(resLoader.GetString("MsgWelcome"));
                 return;
             }
