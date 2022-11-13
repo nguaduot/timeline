@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using TimelineService.Beans;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.System.Profile;
 using Windows.System.UserProfile;
@@ -25,6 +26,7 @@ namespace TimelineService.Utils {
                 App = "TimelineService",
                 Package = "TWPushService.winmd",
                 Version = SysUtil.GetPkgVer(false),
+                Architecture = Package.Current.Id.Architecture.ToString(),
                 Api = ini?.ToString(),
                 DosageApp = dosageApp,
                 DosageApi = dosageApi,

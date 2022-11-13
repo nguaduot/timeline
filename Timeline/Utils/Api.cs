@@ -27,6 +27,7 @@ namespace Timeline.Utils {
                 App = Package.Current.DisplayName, // 不会随语言改变
                 Package = Package.Current.Id.FamilyName,
                 Version = SysUtil.GetPkgVer(false),
+                Architecture = Package.Current.Id.Architecture.ToString(),
                 Api = ini?.ToString(),
                 DosageApp = dosageApp,
                 DosageApi = dosageApi,

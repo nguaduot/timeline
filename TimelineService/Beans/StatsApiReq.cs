@@ -11,6 +11,9 @@ namespace TimelineService.Beans {
         [JsonProperty(PropertyName = "ver")]
         public string Version { set; get; }
 
+        [JsonProperty(PropertyName = "arch")]
+        public string Architecture { set; get; }
+
         [JsonProperty(PropertyName = "api")]
         public string Api { set; get; }
 
