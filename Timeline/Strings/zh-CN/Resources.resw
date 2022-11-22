@@ -265,7 +265,7 @@
     <value>Gitee</value>
   </data>
   <data name="TextContatc2.Text" xml:space="preserve">
-    <value>开源。如果您愿意为「拾光」提供国内CDN加速服务，或有其他想法、合作意向、定制需求，可</value>
+    <value>开源。如果您愿意提供帮助，或有其他想法、合作意向、定制需求，可</value>
   </data>
   <data name="TextContatc3.Text" xml:space="preserve">
     <value>发邮件</value>
@@ -284,12 +284,6 @@
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>下次一定</value>
-  </data>
-  <data name="DlgDonate.PrimaryButtonText" xml:space="preserve">
-    <value>微信码</value>
-  </data>
-  <data name="DlgDonate.SecondaryButtonText" xml:space="preserve">
-    <value>支付宝码</value>
   </data>
   <data name="DlgDonate.Title" xml:space="preserve">
     <value>赞助拾光</value>
@@ -875,5 +869,14 @@
   </data>
   <data name="TextSavePick.Text" xml:space="preserve">
     <value>更改收藏夹</value>
+  </data>
+  <data name="DonateChannelAlipay" xml:space="preserve">
+    <value>支付宝</value>
+  </data>
+  <data name="DonateChannelEcny" xml:space="preserve">
+    <value>数字人民币</value>
+  </data>
+  <data name="DonateChannelWechat" xml:space="preserve">
+    <value>微信</value>
   </data>
 </root>

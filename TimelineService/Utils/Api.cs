@@ -30,6 +30,7 @@ namespace TimelineService.Utils {
                 Api = ini?.ToString(),
                 DosageApp = dosageApp,
                 DosageApi = dosageApi,
+                Pc = SysUtil.GetPcType(),
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = SysUtil.GetOsVer(),
                 Screen = screen,

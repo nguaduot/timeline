@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Timeline.Beans;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Metadata;
@@ -830,54 +831,90 @@ namespace Timeline.Utils {
     }
 
     public class SysUtil {
-        internal const ushort PROCESSOR_ARCHITECTURE_INTEL = 0;
-        internal const ushort PROCESSOR_ARCHITECTURE_IA64 = 6;
-        internal const ushort PROCESSOR_ARCHITECTURE_AMD64 = 9;
-        internal const ushort PROCESSOR_ARCHITECTURE_UNKNOWN = 0xFFFF;
+        //internal const ushort PROCESSOR_ARCHITECTURE_INTEL = 0;
+        //internal const ushort PROCESSOR_ARCHITECTURE_IA64 = 6;
+        //internal const ushort PROCESSOR_ARCHITECTURE_AMD64 = 9;
+        //internal const ushort PROCESSOR_ARCHITECTURE_UNKNOWN = 0xFFFF;
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SYSTEM_INFO {
-            public ushort wProcessorArchitecture;
-            public ushort wReserved;
-            public uint dwPageSize;
-            public IntPtr lpMinimumApplicationAddress;
-            public IntPtr lpMaximumApplicationAddress;
-            public UIntPtr dwActiveProcessorMask;
-            public uint dwNumberOfProcessors;
-            public uint dwProcessorType;
-            public uint dwAllocationGranularity;
-            public ushort wProcessorLevel;
-            public ushort wProcessorRevision;
-        };
+        //[StructLayout(LayoutKind.Sequential)]
+        //internal struct SYSTEM_INFO {
+        //    public ushort wProcessorArchitecture;
+        //    public ushort wReserved;
+        //    public uint dwPageSize;
+        //    public IntPtr lpMinimumApplicationAddress;
+        //    public IntPtr lpMaximumApplicationAddress;
+        //    public UIntPtr dwActiveProcessorMask;
+        //    public uint dwNumberOfProcessors;
+        //    public uint dwProcessorType;
+        //    public uint dwAllocationGranularity;
+        //    public ushort wProcessorLevel;
+        //    public ushort wProcessorRevision;
+        //};
 
-        [DllImport("kernel32.dll")]
-        internal static extern void GetNativeSystemInfo(ref SYSTEM_INFO lpSystemInfo);
+        //[DllImport("kernel32.dll")]
+        //internal static extern void GetNativeSystemInfo(ref SYSTEM_INFO lpSystemInfo);
 
-        [DllImport("kernel32.dll")]
-        internal static extern void GetSystemInfo(ref SYSTEM_INFO lpSystemInfo);
+        //[DllImport("kernel32.dll")]
+        //internal static extern void GetSystemInfo(ref SYSTEM_INFO lpSystemInfo);
 
-        public enum Platform {
-            X86, X64, IA64, Unknown
+        //public enum Platform {
+        //    X86, X64, IA64, Unknown
+        //}
+
+        //public static Platform GetPlatform() {
+        //    SYSTEM_INFO sysInfo = new SYSTEM_INFO();
+        //    if (System.Environment.OSVersion.Version.Major > 5 || (System.Environment.OSVersion.Version.Major == 5
+        //        && System.Environment.OSVersion.Version.Minor >= 1)) {
+        //        GetNativeSystemInfo(ref sysInfo);
+        //    } else {
+        //        GetSystemInfo(ref sysInfo);
+        //    }
+        //    switch (sysInfo.wProcessorArchitecture) {
+        //        case PROCESSOR_ARCHITECTURE_IA64:
+        //            return Platform.IA64;
+        //        case PROCESSOR_ARCHITECTURE_AMD64:
+        //            return Platform.X64;
+        //        case PROCESSOR_ARCHITECTURE_INTEL:
+        //            return Platform.X86;
+        //        default:
+        //            return Platform.Unknown;
+        //    }
+        //}
+
+        internal struct PowerStatus {
+            public byte ACLineStatus;
+            public byte BatteryFlag;
+            public byte BatteryLifePercent;
+            public byte SystemStatusFlag;
+            public int BatteryLifeTime;
+            public int BatteryFullLifeTime;
         }
 
-        public static Platform GetPlatform() {
-            SYSTEM_INFO sysInfo = new SYSTEM_INFO();
-            if (System.Environment.OSVersion.Version.Major > 5 || (System.Environment.OSVersion.Version.Major == 5
-                && System.Environment.OSVersion.Version.Minor >= 1)) {
-                GetNativeSystemInfo(ref sysInfo);
-            } else {
-                GetSystemInfo(ref sysInfo);
+        [DllImport("kernel32.dll")]
+        internal static extern bool GetSystemPowerStatus(out PowerStatus BatteryInfo);
+
+        /// <summary>
+        /// 通过电池状态判定PC类型
+        /// </summary>
+        /// <returns>
+        /// desktop：台式电脑
+        /// laptop：笔记本电脑或平板
+        /// </returns>
+        public static string GetPcType() {
+            if (GetSystemPowerStatus(out PowerStatus status)) {
+                Debug.WriteLine("GetSystemPowerStatus: " + JsonConvert.SerializeObject(status, Formatting.None));
+                if (status.BatteryFlag == 255) { // Unknown status
+                    return null;
+                } else if (status.BatteryFlag == 128) { // No system battery
+                    return "desktop";
+                }
+                // 1: High
+                // 2: Low
+                // 4: Critical
+                // 8: Charging
+                return "laptop";
             }
-            switch (sysInfo.wProcessorArchitecture) {
-                case PROCESSOR_ARCHITECTURE_IA64:
-                    return Platform.IA64;
-                case PROCESSOR_ARCHITECTURE_AMD64:
-                    return Platform.X64;
-                case PROCESSOR_ARCHITECTURE_INTEL:
-                    return Platform.X86;
-                default:
-                    return Platform.Unknown;
-            }
+            return null;
         }
 
         /// <summary>

@@ -107,14 +107,16 @@ namespace TimelineService {
             periodLock = ini.GetLockPeriod(ini.LockProvider);
             periodToast = ini.GetToastPeriod(ini.ToastProvider);
             periodTile = ini.GetTilePeriod(ini.TileProvider);
-            tagDesktop = string.Format("{0}{1:}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                Math.Ceiling(DateTime.Now.Hour / periodDesktop), ini.DesktopProvider);
+            int dayMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            tagDesktop = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
+                Math.Ceiling(dayMinutes / (periodDesktop * 60)), ini.DesktopProvider);
             tagLock = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                Math.Ceiling(DateTime.Now.Hour / periodLock), ini.LockProvider);
+                Math.Ceiling(dayMinutes / (periodLock * 60)), ini.LockProvider);
             tagToast = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                Math.Ceiling(DateTime.Now.Hour / periodToast), ini.ToastProvider);
+                Math.Ceiling(dayMinutes / (periodToast * 60)), ini.ToastProvider);
             tagTile = string.Format("{0}{1}-{2}", DateTime.Now.ToString("yyyyMMdd"),
-                Math.Ceiling(DateTime.Now.Hour / periodTile), !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider);
+                Math.Ceiling(dayMinutes / (periodTile * 60)),
+                !string.IsNullOrEmpty(ini.TileProvider) ? ini.TileProvider : ini.Provider);
 
             if (localSettings == null) {
                 localSettings = ApplicationData.Current.LocalSettings;

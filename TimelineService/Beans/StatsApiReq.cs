@@ -23,6 +23,9 @@ namespace TimelineService.Beans {
         [JsonProperty(PropertyName = "dosageapi")]
         public int DosageApi { set; get; }
 
+        [JsonProperty(PropertyName = "pc")]
+        public string Pc { set; get; }
+
         [JsonProperty(PropertyName = "os")]
         public string Os { set; get; }
 

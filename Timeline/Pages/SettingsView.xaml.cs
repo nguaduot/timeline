@@ -567,17 +567,17 @@ namespace Timeline.Pages {
             });
         }
 
-        private void BtnTimelineContribute_Click(object sender, RoutedEventArgs e) {
-            DlgChanged?.Invoke(this, new DlgEventArgs {
-                TimelineContributeChanged = true
-            });
-        }
+        //private void BtnTimelineContribute_Click(object sender, RoutedEventArgs e) {
+        //    DlgChanged?.Invoke(this, new DlgEventArgs {
+        //        TimelineContributeChanged = true
+        //    });
+        //}
 
-        private async void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
-            await new DonateDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-            }.ShowAsync();
-        }
+        //private async void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
+        //    await new DonateDlg {
+        //        RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+        //    }.ShowAsync();
+        //}
 
         private void BoxHimawari8Offset_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
             if (himawari8OffsetTimer == null) {

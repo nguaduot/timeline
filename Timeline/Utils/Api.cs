@@ -31,6 +31,7 @@ namespace Timeline.Utils {
                 Api = ini?.ToString(),
                 DosageApp = dosageApp,
                 DosageApi = dosageApi,
+                Pc = SysUtil.GetPcType(),
                 Os = AnalyticsInfo.VersionInfo.DeviceFamily,
                 OsVersion = SysUtil.GetOsVer(),
                 Screen = screen,
@@ -66,6 +67,7 @@ namespace Timeline.Utils {
                 Action = action,
                 Target = target,
                 Undo = undo,
+                Version = SysUtil.GetPkgVer(false),
                 DeviceId = SysUtil.GetDeviceId(),
                 Region = GlobalizationPreferences.HomeGeographicRegion
             };

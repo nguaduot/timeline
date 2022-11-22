@@ -21,29 +21,31 @@
   在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。  
   如无法顺利安装，请参考：[Issues #I5AQTO](https://gitee.com/nguaduot/timeline/issues/I5AQTO)
 
+官网：[app.nguaduot.cn/timeline](https：//app.nguaduot.cn/timeline)
+
 ## 图源
 
 自建图源：
-+ [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗 [[DEMO]](https://api.nguaduot.cn/timeline/demo) [[DOC]](https://api.nguaduot.cn/timeline/doc)  
++ [拾光](https://api.nguaduot.cn/timeline/doc) - 时光如歌，岁月如诗 [[网页版]](https://api.nguaduot.cn/timeline/demo) [[DOC]](https://api.nguaduot.cn/timeline/doc)  
   展示图片均已获作者授权
-+ 贪食鬼 - 饕餮盛宴 [[DEMO]](https://api.nguaduot.cn/glutton/demo)
++ 贪食鬼 - 饕餮盛宴 [[网页版]](https://api.nguaduot.cn/glutton/demo)
 
 三方图源：
 + [Microsoft Bing](https://cn.bing.com) - 每天发现一个新地方
-+ [NASA](https://apod.nasa.gov/apod) - 每日天文一图 [[DEMO]](https://api.nguaduot.cn/nasa/demo)
++ [NASA](https://apod.nasa.gov/apod) - 每日天文一图 [[网页版]](https://api.nguaduot.cn/nasa/demo)
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari.asia/) - 实时地球
-+ [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源 [[DEMO]](https://api.nguaduot.cn/ymyouli/demo)
-+ [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站 [[DEMO]](https://api.nguaduot.cn/qingbz/demo)
-+ [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net [[DEMO]](https://api.nguaduot.cn/wallhaven/demo)
-+ [WallHere](https://wallhere.com) - One of the best hd wallpapers site [[DEMO]](https://api.nguaduot.cn/wallhere/demo)
-+ [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[DEMO]](https://api.nguaduot.cn/wallpaperup/demo)
-+ [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸 [[DEMO]](https://api.nguaduot.cn/toopic/demo)
-+ [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[DEMO]](https://api.nguaduot.cn/netbian/demo)
++ [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源 [[网页版]](https://api.nguaduot.cn/ymyouli/demo)
++ [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站 [[网页版]](https://api.nguaduot.cn/qingbz/demo)
++ [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net [[网页版]](https://api.nguaduot.cn/wallhaven/demo)
++ [WallHere](https://wallhere.com) - One of the best hd wallpapers site [[网页版]](https://api.nguaduot.cn/wallhere/demo)
++ [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
++ [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸 [[网页版]](https://api.nguaduot.cn/toopic/demo)
++ [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[网页版]](https://api.nguaduot.cn/netbian/demo)
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
-+ [乌云壁纸](https://www.obzhi.com) - 高清壁纸站 [[DEMO]](https://api.nguaduot.cn/obzhi/demo)
++ [乌云壁纸](https://www.obzhi.com) - 高清壁纸站 [[网页版]](https://api.nguaduot.cn/obzhi/demo)
 
 本地图源：
 + 本地图库 - 我的精选
@@ -99,7 +101,7 @@ A：`LSP` 为不可描述内容，默认不可见，若手动开启，则视为�
 
 ## 致谢
 
-上架 Microsoft Store 将近一年，收到全球评分 800+ 次，其中 92% 给了满分，最高评分榜前20（挑最好的说），日活用户 1000+，且发现多篇推广文章，非常令人开心。  
+上架 Microsoft Store 将近一年，收到全球评分 1000+ 次，其中 92% 给了满分，目前尚在最高评分榜前二十（同类第一），日活用户 2000+，且发现多篇推广文章，非常令人开心。  
 `拾光` 为非营利性项目，但也收到一些赞助（捐赠），基本可平衡服务器成本，继续运营一两年问题不大。
 
 诚挚感谢诸君的喜爱与支持，共勉共进。

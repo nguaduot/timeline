@@ -458,7 +458,7 @@
                                           ItemsSource="{x:Bind listTimelineCate}"
                                           SelectionChanged="BoxTimelineCate_SelectionChanged" />
                             </Grid>
-                            <Grid Margin="0,8,0,0">
+                            <!--<Grid Margin="0,8,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -499,7 +499,7 @@
                                         Name="BtnTimelineDonate"
                                         x:Uid="BtnTimelineDonate"
                                         Click="BtnTimelineDonate_Click" />
-                            </Grid>
+                            </Grid>-->
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>

@@ -196,6 +196,42 @@ namespace TimelineService.Utils {
     }
 
     public sealed class SysUtil {
+        internal struct PowerStatus {
+            public byte ACLineStatus;
+            public byte BatteryFlag;
+            public byte BatteryLifePercent;
+            public byte SystemStatusFlag;
+            public int BatteryLifeTime;
+            public int BatteryFullLifeTime;
+        }
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool GetSystemPowerStatus(out PowerStatus BatteryInfo);
+
+        /// <summary>
+        /// 通过电池状态判定PC类型
+        /// </summary>
+        /// <returns>
+        /// desktop：台式电脑
+        /// laptop：笔记本电脑或平板
+        /// </returns>
+        public static string GetPcType() {
+            if (GetSystemPowerStatus(out PowerStatus status)) {
+                Debug.WriteLine("GetSystemPowerStatus: " + JsonConvert.SerializeObject(status, Formatting.None));
+                if (status.BatteryFlag == 255) { // Unknown status
+                    return null;
+                } else if (status.BatteryFlag == 128) { // No system battery
+                    return "desktop";
+                }
+                // 1: High
+                // 2: Low
+                // 4: Critical
+                // 8: Charging
+                return "laptop";
+            }
+            return null;
+        }
+
         public static string GetPkgVer(bool forShort) {
             if (forShort) {
                 return string.Format("{0}.{1}",
