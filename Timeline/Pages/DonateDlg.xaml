@@ -9,8 +9,6 @@
                DefaultButton="Close"
                Style="{StaticResource DefaultContentDialogStyle}"
                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-               Closing="Donate_Closing"
-               CloseButtonClick="Donate_CloseButtonClick"
                PrimaryButtonClick="Donate_PrimaryButtonClick"
                SecondaryButtonClick="Donate_SecondaryButtonClick">
 

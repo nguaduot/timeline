@@ -15,11 +15,10 @@ namespace Timeline.Pages {
             //this.Title = ResourceLoader.GetForCurrentView().GetString("AppNameShort") + " " + SysUtil.GetPkgVer(true);
         }
 
-        private async void LinkDonate_Click(object sender, RoutedEventArgs e) {
+        private void LinkDonate_Click(object sender, RoutedEventArgs e) {
             this.Hide();
-            Ini ini = await IniUtil.GetIniAsync();
             _ = new DonateDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                RequestedTheme = ThemeUtil.ParseTheme(IniUtil.GetIni().Theme) // 修复未响应主题切换的BUG
             }.ShowAsync();
         }
 
@@ -27,11 +26,10 @@ namespace Timeline.Pages {
             await Launcher.LaunchUriAsync(new Uri(new ResourceLoader().GetString("LinkReview/NavigateUri")));
         }
 
-        private async void Dlg_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+        private void Dlg_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
             this.Hide();
-            Ini ini = await IniUtil.GetIniAsync();
             _ = new DonateDlg {
-                RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                RequestedTheme = ThemeUtil.ParseTheme(IniUtil.GetIni().Theme) // 修复未响应主题切换的BUG
             }.ShowAsync();
         }
     }

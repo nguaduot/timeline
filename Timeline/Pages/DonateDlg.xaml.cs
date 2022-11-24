@@ -1,15 +1,13 @@
 ﻿using System;
+using Timeline.Utils;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
-
 namespace Timeline.Pages {
     public sealed partial class DonateDlg : ContentDialog {
         private readonly ResourceLoader resLoader;
-        private Channel channel = Channel.WeChat;
-        private bool doNotClose = false;
+        private static Channel CAHNNEL = Channel.WeChat;
 
         private enum Channel {
             WeChat, Alipay, Ecny
@@ -19,11 +17,12 @@ namespace Timeline.Pages {
             this.InitializeComponent();
 
             resLoader = ResourceLoader.GetForCurrentView();
-            ChangeCode(channel);
+            this.IsSecondaryButtonEnabled = false; // TODO
+            ChangeCode(CAHNNEL);
         }
 
         private void ChangeCode(Channel channel) {
-            this.channel = channel;
+            CAHNNEL = channel;
             switch (channel) {
                 case Channel.WeChat:
                     ImgDonate.Source = new BitmapImage(new Uri("ms-appx:///Assets/Images/donate_wechat.png"));
@@ -44,8 +43,7 @@ namespace Timeline.Pages {
         }
 
         private void Donate_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-            doNotClose = true;
-            switch (channel) {
+            switch (CAHNNEL) {
                 case Channel.WeChat:
                     ChangeCode(Channel.Alipay);
                     break;
@@ -56,11 +54,14 @@ namespace Timeline.Pages {
                     ChangeCode(Channel.WeChat);
                     break;
             }
+            this.Hide();
+            _ = new DonateDlg() {
+                RequestedTheme = ThemeUtil.ParseTheme(IniUtil.GetIni().Theme) // 修复未响应主题切换的BUG
+            }.ShowAsync();
         }
 
         private void Donate_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-            doNotClose = true;
-            switch (channel) {
+            switch (CAHNNEL) {
                 case Channel.WeChat:
                     ChangeCode(Channel.Ecny);
                     break;
@@ -71,14 +72,10 @@ namespace Timeline.Pages {
                     ChangeCode(Channel.Alipay);
                     break;
             }
-        }
-
-        private void Donate_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-            doNotClose = false;
-        }
-
-        private void Donate_Closing(ContentDialog sender, ContentDialogClosingEventArgs args) {
-            args.Cancel = doNotClose;
+            this.Hide();
+            _ = new DonateDlg() {
+                RequestedTheme = ThemeUtil.ParseTheme(IniUtil.GetIni().Theme) // 修复未响应主题切换的BUG
+            }.ShowAsync();
         }
     }
 }
