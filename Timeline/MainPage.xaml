@@ -5,8 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-      mc:Ignorable="d"
-      muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+      xmlns:media="using:Microsoft.UI.Xaml.Media"
+      muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+      mc:Ignorable="d">
 
     <Page.Resources>
 
@@ -416,6 +417,9 @@
                                       Tag="netbian"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="backiee"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="infinity"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
@@ -519,8 +523,8 @@
                     <VisualState.Setters>
                         <Setter Target="ViewSplit.DisplayMode"
                                 Value="Inline" />
-                        <Setter Target="ViewSplit.PaneBackground"
-                                Value="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" />
+                        <!--<Setter Target="ViewSplit.PaneBackground"
+                                Value="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" />-->
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -688,9 +692,9 @@
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignRightWithPanel="True">
 
-                <Image Name="ImgUhd"
+                <!--Scale="1.014,1.014,1.014"-->
+                <Image Name="ImgUhd1"
                        Opacity="0"
-                       Scale="1.014,1.014,1.014"
                        Stretch="UniformToFill"
                        ImageOpened="ImgUhd_ImageOpened"
                        ImageFailed="ImgUhd_ImageFailed"
@@ -699,11 +703,28 @@
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True">
                     <Image.OpacityTransition>
-                        <ScalarTransition Duration="0:0:0.4" />
+                        <ScalarTransition Duration="0:0:0.8" />
                     </Image.OpacityTransition>
-                    <Image.ScaleTransition>
-                        <Vector3Transition Duration="0:0:0.4" />
-                    </Image.ScaleTransition>
+                    <!--<Image.ScaleTransition>
+                        <Vector3Transition Duration="0:0:0.8" />
+                    </Image.ScaleTransition>-->
+                    <!--<Image.TranslationTransition>
+                        <Vector3Transition Duration="0:0:0.8" />
+                    </Image.TranslationTransition>-->
+                </Image>
+
+                <Image Name="ImgUhd2"
+                       Opacity="0"
+                       Stretch="UniformToFill"
+                       ImageOpened="ImgUhd_ImageOpened"
+                       ImageFailed="ImgUhd_ImageFailed"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <Image.OpacityTransition>
+                        <ScalarTransition Duration="0:0:0.8" />
+                    </Image.OpacityTransition>
                 </Image>
 
             </RelativePanel>

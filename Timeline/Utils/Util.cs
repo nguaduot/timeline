@@ -304,6 +304,16 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(NetbianIni.ID, "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveBackieeOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(BackieeIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveBackieeCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(BackieeIni.ID, "cate", cate, iniFile.Path);
+        }
+
         public static async Task SaveLspOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LspIni.ID, "order", order, iniFile.Path);
@@ -438,6 +448,14 @@ namespace Timeline.Utils {
                 TilePeriod = GetPrivateProfileFloat(NetbianIni.ID, "tileperiod", 2, iniFile),
                 Order = GetPrivateProfileString(NetbianIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(NetbianIni.ID, "cate", "", iniFile)
+            });
+            ini.SetIni(BackieeIni.ID, new BackieeIni {
+                DesktopPeriod = GetPrivateProfileFloat(BackieeIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(BackieeIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(BackieeIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(BackieeIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(BackieeIni.ID, "order", "random", iniFile),
+                Cate = GetPrivateProfileString(BackieeIni.ID, "cate", "", iniFile)
             });
             ini.SetIni(InfinityIni.ID, new InfinityIni {
                 DesktopPeriod = GetPrivateProfileFloat(InfinityIni.ID, "desktopperiod", 24, iniFile),
@@ -708,14 +726,13 @@ namespace Timeline.Utils {
             }
         }
 
-        public static async Task ClearCache(Ini ini) {
-            int count_threshold = ini?.Cache ?? 600; // 缓存量阈值
+        public static async Task ClearCache(int count_threshold) {
+            count_threshold = Math.Max(count_threshold, 0);
             try {
                 if (count_threshold <= 0) {
                     await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Temporary);
                     LogUtil.I("ClearCache() all");
                 } else {
-                    // 清理浏览缓存文件夹
                     StorageFolder folder = ApplicationData.Current.TemporaryFolder; // 浏览缓存文件夹
                     FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
                     Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
@@ -724,16 +741,7 @@ namespace Timeline.Utils {
                         files[i].Delete();
                         count_clear++;
                     }
-                    // 清理壁纸缓存文件夹
-                    folder = await GetWallpaperFolderAsync(); // 壁纸缓存文件夹
-                    files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
-                    Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
-                    int count_clear2 = 0;
-                    for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
-                        files[i].Delete();
-                        count_clear2++;
-                    }
-                    LogUtil.I("ClearCache() " + count_clear + "+" + count_clear2);
+                    LogUtil.I("ClearCache() " + count_clear);
                 }
             } catch (Exception e) {
                 LogUtil.E("ClearCache() " + e.Message);
@@ -902,7 +910,6 @@ namespace Timeline.Utils {
         /// </returns>
         public static string GetPcType() {
             if (GetSystemPowerStatus(out PowerStatus status)) {
-                Debug.WriteLine("GetSystemPowerStatus: " + JsonConvert.SerializeObject(status, Formatting.None));
                 if (status.BatteryFlag == 255) { // Unknown status
                     return null;
                 } else if (status.BatteryFlag == 128) { // No system battery

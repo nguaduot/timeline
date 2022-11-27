@@ -13,7 +13,6 @@ using Timeline.Pages;
 using Timeline.Providers;
 using Timeline.Utils;
 using TimelineService;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
@@ -42,8 +41,11 @@ namespace Timeline {
         private Ini ini;
         private BaseProvider provider;
         private Meta meta;
-        private long imgAnimStart = DateTime.Now.Ticks;
+        private Image uhdDown; // 下层Image(主)
+        private Image uhdUp; // 上层Image（备）
+        private long imgProgressStart = DateTime.Now.Ticks;
         private long imgLoadStart = DateTime.Now.Ticks;
+        private bool loading = true;
         private bool providerLspHintOn = true; // LSP图源提示
         private bool providerLspR22On = false; // LSP图源贤者模式开启
         private bool autoStoryPos = false; // TODO：自动调整图文区贴靠位置（需检测图像人脸位置）
@@ -52,6 +54,7 @@ namespace Timeline {
         private DispatcherTimer resizeTimer1;
         private DispatcherTimer resizeTimer2;
         private DispatcherTimer pageTimer;
+        private DispatcherTimer progressTimer;
         private PageAction pageTimerAction = PageAction.Focus;
         private Meta markTimerMeta = null;
         private string markTimerAction = null;
@@ -80,6 +83,8 @@ namespace Timeline {
             // 启动时页面获得焦点，使快捷键一开始即可用
             this.IsTabStop = true;
 
+            uhdDown = ImgUhd1;
+            uhdUp = ImgUhd2;
             TextTitle.Text = resLoader.GetString("AppDesc");
 
             resizeTimer1 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1400) };
@@ -97,6 +102,21 @@ namespace Timeline {
                 pageTimer.Stop();
                 ctsLoad = new CancellationTokenSource();
                 _ = LoadDataAsync(ctsLoad.Token, go, pageTimerAction);
+            };
+            progressTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            progressTimer.Tick += (sender2, e2) => {
+                if (loading) {
+                    return;
+                }
+                progressTimer.Stop();
+                if (uhdDown.Opacity == 1 && uhdUp.Opacity == 0) {
+                    ProgressLoading.ShowPaused = true;
+                    ProgressLoading.ShowError = false;
+                    ProgressLoading.Visibility = ViewStory.Visibility;
+                } else if (uhdDown.Opacity == 0 && uhdUp.Opacity == 0) {
+                    ProgressLoading.ShowError = true;
+                    ProgressLoading.Visibility = Visibility.Visible;
+                }
             };
 
             // 前者会在应用启动时触发多次，后者仅一次
@@ -132,12 +152,13 @@ namespace Timeline {
             Dictionary<string, int> dosage = await FileUtil.ReadDosage();
             await Api.StatsAsync(ini, dosage.GetValueOrDefault("all", 0), dosage.GetValueOrDefault(ini.Provider, 0));
             // 在缓存可能被使用之前清理缓存
-            await FileUtil.ClearCache(ini);
+            await FileUtil.ClearCache(ini.Cache);
             // 初始化任务栏右键菜单
             //await InitJumpList();
             // 确保推送服务一直运行
             await RegServiceAsync();
             // 开始加载数据
+            StatusLoading();
             await LoadDataAsync(ctsLoad.Token, go, PageAction.Focus);
         }
 
@@ -375,17 +396,23 @@ namespace Timeline {
             }
 
             // 等待图片消失动画完成，保持连贯
-            await Task.Delay(Math.Max(0, 400 - (int)((DateTime.Now.Ticks - imgAnimStart) / 10000)));
+            //await Task.Delay(Math.Max(0, 400 - (int)((DateTime.Now.Ticks - imgAnimStart) / 10000)));
             if (token.IsCancellationRequested) {
                 return;
             }
-            imgLoadStart = DateTime.Now.Ticks;
 
+            // 调整图片层级
+            if (uhdUp.Opacity == 0) {
+                ImgUhdPointer.Children.Remove(uhdUp);
+                ImgUhdPointer.Children.Insert(0, uhdUp);
+                uhdDown = ImgUhdPointer.Children[0] as Image;
+                uhdUp = ImgUhdPointer.Children[1] as Image;
+            }
             // 显示图片
             BitmapImage biUhd = new BitmapImage();
-            ImgUhd.Source = biUhd;
-            ImgUhd.Tag = meta.Id;
-            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
+            uhdDown.Source = biUhd;
+            uhdDown.Tag = meta.Id;
+            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, uhdDown.Stretch);
             biUhd.DecodePixelType = DecodePixelType.Logical; // 按逻辑像素
             biUhd.DecodePixelWidth = resize[0];
             biUhd.DecodePixelHeight = resize[1];
@@ -399,20 +426,21 @@ namespace Timeline {
             } else {
                 biUhd.UriSource = new Uri("ms-appx:///Assets/Images/default.png", UriKind.RelativeOrAbsolute);
             }
+            imgLoadStart = DateTime.Now.Ticks;
         }
 
         private void ReDecodeImg() {
-            if (meta == null || meta.Dimen.Width == 0 || ImgUhd.Source == null || !ImgUhd.Tag.Equals(meta.Id)) {
+            if (meta == null || meta.Dimen.Width == 0 || uhdDown.Source == null || !uhdDown.Tag.Equals(meta.Id)) {
                 return;
             }
-            BitmapImage bi = ImgUhd.Source as BitmapImage;
+            BitmapImage bi = uhdDown.Source as BitmapImage;
             if (bi.PixelHeight == 0) {
                 LogUtil.D("ReDecodeImg() bi.PixelWidth 0");
                 return;
             }
             bi.DecodePixelWidth = 0; // 先重置，否则可能出现图像闪烁
             bi.DecodePixelHeight = 0;
-            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, ImgUhd.Stretch);
+            int[] resize = ImgUtil.Resize(ViewMain.ActualWidth, ViewMain.ActualHeight, meta.Dimen.Width, meta.Dimen.Height, uhdDown.Stretch);
             bi.DecodePixelWidth = resize[0];
             bi.DecodePixelHeight = resize[1];
             LogUtil.D("ReDecodeImg() {0}x{1}, view logical: {2}x{3}, scale logical: {4}x{5}",
@@ -437,16 +465,17 @@ namespace Timeline {
         }
 
         private void StatusLoading() {
-            imgAnimStart = DateTime.Now.Ticks;
-            
-            ImgUhd.Opacity = 0;
-            ImgUhd.Scale = new Vector3(1.014f, 1.014f, 1.014f);
+            imgProgressStart = DateTime.Now.Ticks;
+            loading = true;
 
-            if (ProgressLoading.ShowPaused || ProgressLoading.ShowError) {
-                ProgressLoading.ShowPaused = false;
-                ProgressLoading.ShowError = false;
-                ProgressLoading.Visibility = Visibility.Visible;
-            }
+            //uhdDown.Opacity = 0;
+            //uhdDown.Scale = new Vector3(1.014f, 1.014f, 1.014f);
+
+            ProgressLoading.ShowPaused = false;
+            ProgressLoading.ShowError = false;
+            ProgressLoading.Visibility = Visibility.Visible;
+            progressTimer.Stop();
+            progressTimer.Start();
 
             MenuSetDesktop.IsEnabled = false;
             MenuSetLock.IsEnabled = false;
@@ -456,26 +485,39 @@ namespace Timeline {
         }
 
         private void StatusEnjoy() {
-            if (imgLoadStart < imgAnimStart || ImgUhd.Opacity == 1) { // 下一波进行中或下一波提前结束
+            if (imgLoadStart < imgProgressStart || uhdDown.Opacity == 1) { // 下一波进行中或下一波提前结束
                 return;
             }
-            
+            loading = false;
+
             MenuSetDesktop.IsEnabled = true;
             MenuSetLock.IsEnabled = true;
             MenuSave.IsEnabled = !LocalIni.ID.Equals(ini.Provider); // 图源为“本地图库”时禁用收藏功能
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
 
-            ImgUhd.Opacity = 1;
-            ImgUhd.Scale = new Vector3(1, 1, 1);
+            uhdDown.OpacityTransition.Duration = TimeSpan.FromMilliseconds(300);
+            //uhdDown.ScaleTransition.Duration = TimeSpan.FromMilliseconds(300);
+            uhdDown.Opacity = 1;
+            //imgDown.Scale = new Vector3(1, 1, 1);
+            uhdUp.OpacityTransition.Duration = TimeSpan.FromMilliseconds(550);
+            //uhdUp.ScaleTransition.Duration = TimeSpan.FromMilliseconds(550);
+            uhdUp.Opacity = 0;
+            //imgUp.Scale = new Vector3(1.014f, 1.014f, 1.014f);
 
-            ProgressLoading.ShowPaused = true;
-            ProgressLoading.ShowError = false;
-            ProgressLoading.Visibility = ViewStory.Visibility;
+            //ThreadPoolTimer.CreateTimer((source) => {
+            //    _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () => {
+            //        ProgressLoading.ShowPaused = true;
+            //        ProgressLoading.ShowError = false;
+            //        ProgressLoading.Visibility = ViewStory.Visibility;
+            //    });
+            //}, TimeSpan.FromMilliseconds(300));
         }
 
         private void StatusError(LoadStatus status) {
-            ImgUhd.Opacity = 0;
+            uhdDown.Opacity = 0;
+            uhdUp.Opacity = 0;
+            loading = false;
 
             TextTitle.Text = resLoader.GetString("AppDesc");
             TextDetailCaption.Visibility = Visibility.Collapsed;
@@ -484,8 +526,8 @@ namespace Timeline {
             TextDetailDate.Visibility = Visibility.Collapsed;
             TextDetailProperties.Visibility = Visibility.Collapsed;
 
-            ProgressLoading.ShowError = true;
-            ProgressLoading.Visibility = Visibility.Visible;
+            //ProgressLoading.ShowError = true;
+            //ProgressLoading.Visibility = Visibility.Visible;
 
             MenuSetDesktop.IsEnabled = false;
             MenuSetLock.IsEnabled = false;
@@ -670,7 +712,8 @@ namespace Timeline {
         }
 
         private void ToggleImgMode(bool fillOn) {
-            ImgUhd.Stretch = fillOn ? Stretch.UniformToFill : Stretch.Uniform;
+            uhdDown.Stretch = fillOn ? Stretch.UniformToFill : Stretch.Uniform;
+            uhdUp.Stretch = fillOn ? Stretch.UniformToFill : Stretch.Uniform;
             MenuFillOn.Visibility = fillOn ? Visibility.Collapsed : Visibility.Visible;
             MenuFillOff.Visibility = fillOn ? Visibility.Visible : Visibility.Collapsed;
 
@@ -950,7 +993,7 @@ namespace Timeline {
 
         private void MenuFill_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            ToggleImgMode(ImgUhd.Stretch != Stretch.UniformToFill);
+            ToggleImgMode(uhdDown.Stretch != Stretch.UniformToFill);
             resizeTimer2.Stop();
             resizeTimer2.Start();
         }
@@ -1194,7 +1237,7 @@ namespace Timeline {
         }
 
         private void ViewMain_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (ImgUhd.Source != null) { // 避免图片首次加载之前启动
+            if (uhdDown.Source != null) { // 避免图片首次加载之前启动
                 resizeTimer1.Stop();
                 resizeTimer2.Start();
             }
@@ -1207,7 +1250,7 @@ namespace Timeline {
 
         private void ViewMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
             if (!(e.OriginalSource as FrameworkElement).Equals(ViewMain)
-                && !(e.OriginalSource as FrameworkElement).Equals(ImgUhd)) {
+                && !(e.OriginalSource as FrameworkElement).Equals(uhdDown)) {
                 return;
             }
             ToggleFullscreenMode();

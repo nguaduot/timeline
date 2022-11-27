@@ -490,7 +490,7 @@
     <value>Category</value>
   </data>
   <data name="UrlQingbz" xml:space="preserve">
-    <value>https://bz.qinggongju.com/1159-2/</value>
+    <value>https://qingbizhi.com/1159-2</value>
   </data>
   <data name="TextWallhereCate.Text" xml:space="preserve">
     <value>Category</value>
@@ -878,5 +878,14 @@
   </data>
   <data name="DonateChannelWechat" xml:space="preserve">
     <value>WeChat</value>
+  </data>
+  <data name="Provider_backiee" xml:space="preserve">
+    <value>backiee</value>
+  </data>
+  <data name="Slogan_backiee" xml:space="preserve">
+    <value>Free Ultra HD wallpaper platform</value>
+  </data>
+  <data name="TextBackieeCate.Text" xml:space="preserve">
+    <value>Category</value>
   </data>
 </root>

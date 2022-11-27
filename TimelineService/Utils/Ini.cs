@@ -6,10 +6,25 @@ using Windows.UI.Xaml.Controls;
 namespace TimelineService.Utils {
     public sealed class Ini {
         private readonly HashSet<string> PROVIDER = new HashSet<string>() {
-            LocalIni.GetId(), BingIni.GetId(), NasaIni.GetId(), TimelineIni.GetId(), OneIni.GetId(),
-            Himawari8Ini.GetId(), YmyouliIni.GetId(), QingbzIni.GetId(), WallhavenIni.GetId(), WallhereIni.GetId(),
-            WallpaperupIni.GetId(), ToopicIni.GetId(), NetbianIni.GetId(), InfinityIni.GetId(), GluttonIni.GetId(),
-            LspIni.GetId(), OneplusIni.GetId(), ObzhiIni.GetId()
+            LocalIni.GetId(),
+            BingIni.GetId(),
+            NasaIni.GetId(),
+            TimelineIni.GetId(),
+            OneIni.GetId(),
+            Himawari8Ini.GetId(),
+            YmyouliIni.GetId(),
+            QingbzIni.GetId(),
+            WallhavenIni.GetId(),
+            WallhereIni.GetId(),
+            WallpaperupIni.GetId(),
+            ToopicIni.GetId(),
+            NetbianIni.GetId(),
+            BackieeIni.GetId(),
+            InfinityIni.GetId(),
+            GluttonIni.GetId(),
+            LspIni.GetId(),
+            OneplusIni.GetId(),
+            ObzhiIni.GetId()
         };
 
         private string provider = BingIni.GetId();
@@ -24,6 +39,8 @@ namespace TimelineService.Utils {
             set => folder = value ?? "";
             get => folder;
         }
+
+        public int Cache { set; get; } = 600;
 
         public string DesktopProvider { set; get; }
 
@@ -58,6 +75,8 @@ namespace TimelineService.Utils {
         public ToopicIni Toopic { set; get; } = new ToopicIni();
 
         public NetbianIni Netbian { set; get; } = new NetbianIni();
+
+        public BackieeIni Backiee { set; get; } = new BackieeIni();
 
         public InfinityIni Infinity { set; get; } = new InfinityIni();
 
@@ -96,6 +115,8 @@ namespace TimelineService.Utils {
                 return Toopic.DesktopPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
                 return Netbian.DesktopPeriod;
+            } else if (BackieeIni.GetId().Equals(provider)) {
+                return Backiee.DesktopPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.DesktopPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -136,6 +157,8 @@ namespace TimelineService.Utils {
                 return Toopic.LockPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
                 return Netbian.LockPeriod;
+            } else if (BackieeIni.GetId().Equals(provider)) {
+                return Backiee.LockPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.LockPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -176,6 +199,8 @@ namespace TimelineService.Utils {
                 return Toopic.ToastPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
                 return Netbian.ToastPeriod;
+            } else if (BackieeIni.GetId().Equals(provider)) {
+                return Backiee.ToastPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.ToastPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -216,6 +241,8 @@ namespace TimelineService.Utils {
                 return Toopic.TilePeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
                 return Netbian.TilePeriod;
+            } else if (BackieeIni.GetId().Equals(provider)) {
+                return Backiee.TilePeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.TilePeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -253,10 +280,12 @@ namespace TimelineService.Utils {
                 paras = Wallhere.ToString();
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 paras = Wallpaperup.ToString();
-            } else if (NetbianIni.GetId().Equals(provider)) {
-                paras = Netbian.ToString();
             } else if (ToopicIni.GetId().Equals(provider)) {
                 paras = Toopic.ToString();
+            } else if (NetbianIni.GetId().Equals(provider)) {
+                paras = Netbian.ToString();
+            } else if (BackieeIni.GetId().Equals(provider)) {
+                paras = Backiee.ToString();
             } else if (InfinityIni.GetId().Equals(provider)) {
                 paras = Infinity.ToString();
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -793,6 +822,51 @@ namespace TimelineService.Utils {
             $"&order={Order}&cate={Cate}";
 
         public static string GetId() => "netbian";
+    }
+
+    public sealed class BackieeIni {
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDERS.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = value ?? "";
+            get => cate;
+        }
+
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => desktopPeriod;
+        }
+
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => lockPeriod;
+        }
+
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tostPeriod;
+        }
+
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+
+        public static string GetId() => "backiee";
     }
 
     public sealed class InfinityIni {

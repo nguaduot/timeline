@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Timeline.Beans;
 using Timeline.Providers;
+using TimelineService.Beans;
 
 namespace Timeline.Utils {
     public class Ini {
@@ -20,6 +21,7 @@ namespace Timeline.Utils {
             { WallpaperupIni.ID, new WallpaperupIni() },
             { ToopicIni.ID, new ToopicIni() },
             { NetbianIni.ID, new NetbianIni() },
+            { BackieeIni.ID, new BackieeIni() },
             { InfinityIni.ID, new InfinityIni() },
             { ObzhiIni.ID, new ObzhiIni() },
             { GluttonIni.ID, new GluttonIni() },
@@ -472,6 +474,25 @@ namespace Timeline.Utils {
         public override string GetCateApi() => URL_API_CATE;
 
         public override BaseProvider GenerateProvider() => new NetbianProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
+    public class BackieeIni : BaseIni {
+        public const string ID = "backiee";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/backiee/cate?client=timelinewallpaper";
+
+        public BackieeIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new BackieeProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}&cate={Cate}";

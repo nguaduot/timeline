@@ -10,27 +10,29 @@ using Windows.Storage.FileProperties;
 using System.Linq;
 
 namespace Timeline.Providers {
-    public class LocalProvider : BaseProvider {        
-        private async Task<Meta> ParseBean(StorageFolder folder, StorageFile file, int index) {
+    public class LocalProvider : BaseProvider {
+        private const int PAGE_SIZE = 99;
+
+        private async Task<Meta> ParseBean(StorageFile file) {
             Meta meta = new Meta {
                 Uhd = file.Path,
                 Thumb = file.Path,
-                Format = file.FileType,
+                Caption = file.Name,
+                Format = ".".Equals(file.FileType) ? ".jpg" : file.FileType,
             };
             BasicProperties properties = await file.GetBasicPropertiesAsync();
-            if (file.Name.Contains(".")) {
-                meta.Caption = file.Name.Replace(file.FileType, "");
-                meta.Format = file.FileType;
-            } else {
-                // file.FileType == "."
-                meta.Caption = file.Name;
-            }
             meta.Id = properties.Size + "-" + meta.Caption;
             meta.Date = properties.ItemDate.DateTime;
+            return meta;
+        }
+
+        private void FixTitle(List<Meta> metas, StorageFolder folder) {
+            metas = metas.OrderBy(m => m.Date).ToList();
             //string folderName = (await file.GetParentAsync()).Name;
             string folderName = folder.Name.Length > 16 ? folder.Name.Substring(0, 16) + "..." : folder.Name;
-            meta.Title = string.Format("~\\{0} #{1}", folderName, index); // 创建日期升序
-            return meta;
+            for (int i = 0; i < metas.Count; ++i) {
+                metas[i].Title = string.Format("~\\{0} #{1}", folderName, i + 1); // 创建日期升序
+            }
         }
 
         public override async Task<bool> LoadData(CancellationToken token, Ini ai, BaseIni bi, Go go) {
@@ -56,10 +58,17 @@ namespace Timeline.Providers {
                 }
                 //imgFiles = imgFiles.OrderBy(async f => (await f.GetBasicPropertiesAsync()).ItemDate.Ticks).ToArray();
                 LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
+                List<string> loadedNames = new List<string>();
+                foreach (Meta meta in GetMetas()) {
+                    loadedNames.Add(meta.Caption);
+                }
                 List<Meta> metasAdd = new List<Meta>();
-                for (int i = 0; i < imgFiles.Count; ++i) {
-                    if (imgFiles[i].ContentType.StartsWith("image")) {
-                        metasAdd.Add(await ParseBean(folder, imgFiles[i], imgFiles.Count - i));
+                foreach (StorageFile file in imgFiles) {
+                    if (file.ContentType.StartsWith("image") && !loadedNames.Contains(file.Name)) {
+                        metasAdd.Add(await ParseBean(file));
+                    }
+                    if (metasAdd.Count >= PAGE_SIZE) {
+                        break;
                     }
                 }
                 if ("date".Equals(ini.Order)) {
@@ -67,6 +76,7 @@ namespace Timeline.Providers {
                 } else { // random
                     AppendMetas(metasAdd.OrderBy(p => Guid.NewGuid()).ToList());
                 }
+                FixTitle(GetMetas(), folder); // 生成标题（使用复制集合，避免打乱原序）
                 return true;
             } catch (Exception e) {
                 LogUtil.E("LoadData() " + e.Message);

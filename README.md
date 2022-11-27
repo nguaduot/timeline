@@ -36,7 +36,7 @@
 + [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari.asia/) - 实时地球
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源 [[网页版]](https://api.nguaduot.cn/ymyouli/demo)
-+ [轻壁纸](https://bz.qinggongju.com) - 壁纸分享站 [[网页版]](https://api.nguaduot.cn/qingbz/demo)
++ [轻壁纸](https://qingbizhi.com/) - 壁纸分享站 [[网页版]](https://api.nguaduot.cn/qingbz/demo)
 + [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net [[网页版]](https://api.nguaduot.cn/wallhaven/demo)
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site [[网页版]](https://api.nguaduot.cn/wallhere/demo)
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)

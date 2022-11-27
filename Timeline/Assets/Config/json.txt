@@ -115,6 +115,14 @@
       "order": "random",
       "cate": ""
     },
+    "backiee": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
     "infinity": {
       "desktopperiod": 24,
       "lockperiod": 24,

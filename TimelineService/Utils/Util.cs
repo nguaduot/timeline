@@ -76,6 +76,7 @@ namespace TimelineService.Utils {
             ini.ToastProvider = GetPrivateProfileString("app", "toastprovider", "", iniFile);
             ini.TileProvider = GetPrivateProfileString("app", "tileprovider", "", iniFile);
             ini.Folder = GetPrivateProfileString("app", "folder", "", iniFile);
+            ini.Cache = GetPrivateProfileInt("app", "cache", 600, iniFile);
 
             ini.Local.DesktopPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Local.LockPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "lockperiod", 24, iniFile);
@@ -159,6 +160,13 @@ namespace TimelineService.Utils {
             ini.Netbian.TilePeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "tileperiod", 2, iniFile);
             ini.Netbian.Order = GetPrivateProfileString(NetbianIni.GetId(), "order", "random", iniFile);
             ini.Netbian.Cate = GetPrivateProfileString(NetbianIni.GetId(), "cate", "", iniFile);
+
+            ini.Backiee.DesktopPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Backiee.LockPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Backiee.ToastPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Backiee.TilePeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Backiee.Order = GetPrivateProfileString(BackieeIni.GetId(), "order", "random", iniFile);
+            ini.Backiee.Cate = GetPrivateProfileString(BackieeIni.GetId(), "cate", "", iniFile);
 
             ini.Infinity.DesktopPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Infinity.LockPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "lockperiod", 24, iniFile);
@@ -319,6 +327,10 @@ namespace TimelineService.Utils {
             return WriteProviderCache_Impl(provider, p1, p2, data).AsAsyncOperation();
         }
 
+        public static IAsyncOperation<bool> ClearCache(int count_threshold) {
+            return ClearCache_Impl(count_threshold).AsAsyncOperation();
+        }
+
         private static async Task<IReadOnlyDictionary<string, int>> ReadDosage_Impl() {
             // 读取所有图源24h图片用量
             Dictionary<string, int> res = new Dictionary<string, int>();
@@ -403,6 +415,26 @@ namespace TimelineService.Utils {
             } catch (Exception e) {
                 Debug.WriteLine(e);
                 LogUtil.E("WriteDosage() " + e.Message);
+            }
+            return false;
+        }
+
+        private static async Task<bool> ClearCache_Impl(int count_threshold) {
+            count_threshold = Math.Max(count_threshold, 0);
+            try {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper",
+                    CreationCollisionOption.OpenIfExists); // 壁纸缓存文件夹
+                FileInfo[] files = new DirectoryInfo(folder.Path).GetFiles(); // 缓存图片
+                Array.Sort(files, (a, b) => (b as FileInfo).CreationTime.CompareTo((a as FileInfo).CreationTime)); // 日期降序排列
+                int count_clear = 0;
+                for (int i = count_threshold; i < files.Length; ++i) { // 删除超量图片
+                    files[i].Delete();
+                    count_clear++;
+                }
+                LogUtil.I("ClearCache() " + count_clear);
+                return true;
+            } catch (Exception e) {
+                LogUtil.E("ClearCache() " + e.Message);
             }
             return false;
         }
