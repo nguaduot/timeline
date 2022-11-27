@@ -2,8 +2,8 @@
 
 # 拾光
 
-[![store](https://img.shields.io/badge/microsoft%20store-v7.5-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
-[![release](https://img.shields.io/badge/release-v7.5.221007-blue)](https://gitee.com/nguaduot/timeline/releases)
+[![store](https://img.shields.io/badge/microsoft%20store-v7.9-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
+[![release](https://img.shields.io/badge/release-v7.9.221127-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-Windows%2011%20%26%2010-lightgrey)
 [![star](https://gitee.com/nguaduot/timeline/badge/star.svg?theme=dark)](https://gitee.com/nguaduot/timeline)
 
@@ -21,7 +21,7 @@
   在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。  
   如无法顺利安装，请参考：[Issues #I5AQTO](https://gitee.com/nguaduot/timeline/issues/I5AQTO)
 
-官网：[app.nguaduot.cn/timeline](https：//app.nguaduot.cn/timeline)
+体验网页版：[app.nguaduot.cn/timeline](https：//app.nguaduot.cn/timeline)
 
 ## 图源
 
@@ -42,6 +42,7 @@
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
 + [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸 [[网页版]](https://api.nguaduot.cn/toopic/demo)
 + [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[网页版]](https://api.nguaduot.cn/netbian/demo)
++ [backiee](https://backiee.com/) - Free Ultra HD wallpaper platform [[网页版]](https://api.nguaduot.cn/backiee/demo)
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus

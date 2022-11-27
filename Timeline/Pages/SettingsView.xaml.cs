@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Timeline.Beans;
 using Timeline.Providers;
 using Timeline.Utils;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
@@ -935,7 +934,7 @@ namespace Timeline.Pages {
 
         private async void TbBackieeOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridNetbianOrder.Children.Cast<ToggleButton>()) {
+            foreach (ToggleButton tb in GridBackieeOrder.Children.Cast<ToggleButton>()) {
                 tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
             }
             string order = tbThis.Tag as string;

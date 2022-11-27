@@ -14,11 +14,11 @@ namespace Timeline.Providers {
         private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}" +
-            "&no={2}&score={3}&admin={4}";
+            "&no={2}&score={3:F4}&admin={4}";
         private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}" +
-            "&no={2}&date={3}&score={4}&admin={5}";
+            "&no={2}&date={3}&score={4:F4}&admin={5}";
 
         private Meta ParseBean(GluttonApiData bean, string album) {
             Meta meta = new Meta {

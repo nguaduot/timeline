@@ -13,7 +13,7 @@ namespace Timeline.Providers {
         private const string URL_API = "https://api.nguaduot.cn/nasa/v2" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}&mirror={2}" +
-            "&tag={3}&no={4}&date={5}&score={6}&admin={7}";
+            "&tag={3}&no={4}&date={5}&score={6:F4}&admin={7}";
 
         private Meta ParseBean(NasaApiData bean) {
             Meta meta = new Meta {

@@ -496,8 +496,13 @@ namespace Timeline {
             MenuFillOn.IsEnabled = true;
             MenuFillOff.IsEnabled = true;
 
-            uhdDown.OpacityTransition.Duration = TimeSpan.FromMilliseconds(300);
-            //uhdDown.ScaleTransition.Duration = TimeSpan.FromMilliseconds(300);
+            if (uhdUp.Source != null) {
+                uhdDown.OpacityTransition.Duration = TimeSpan.FromMilliseconds(300);
+                //uhdDown.ScaleTransition.Duration = TimeSpan.FromMilliseconds(300);
+            } else {
+                uhdDown.OpacityTransition.Duration = TimeSpan.FromMilliseconds(600);
+                //uhdDown.ScaleTransition.Duration = TimeSpan.FromMilliseconds(600);
+            }
             uhdDown.Opacity = 1;
             //imgDown.Scale = new Vector3(1, 1, 1);
             uhdUp.OpacityTransition.Duration = TimeSpan.FromMilliseconds(550);

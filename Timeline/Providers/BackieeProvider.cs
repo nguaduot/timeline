@@ -13,7 +13,7 @@ namespace Timeline.Providers {
         private const string URL_API = "https://api.nguaduot.cn/backiee/v2" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}&cate={2}" +
-            "&no={3}&date={4}&score={5}&admin={6}";
+            "&no={3}&date={4}&score={5:F4}&admin={6}";
 
         private Meta ParseBean(BackieeApiData bean) {
             Meta meta = new Meta {

@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Timeline.Providers {
     public class LocalProvider : BaseProvider {
-        private const int PAGE_SIZE = 99;
+        private const int PAGE_SIZE = 50;
 
         private async Task<Meta> ParseBean(StorageFile file) {
             Meta meta = new Meta {
@@ -27,11 +27,11 @@ namespace Timeline.Providers {
         }
 
         private void FixTitle(List<Meta> metas, StorageFolder folder) {
-            metas = metas.OrderBy(m => m.Date).ToList();
+            List<Meta> metasOrdered = metas.OrderBy(m => m.Date).ToList(); // 使用复制集合，避免打乱原序
             //string folderName = (await file.GetParentAsync()).Name;
             string folderName = folder.Name.Length > 16 ? folder.Name.Substring(0, 16) + "..." : folder.Name;
-            for (int i = 0; i < metas.Count; ++i) {
-                metas[i].Title = string.Format("~\\{0} #{1}", folderName, i + 1); // 创建日期升序
+            for (int i = 0; i < metasOrdered.Count; ++i) {
+                metasOrdered[i].Title = string.Format("~\\{0} #{1}", folderName, i + 1); // 创建日期升序
             }
         }
 
@@ -44,6 +44,7 @@ namespace Timeline.Providers {
             LogUtil.D("LoadData() provider folder: " + folder.Path);
             try {
                 // 某些文件夹使用 CommonFileQuery.OrderByDate 会异常
+                // 没有位于库或家庭组中
                 //IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
                 IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync();
                 if (ini.Depth > 0) { // 第一层
@@ -57,9 +58,10 @@ namespace Timeline.Providers {
                     }
                 }
                 //imgFiles = imgFiles.OrderBy(async f => (await f.GetBasicPropertiesAsync()).ItemDate.Ticks).ToArray();
+                imgFiles = imgFiles.OrderBy(p => Guid.NewGuid()).ToList(); // 先打乱
                 LogUtil.D("LoadData() provider inventory: " + imgFiles.Count);
                 List<string> loadedNames = new List<string>();
-                foreach (Meta meta in GetMetas()) {
+                foreach (Meta meta in metas) {
                     loadedNames.Add(meta.Caption);
                 }
                 List<Meta> metasAdd = new List<Meta>();
@@ -71,12 +73,11 @@ namespace Timeline.Providers {
                         break;
                     }
                 }
-                if ("date".Equals(ini.Order)) {
-                    AppendMetas(metasAdd.OrderByDescending(m => m.Date).ToList());
-                } else { // random
-                    AppendMetas(metasAdd.OrderBy(p => Guid.NewGuid()).ToList());
-                }
-                FixTitle(GetMetas(), folder); // 生成标题（使用复制集合，避免打乱原序）
+                //if ("date".Equals(ini.Order)) { // TODO
+                //    AppendMetas(metasAdd.OrderByDescending(m => m.Date).ToList());
+                //}
+                AppendMetas(metasAdd);
+                FixTitle(metas, folder); // 最后根据时间顺序生成标题
                 return true;
             } catch (Exception e) {
                 LogUtil.E("LoadData() " + e.Message);

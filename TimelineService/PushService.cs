@@ -96,7 +96,7 @@ namespace TimelineService {
                     await PushTileAsync();
                 }
             } catch (Exception e) {
-                Debug.WriteLine("Run() " + e.Message);
+                LogUtil.E("Run() " + e.Message);
             } finally {
                 _deferral.Complete();
             }
@@ -532,6 +532,17 @@ namespace TimelineService {
                 file = await folder.CreateFileAsync(string.Format("{0}-reset-{1}.png", cacheName, DateTime.Now.ToString("yyyyMMddHH00")),
                     CreationCollisionOption.ReplaceExisting);
                 await target.SaveAsync(file.Path, CanvasBitmapFileFormat.Png, 1.0f);
+            }
+            IReadOnlyList<StorageFile> oldCacheFiles = (await folder.GetFilesAsync())
+                .Where(f => f.Name.StartsWith(cacheName) && !f.Name.Equals(file.Name))
+                .OrderByDescending(f => f.Name).ToList();
+            if (oldCacheFiles.Count > 0) { // 删除上次重图
+                BasicProperties propertiesLast = await oldCacheFiles[0].GetBasicPropertiesAsync();
+                BasicProperties propertiesThis = await file.GetBasicPropertiesAsync();
+                if (propertiesLast.Size == propertiesThis.Size) {
+                    LogUtil.I("delete duplicated: " + oldCacheFiles[0].Name + " (this: " + file.Name);
+                    await oldCacheFiles[0].DeleteAsync();
+                }
             }
             return file;
         }

@@ -703,13 +703,13 @@
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True">
                     <Image.OpacityTransition>
-                        <ScalarTransition Duration="0:0:0.8" />
+                        <ScalarTransition Duration="0:0:0.55" />
                     </Image.OpacityTransition>
                     <!--<Image.ScaleTransition>
-                        <Vector3Transition Duration="0:0:0.8" />
+                        <Vector3Transition Duration="0:0:0.55" />
                     </Image.ScaleTransition>-->
                     <!--<Image.TranslationTransition>
-                        <Vector3Transition Duration="0:0:0.8" />
+                        <Vector3Transition Duration="0:0:0.55" />
                     </Image.TranslationTransition>-->
                 </Image>
 
@@ -723,7 +723,7 @@
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True">
                     <Image.OpacityTransition>
-                        <ScalarTransition Duration="0:0:0.8" />
+                        <ScalarTransition Duration="0:0:0.55" />
                     </Image.OpacityTransition>
                 </Image>
 

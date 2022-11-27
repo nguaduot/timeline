@@ -13,7 +13,7 @@ namespace Timeline.Providers {
         private const string URL_API = "https://api.nguaduot.cn/lsp/v2" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}&cate={2}&r22={3}" +
-            "&tag={4}&no={5}&date={6}&score={7}&admin={8}";
+            "&tag={4}&no={5}&date={6}&score={7:F4}&admin={8}";
 
         private Meta ParseBean(LspApiData bean) {
             Meta meta = new Meta {

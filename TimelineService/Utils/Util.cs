@@ -225,7 +225,6 @@ namespace TimelineService.Utils {
         /// </returns>
         public static string GetPcType() {
             if (GetSystemPowerStatus(out PowerStatus status)) {
-                Debug.WriteLine("GetSystemPowerStatus: " + JsonConvert.SerializeObject(status, Formatting.None));
                 if (status.BatteryFlag == 255) { // Unknown status
                     return null;
                 } else if (status.BatteryFlag == 128) { // No system battery
