@@ -151,7 +151,6 @@ cate=
 ; cate=portrait   类别：人像摄影
 ; cate=still      类别：静物摄影
 ; cate=term       类别：节气摄影
-; cate=painting   类别：绘画
 
 unauthorized=0
 ; unauthorized={bool}  未授权内容：0或1（默认为0，仅展示已授权内容）

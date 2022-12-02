@@ -19,7 +19,7 @@
   在 Microsoft Store 搜索 `拾光壁纸` 进行安装。直达链接：[拾光壁纸 - Microsoft Store](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
 + 下载安装包手动安装    
   在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。  
-  如无法顺利安装，请参考：[Issues #I5AQTO](https://gitee.com/nguaduot/timeline/issues/I5AQTO)
+  如无法顺利安装，请参考：[Wiki / 安装](https://gitee.com/nguaduot/timeline/wikis/%E5%AE%89%E8%A3%85)
 
 体验网页版：[app.nguaduot.cn/timeline](https：//app.nguaduot.cn/timeline)
 
