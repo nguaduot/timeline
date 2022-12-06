@@ -780,9 +780,6 @@
   <data name="TextThankAd3.Text" xml:space="preserve">
     <value>博客 Go 2 Think：发文推荐</value>
   </data>
-  <data name="TextWallpaperupCate.Text" xml:space="preserve">
-    <value>类别</value>
-  </data>
   <data name="SettingsBbsDesc.Text" xml:space="preserve">
     <value>来自开发者的碎碎念</value>
   </data>
@@ -887,5 +884,20 @@
   </data>
   <data name="TextBackieeCate.Text" xml:space="preserve">
     <value>类别</value>
+  </data>
+  <data name="Provider_zzzmh" xml:space="preserve">
+    <value>极简壁纸</value>
+  </data>
+  <data name="Slogan_zzzmh" xml:space="preserve">
+    <value>PC高清桌面壁纸</value>
+  </data>
+  <data name="TextZzzmhCate.Text" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="TextZzzmhDonate.Text" xml:space="preserve">
+    <value>支持一下</value>
+  </data>
+  <data name="UrlZzzmh" xml:space="preserve">
+    <value>https://bz.zzzmh.cn/about</value>
   </data>
 </root>

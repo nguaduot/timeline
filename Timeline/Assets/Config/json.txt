@@ -91,7 +91,7 @@
       "order": "random",
       "cate": ""
     },
-    "wallpaperup": {
+    "zzzmh": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -152,6 +152,14 @@
       "toastperiod": 24,
       "tileperiod": 2,
       "order": "date"
+    },
+    "wallpaperup": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
     },
     "obzhi": {
       "desktopperiod": 24,

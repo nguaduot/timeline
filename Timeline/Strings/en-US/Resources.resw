@@ -777,9 +777,6 @@
   <data name="TextThankAd3.Text" xml:space="preserve">
     <value>Thank Go 2 Think for article.</value>
   </data>
-  <data name="TextWallpaperupCate.Text" xml:space="preserve">
-    <value>Category</value>
-  </data>
   <data name="SettingsBbsDesc.Text" xml:space="preserve">
     <value>Messages from the developer</value>
   </data>
@@ -887,5 +884,20 @@
   </data>
   <data name="TextBackieeCate.Text" xml:space="preserve">
     <value>Category</value>
+  </data>
+  <data name="Provider_zzzmh" xml:space="preserve">
+    <value>极简壁纸</value>
+  </data>
+  <data name="Slogan_zzzmh" xml:space="preserve">
+    <value>PC高清桌面壁纸</value>
+  </data>
+  <data name="TextZzzmhCate.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="TextZzzmhDonate.Text" xml:space="preserve">
+    <value>Buy me a coffee</value>
+  </data>
+  <data name="UrlZzzmh" xml:space="preserve">
+    <value>https://bz.zzzmh.cn/about</value>
   </data>
 </root>

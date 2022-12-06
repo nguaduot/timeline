@@ -140,12 +140,12 @@ namespace TimelineService.Utils {
             ini.Wallhere.Order = GetPrivateProfileString(WallhereIni.GetId(), "order", "random", iniFile);
             ini.Wallhere.Cate = GetPrivateProfileString(WallhereIni.GetId(), "cate", "", iniFile);
 
-            ini.Wallpaperup.DesktopPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Wallpaperup.LockPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Wallpaperup.ToastPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Wallpaperup.TilePeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Wallpaperup.Order = GetPrivateProfileString(WallpaperupIni.GetId(), "order", "random", iniFile);
-            ini.Wallpaperup.Cate = GetPrivateProfileString(WallpaperupIni.GetId(), "cate", "", iniFile);
+            ini.Zzzmh.DesktopPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Zzzmh.LockPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Zzzmh.ToastPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Zzzmh.TilePeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Zzzmh.Order = GetPrivateProfileString(ZzzmhIni.GetId(), "order", "random", iniFile);
+            ini.Zzzmh.Cate = GetPrivateProfileString(ZzzmhIni.GetId(), "cate", "", iniFile);
 
             ini.Toopic.DesktopPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Toopic.LockPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "lockperiod", 24, iniFile);
@@ -192,6 +192,13 @@ namespace TimelineService.Utils {
             ini.Oneplus.LockPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "lockperiod", 24, iniFile);
             ini.Oneplus.ToastPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "toastperiod", 24, iniFile);
             ini.Oneplus.TilePeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "tileperiod", 2, iniFile);
+
+            ini.Wallpaperup.DesktopPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Wallpaperup.LockPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Wallpaperup.ToastPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Wallpaperup.TilePeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Wallpaperup.Order = GetPrivateProfileString(WallpaperupIni.GetId(), "order", "random", iniFile);
+            ini.Wallpaperup.Cate = GetPrivateProfileString(WallpaperupIni.GetId(), "cate", "", iniFile);
 
             ini.Obzhi.DesktopPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Obzhi.LockPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "lockperiod", 24, iniFile);

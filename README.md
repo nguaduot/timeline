@@ -39,13 +39,14 @@
 + [轻壁纸](https://qingbizhi.com/) - 壁纸分享站 [[网页版]](https://api.nguaduot.cn/qingbz/demo)
 + [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net [[网页版]](https://api.nguaduot.cn/wallhaven/demo)
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site [[网页版]](https://api.nguaduot.cn/wallhere/demo)
-+ [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
++ [极简壁纸](https://bz.zzzmh.cn/index) - PC高清桌面壁纸 [[网页版]](https://api.nguaduot.cn/zzzmh/demo)
 + [壁纸社](https://www.toopic.cn/dnbz) - 桌面高清壁纸 [[网页版]](https://api.nguaduot.cn/toopic/demo)
 + [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[网页版]](https://api.nguaduot.cn/netbian/demo)
 + [backiee](https://backiee.com/) - Free Ultra HD wallpaper platform [[网页版]](https://api.nguaduot.cn/backiee/demo)
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
 + LSP - 不可描述
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
++ [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
 + [乌云壁纸](https://www.obzhi.com) - 高清壁纸站 [[网页版]](https://api.nguaduot.cn/obzhi/demo)
 
 本地图源：

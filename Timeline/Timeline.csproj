@@ -157,6 +157,7 @@
     <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\ToopicApi.cs" />
     <Compile Include="Beans\NetbianApi.cs" />
+    <Compile Include="Beans\ZzzmhApi.cs" />
     <Compile Include="Beans\WallpaperupApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Providers\GeneralProvider.cs" />
     <Compile Include="Providers\NetbianProvider.cs" />
     <Compile Include="Providers\BackieeProvider.cs" />
+    <Compile Include="Providers\ZzzmhProvider.cs" />
     <Compile Include="Providers\WallpaperupProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
     <Compile Include="Providers\WallhavenProvider.cs" />

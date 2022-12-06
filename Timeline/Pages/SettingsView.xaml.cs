@@ -38,7 +38,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listQingbzCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listWallpaperupCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listZzzmhCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listNetbianCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listBackieeCate = new ObservableCollection<CateMeta>();
@@ -109,7 +109,7 @@ namespace Timeline.Pages {
             GridQingbzOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(QingbzIni.ID).Order)).IsChecked = true;
             GridWallhavenOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhavenIni.ID).Order)).IsChecked = true;
             GridWallhereOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhereIni.ID).Order)).IsChecked = true;
-            GridWallpaperupOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallpaperupIni.ID).Order)).IsChecked = true;
+            GridZzzmhOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ZzzmhIni.ID).Order)).IsChecked = true;
             GridToopicOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ToopicIni.ID).Order)).IsChecked = true;
             GridNetbianOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NetbianIni.ID).Order)).IsChecked = true;
             GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
@@ -828,36 +828,40 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void TbWallpaperupOrder_Click(object sender, RoutedEventArgs e) {
+        private async void TbZzzmhOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridWallpaperupOrder.Children.Cast<ToggleButton>()) {
+            foreach (ToggleButton tb in GridZzzmhOrder.Children.Cast<ToggleButton>()) {
                 tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
             }
             string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
+            BaseIni bi = ini.GetIni(ZzzmhIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveWallpaperupOrderAsync(bi.Order);
+            await IniUtil.SaveZzzmhOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private async void BoxWallpaperupCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private async void BoxZzzmhCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(WallpaperupIni.ID);
+            BaseIni bi = ini.GetIni(ZzzmhIni.ID);
             if (cate.Equals(bi.Cate)) {
                 return;
             }
             bi.Cate = cate;
-            await IniUtil.SaveWallpaperupCateAsync(bi.Cate);
+            await IniUtil.SaveZzzmhCateAsync(bi.Cate);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
+        }
+
+        private async void BtnZzzmhDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlZzzmh")));
         }
 
         private async void TbToopicOrder_Click(object sender, RoutedEventArgs e) {

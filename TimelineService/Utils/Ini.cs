@@ -16,7 +16,7 @@ namespace TimelineService.Utils {
             QingbzIni.GetId(),
             WallhavenIni.GetId(),
             WallhereIni.GetId(),
-            WallpaperupIni.GetId(),
+            ZzzmhIni.GetId(),
             ToopicIni.GetId(),
             NetbianIni.GetId(),
             BackieeIni.GetId(),
@@ -24,6 +24,7 @@ namespace TimelineService.Utils {
             GluttonIni.GetId(),
             LspIni.GetId(),
             OneplusIni.GetId(),
+            WallpaperupIni.GetId(),
             ObzhiIni.GetId()
         };
 
@@ -70,7 +71,7 @@ namespace TimelineService.Utils {
         
         public WallhereIni Wallhere { set; get; } = new WallhereIni();
 
-        public WallpaperupIni Wallpaperup { set; get; } = new WallpaperupIni();
+        public ZzzmhIni Zzzmh { set; get; } = new ZzzmhIni();
 
         public ToopicIni Toopic { set; get; } = new ToopicIni();
 
@@ -86,6 +87,8 @@ namespace TimelineService.Utils {
 
         public OneplusIni Oneplus { set; get; } = new OneplusIni();
 
+        public WallpaperupIni Wallpaperup { set; get; } = new WallpaperupIni();
+
         public ObzhiIni Obzhi { set; get; } = new ObzhiIni();
 
         public float GetDesktopPeriod(string provider) {
@@ -93,8 +96,6 @@ namespace TimelineService.Utils {
                 return Local.DesktopPeriod;
             } else if (NasaIni.GetId().Equals(provider)) {
                 return Nasa.DesktopPeriod;
-            } else if (OneplusIni.GetId().Equals(provider)) {
-                return Oneplus.DesktopPeriod;
             } else if (TimelineIni.GetId().Equals(provider)) {
                 return Timeline.DesktopPeriod;
             } else if (OneIni.GetId().Equals(provider)) {
@@ -109,8 +110,8 @@ namespace TimelineService.Utils {
                 return Wallhaven.DesktopPeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.DesktopPeriod;
-            } else if (WallpaperupIni.GetId().Equals(provider)) {
-                return Wallpaperup.DesktopPeriod;
+            } else if (ZzzmhIni.GetId().Equals(provider)) {
+                return Zzzmh.DesktopPeriod;
             } else if (ToopicIni.GetId().Equals(provider)) {
                 return Toopic.DesktopPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
@@ -119,12 +120,16 @@ namespace TimelineService.Utils {
                 return Backiee.DesktopPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.DesktopPeriod;
-            } else if (ObzhiIni.GetId().Equals(provider)) {
-                return Obzhi.DesktopPeriod;
             } else if (GluttonIni.GetId().Equals(provider)) {
                 return Glutton.DesktopPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
                 return Lsp.DesktopPeriod;
+            } else if (OneplusIni.GetId().Equals(provider)) {
+                return Oneplus.DesktopPeriod;
+            } else if (WallpaperupIni.GetId().Equals(provider)) {
+                return Wallpaperup.DesktopPeriod;
+            } else if (ObzhiIni.GetId().Equals(provider)) {
+                return Obzhi.DesktopPeriod;
             } else {
                 return Bing.DesktopPeriod;
             }
@@ -151,8 +156,8 @@ namespace TimelineService.Utils {
                 return Wallhaven.LockPeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.LockPeriod;
-            } else if (WallpaperupIni.GetId().Equals(provider)) {
-                return Wallpaperup.LockPeriod;
+            } else if (ZzzmhIni.GetId().Equals(provider)) {
+                return Zzzmh.LockPeriod;
             } else if (ToopicIni.GetId().Equals(provider)) {
                 return Toopic.LockPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
@@ -161,6 +166,8 @@ namespace TimelineService.Utils {
                 return Backiee.LockPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.LockPeriod;
+            } else if (WallpaperupIni.GetId().Equals(provider)) {
+                return Wallpaperup.LockPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 return Obzhi.LockPeriod;
             } else if (GluttonIni.GetId().Equals(provider)) {
@@ -193,8 +200,8 @@ namespace TimelineService.Utils {
                 return Wallhaven.ToastPeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.ToastPeriod;
-            } else if (WallpaperupIni.GetId().Equals(provider)) {
-                return Wallpaperup.ToastPeriod;
+            } else if (ZzzmhIni.GetId().Equals(provider)) {
+                return Zzzmh.ToastPeriod;
             } else if (ToopicIni.GetId().Equals(provider)) {
                 return Toopic.ToastPeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
@@ -203,6 +210,8 @@ namespace TimelineService.Utils {
                 return Backiee.ToastPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.ToastPeriod;
+            } else if (WallpaperupIni.GetId().Equals(provider)) {
+                return Wallpaperup.ToastPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 return Obzhi.ToastPeriod;
             } else if (GluttonIni.GetId().Equals(provider)) {
@@ -235,8 +244,8 @@ namespace TimelineService.Utils {
                 return Wallhaven.TilePeriod;
             } else if (WallhereIni.GetId().Equals(provider)) {
                 return Wallhere.TilePeriod;
-            } else if (WallpaperupIni.GetId().Equals(provider)) {
-                return Wallpaperup.TilePeriod;
+            } else if (ZzzmhIni.GetId().Equals(provider)) {
+                return Zzzmh.TilePeriod;
             } else if (ToopicIni.GetId().Equals(provider)) {
                 return Toopic.TilePeriod;
             } else if (NetbianIni.GetId().Equals(provider)) {
@@ -245,6 +254,8 @@ namespace TimelineService.Utils {
                 return Backiee.TilePeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.TilePeriod;
+            } else if (WallpaperupIni.GetId().Equals(provider)) {
+                return Wallpaperup.TilePeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 return Obzhi.TilePeriod;
             } else if (GluttonIni.GetId().Equals(provider)) {
@@ -278,8 +289,8 @@ namespace TimelineService.Utils {
                 paras = Qingbz.ToString();
             } else if (WallhereIni.GetId().Equals(provider)) {
                 paras = Wallhere.ToString();
-            } else if (WallpaperupIni.GetId().Equals(provider)) {
-                paras = Wallpaperup.ToString();
+            } else if (ZzzmhIni.GetId().Equals(provider)) {
+                paras = Zzzmh.ToString();
             } else if (ToopicIni.GetId().Equals(provider)) {
                 paras = Toopic.ToString();
             } else if (NetbianIni.GetId().Equals(provider)) {
@@ -288,6 +299,8 @@ namespace TimelineService.Utils {
                 paras = Backiee.ToString();
             } else if (InfinityIni.GetId().Equals(provider)) {
                 paras = Infinity.ToString();
+            } else if (WallpaperupIni.GetId().Equals(provider)) {
+                paras = Wallpaperup.ToString();
             } else if (ObzhiIni.GetId().Equals(provider)) {
                 paras = Obzhi.ToString();
             } else if (GluttonIni.GetId().Equals(provider)) {
@@ -689,7 +702,7 @@ namespace TimelineService.Utils {
         public static string GetId() => "wallhere";
     }
 
-    public sealed class WallpaperupIni {
+    public sealed class ZzzmhIni {
         private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string order = "random";
@@ -731,7 +744,7 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}&cate={Cate}";
 
-        public static string GetId() => "wallpaperup";
+        public static string GetId() => "zzzmh";
     }
 
     public sealed class ToopicIni {
@@ -1028,6 +1041,52 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "oneplus";
+    }
+
+    // deprecated
+    public sealed class WallpaperupIni {
+        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
+
+        private string order = "random";
+        public string Order {
+            set => order = ORDERS.Contains(value) ? value : "random";
+            get => order;
+        }
+
+        private string cate = "";
+        public string Cate {
+            set => cate = value ?? "";
+            get => cate;
+        }
+
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => desktopPeriod;
+        }
+
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => lockPeriod;
+        }
+
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tostPeriod;
+        }
+
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+
+        public static string GetId() => "wallpaperup";
     }
 
     // deprecated

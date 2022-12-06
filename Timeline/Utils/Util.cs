@@ -274,14 +274,14 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(WallhereIni.ID, "cate", cate, iniFile.Path);
         }
 
-        public static async Task SaveWallpaperupOrderAsync(string order) {
+        public static async Task SaveZzzmhOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(WallpaperupIni.ID, "order", order, iniFile.Path);
+            _ = WritePrivateProfileString(ZzzmhIni.ID, "order", order, iniFile.Path);
         }
 
-        public static async Task SaveWallpaperupCateAsync(string cate) {
+        public static async Task SaveZzzmhCateAsync(string cate) {
             StorageFile iniFile = await GenerateIniFileAsync();
-            _ = WritePrivateProfileString(WallpaperupIni.ID, "cate", cate, iniFile.Path);
+            _ = WritePrivateProfileString(ZzzmhIni.ID, "cate", cate, iniFile.Path);
         }
 
         public static async Task SaveToopicOrderAsync(string order) {
@@ -425,13 +425,13 @@ namespace Timeline.Utils {
                 Order = GetPrivateProfileString(WallhereIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(WallhereIni.ID, "cate", "", iniFile)
             });
-            ini.SetIni(WallpaperupIni.ID, new WallpaperupIni {
-                DesktopPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "desktopperiod", 24, iniFile),
-                LockPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "lockperiod", 24, iniFile),
-                ToastPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "toastperiod", 24, iniFile),
-                TilePeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "tileperiod", 2, iniFile),
-                Order = GetPrivateProfileString(WallpaperupIni.ID, "order", "random", iniFile),
-                Cate = GetPrivateProfileString(WallpaperupIni.ID, "cate", "", iniFile)
+            ini.SetIni(ZzzmhIni.ID, new ZzzmhIni {
+                DesktopPeriod = GetPrivateProfileFloat(ZzzmhIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(ZzzmhIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(ZzzmhIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(ZzzmhIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(ZzzmhIni.ID, "order", "random", iniFile),
+                Cate = GetPrivateProfileString(ZzzmhIni.ID, "cate", "", iniFile)
             });
             ini.SetIni(ToopicIni.ID, new ToopicIni {
                 DesktopPeriod = GetPrivateProfileFloat(ToopicIni.ID, "desktopperiod", 24, iniFile),
@@ -486,6 +486,14 @@ namespace Timeline.Utils {
                 ToastPeriod = GetPrivateProfileFloat(OneplusIni.ID, "toastperiod", 24, iniFile),
                 TilePeriod = GetPrivateProfileFloat(OneplusIni.ID, "tileperiod", 2, iniFile),
                 Order = GetPrivateProfileString(OneplusIni.ID, "order", "date", iniFile)
+            });
+            ini.SetIni(WallpaperupIni.ID, new WallpaperupIni {
+                DesktopPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(WallpaperupIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(WallpaperupIni.ID, "order", "random", iniFile),
+                Cate = GetPrivateProfileString(WallpaperupIni.ID, "cate", "", iniFile)
             });
             ini.SetIni(ObzhiIni.ID, new ObzhiIni {
                 DesktopPeriod = GetPrivateProfileFloat(ObzhiIni.ID, "desktopperiod", 24, iniFile),

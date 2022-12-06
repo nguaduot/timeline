@@ -1,4 +1,4 @@
-; 拾光 / Timeline v7.9
+; 拾光 / Timeline v8.0
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -20,7 +20,7 @@ provider=bing
 ; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://qingbizhi.com/
 ; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc/
 ; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com/
-; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
+; provider=zzzmh        图源：极简壁纸 - PC高清桌面壁纸 https://bz.zzzmh.cn/index
 ; provider=toopic       图源：壁纸社 - 桌面高清壁纸 https://www.toopic.cn/
 ; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
@@ -28,6 +28,7 @@ provider=bing
 ; provider=glutton      图源；贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=lsp          图源(隐藏)：LSP - 不可描述 https://api.nguaduot.cn/lsp/demo
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com/
+; provider=wallpaperup  图源(弃用)：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
 ; provider=obzhi        图源(弃用)：乌云壁纸 - 高清壁纸站 https://www.obzhi.com/
 
 desktopprovider=
@@ -308,7 +309,7 @@ cate=
 ; cate=portrait   类别：人像
 ; cate=still      类别：静物
 
-[wallpaperup]
+[zzzmh]
 
 desktopperiod=24
 ; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
@@ -504,6 +505,34 @@ order=date
 ; order=date   排序：收录（默认）
 ; order=score  排序：喜欢
 ; order=view   排序：浏览
+
+[wallpaperup]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：喜欢
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=           类别：全部（默认）
+; cate=acg        类别：ACG
+; cate=animal     类别：动物
+; cate=art        类别：创意
+; cate=landscape  类别：风光
+; cate=portrait   类别：人像
+; cate=still      类别：静物
 
 [obzhi]
 
