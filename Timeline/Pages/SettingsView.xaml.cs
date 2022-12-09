@@ -17,6 +17,7 @@ using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
+using Windows.Storage.Pickers.Provider;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -430,7 +431,9 @@ namespace Timeline.Pages {
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
+            if (!await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath())) {
+                await FileUtil.LaunchFolderAsync(ApplicationData.Current.LocalFolder, await IniUtil.GetIniPath());
+            }
         }
 
         private async void BtnSavePick_Click(object sender, RoutedEventArgs e) {

@@ -22,7 +22,7 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
-                Story = bean.Story,
+                Story = TextUtil.PurifyTags(bean.Story),
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
                 Score = bean.Score,

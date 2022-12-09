@@ -1372,7 +1372,9 @@ namespace Timeline {
                     ShowThumbAsync();
                     break;
                 case VirtualKey.I: // Ctrl + I
-                    await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath());
+                    if (!await FileUtil.LaunchFileAsync(await IniUtil.GetIniPath())) {
+                        await FileUtil.LaunchFolderAsync(ApplicationData.Current.LocalFolder, await IniUtil.GetIniPath());
+                    }
                     break;
                 case VirtualKey.O: // Ctrl + O
                     await FileUtil.LaunchFolderAsync(await FileUtil.GetGalleryFolder(ini.Folder));

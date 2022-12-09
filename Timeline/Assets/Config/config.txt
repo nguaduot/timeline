@@ -277,9 +277,10 @@ order=random
 ; order=random  排序：随缘（默认）
 
 cate=
-; cate=            类别：全部（默认）
-; cate=acg         类别：Anime
-; cate=photograph  类别：General
+; cate=         类别：全部（默认）
+; cate=general  类别：General
+; cate=anime    类别：Anime
+; cate=people   类别：General
 
 [wallhere]
 

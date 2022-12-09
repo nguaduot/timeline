@@ -704,12 +704,13 @@ namespace Timeline.Utils {
             return await ApplicationData.Current.LocalFolder.CreateFolderAsync("wallpaper", CreationCollisionOption.OpenIfExists);
         }
 
-        public static async Task LaunchFileAsync(StorageFile file) {
+        public static async Task<bool> LaunchFileAsync(StorageFile file) {
             try {
-                await Launcher.LaunchFileAsync(file);
+                return await Launcher.LaunchFileAsync(file);
             } catch (Exception e) {
                 LogUtil.E("LaunchFileAsync() " + e.Message);
             }
+            return false;
         }
 
         public static async Task LaunchFolderAsync(StorageFolder folder, StorageFile fileSelected = null) {
@@ -1072,6 +1073,28 @@ namespace Timeline.Utils {
             pkg.SetBitmap(RandomAccessStreamReference.CreateFromFile(imgFile));
             Clipboard.SetContent(pkg);
             return true;
+        }
+
+        public static string PurifyTags(string text) {
+            if (string.IsNullOrEmpty(text) || !text.Contains(", ")) {
+                return text;
+            }
+            string[] tags = text.Split(", ").OrderByDescending(p => p.Length).ToArray(); // 字符数降序
+            List<string> tagsNew = new List<string> { tags[0] };
+            for (int i = 1; i < tags.Length; ++i) {
+                bool contains = false;
+                for (int j = 0; j < i; ++j) {
+                    if (tags[j].ToLower().Contains(tags[i].ToLower())) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if (!contains) {
+                    tagsNew.Add(tags[i]);
+                }
+            }
+            tagsNew.Sort(); // 字母升序
+            return string.Join(", ", tagsNew);
         }
     }
 

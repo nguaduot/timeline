@@ -25,7 +25,7 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "title")]
         public string Title { set; get; }
 
-        // 故事
+        // 故事（标签，“,”分隔）
         [JsonProperty(PropertyName = "story")]
         public string Story { set; get; }
 

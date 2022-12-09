@@ -2,8 +2,8 @@
 
 # 拾光
 
-[![store](https://img.shields.io/badge/microsoft%20store-v7.9-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
-[![release](https://img.shields.io/badge/release-v7.9.221127-blue)](https://gitee.com/nguaduot/timeline/releases)
+[![store](https://img.shields.io/badge/microsoft%20store-v8.0-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
+[![release](https://img.shields.io/badge/release-v8.0.221109-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-Windows%2011%20%26%2010-lightgrey)
 [![star](https://gitee.com/nguaduot/timeline/badge/star.svg?theme=dark)](https://gitee.com/nguaduot/timeline)
 

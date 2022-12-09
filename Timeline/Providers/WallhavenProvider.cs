@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
 namespace Timeline.Providers {
     public class WallhavenProvider : BaseProvider {
@@ -22,7 +23,7 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
-                Story = bean.Story,
+                Story = TextUtil.PurifyTags(bean.Story),
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
                 Score = bean.Score,
