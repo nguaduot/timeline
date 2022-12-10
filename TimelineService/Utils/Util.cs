@@ -174,6 +174,12 @@ namespace TimelineService.Utils {
             ini.Infinity.TilePeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "tileperiod", 2, iniFile);
             ini.Infinity.Order = GetPrivateProfileString(InfinityIni.GetId(), "order", "random", iniFile);
 
+            ini.Ihansen.DesktopPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Ihansen.LockPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Ihansen.ToastPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Ihansen.TilePeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Ihansen.Order = GetPrivateProfileString(IhansenIni.GetId(), "order", "date", iniFile);
+
             ini.Glutton.DesktopPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Glutton.LockPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "lockperiod", 24, iniFile);
             ini.Glutton.ToastPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "toastperiod", 24, iniFile);

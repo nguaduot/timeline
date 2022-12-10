@@ -66,10 +66,17 @@ namespace Timeline.Providers {
                 return true;
             }
             int index;
-            if ("random".Equals(bi.Order)) {
-                index = new Random().Next(DateTime.Today.Subtract(PAGE_MIN).Days + 1);
-            } else { // date
+            if (go.Date.Date != DateTime.Today) { // 指定日期
+                page = go.Date.Date > DateTime.Today
+                    ? DateTime.Today : (go.Date.Date < PAGE_MIN ? PAGE_MIN : go.Date.Date);
                 index = DateTime.Today.Subtract(page).Days;
+                go.Date = DateTime.Now;
+            } else {
+                if ("random".Equals(bi.Order)) {
+                    index = new Random().Next(DateTime.Today.Subtract(PAGE_MIN).Days + 1);
+                } else { // date
+                    index = DateTime.Today.Subtract(page).Days;
+                }
             }
             string urlApi = string.Format(URL_API, index, PAGE_SIZE);
             LogUtil.D("LoadData() provider url: " + urlApi);
