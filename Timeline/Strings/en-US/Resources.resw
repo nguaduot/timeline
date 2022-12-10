@@ -900,4 +900,10 @@
   <data name="UrlZzzmh" xml:space="preserve">
     <value>https://bz.zzzmh.cn/about</value>
   </data>
+  <data name="Provider_ihansen" xml:space="preserve">
+    <value>美图集</value>
+  </data>
+  <data name="Slogan_ihansen" xml:space="preserve">
+    <value>看好的壁纸、风景、素材库</value>
+  </data>
 </root>

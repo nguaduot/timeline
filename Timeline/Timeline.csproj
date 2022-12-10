@@ -25,7 +25,7 @@
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x64|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundle>Auto</AppxBundle>
     <PackageCertificateThumbprint>B0588B7D195F544D31E3EFCD28EE3EB5BC6A8843</PackageCertificateThumbprint>
@@ -153,6 +153,7 @@
     <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\GeneralApi.cs" />
     <Compile Include="Beans\BackieeApi.cs" />
+    <Compile Include="Beans\IhansenApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\ToopicApi.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Providers\BaseProvider.cs" />
     <Compile Include="Providers\BingProvider.cs" />
     <Compile Include="Providers\Himawari8Provider.cs" />
+    <Compile Include="Providers\IhansenProvider.cs" />
     <Compile Include="Providers\InfinityProvider.cs" />
     <Compile Include="Providers\NasaProvider.cs" />
     <Compile Include="Providers\ObzhiProvider.cs" />

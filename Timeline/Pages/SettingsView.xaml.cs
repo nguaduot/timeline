@@ -115,6 +115,7 @@ namespace Timeline.Pages {
             GridNetbianOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NetbianIni.ID).Order)).IsChecked = true;
             GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
             GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
+            GridIhansenOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(IhansenIni.ID).Order)).IsChecked = true;
             BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
             GridLspOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(LspIni.ID).Order)).IsChecked = true;
@@ -675,6 +676,24 @@ namespace Timeline.Pages {
             }
             bi.Order = order;
             await IniUtil.SaveInfinityOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbIhansenOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridIhansenOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(IhansenIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveIhansenOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

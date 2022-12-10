@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.0
+; 拾光 / Timeline v8.1
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -25,6 +25,7 @@ provider=bing
 ; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
+; provider=ihansen      图源：美图集 - 看好的壁纸、风景、素材库 https://photo.ihansen.org/
 ; provider=glutton      图源；贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=lsp          图源(隐藏)：LSP - 不可描述 https://api.nguaduot.cn/lsp/demo
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com/
@@ -214,7 +215,7 @@ order=random
 ; order=random  排序：随缘（默认）
 
 cate=
-; cate=              类别：全部（默认）
+; cate=              类别：全部（默认） 
 ; cate=acgcharacter  类别：动漫人物
 ; cate=acgscene      类别：动漫场景
 ; cate=sky           类别：日暮云天
@@ -440,6 +441,24 @@ tileperiod=2
 order=random
 ; order=score   排序：喜欢
 ; order=random  排序：随缘（默认）
+
+[ihansen]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=date
+; order=date    排序：收录（默认，热度集无该项）
+; order=random  排序：随缘
 
 [glutton]
 

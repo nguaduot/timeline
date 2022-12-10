@@ -423,6 +423,9 @@
                                       Tag="infinity"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="ihansen"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="glutton"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"

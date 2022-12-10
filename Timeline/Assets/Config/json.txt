@@ -130,6 +130,13 @@
       "tileperiod": 2,
       "order": "random"
     },
+    "ihansen": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
     "glutton": {
       "desktopperiod": 24,
       "lockperiod": 24,

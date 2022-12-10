@@ -1687,6 +1687,78 @@
                         </Grid>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderIhansen"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="ihansen"
+                               Expanding="ExpanderStaticProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderIhansen.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderIhansen.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <Grid Name="GridIhansenOrder">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton x:Uid="OrderDate"
+                                          Tag="date"
+                                          Margin="0,0,3,0"
+                                          HorizontalAlignment="Stretch"
+                                          Click="TbIhansenOrder_Click" />
+                            <ToggleButton Grid.Column="1"
+                                          x:Uid="OrderRandom"
+                                          Tag="random"
+                                          Margin="3,0,0,0"
+                                          HorizontalAlignment="Stretch"
+                                          Click="TbIhansenOrder_Click" />
+                        </Grid>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderGlutton"
                                ExpandDirection="Down"
                                IsExpanded="False"

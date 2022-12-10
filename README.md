@@ -44,7 +44,8 @@
 + [彼岸图网](https://pic.netbian.com/) - 4K高清壁纸 [[网页版]](https://api.nguaduot.cn/netbian/demo)
 + [backiee](https://backiee.com/) - Free Ultra HD wallpaper platform [[网页版]](https://api.nguaduot.cn/backiee/demo)
 + [Infinity](http://cn.infinitynewtab.com) - 精选高清壁纸
-+ LSP - 不可描述
++ [美图集](https://photo.ihansen.org/) - 看好的壁纸、风景、素材库
++ LSP - 不可描述 [网页版]
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
 + [乌云壁纸](https://www.obzhi.com) - 高清壁纸站 [[网页版]](https://api.nguaduot.cn/obzhi/demo)

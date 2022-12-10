@@ -22,6 +22,7 @@ namespace Timeline.Utils {
             { NetbianIni.ID, new NetbianIni() },
             { BackieeIni.ID, new BackieeIni() },
             { InfinityIni.ID, new InfinityIni() },
+            { IhansenIni.ID, new IhansenIni() },
             { GluttonIni.ID, new GluttonIni() },
             { LspIni.ID, new LspIni() },
             { WallpaperupIni.ID, new WallpaperupIni() },
@@ -510,6 +511,22 @@ namespace Timeline.Utils {
         }
 
         public override BaseProvider GenerateProvider() => new InfinityProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
+    }
+
+    public class IhansenIni : BaseIni {
+        public const string ID = "ihansen";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
+
+        public IhansenIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "date";
+        }
+
+        public override BaseProvider GenerateProvider() => new IhansenProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}";

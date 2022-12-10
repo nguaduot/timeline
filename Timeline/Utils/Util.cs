@@ -229,6 +229,11 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(InfinityIni.ID, "order", order, iniFile.Path);
         }
 
+        public static async Task SaveIhansenOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(IhansenIni.ID, "order", order, iniFile.Path);
+        }
+
         public static async Task SaveGluttonAlbumAsync(string album) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(GluttonIni.ID, "album", album, iniFile.Path);
@@ -463,6 +468,13 @@ namespace Timeline.Utils {
                 ToastPeriod = GetPrivateProfileFloat(InfinityIni.ID, "toastperiod", 24, iniFile),
                 TilePeriod = GetPrivateProfileFloat(InfinityIni.ID, "tileperiod", 2, iniFile),
                 Order = GetPrivateProfileString(InfinityIni.ID, "order", "random", iniFile)
+            });
+            ini.SetIni(IhansenIni.ID, new IhansenIni {
+                DesktopPeriod = GetPrivateProfileFloat(IhansenIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(IhansenIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(IhansenIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(IhansenIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(IhansenIni.ID, "order", "date", iniFile)
             });
             ini.SetIni(GluttonIni.ID, new GluttonIni {
                 DesktopPeriod = GetPrivateProfileFloat(GluttonIni.ID, "desktopperiod", 24, iniFile),
