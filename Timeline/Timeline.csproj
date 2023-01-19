@@ -154,6 +154,7 @@
     <Compile Include="Beans\GeneralApi.cs" />
     <Compile Include="Beans\BackieeApi.cs" />
     <Compile Include="Beans\IhansenApi.cs" />
+    <Compile Include="Beans\SkitterApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\ToopicApi.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Providers\GeneralProvider.cs" />
     <Compile Include="Providers\NetbianProvider.cs" />
     <Compile Include="Providers\BackieeProvider.cs" />
+    <Compile Include="Providers\SkitterProvider.cs" />
     <Compile Include="Providers\ZzzmhProvider.cs" />
     <Compile Include="Providers\WallpaperupProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Providers\LocalProvider.cs" />
     <Compile Include="Providers\YmyouliProvider.cs" />
     <Compile Include="Utils\Api.cs" />
+    <Compile Include="Utils\DesktopWallpaper.cs" />
     <Compile Include="Utils\Ini.cs" />
     <Compile Include="Utils\Util.cs" />
   </ItemGroup>

@@ -193,6 +193,8 @@ namespace TimelineService {
                 res = await LoadTimelineAsync(Action.Desktop);
             } else if (OneIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadOneAsync(Action.Desktop);
+            } else if (IhansenIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadIhansenAsync(Action.Desktop);
             } else if (Himawari8Ini.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadHimawari8Async(Action.Desktop);
             } else if (YmyouliIni.GetId().Equals(ini.DesktopProvider)) {
@@ -213,8 +215,6 @@ namespace TimelineService {
                 res = await LoadBackieeAsync(Action.Desktop);
             } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadInfinityAsync(Action.Desktop);
-            } else if (IhansenIni.GetId().Equals(ini.DesktopProvider)) {
-                res = await LoadIhansenAsync(Action.Desktop);
             } else if (WallpaperupIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadWallpaperupAsync(Action.Desktop);
             } else if (ObzhiIni.GetId().Equals(ini.DesktopProvider)) {
@@ -246,6 +246,8 @@ namespace TimelineService {
                 res = await LoadTimelineAsync(Action.Lock);
             } else if (OneIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadOneAsync(Action.Lock);
+            } else if (IhansenIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadIhansenAsync(Action.Lock);
             } else if (Himawari8Ini.GetId().Equals(ini.LockProvider)) {
                 res = await LoadHimawari8Async(Action.Lock);
             } else if (YmyouliIni.GetId().Equals(ini.LockProvider)) {
@@ -266,8 +268,6 @@ namespace TimelineService {
                 res = await LoadBackieeAsync(Action.Lock);
             } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadInfinityAsync(Action.Lock);
-            } else if (IhansenIni.GetId().Equals(ini.LockProvider)) {
-                res = await LoadIhansenAsync(Action.Lock);
             } else if (WallpaperupIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadWallpaperupAsync(Action.Lock);
             } else if (ObzhiIni.GetId().Equals(ini.LockProvider)) {
@@ -299,6 +299,8 @@ namespace TimelineService {
                 res = await LoadTimelineAsync(Action.Toast);
             } else if (OneIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadOneAsync(Action.Toast);
+            } else if (IhansenIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadIhansenAsync(Action.Toast);
             } else if (Himawari8Ini.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadHimawari8Async(Action.Toast);
             } else if (YmyouliIni.GetId().Equals(ini.ToastProvider)) {
@@ -319,8 +321,6 @@ namespace TimelineService {
                 res = await LoadBackieeAsync(Action.Toast);
             } else if (InfinityIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadInfinityAsync(Action.Toast);
-            } else if (IhansenIni.GetId().Equals(ini.ToastProvider)) {
-                res = await LoadIhansenAsync(Action.Toast);
             } else if (WallpaperupIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadWallpaperupAsync(Action.Toast);
             } else if (ObzhiIni.GetId().Equals(ini.ToastProvider)) {
@@ -353,6 +353,8 @@ namespace TimelineService {
                 res = await LoadTimelineAsync(Action.Tile);
             } else if (OneIni.GetId().Equals(tileProvider)) {
                 res = await LoadOneAsync(Action.Tile);
+            } else if (IhansenIni.GetId().Equals(ini.TileProvider)) {
+                res = await LoadIhansenAsync(Action.Tile);
             } else if (Himawari8Ini.GetId().Equals(tileProvider)) {
                 res = await LoadHimawari8Async(Action.Tile);
             } else if (YmyouliIni.GetId().Equals(tileProvider)) {
@@ -373,8 +375,6 @@ namespace TimelineService {
                 res = await LoadBackieeAsync(Action.Tile);
             } else if (InfinityIni.GetId().Equals(tileProvider)) {
                 res = await LoadInfinityAsync(Action.Tile);
-            } else if (IhansenIni.GetId().Equals(ini.TileProvider)) {
-                res = await LoadIhansenAsync(Action.Tile);
             } else if (WallpaperupIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallpaperupAsync(Action.Tile);
             } else if (ObzhiIni.GetId().Equals(tileProvider)) {
@@ -778,6 +778,34 @@ namespace TimelineService {
             }
         }
 
+        private async Task<bool> LoadIhansenAsync(Action action) {
+            const string URL_API = "https://api.ihansen.org/img/detail?page=0&perPage=10&index=&orderBy=today&tag=&favorites=";
+            LogUtil.I("LoadIhansenAsync() api url: " + URL_API);
+            HttpClient client = new HttpClient();
+            string jsonData = await client.GetStringAsync(URL_API);
+            List<IhansenApi> api = JsonConvert.DeserializeObject<List<IhansenApi>>(jsonData);
+            IhansenApi target = api.OrderBy(p => new Random().NextDouble())
+                .FirstOrDefault(p => p.Width >= p.Height);
+            if (action == Action.Toast || action == Action.Tile) {
+                string urlThumb = target.SmallUrl;
+                LogUtil.I("LoadIhansenAsync() thumb url: " + urlThumb);
+                if (action == Action.Toast) {
+                    return ShowToast(urlThumb);
+                } else {
+                    return SetTileBg(urlThumb);
+                }
+            } else {
+                string urlUhd = target.Raw;
+                LogUtil.I("LoadIhansenAsync() img url: " + urlUhd);
+                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
         private async Task<bool> LoadHimawari8Async(Action action) {
             const string URL_API = "https://himawari8.nict.go.jp/img/D531106/latest.json?_=";
             const string URL_IMG = "https://himawari8.nict.go.jp/img/D531106/1d/550/{0}_0_0.png";
@@ -1159,40 +1187,6 @@ namespace TimelineService {
                 Match match = Regex.Match(jsonData, @"""rawSrc"": ?""(.+?)""");
                 string urlUhd = match.Groups[1].Value;
                 LogUtil.I("LoadInfinityAsync() img url: " + urlUhd);
-                StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
-                if (action == Action.Lock) {
-                    return await SetLockBgAsync(fileImg);
-                } else {
-                    return await SetDesktopBgAsync(fileImg);
-                }
-            }
-        }
-
-        private async Task<bool> LoadIhansenAsync(Action action) {
-            DateTime PAGE_MIN = DateTime.Parse("2022-04-25");
-            const string URL_API = "https://api.ihansen.org/img/detail?page={0}&perPage=10&index=&orderBy=today&tag=&favorites=";
-            int index = 0; // date
-            if ("random".Equals(ini.Ihansen.Order)) {
-                index = new Random().Next(DateTime.Today.Subtract(PAGE_MIN).Days + 1);
-            }
-            string urlApi = string.Format(URL_API, index);
-            LogUtil.I("LoadIhansenAsync() api url: " + urlApi);
-            HttpClient client = new HttpClient();
-            string jsonData = await client.GetStringAsync(urlApi);
-            List<IhansenApi> api = JsonConvert.DeserializeObject<List<IhansenApi>>(jsonData);
-            IhansenApi target = api.Where(p => p.Width >= p.Height)
-                .OrderBy(p => new Random().NextDouble()).FirstOrDefault() ?? api[0];
-            if (action == Action.Toast || action == Action.Tile) {
-                string urlThumb = target.SmallUrl;
-                LogUtil.I("LoadIhansenAsync() thumb url: " + urlThumb);
-                if (action == Action.Toast) {
-                    return ShowToast(urlThumb);
-                } else {
-                    return SetTileBg(urlThumb);
-                }
-            } else {
-                string urlUhd = target.Raw;
-                LogUtil.I("LoadIhansenAsync() img url: " + urlUhd);
                 StorageFile fileImg = await DownloadImgAsync(urlUhd, action);
                 if (action == Action.Lock) {
                     return await SetLockBgAsync(fileImg);

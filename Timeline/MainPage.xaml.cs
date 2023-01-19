@@ -623,6 +623,12 @@ namespace Timeline {
             } catch (Exception e) {
                 LogUtil.E("SetWallpaperAsync() " + e.Message);
             }
+            //StorageFile file = await meta.CacheUhd.CopyAsync(await FileUtil.GetWallpaperFolderAsync(),
+            //    string.Format("desktop-{0}.jpg", DateTime.Now.ToString("yyyyMMddHH00")), NameCollisionOption.ReplaceExisting);
+            //IDesktopWallpaper wallpaper = (IDesktopWallpaper)(new DesktopWallpaperClass());
+            //string monitorId = wallpaper.GetMonitorDevicePathAt(0);
+            //wallpaper.SetWallpaper(monitorId, file.Path);
+            //ShowToastS(resLoader.GetString("MsgSetDesktop1"));
         }
 
         private async Task DownloadAsync() {

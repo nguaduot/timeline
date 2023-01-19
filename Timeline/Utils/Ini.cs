@@ -12,6 +12,7 @@ namespace Timeline.Utils {
             { NasaIni.ID, new NasaIni() },
             { TimelineIni.ID, new TimelineIni() },
             { OneIni.ID, new OneIni() },
+            { IhansenIni.ID, new IhansenIni() },
             { Himawari8Ini.ID, new Himawari8Ini() },
             { YmyouliIni.ID, new YmyouliIni() },
             { QingbzIni.ID, new QingbzIni() },
@@ -21,8 +22,8 @@ namespace Timeline.Utils {
             { ToopicIni.ID, new ToopicIni() },
             { NetbianIni.ID, new NetbianIni() },
             { BackieeIni.ID, new BackieeIni() },
+            { SkitterIni.ID, new SkitterIni() },
             { InfinityIni.ID, new InfinityIni() },
-            { IhansenIni.ID, new IhansenIni() },
             { GluttonIni.ID, new GluttonIni() },
             { LspIni.ID, new LspIni() },
             { WallpaperupIni.ID, new WallpaperupIni() },
@@ -314,6 +315,22 @@ namespace Timeline.Utils {
             $"&order={Order}";
     }
 
+    public class IhansenIni : BaseIni {
+        public const string ID = "ihansen";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
+
+        public IhansenIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "date";
+        }
+
+        public override BaseProvider GenerateProvider() => new IhansenProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}";
+    }
+
     public class Himawari8Ini : BaseIni {
         public const string ID = "himawari8";
         
@@ -500,6 +517,25 @@ namespace Timeline.Utils {
             $"&order={Order}&cate={Cate}";
     }
 
+    public class SkitterIni : BaseIni {
+        public const string ID = "skitter";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/skitter/cate?client=timelinewallpaper";
+
+        public SkitterIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new SkitterProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
     public class InfinityIni : BaseIni {
         public const string ID = "infinity";
         public static readonly List<string> ORDERS = new List<string>() { "random", "score" };
@@ -511,22 +547,6 @@ namespace Timeline.Utils {
         }
 
         public override BaseProvider GenerateProvider() => new InfinityProvider { Id = this.Id };
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}";
-    }
-
-    public class IhansenIni : BaseIni {
-        public const string ID = "ihansen";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "random" };
-
-        public IhansenIni() {
-            Id = ID;
-            Orders = ORDERS;
-            Order = "date";
-        }
-
-        public override BaseProvider GenerateProvider() => new IhansenProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}";

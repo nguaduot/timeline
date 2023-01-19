@@ -934,212 +934,6 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
-                <muxc:Expander Name="ExpanderWallhaven"
-                               ExpandDirection="Down"
-                               IsExpanded="False"
-                               Tag="wallhaven"
-                               Expanding="ExpanderDynamicProvider_Expanding"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch"
-                               Margin="0,8,0,0">
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Margin="0,12"
-                                        Orientation="Vertical">
-                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhaven.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderWallhaven.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            </StackPanel>
-                            <FontIcon Grid.Column="1"
-                                      Margin="12,0,0,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE7B3;" />
-                            <FontIcon Grid.Column="2"
-                                      VerticalAlignment="Center"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE70A;" />
-                            <FontIcon Grid.Column="3"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xEE3F;" />
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <Grid Name="GridWallhavenOrder">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <ToggleButton x:Uid="OrderDate"
-                                              Tag="date"
-                                              Margin="0,0,4,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhavenOrder_Click" />
-                                <ToggleButton Grid.Column="1"
-                                              x:Uid="OrderScore"
-                                              Tag="score"
-                                              Margin="2,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhavenOrder_Click" />
-                                <ToggleButton Grid.Column="2"
-                                              x:Uid="OrderRandom"
-                                              Tag="random"
-                                              Margin="4,0,0,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhavenOrder_Click" />
-                            </Grid>
-                            <Grid Margin="0,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE8F1;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextWallhavenCate"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <ComboBox Name="BoxWallhavenCate"
-                                          Grid.Column="2"
-                                          MinWidth="140"
-                                          ItemsSource="{x:Bind listWallhavenCate}"
-                                          SelectionChanged="BoxWallhavenCate_SelectionChanged" />
-                            </Grid>
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
-                <muxc:Expander Name="ExpanderWallhere"
-                               ExpandDirection="Down"
-                               IsExpanded="False"
-                               Tag="wallhere"
-                               Expanding="ExpanderDynamicProvider_Expanding"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch"
-                               Margin="0,8,0,0">
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Margin="0,12"
-                                        Orientation="Vertical">
-                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhere.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderWallhere.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            </StackPanel>
-                            <FontIcon Grid.Column="1"
-                                      Margin="12,0,0,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE7B3;" />
-                            <FontIcon Grid.Column="2"
-                                      VerticalAlignment="Center"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE70A;" />
-                            <FontIcon Grid.Column="3"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xEE3F;" />
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <Grid Name="GridWallhereOrder">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <ToggleButton x:Uid="OrderDate"
-                                              Tag="date"
-                                              Margin="0,0,4,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhereOrder_Click" />
-                                <ToggleButton Grid.Column="1"
-                                              x:Uid="OrderScore"
-                                              Tag="score"
-                                              Margin="2,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhereOrder_Click" />
-                                <ToggleButton Grid.Column="2"
-                                              x:Uid="OrderRandom"
-                                              Tag="random"
-                                              Margin="4,0,0,0"
-                                              HorizontalAlignment="Stretch"
-                                              Click="TbWallhereOrder_Click" />
-                            </Grid>
-                            <Grid Margin="0,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Margin="0,0,12,0"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                          FontSize="16"
-                                          Glyph="&#xE8F1;" />
-                                <TextBlock Grid.Column="1"
-                                           x:Uid="TextWallhereCate"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <ComboBox Name="BoxWallhereCate"
-                                          Grid.Column="2"
-                                          MinWidth="140"
-                                          ItemsSource="{x:Bind listWallhereCate}"
-                                          SelectionChanged="BoxWallhereCate_SelectionChanged" />
-                            </Grid>
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
                 <muxc:Expander Name="ExpanderZzzmh"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -1512,6 +1306,212 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderWallhaven"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="wallhaven"
+                               Expanding="ExpanderDynamicProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhaven.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderWallhaven.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid Name="GridWallhavenOrder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Uid="OrderDate"
+                                              Tag="date"
+                                              Margin="0,0,4,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhavenOrder_Click" />
+                                <ToggleButton Grid.Column="1"
+                                              x:Uid="OrderScore"
+                                              Tag="score"
+                                              Margin="2,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhavenOrder_Click" />
+                                <ToggleButton Grid.Column="2"
+                                              x:Uid="OrderRandom"
+                                              Tag="random"
+                                              Margin="4,0,0,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhavenOrder_Click" />
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextWallhavenCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxWallhavenCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listWallhavenCate}"
+                                          SelectionChanged="BoxWallhavenCate_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
+                <muxc:Expander Name="ExpanderWallhere"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="wallhere"
+                               Expanding="ExpanderDynamicProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderWallhere.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderWallhere.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid Name="GridWallhereOrder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Uid="OrderDate"
+                                              Tag="date"
+                                              Margin="0,0,4,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhereOrder_Click" />
+                                <ToggleButton Grid.Column="1"
+                                              x:Uid="OrderScore"
+                                              Tag="score"
+                                              Margin="2,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhereOrder_Click" />
+                                <ToggleButton Grid.Column="2"
+                                              x:Uid="OrderRandom"
+                                              Tag="random"
+                                              Margin="4,0,0,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbWallhereOrder_Click" />
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextWallhereCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxWallhereCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listWallhereCate}"
+                                          SelectionChanged="BoxWallhereCate_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderBackiee"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -1615,6 +1615,109 @@
                         </StackPanel>
                     </muxc:Expander.Content>
                 </muxc:Expander>
+                <muxc:Expander Name="ExpanderSkitter"
+                               ExpandDirection="Down"
+                               IsExpanded="False"
+                               Tag="skitter"
+                               Expanding="ExpanderDynamicProvider_Expanding"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               Margin="0,8,0,0">
+                    <muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,12"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderSkitter.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderSkitter.Tag)}"
+                                           TextWrapping="NoWrap"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <FontIcon Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE7B3;" />
+                            <FontIcon Grid.Column="2"
+                                      VerticalAlignment="Center"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xE70A;" />
+                            <FontIcon Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                      FontSize="16"
+                                      Glyph="&#xEE3F;" />
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <StackPanel>
+                            <Grid Name="GridSkitterOrder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Uid="OrderDate"
+                                              Tag="date"
+                                              Margin="0,0,4,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbSkitterOrder_Click" />
+                                <ToggleButton Grid.Column="1"
+                                              x:Uid="OrderScore"
+                                              Tag="score"
+                                              Margin="2,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbSkitterOrder_Click" />
+                                <ToggleButton Grid.Column="2"
+                                              x:Uid="OrderRandom"
+                                              Tag="random"
+                                              Margin="4,0,0,0"
+                                              HorizontalAlignment="Stretch"
+                                              Click="TbSkitterOrder_Click" />
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Margin="0,0,12,0"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                          FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                          FontSize="16"
+                                          Glyph="&#xE8F1;" />
+                                <TextBlock Grid.Column="1"
+                                           x:Uid="TextSkitterCate"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource BodyTextBlockStyle}" />
+                                <ComboBox Name="BoxSkitterCate"
+                                          Grid.Column="2"
+                                          MinWidth="140"
+                                          ItemsSource="{x:Bind listSkitterCate}"
+                                          SelectionChanged="BoxSkitterCate_SelectionChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
                 <muxc:Expander Name="ExpanderInfinity"
                                ExpandDirection="Down"
                                IsExpanded="False"
@@ -1684,78 +1787,6 @@
                                           Margin="3,0,0,0"
                                           HorizontalAlignment="Stretch"
                                           Click="TbInfinityOrder_Click" />
-                        </Grid>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
-                <muxc:Expander Name="ExpanderIhansen"
-                               ExpandDirection="Down"
-                               IsExpanded="False"
-                               Tag="ihansen"
-                               Expanding="ExpanderStaticProvider_Expanding"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch"
-                               Margin="0,8,0,0">
-                    <muxc:Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Margin="0,12"
-                                        Orientation="Vertical">
-                                <TextBlock Text="{x:Bind GenerateProviderTitle(ExpanderIhansen.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource BodyTextBlockStyle}" />
-                                <TextBlock Text="{x:Bind GenerateProviderDesc(ExpanderIhansen.Tag)}"
-                                           TextWrapping="NoWrap"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            </StackPanel>
-                            <FontIcon Grid.Column="1"
-                                      Margin="12,0,0,0"
-                                      VerticalAlignment="Center"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE7B3;" />
-                            <FontIcon Grid.Column="2"
-                                      VerticalAlignment="Center"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xE70A;" />
-                            <FontIcon Grid.Column="3"
-                                      Margin="12,0,0,0"
-                                      Visibility="Collapsed"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                      FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                      FontSize="16"
-                                      Glyph="&#xEE3F;" />
-                        </Grid>
-                    </muxc:Expander.Header>
-                    <muxc:Expander.Content>
-                        <Grid Name="GridIhansenOrder">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <ToggleButton x:Uid="OrderDate"
-                                          Tag="date"
-                                          Margin="0,0,3,0"
-                                          HorizontalAlignment="Stretch"
-                                          Click="TbIhansenOrder_Click" />
-                            <ToggleButton Grid.Column="1"
-                                          x:Uid="OrderRandom"
-                                          Tag="random"
-                                          Margin="3,0,0,0"
-                                          HorizontalAlignment="Stretch"
-                                          Click="TbIhansenOrder_Click" />
                         </Grid>
                     </muxc:Expander.Content>
                 </muxc:Expander>

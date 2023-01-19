@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.1
+; 拾光 / Timeline v8.2
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -15,22 +15,23 @@ provider=bing
 ; provider=nasa         图源：NASA - 每日天文一图 https://apod.nasa.gov/apod/
 ; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline/demo
 ; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
+; provider=ihansen      图源：美图集 - 看好的壁纸、风景、素材库 https://photo.ihansen.org/
 ; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari.asia/
 ; provider=ymyouli      图源：一梦幽黎 - 8K优质壁纸资源 https://ymyouli.com/
 ; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://qingbizhi.com/
-; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc/
-; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com/
 ; provider=zzzmh        图源：极简壁纸 - PC高清桌面壁纸 https://bz.zzzmh.cn/index
 ; provider=toopic       图源：壁纸社 - 桌面高清壁纸 https://www.toopic.cn/
 ; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
+; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc/
+; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
-; provider=infinity     图源：Infinity - 精选高清壁纸 http://cn.infinitynewtab.com
-; provider=ihansen      图源：美图集 - 看好的壁纸、风景、素材库 https://photo.ihansen.org/
+; provider=skitter      图源：Skitterphoto - a place to find, show and share https://skitterphoto.com/
+; provider=infinity     图源：Infinity - 精选高清壁纸 https://www.infinitytab.com/
 ; provider=glutton      图源：贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=lsp          图源(隐藏)：LSP - 不可描述 https://api.nguaduot.cn/lsp/demo
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com/
-; provider=wallpaperup  图源(弃用)：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
 ; provider=obzhi        图源(弃用)：乌云壁纸 - 高清壁纸站 https://www.obzhi.com/
+; provider=wallpaperup  图源(弃用)：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
 
 desktopprovider=
 ; desktopprovider={provider}  桌面背景推送图源：参数参考 provider（置空则关闭推送）
@@ -120,7 +121,7 @@ tileperiod=2
 
 order=date
 ; order=date    排序：收录（默认）
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘
 
 mirror=bjp
@@ -143,7 +144,7 @@ tileperiod=2
 
 order=date
 ; order=date    排序：日期（默认）
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘
 
 cate=
@@ -173,6 +174,24 @@ tileperiod=2
 
 order=date
 ; order=date    排序：日期（默认）
+; order=random  排序：随缘
+
+[ihansen]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=date
+; order=date    排序：收录（默认，热度集无该项）
 ; order=random  排序：随缘
 
 [himawari8]
@@ -211,7 +230,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -244,7 +263,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -257,59 +276,6 @@ cate=
 ; cate=car       类别：汽车迷
 ; cate=game      类别：游戏迷
 ; cate=animal    类别：动物萌宠
-
-[wallhaven]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=random
-; order=date    排序：收录
-; order=score   排序：喜欢
-; order=random  排序：随缘（默认）
-
-cate=
-; cate=         类别：全部（默认）
-; cate=general  类别：General
-; cate=anime    类别：Anime
-; cate=people   类别：General
-
-[wallhere]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=random
-; order=date    排序：收录
-; order=score   排序：喜欢
-; order=random  排序：随缘（默认）
-
-cate=
-; cate=           类别：全部（默认）
-; cate=acg        类别：ACG
-; cate=animal     类别：动物
-; cate=art        类别：创意
-; cate=landscape  类别：风光
-; cate=portrait   类别：人像
-; cate=still      类别：静物
 
 [zzzmh]
 
@@ -327,7 +293,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -355,7 +321,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -384,7 +350,60 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=           类别：全部（默认）
+; cate=acg        类别：ACG
+; cate=animal     类别：动物
+; cate=art        类别：创意
+; cate=landscape  类别：风光
+; cate=portrait   类别：人像
+; cate=still      类别：静物
+
+[wallhaven]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=         类别：全部（默认）
+; cate=general  类别：General
+; cate=anime    类别：Anime
+; cate=people   类别：General
+
+[wallhere]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -412,7 +431,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -423,6 +442,44 @@ cate=
 ; cate=landscape  类别：风光
 ; cate=portrait   类别：人像
 ; cate=still      类别：静物
+
+[skitter]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=                     类别：全部（默认）
+; cate=animals              类别：Animals
+; cate=architecture         类别：Architecture
+; cate=business-finance     类别：Business/Finance
+; cate=culture-and-art      类别：Culture and Art
+; cate=decoration-seasonal  类别：Decoration/seasonal
+; cate=food                 类别：Food and Drinks
+; cate=industry             类别：Industry
+; cate=miscellaneous        类别：Miscellaneous
+; cate=music                类别：Music
+; cate=nature               类别：Nature and Landscape
+; cate=people               类别：People
+; cate=sports               类别：Sports
+; cate=technology           类别：Technology
+; cate=textures-wallpapers  类别：Textures/wallpapers
+; cate=transportation       类别：Transportation
+; cate=travel               类别：Travel
 
 [infinity]
 
@@ -439,26 +496,8 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
-
-[ihansen]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=date
-; order=date    排序：收录（默认，热度集无该项）
-; order=random  排序：随缘
 
 [glutton]
 
@@ -480,7 +519,7 @@ album=journal
 
 order=date
 ; order=date    排序：收录（默认，热度集无该项）
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘
 
 [lsp]
@@ -499,7 +538,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -523,36 +562,8 @@ tileperiod=2
 
 order=date
 ; order=date   排序：收录（默认）
-; order=score  排序：喜欢
+; order=score  排序：趋势
 ; order=view   排序：浏览
-
-[wallpaperup]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=random
-; order=date    排序：收录
-; order=score   排序：喜欢
-; order=random  排序：随缘（默认）
-
-cate=
-; cate=           类别：全部（默认）
-; cate=acg        类别：ACG
-; cate=animal     类别：动物
-; cate=art        类别：创意
-; cate=landscape  类别：风光
-; cate=portrait   类别：人像
-; cate=still      类别：静物
 
 [obzhi]
 
@@ -570,7 +581,7 @@ tileperiod=2
 
 order=random
 ; order=date    排序：收录
-; order=score   排序：喜欢
+; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
 cate=
@@ -582,3 +593,31 @@ cate=
 ; cate=portrait  类别：人物
 ; cate=game      类别：游戏
 ; cate=animal    类别：动物
+
+[wallpaperup]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=           类别：全部（默认）
+; cate=acg        类别：ACG
+; cate=animal     类别：动物
+; cate=art        类别：创意
+; cate=landscape  类别：风光
+; cate=portrait   类别：人像
+; cate=still      类别：静物

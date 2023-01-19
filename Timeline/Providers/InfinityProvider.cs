@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
@@ -32,7 +31,7 @@ namespace Timeline.Providers {
             meta.Title = string.Format("{0} #{1}", bean.Source,
                 nodes[nodes.Length - 1].Substring(0, Math.Min(nodes[nodes.Length - 1].Length, 10)));
             if (bean.Tags != null) {
-                meta.Story = string.Join(" ", bean.Tags ?? new List<string>());
+                meta.Story = string.Join(", ", bean.Tags ?? new List<string>());
             }
             if (!string.IsNullOrEmpty(bean.Src?.RawSrc)) {
                 Uri uri = new Uri(bean.Src.RawSrc);

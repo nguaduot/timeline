@@ -62,7 +62,7 @@ namespace Timeline.Providers {
                 meta.Title = title;
                 if (!string.IsNullOrEmpty(caption)) {
                     meta.Caption = caption;
-                    if (!string.IsNullOrEmpty(copyrightTitle)) {
+                    if (!string.IsNullOrEmpty(copyrightTitle) && !copyrightTitle.Equals(caption)) {
                         if (!string.IsNullOrEmpty(desc)) {
                             meta.Story = copyrightTitle + "\n" + desc;
                         } else {

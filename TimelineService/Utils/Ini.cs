@@ -11,6 +11,7 @@ namespace TimelineService.Utils {
             NasaIni.GetId(),
             TimelineIni.GetId(),
             OneIni.GetId(),
+            IhansenIni.GetId(),
             Himawari8Ini.GetId(),
             YmyouliIni.GetId(),
             QingbzIni.GetId(),
@@ -21,7 +22,6 @@ namespace TimelineService.Utils {
             NetbianIni.GetId(),
             BackieeIni.GetId(),
             InfinityIni.GetId(),
-            IhansenIni.GetId(),
             GluttonIni.GetId(),
             LspIni.GetId(),
             OneplusIni.GetId(),
@@ -62,6 +62,8 @@ namespace TimelineService.Utils {
 
         public OneIni One { set; get; } = new OneIni();
 
+        public IhansenIni Ihansen { set; get; } = new IhansenIni();
+
         public Himawari8Ini Himawari8 { set; get; } = new Himawari8Ini();
 
         public YmyouliIni Ymyouli { set; get; } = new YmyouliIni();
@@ -82,8 +84,6 @@ namespace TimelineService.Utils {
 
         public InfinityIni Infinity { set; get; } = new InfinityIni();
 
-        public IhansenIni Ihansen { set; get; } = new IhansenIni();
-
         public GluttonIni Glutton { set; get; } = new GluttonIni();
 
         public LspIni Lsp { set; get; } = new LspIni();
@@ -103,6 +103,8 @@ namespace TimelineService.Utils {
                 return Timeline.DesktopPeriod;
             } else if (OneIni.GetId().Equals(provider)) {
                 return One.DesktopPeriod;
+            } else if (IhansenIni.GetId().Equals(provider)) {
+                return Ihansen.DesktopPeriod;
             } else if (Himawari8Ini.GetId().Equals(provider)) {
                 return Himawari8.DesktopPeriod;
             } else if (YmyouliIni.GetId().Equals(provider)) {
@@ -123,8 +125,6 @@ namespace TimelineService.Utils {
                 return Backiee.DesktopPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.DesktopPeriod;
-            } else if (IhansenIni.GetId().Equals(provider)) {
-                return Ihansen.DesktopPeriod;
             } else if (GluttonIni.GetId().Equals(provider)) {
                 return Glutton.DesktopPeriod;
             } else if (LspIni.GetId().Equals(provider)) {
@@ -151,6 +151,8 @@ namespace TimelineService.Utils {
                 return Timeline.LockPeriod;
             } else if (OneIni.GetId().Equals(provider)) {
                 return One.LockPeriod;
+            } else if (IhansenIni.GetId().Equals(provider)) {
+                return Ihansen.LockPeriod;
             } else if (Himawari8Ini.GetId().Equals(provider)) {
                 return Himawari8.LockPeriod;
             } else if (YmyouliIni.GetId().Equals(provider)) {
@@ -171,8 +173,6 @@ namespace TimelineService.Utils {
                 return Backiee.LockPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.LockPeriod;
-            } else if (IhansenIni.GetId().Equals(provider)) {
-                return Ihansen.LockPeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.LockPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -197,6 +197,8 @@ namespace TimelineService.Utils {
                 return Timeline.ToastPeriod;
             } else if (OneIni.GetId().Equals(provider)) {
                 return One.ToastPeriod;
+            } else if (IhansenIni.GetId().Equals(provider)) {
+                return Ihansen.ToastPeriod;
             } else if (Himawari8Ini.GetId().Equals(provider)) {
                 return Himawari8.ToastPeriod;
             } else if (YmyouliIni.GetId().Equals(provider)) {
@@ -217,8 +219,6 @@ namespace TimelineService.Utils {
                 return Backiee.ToastPeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.ToastPeriod;
-            } else if (IhansenIni.GetId().Equals(provider)) {
-                return Ihansen.ToastPeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.ToastPeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -243,6 +243,8 @@ namespace TimelineService.Utils {
                 return Timeline.TilePeriod;
             } else if (OneIni.GetId().Equals(provider)) {
                 return One.TilePeriod;
+            } else if (IhansenIni.GetId().Equals(provider)) {
+                return Ihansen.TilePeriod;
             } else if (Himawari8Ini.GetId().Equals(provider)) {
                 return Himawari8.TilePeriod;
             } else if (YmyouliIni.GetId().Equals(provider)) {
@@ -263,8 +265,6 @@ namespace TimelineService.Utils {
                 return Backiee.TilePeriod;
             } else if (InfinityIni.GetId().Equals(provider)) {
                 return Infinity.TilePeriod;
-            } else if (IhansenIni.GetId().Equals(provider)) {
-                return Ihansen.TilePeriod;
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 return Wallpaperup.TilePeriod;
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -286,6 +286,8 @@ namespace TimelineService.Utils {
                 paras = Nasa.ToString();
             } else if (OneplusIni.GetId().Equals(provider)) {
                 paras = Oneplus.ToString();
+            } else if (IhansenIni.GetId().Equals(provider)) {
+                return Ihansen.ToString();
             } else if (TimelineIni.GetId().Equals(provider)) {
                 paras = Timeline.ToString();
             } else if (OneIni.GetId().Equals(provider)) {
@@ -310,8 +312,6 @@ namespace TimelineService.Utils {
                 paras = Backiee.ToString();
             } else if (InfinityIni.GetId().Equals(provider)) {
                 paras = Infinity.ToString();
-            } else if (IhansenIni.GetId().Equals(provider)) {
-                return Ihansen.ToString();
             } else if (WallpaperupIni.GetId().Equals(provider)) {
                 paras = Wallpaperup.ToString();
             } else if (ObzhiIni.GetId().Equals(provider)) {
@@ -490,6 +490,36 @@ namespace TimelineService.Utils {
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
 
         public static string GetId() => "one";
+    }
+
+    public sealed class IhansenIni {
+        private float desktopPeriod = 24;
+        public float DesktopPeriod {
+            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => desktopPeriod;
+        }
+
+        private float lockPeriod = 24;
+        public float LockPeriod {
+            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => lockPeriod;
+        }
+
+        private float tostPeriod = 24;
+        public float ToastPeriod {
+            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tostPeriod;
+        }
+
+        private float tilePeriod = 2;
+        public float TilePeriod {
+            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
+            get => tilePeriod;
+        }
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}";
+
+        public static string GetId() => "ihansen";
     }
 
     public sealed class Himawari8Ini {
@@ -932,45 +962,6 @@ namespace TimelineService.Utils {
             $"&order={Order}";
 
         public static string GetId() => "infinity";
-    }
-
-    public sealed class IhansenIni {
-        private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "random" };
-
-        private string order = "date";
-        public string Order {
-            set => order = ORDERS.Contains(value) ? value : "date";
-            get => order;
-        }
-
-        private float desktopPeriod = 24;
-        public float DesktopPeriod {
-            set => desktopPeriod = Math.Max(Math.Min(value, 24), 0.25f);
-            get => desktopPeriod;
-        }
-
-        private float lockPeriod = 24;
-        public float LockPeriod {
-            set => lockPeriod = Math.Max(Math.Min(value, 24), 0.25f);
-            get => lockPeriod;
-        }
-
-        private float tostPeriod = 24;
-        public float ToastPeriod {
-            set => tostPeriod = Math.Max(Math.Min(value, 24), 0.25f);
-            get => tostPeriod;
-        }
-
-        private float tilePeriod = 2;
-        public float TilePeriod {
-            set => tilePeriod = Math.Max(Math.Min(value, 24), 0.25f);
-            get => tilePeriod;
-        }
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}";
-
-        public static string GetId() => "ihansen";
     }
 
     public sealed class GluttonIni {

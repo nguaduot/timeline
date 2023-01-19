@@ -903,7 +903,16 @@
   <data name="Provider_ihansen" xml:space="preserve">
     <value>美图集</value>
   </data>
+  <data name="Provider_skitter" xml:space="preserve">
+    <value>Skitterphoto</value>
+  </data>
   <data name="Slogan_ihansen" xml:space="preserve">
     <value>看好的壁纸、风景、素材库</value>
+  </data>
+  <data name="Slogan_skitter" xml:space="preserve">
+    <value>a place to find, show and share</value>
+  </data>
+  <data name="TextSkitterCate.Text" xml:space="preserve">
+    <value>Category</value>
   </data>
 </root>

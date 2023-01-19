@@ -51,6 +51,13 @@
       "tileperiod": 2,
       "order": "date"
     },
+    "ihansen": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
     "himawari8": {
       "desktopperiod": 1,
       "lockperiod": 2,
@@ -68,22 +75,6 @@
       "cate": ""
     },
     "qingbz": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "order": "random",
-      "cate": ""
-    },
-    "wallhaven": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "order": "random",
-      "cate": ""
-    },
-    "wallhere": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -115,7 +106,31 @@
       "order": "random",
       "cate": ""
     },
+    "wallhaven": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "wallhere": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
     "backiee": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
+    "skitter": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -129,13 +144,6 @@
       "toastperiod": 24,
       "tileperiod": 2,
       "order": "random"
-    },
-    "ihansen": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "order": "date"
     },
     "glutton": {
       "desktopperiod": 24,
@@ -160,7 +168,7 @@
       "tileperiod": 2,
       "order": "date"
     },
-    "wallpaperup": {
+    "obzhi": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -168,7 +176,7 @@
       "order": "random",
       "cate": ""
     },
-    "obzhi": {
+    "wallpaperup": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
