@@ -122,6 +122,14 @@
       "order": "random",
       "cate": ""
     },
+    "wallpaperup": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random",
+      "cate": ""
+    },
     "backiee": {
       "desktopperiod": 24,
       "lockperiod": 24,
@@ -169,14 +177,6 @@
       "order": "date"
     },
     "obzhi": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "order": "random",
-      "cate": ""
-    },
-    "wallpaperup": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,

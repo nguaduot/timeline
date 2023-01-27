@@ -415,6 +415,41 @@ cate=
 ; cate=portrait   类别：人像
 ; cate=still      类别：静物
 
+[wallpaperup]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=               类别：全部（默认）
+; cate=nature         类别：Nature
+; cate=abstract       类别：Abstract
+; cate=world          类别：World
+; cate=entertainment  类别：Entertainment
+; cate=animals        类别：Animals
+; cate=vehicles       类别：Vehicles
+; cate=technology     类别：Technology
+; cate=food           类别：Food
+; cate=holidays       类别：Holidays
+; cate=people         类别：People
+; cate=drinks         类别：Drinks
+; cate=sports         类别：Sports
+; cate=other          类别：Other
+
 [backiee]
 
 desktopperiod=24
@@ -593,31 +628,3 @@ cate=
 ; cate=portrait  类别：人物
 ; cate=game      类别：游戏
 ; cate=animal    类别：动物
-
-[wallpaperup]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=random
-; order=date    排序：收录
-; order=score   排序：趋势
-; order=random  排序：随缘（默认）
-
-cate=
-; cate=           类别：全部（默认）
-; cate=acg        类别：ACG
-; cate=animal     类别：动物
-; cate=art        类别：创意
-; cate=landscape  类别：风光
-; cate=portrait   类别：人像
-; cate=still      类别：静物

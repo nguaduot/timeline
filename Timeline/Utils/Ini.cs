@@ -18,6 +18,7 @@ namespace Timeline.Utils {
             { QingbzIni.ID, new QingbzIni() },
             { WallhavenIni.ID, new WallhavenIni() },
             { WallhereIni.ID, new WallhereIni() },
+            { WallpaperupIni.ID, new WallpaperupIni() },
             { ZzzmhIni.ID, new ZzzmhIni() },
             { ToopicIni.ID, new ToopicIni() },
             { NetbianIni.ID, new NetbianIni() },
@@ -26,7 +27,6 @@ namespace Timeline.Utils {
             { InfinityIni.ID, new InfinityIni() },
             { GluttonIni.ID, new GluttonIni() },
             { LspIni.ID, new LspIni() },
-            { WallpaperupIni.ID, new WallpaperupIni() },
             { OneplusIni.ID, new OneplusIni() },
             { ObzhiIni.ID, new ObzhiIni() }
         };
@@ -441,6 +441,25 @@ namespace Timeline.Utils {
             $"&order={Order}&cate={Cate}";
     }
 
+    public class WallpaperupIni : BaseIni {
+        public const string ID = "wallpaperup";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/wallpaperup/cate?client=timelinewallpaper";
+
+        public WallpaperupIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new WallpaperupProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
     public class ZzzmhIni : BaseIni {
         public const string ID = "zzzmh";
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
@@ -625,26 +644,6 @@ namespace Timeline.Utils {
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}";
-    }
-
-    // deprecated
-    public class WallpaperupIni : BaseIni {
-        public const string ID = "wallpaperup";
-        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
-        public const string URL_API_CATE = "https://api.nguaduot.cn/wallpaperup/cate?client=timelinewallpaper";
-
-        public WallpaperupIni() {
-            Id = ID;
-            Orders = ORDERS;
-            Order = "random";
-        }
-
-        public override string GetCateApi() => URL_API_CATE;
-
-        public override BaseProvider GenerateProvider() => new WallpaperupProvider { Id = this.Id };
-
-        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
-            $"&order={Order}&cate={Cate}";
     }
 
     // deprecated

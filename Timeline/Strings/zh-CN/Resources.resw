@@ -915,4 +915,7 @@
   <data name="TextSkitterCate.Text" xml:space="preserve">
     <value>类别</value>
   </data>
+  <data name="TextWallpaperupCate.Text" xml:space="preserve">
+    <value>类别</value>
+  </data>
 </root>

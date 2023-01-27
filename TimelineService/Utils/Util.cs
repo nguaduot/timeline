@@ -173,6 +173,13 @@ namespace TimelineService.Utils {
             ini.Backiee.Order = GetPrivateProfileString(BackieeIni.GetId(), "order", "random", iniFile);
             ini.Backiee.Cate = GetPrivateProfileString(BackieeIni.GetId(), "cate", "", iniFile);
 
+            ini.Skitter.DesktopPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Skitter.LockPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Skitter.ToastPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Skitter.TilePeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Skitter.Order = GetPrivateProfileString(SkitterIni.GetId(), "order", "random", iniFile);
+            ini.Skitter.Cate = GetPrivateProfileString(SkitterIni.GetId(), "cate", "", iniFile);
+
             ini.Infinity.DesktopPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Infinity.LockPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "lockperiod", 24, iniFile);
             ini.Infinity.ToastPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "toastperiod", 24, iniFile);

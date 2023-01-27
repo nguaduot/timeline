@@ -1483,7 +1483,7 @@ namespace Timeline {
         }
 
         private async void ViewSettings_DlgChanged(object sender, DlgEventArgs e) {
-            if (e.TimelineContributeChanged) {
+            /*if (e.TimelineContributeChanged) {
                 ContributeDlg dlg = new ContributeDlg {
                     RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
                 };
@@ -1491,7 +1491,7 @@ namespace Timeline {
                 if (res == ContentDialogResult.Primary) {
                     ShowToastI(resLoader.GetString("MsgContribute"));
                 }
-            } else if (e.LspR22Changed != null) {
+            } else */if (e.LspR22Changed != null) {
                 R22Dlg dlg = new R22Dlg(e.LspR22Changed.Comment, e.LspR22Changed.Remark) {
                     RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
                 };

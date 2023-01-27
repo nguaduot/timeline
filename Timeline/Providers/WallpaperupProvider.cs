@@ -22,12 +22,15 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
-                Story = bean.Story,
+                Story = TextUtil.PurifyTags(bean.Story),
                 Cate = bean.CateName,
                 Src = bean.SrcUrl,
                 Score = bean.Score,
                 Format = FileUtil.ParseFormat(bean.ImgUrl)
             };
+            if (!string.IsNullOrEmpty(bean.Copyright)) {
+                meta.Copyright = "@" + bean.Copyright;
+            }
             //DateTime.TryParseExact(bean.RelDate, "yyyy-MM-dd", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime date);
             if (DateTime.TryParse(bean.RelDate, out DateTime date)) {
                 meta.Date = date;

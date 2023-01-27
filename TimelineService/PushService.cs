@@ -24,7 +24,6 @@ using Windows.System.UserProfile;
 using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
-using Windows.UI.Xaml.Controls;
 
 namespace TimelineService {
     public sealed class PushService : IBackgroundTask {
@@ -213,6 +212,8 @@ namespace TimelineService {
                 res = await LoadNetbianAsync(Action.Desktop);
             } else if (BackieeIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadBackieeAsync(Action.Desktop);
+            } else if (SkitterIni.GetId().Equals(ini.DesktopProvider)) {
+                res = await LoadSkitterAsync(Action.Desktop);
             } else if (InfinityIni.GetId().Equals(ini.DesktopProvider)) {
                 res = await LoadInfinityAsync(Action.Desktop);
             } else if (WallpaperupIni.GetId().Equals(ini.DesktopProvider)) {
@@ -258,14 +259,16 @@ namespace TimelineService {
                 res = await LoadWallhavenAsync(Action.Lock);
             } else if (WallhereIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadWallhereAsync(Action.Lock);
-            } else if (ZzzmhIni.GetId().Equals(ini.DesktopProvider)) {
+            } else if (ZzzmhIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadZzzmhAsync(Action.Lock);
             } else if (ToopicIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadToopicAsync(Action.Lock);
             } else if (NetbianIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadNetbianAsync(Action.Lock);
-            } else if (BackieeIni.GetId().Equals(ini.TileProvider)) {
+            } else if (BackieeIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadBackieeAsync(Action.Lock);
+            } else if (SkitterIni.GetId().Equals(ini.LockProvider)) {
+                res = await LoadSkitterAsync(Action.Lock);
             } else if (InfinityIni.GetId().Equals(ini.LockProvider)) {
                 res = await LoadInfinityAsync(Action.Lock);
             } else if (WallpaperupIni.GetId().Equals(ini.LockProvider)) {
@@ -311,7 +314,7 @@ namespace TimelineService {
                 res = await LoadWallhavenAsync(Action.Toast);
             } else if (WallhereIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadWallhereAsync(Action.Toast);
-            } else if (ZzzmhIni.GetId().Equals(ini.DesktopProvider)) {
+            } else if (ZzzmhIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadZzzmhAsync(Action.Toast);
             } else if (ToopicIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadToopicAsync(Action.Toast);
@@ -319,6 +322,8 @@ namespace TimelineService {
                 res = await LoadNetbianAsync(Action.Toast);
             } else if (BackieeIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadBackieeAsync(Action.Toast);
+            } else if (SkitterIni.GetId().Equals(ini.ToastProvider)) {
+                res = await LoadSkitterAsync(Action.Toast);
             } else if (InfinityIni.GetId().Equals(ini.ToastProvider)) {
                 res = await LoadInfinityAsync(Action.Toast);
             } else if (WallpaperupIni.GetId().Equals(ini.ToastProvider)) {
@@ -353,7 +358,7 @@ namespace TimelineService {
                 res = await LoadTimelineAsync(Action.Tile);
             } else if (OneIni.GetId().Equals(tileProvider)) {
                 res = await LoadOneAsync(Action.Tile);
-            } else if (IhansenIni.GetId().Equals(ini.TileProvider)) {
+            } else if (IhansenIni.GetId().Equals(tileProvider)) {
                 res = await LoadIhansenAsync(Action.Tile);
             } else if (Himawari8Ini.GetId().Equals(tileProvider)) {
                 res = await LoadHimawari8Async(Action.Tile);
@@ -365,7 +370,7 @@ namespace TimelineService {
                 res = await LoadWallhavenAsync(Action.Tile);
             } else if (WallhereIni.GetId().Equals(tileProvider)) {
                 res = await LoadWallhereAsync(Action.Tile);
-            } else if (ZzzmhIni.GetId().Equals(ini.DesktopProvider)) {
+            } else if (ZzzmhIni.GetId().Equals(tileProvider)) {
                 res = await LoadZzzmhAsync(Action.Tile);
             } else if (ToopicIni.GetId().Equals(tileProvider)) {
                 res = await LoadToopicAsync(Action.Tile);
@@ -373,6 +378,8 @@ namespace TimelineService {
                 res = await LoadNetbianAsync(Action.Tile);
             } else if (BackieeIni.GetId().Equals(tileProvider)) {
                 res = await LoadBackieeAsync(Action.Tile);
+            } else if (SkitterIni.GetId().Equals(tileProvider)) {
+                res = await LoadSkitterAsync(Action.Tile);
             } else if (InfinityIni.GetId().Equals(tileProvider)) {
                 res = await LoadInfinityAsync(Action.Tile);
             } else if (WallpaperupIni.GetId().Equals(tileProvider)) {
@@ -1151,6 +1158,46 @@ namespace TimelineService {
                 }
             } else {
                 LogUtil.I("LoadBackieeAsync() img url: " + data.ImgUrl);
+                StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
+                if (action == Action.Lock) {
+                    return await SetLockBgAsync(fileImg);
+                } else {
+                    return await SetDesktopBgAsync(fileImg);
+                }
+            }
+        }
+
+        private async Task<bool> LoadSkitterAsync(Action action) {
+            SkitterApiData data = null;
+            string jsonData = await FileUtil.ReadProviderCache(SkitterIni.GetId(), ini.Skitter.Order, ini.Skitter.Cate);
+            if (!string.IsNullOrEmpty(jsonData)) {
+                try {
+                    SkitterApi api = JsonConvert.DeserializeObject<SkitterApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                    LogUtil.I("LoadSkitterAsync() cache from disk");
+                } catch (Exception e) {
+                    LogUtil.E("LoadSkitterAsync() " + e.Message);
+                }
+            }
+            if (data == null) {
+                const string URL_API = "https://api.nguaduot.cn/skitter/v2?client=timelinewallpaper&order={0}&cate={1}";
+                string urlApi = string.Format(URL_API, ini.Skitter.Order, ini.Skitter.Cate);
+                LogUtil.I("LoadSkitterAsync() api url: " + urlApi);
+                HttpClient client = new HttpClient();
+                jsonData = await client.GetStringAsync(urlApi);
+                SkitterApi api = JsonConvert.DeserializeObject<SkitterApi>(jsonData);
+                data = api.Data[new Random().Next(api.Data.Count)];
+                await FileUtil.WriteProviderCache(SkitterIni.GetId(), ini.Skitter.Order, ini.Skitter.Cate, jsonData);
+            }
+            if (action == Action.Toast || action == Action.Tile) {
+                LogUtil.I("LoadSkitterAsync() thumb url: " + data.ThumbUrl);
+                if (action == Action.Toast) {
+                    return ShowToast(data.ThumbUrl);
+                } else {
+                    return SetTileBg(data.ThumbUrl);
+                }
+            } else {
+                LogUtil.I("LoadSkitterAsync() img url: " + data.ImgUrl);
                 StorageFile fileImg = await DownloadImgAsync(data.ImgUrl, action);
                 if (action == Action.Lock) {
                     return await SetLockBgAsync(fileImg);

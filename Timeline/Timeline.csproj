@@ -11,7 +11,7 @@
     <AssemblyName>Timeline</AssemblyName>
     <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -20,15 +20,15 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <PackageCertificateKeyFile>
-    </PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Timeline_TemporaryKey-alt.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
-    <AppxBundlePlatforms>x64|arm64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundle>Auto</AppxBundle>
-    <PackageCertificateThumbprint>B0588B7D195F544D31E3EFCD28EE3EB5BC6A8843</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>
+    </PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -135,7 +135,6 @@
     <Compile Include="Beans\R22AuthApi.cs" />
     <Compile Include="Beans\Himawari8Api.cs" />
     <Compile Include="Beans\BingApi.cs" />
-    <Compile Include="Beans\ContributeApiReq.cs" />
     <Compile Include="Beans\CrashApiReq.cs" />
     <Compile Include="Beans\InfinityApi.cs" />
     <Compile Include="Beans\CateApi.cs" />
@@ -165,9 +164,6 @@
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ContributeDlg.xaml.cs">
-      <DependentUpon>ContributeDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DonateDlg.xaml.cs">
       <DependentUpon>DonateDlg.xaml</DependentUpon>
@@ -281,6 +277,7 @@
     <Content Include="Assets\Images\himawari8-20220521182000.png" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
+    <None Include="Timeline_TemporaryKey-alt.pfx" />
     <None Include="Timeline_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -289,10 +286,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ContributeDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -318,7 +311,7 @@
       <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.1</Version>
+      <Version>2.8.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
