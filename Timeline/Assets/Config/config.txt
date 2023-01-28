@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.2
+; 拾光 / Timeline v8.3
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
