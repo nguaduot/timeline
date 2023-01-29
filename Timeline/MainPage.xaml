@@ -393,6 +393,9 @@
                                       Tag="one"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
+                                      Tag="glutton"
+                                      GroupName="Provider" />
+            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="himawari8"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
@@ -427,9 +430,6 @@
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
                                       Tag="infinity"
-                                      GroupName="Provider" />
-            <muxc:RadioMenuFlyoutItem Click="MenuProvider_Click"
-                                      Tag="glutton"
                                       GroupName="Provider" />
             <muxc:RadioMenuFlyoutItem Name="MenuProviderLsp"
                                       Tag="lsp"

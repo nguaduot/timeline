@@ -330,8 +330,8 @@
   <data name="TextSettingsGeneral.Text" xml:space="preserve">
     <value>常规</value>
   </data>
-  <data name="TextSettingsProvider.Text" xml:space="preserve">
-    <value>图源</value>
+  <data name="TextSettingsProvider1.Text" xml:space="preserve">
+    <value>图源组 · 壹</value>
   </data>
   <data name="BingLang_" xml:space="preserve">
     <value>自动识别</value>
@@ -823,7 +823,7 @@
     <value>已复制URL</value>
   </data>
   <data name="OrderDate.Content" xml:space="preserve">
-    <value>收录</value>
+    <value>最新</value>
   </data>
   <data name="OrderRandom.Content" xml:space="preserve">
     <value>随缘</value>
@@ -917,5 +917,8 @@
   </data>
   <data name="TextWallpaperupCate.Text" xml:space="preserve">
     <value>类别</value>
+  </data>
+  <data name="TextSettingsProvider2.Text" xml:space="preserve">
+    <value>图源组 · 贰</value>
   </data>
 </root>

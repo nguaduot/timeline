@@ -51,11 +51,12 @@
       "tileperiod": 2,
       "order": "date"
     },
-    "ihansen": {
+    "glutton": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
       "tileperiod": 2,
+      "album": "journal",
       "order": "date"
     },
     "himawari8": {
@@ -153,14 +154,6 @@
       "tileperiod": 2,
       "order": "random"
     },
-    "glutton": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "album": "journal",
-      "order": "date"
-    },
     "lsp": {
       "desktopperiod": 24,
       "lockperiod": 24,
@@ -170,6 +163,13 @@
       "cate": ""
     },
     "oneplus": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
+    "ihansen": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -186,7 +186,7 @@
     }
   },
   "about": {
-    "version": "7.4",
+    "version": "8.4",
     "doc": "https://gitee.com/nguaduot/timeline",
     "download": "https://www.microsoft.com/store/apps/9N7VHQ989BB7",
     "contact": "nguaduot@163.com"

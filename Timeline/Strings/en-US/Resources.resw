@@ -324,8 +324,8 @@
   <data name="TextSettingsGeneral.Text" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="TextSettingsProvider.Text" xml:space="preserve">
-    <value>Provider</value>
+  <data name="TextSettingsProvider1.Text" xml:space="preserve">
+    <value>Provider group 1</value>
   </data>
   <data name="BoxHimawari8Offset.PlaceholderText" xml:space="preserve">
     <value>0~1.00</value>
@@ -917,5 +917,8 @@
   </data>
   <data name="TextWallpaperupCate.Text" xml:space="preserve">
     <value>Category</value>
+  </data>
+  <data name="TextSettingsProvider2.Text" xml:space="preserve">
+    <value>Provider group 2</value>
   </data>
 </root>

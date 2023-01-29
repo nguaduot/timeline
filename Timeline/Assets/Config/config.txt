@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.3
+; 拾光 / Timeline v8.4
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -15,7 +15,7 @@ provider=bing
 ; provider=nasa         图源：NASA - 每日天文一图 https://apod.nasa.gov/apod/
 ; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline/demo
 ; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
-; provider=ihansen      图源：美图集 - 看好的壁纸、风景、素材库 https://photo.ihansen.org/
+; provider=glutton      图源：贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari.asia/
 ; provider=ymyouli      图源：一梦幽黎 - 8K优质壁纸资源 https://ymyouli.com/
 ; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://qingbizhi.com/
@@ -24,14 +24,14 @@ provider=bing
 ; provider=netbian      图源：彼岸图网 - 4K高清壁纸 https://pic.netbian.com/
 ; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc/
 ; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com/
+; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
 ; provider=skitter      图源：Skitterphoto - a place to find, show and share https://skitterphoto.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 https://www.infinitytab.com/
-; provider=glutton      图源：贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=lsp          图源(隐藏)：LSP - 不可描述 https://api.nguaduot.cn/lsp/demo
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com/
+; provider=ihansen      图源(弃用)：美图集 - 看好的壁纸、风景、素材库 https://photo.ihansen.org/
 ; provider=obzhi        图源(弃用)：乌云壁纸 - 高清壁纸站 https://www.obzhi.com/
-; provider=wallpaperup  图源(弃用)：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
 
 desktopprovider=
 ; desktopprovider={provider}  桌面背景推送图源：参数参考 provider（置空则关闭推送）
@@ -176,7 +176,7 @@ order=date
 ; order=date    排序：日期（默认）
 ; order=random  排序：随缘
 
-[ihansen]
+[glutton]
 
 desktopperiod=24
 ; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
@@ -190,8 +190,13 @@ toastperiod=24
 tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
+album=journal
+; album=journal  集：周选集（默认）
+; album=rank     集：热度集
+
 order=date
 ; order=date    排序：收录（默认，热度集无该项）
+; order=score   排序：趋势
 ; order=random  排序：随缘
 
 [himawari8]
@@ -534,29 +539,6 @@ order=random
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
-[glutton]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-album=journal
-; album=journal  集：周选集（默认）
-; album=rank     集：热度集
-
-order=date
-; order=date    排序：收录（默认，热度集无该项）
-; order=score   排序：趋势
-; order=random  排序：随缘
-
 [lsp]
 
 desktopperiod=24
@@ -599,6 +581,24 @@ order=date
 ; order=date   排序：收录（默认）
 ; order=score  排序：趋势
 ; order=view   排序：浏览
+
+[ihansen]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=date
+; order=date    排序：收录（默认，热度集无该项）
+; order=random  排序：随缘
 
 [obzhi]
 
