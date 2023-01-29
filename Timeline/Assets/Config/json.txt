@@ -91,7 +91,7 @@
       "order": "random",
       "cate": ""
     },
-    "toopic": {
+    "netbian": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
@@ -99,7 +99,7 @@
       "order": "random",
       "cate": ""
     },
-    "netbian": {
+    "toopic": {
       "desktopperiod": 24,
       "lockperiod": 24,
       "toastperiod": 24,
