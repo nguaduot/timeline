@@ -44,6 +44,7 @@
 + [wallhaven](https://wallhaven.cc/) - The best wallpapers on the Net [[网页版]](https://api.nguaduot.cn/wallhaven/demo)
 + [WallHere](https://wallhere.com) - One of the best hd wallpapers site [[网页版]](https://api.nguaduot.cn/wallhere/demo)
 + [WallpaperUP](https://www.wallpaperup.com) - Your best source of wallpapers [[网页版]](https://api.nguaduot.cn/wallpaperup/demo)
++ [Wallpaper Abyss](https://wall.alphacoders.com/) - HD Wallpapers, Background Imges [[网页版]](https://api.nguaduot.cn/abyss/demo)
 + [backiee](https://backiee.com/) - Free Ultra HD wallpaper platform [[网页版]](https://api.nguaduot.cn/backiee/demo)
 + [Skitterphoto](https://skitterphoto.com/) - a place to find, show and share [[网页版]](https://api.nguaduot.cn/skitter/demo)
 + [Infinity](https://www.infinitytab.com/) - 精选高清壁纸

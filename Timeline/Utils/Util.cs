@@ -319,6 +319,16 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(NetbianIni.ID, "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveAbyssOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(AbyssIni.ID, "order", order, iniFile.Path);
+        }
+
+        public static async Task SaveAbyssCateAsync(string cate) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(AbyssIni.ID, "cate", cate, iniFile.Path);
+        }
+
         public static async Task SaveBackieeOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(BackieeIni.ID, "order", order, iniFile.Path);
@@ -488,6 +498,14 @@ namespace Timeline.Utils {
                 TilePeriod = GetPrivateProfileFloat(NetbianIni.ID, "tileperiod", 2, iniFile),
                 Order = GetPrivateProfileString(NetbianIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(NetbianIni.ID, "cate", "", iniFile)
+            });
+            ini.SetIni(AbyssIni.ID, new AbyssIni {
+                DesktopPeriod = GetPrivateProfileFloat(AbyssIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(AbyssIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(AbyssIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(AbyssIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(AbyssIni.ID, "order", "random", iniFile),
+                Cate = GetPrivateProfileString(AbyssIni.ID, "cate", "", iniFile)
             });
             ini.SetIni(BackieeIni.ID, new BackieeIni {
                 DesktopPeriod = GetPrivateProfileFloat(BackieeIni.ID, "desktopperiod", 24, iniFile),

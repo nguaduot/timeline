@@ -22,6 +22,7 @@ namespace Timeline.Utils {
             { ZzzmhIni.ID, new ZzzmhIni() },
             { ToopicIni.ID, new ToopicIni() },
             { NetbianIni.ID, new NetbianIni() },
+            { AbyssIni.ID, new AbyssIni() },
             { BackieeIni.ID, new BackieeIni() },
             { SkitterIni.ID, new SkitterIni() },
             { InfinityIni.ID, new InfinityIni() },
@@ -512,6 +513,25 @@ namespace Timeline.Utils {
         public override string GetCateApi() => URL_API_CATE;
 
         public override BaseProvider GenerateProvider() => new NetbianProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
+    public class AbyssIni : BaseIni {
+        public const string ID = "abyss";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/abyss/cate?client=timelinewallpaper";
+
+        public AbyssIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
+        public override string GetCateApi() => URL_API_CATE;
+
+        public override BaseProvider GenerateProvider() => new AbyssProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}&cate={Cate}";

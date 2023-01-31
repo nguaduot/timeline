@@ -24,7 +24,8 @@ provider=bing
 ; provider=toopic       图源：壁纸社 - 桌面高清壁纸 https://www.toopic.cn/
 ; provider=wallhaven    图源：wallhaven - The best wallpapers on the Net https://wallhaven.cc/
 ; provider=wallhere     图源：WallHere - One of the best hd wallpapers site https://wallhere.com/
-; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com/
+; provider=wallpaperup  图源：WallpaperUP - Your best source of wallpapers https://www.wallpaperup.com
+; provider=abyss        图源：Wallpaper Abyss - HD Wallpapers, Background Imges https://wall.alphacoders.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
 ; provider=skitter      图源：Skitterphoto - a place to find, show and share https://skitterphoto.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 https://www.infinitytab.com/
@@ -454,6 +455,28 @@ cate=
 ; cate=drinks         类别：Drinks
 ; cate=sports         类别：Sports
 ; cate=other          类别：Other
+
+[abyss]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：收录
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
+
+cate=
+; cate=               类别：全部（默认）
 
 [backiee]
 

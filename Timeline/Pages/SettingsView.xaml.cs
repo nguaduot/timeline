@@ -42,6 +42,7 @@ namespace Timeline.Pages {
         ObservableCollection<CateMeta> listZzzmhCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listNetbianCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listAbyssCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listBackieeCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listSkitterCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
@@ -115,6 +116,7 @@ namespace Timeline.Pages {
             GridZzzmhOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ZzzmhIni.ID).Order)).IsChecked = true;
             GridToopicOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ToopicIni.ID).Order)).IsChecked = true;
             GridNetbianOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NetbianIni.ID).Order)).IsChecked = true;
+            GridAbyssOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(AbyssIni.ID).Order)).IsChecked = true;
             GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
             GridSkitterOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SkitterIni.ID).Order)).IsChecked = true;
             GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
@@ -972,6 +974,38 @@ namespace Timeline.Pages {
 
         private async void BtnNetbianDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlNetbian")));
+        }
+
+        private async void TbAbyssOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridAbyssOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(AbyssIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveAbyssOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxAbyssCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(AbyssIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveAbyssCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
         }
 
         private async void TbBackieeOrder_Click(object sender, RoutedEventArgs e) {
