@@ -60,9 +60,12 @@ namespace Timeline.Utils {
             }
             LogUtil.D("RankAsync() " + action);
             const string URL_API = "https://api.nguaduot.cn/appstats/rank";
+            // 解决合集图源动作拆分
+            string providerFix = !string.IsNullOrEmpty(meta?.IdGlobalPrefix) ? meta?.IdGlobalPrefix : provider;
+            string imgIdFix = !string.IsNullOrEmpty(meta?.IdGlobalSuffix) ? meta?.IdGlobalSuffix : meta?.Id;
             RankApiReq req = new RankApiReq {
-                Provider = provider,
-                ImgId = meta?.Id,
+                Provider = providerFix,
+                ImgId = imgIdFix,
                 ImgUrl = meta?.Uhd,
                 Action = action,
                 Target = target,
@@ -158,28 +161,6 @@ namespace Timeline.Utils {
             }
             return data;
         }
-
-        //public static async Task<bool> TimelineContributeAsync(ContributeApiReq req) {
-        //    if (!NetworkInterface.GetIsNetworkAvailable()) {
-        //        return false;
-        //    }
-        //    const string URL_API = "https://api.nguaduot.cn/timeline/contribute";
-        //    req.AppVer = SysUtil.GetPkgVer(false);
-        //    try {
-        //        HttpClient client = new HttpClient();
-        //        HttpContent content = new StringContent(JsonConvert.SerializeObject(req),
-        //            Encoding.UTF8, "application/json");
-        //        //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        //        HttpResponseMessage response = await client.PostAsync(URL_API, content);
-        //        _ = response.EnsureSuccessStatusCode();
-        //        string jsonData = await response.Content.ReadAsStringAsync();
-        //        LogUtil.D("TimelineContributeAsync() " + jsonData.Trim());
-        //        return jsonData.Contains(@"""status"":1");
-        //    } catch (Exception e) {
-        //        LogUtil.E("TimelineContributeAsync() " + e.Message);
-        //    }
-        //    return false;
-        //}
 
         public static async Task<R22AuthApiData> LspR22AuthAsync(string comment = null) {
             if (!NetworkInterface.GetIsNetworkAvailable()) {

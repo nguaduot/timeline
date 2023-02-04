@@ -593,7 +593,7 @@ namespace Timeline.Utils {
 
     public class GluttonIni : BaseIni {
         public const string ID = "glutton";
-        public static readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
+        public static readonly List<string> ALBUMS = new List<string>() { "journal", "merge" };
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
         private string album = "journal"; // 非null
 

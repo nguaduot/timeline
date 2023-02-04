@@ -631,13 +631,15 @@ namespace Timeline {
             //ShowToastS(resLoader.GetString("MsgSetDesktop1"));
         }
 
-        private async Task DownloadAsync() {
+        private async Task DownloadAsync(bool fromShortcut) {
             ShowToastI(resLoader.GetString("MsgSave"));
             StorageFolder folderSave = await FileUtil.GetGalleryFolder(ini.Folder);
             StorageFile file = await provider.DownloadAsync(folderSave, meta, resLoader.GetString("Provider_" + provider.Id));
             if (file != null) {
                 meta.Favorite = true;
-                ShowToastS(resLoader.GetString("MsgSave1"), null, resLoader.GetString("ActionView"), async () => {
+                string msgSuccess = fromShortcut ? resLoader.GetString("MsgSave1")
+                    : resLoader.GetString("MsgSave1Shortcut");
+                ShowToastS(msgSuccess, null, resLoader.GetString("ActionView"), async () => {
                     await FileUtil.LaunchFolderAsync(folderSave, file);
                 });
             } else {
@@ -722,13 +724,17 @@ namespace Timeline {
             Info.IsOpen = false;
         }
 
-        private void ToggleImgMode(bool fillOn) {
+        private void ToggleImgMode(bool fillOn, bool fromShortcut) {
             uhdDown.Stretch = fillOn ? Stretch.UniformToFill : Stretch.Uniform;
             uhdUp.Stretch = fillOn ? Stretch.UniformToFill : Stretch.Uniform;
             MenuFillOn.Visibility = fillOn ? Visibility.Collapsed : Visibility.Visible;
             MenuFillOff.Visibility = fillOn ? Visibility.Visible : Visibility.Collapsed;
 
-            ShowToastI(fillOn ? resLoader.GetString("MsgUniformToFill") : resLoader.GetString("MsgUniform"));
+            string msgOn = fromShortcut ? resLoader.GetString("MsgUniformToFill")
+                : resLoader.GetString("MsgUniformToFillShortcut");
+            string msgOff = fromShortcut ? resLoader.GetString("MsgUniform")
+                : resLoader.GetString("MsgUniformShortcut");
+            ShowToastI(fillOn ? msgOn : msgOff);
         }
 
         private void ShowFlyoutGo() {
@@ -1004,14 +1010,14 @@ namespace Timeline {
 
         private void MenuFill_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            ToggleImgMode(uhdDown.Stretch != Stretch.UniformToFill);
+            ToggleImgMode(uhdDown.Stretch != Stretch.UniformToFill, false);
             resizeTimer2.Stop();
             resizeTimer2.Start();
         }
 
         private async void MenuSave_Click(object sender, RoutedEventArgs e) {
             FlyoutMenu.Hide();
-            await DownloadAsync();
+            await DownloadAsync(false);
             _ = Api.RankAsync(ini?.Provider, meta, "save");
             localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
         }
@@ -1260,11 +1266,11 @@ namespace Timeline {
         }
 
         private void ViewMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-            if (!(e.OriginalSource as FrameworkElement).Equals(ViewMain)
-                && !(e.OriginalSource as FrameworkElement).Equals(uhdDown)) {
-                return;
+            if ((e.OriginalSource as FrameworkElement).Equals(ViewMain)
+                || (e.OriginalSource as FrameworkElement).Equals(uhdDown)
+                || (e.OriginalSource as FrameworkElement).Equals(uhdUp)) {
+                ToggleFullscreenMode();
             }
-            ToggleFullscreenMode();
         }
 
         private void ViewMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
@@ -1388,7 +1394,10 @@ namespace Timeline {
                 case VirtualKey.S: // Ctrl + S
                 case VirtualKey.D: // Ctrl + D
                     if (!LocalIni.ID.Equals(ini.Provider)) { // 图源为“本地图库”时禁用收藏功能
-                        MenuSave_Click(null, null);
+                        FlyoutMenu.Hide();
+                        await DownloadAsync(true);
+                        _ = Api.RankAsync(ini?.Provider, meta, "save");
+                        localSettings.Values["Actions"] = (int)(localSettings.Values["Actions"] ?? 0) + 1;
                     }
                     break;
                 case VirtualKey.L: // Ctrl + L
@@ -1416,7 +1425,10 @@ namespace Timeline {
                     MenuSetDesktop_Click(null, null);
                     break;
                 case VirtualKey.Space: // Space
-                    MenuFill_Click(null, null);
+                    FlyoutMenu.Hide();
+                    ToggleImgMode(uhdDown.Stretch != Stretch.UniformToFill, true);
+                    resizeTimer2.Stop();
+                    resizeTimer2.Start();
                     break;
                 case VirtualKey.Application: // Application
                     // TODO

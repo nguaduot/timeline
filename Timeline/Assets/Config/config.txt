@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.4
+; 拾光 / Timeline v8.9
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -193,7 +193,7 @@ tileperiod=2
 
 album=journal
 ; album=journal  集：周选集（默认）
-; album=rank     集：热度集
+; album=merge    集：大合集
 
 order=date
 ; order=date    排序：收录（默认，热度集无该项）
@@ -476,7 +476,31 @@ order=random
 ; order=random  排序：随缘（默认）
 
 cate=
-; cate=               类别：全部（默认）
+; cate=    类别：全部（默认）
+; cate=1   类别：Abstract
+; cate=2   类别：Animal
+; cate=3   类别：Anime
+; cate=4   类别：Artistic
+; cate=7   类别：Celebrity
+; cate=8   类别：Comics
+; cate=9   类别：Dark
+; cate=10  类别：Earth
+; cate=11  类别：Fantasy
+; cate=14  类别：Game
+; cate=15  类别：Holiday
+; cate=16  类别：Man Made
+; cate=19  类别：Misc
+; cate=20  类别：Movie
+; cate=22  类别：Music
+; cate=24  类别：Photography
+; cate=27  类别：Sci Fi
+; cate=28  类别：Sports
+; cate=29  类别：TV Show
+; cate=30  类别：Technology
+; cate=31  类别：Vehicles
+; cate=32  类别：Video Game
+; cate=33  类别：Women
+; cate=34  类别：Weapons
 
 [backiee]
 

@@ -11,11 +11,11 @@ using Windows.ApplicationModel.Resources;
 
 namespace Timeline.Providers {
     public class GluttonProvider : BaseProvider {
-        private const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank" +
+        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}" +
-            "&no={2}&score={3:F4}&admin={4}";
-        private const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal" +
+            "&no={2}&date={3}&score={4:F4}&admin={5}";
+        private const string URL_API_MERGE = "https://api.nguaduot.cn/glutton/merge" +
             "?client=timelinewallpaper&device={0}" +
             "&order={1}" +
             "&no={2}&date={3}&score={4:F4}&admin={5}";
@@ -27,16 +27,19 @@ namespace Timeline.Providers {
                 Uhd = bean.ImgUrl,
                 Thumb = bean.ThumbUrl,
                 Title = bean.Title,
+                Story = bean.Story,
+                Cate = bean.CateName,
                 Score = bean.Score,
-                Format = FileUtil.ParseFormat(bean.ImgUrl)
+                Src = bean.SrcUrl,
+                Format = FileUtil.ParseFormat(bean.ImgUrl),
+                IdGlobalPrefix = bean.RawProvider,
+                IdGlobalSuffix = bean.RawId
             };
-            if ("journal".Equals(album)) {
+            if (!"merge".Equals(album)) { // journal or null
                 if (bean.Phase > 0) {
                     meta.Title = string.Format(ResourceLoader.GetForCurrentView().GetString("GluttonPhase"),
                         bean.Phase, bean.Title);
                 }
-            } else { // rank or null
-                meta.Title = ResourceLoader.GetForCurrentView().GetString("Album_rank") + " " + bean.Title;
             }
             if (!string.IsNullOrEmpty(bean.Copyright)) {
                 meta.Copyright = "© " + bean.Copyright;
@@ -62,12 +65,12 @@ namespace Timeline.Providers {
                 }
             }
             string urlApi;
-            if ("journal".Equals(ini.Album)) {
+            if ("merge".Equals(ini.Album)) {
+                urlApi = string.Format(URL_API_MERGE, SysUtil.GetDeviceId(),
+                    ini.Order, no, date.ToString("yyyyMMdd"), score, go.Admin);
+            } else { // journal or null
                 urlApi = string.Format(URL_API_JOURNAL, SysUtil.GetDeviceId(),
                     ini.Order, no, date.ToString("yyyyMMdd"), score, go.Admin);
-            } else {
-                urlApi = string.Format(URL_API_RANK, SysUtil.GetDeviceId(),
-                    ini.Order, no, score, go.Admin);
             }
             LogUtil.D("LoadData() provider url: " + urlApi);
             try {

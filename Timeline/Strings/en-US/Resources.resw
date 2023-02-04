@@ -750,12 +750,6 @@
   <data name="TextThankAd2.Text" xml:space="preserve">
     <value>Thank WeChat@阿明不哭 for article.</value>
   </data>
-  <data name="Album_journal" xml:space="preserve">
-    <value>Journal</value>
-  </data>
-  <data name="Album_rank" xml:space="preserve">
-    <value>Rank</value>
-  </data>
   <data name="GluttonPhase" xml:space="preserve">
     <value>Phase {1} {2}</value>
   </data>
@@ -763,7 +757,7 @@
     <value>Journal</value>
   </data>
   <data name="TextGluttonAlbum.Text" xml:space="preserve">
-    <value>Album</value>
+    <value>Weekly album</value>
   </data>
   <data name="LinkAd3.NavigateUri" xml:space="preserve">
     <value>https://go2think.com/timeline-wallpaper-app/</value>
@@ -929,5 +923,14 @@
   </data>
   <data name="TextAbyssCate.Text" xml:space="preserve">
     <value>Category</value>
+  </data>
+  <data name="MsgSave1Shortcut" xml:space="preserve">
+    <value>Saved. (Shortcut: Ctrl+S)</value>
+  </data>
+  <data name="MsgUniformShortcut" xml:space="preserve">
+    <value>Unifrom (Shortcut: Space)</value>
+  </data>
+  <data name="MsgUniformToFillShortcut" xml:space="preserve">
+    <value>Unifrom to fill (Shortcut: Space)</value>
   </data>
 </root>

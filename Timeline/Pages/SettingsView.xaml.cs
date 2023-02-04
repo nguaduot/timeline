@@ -120,7 +120,7 @@ namespace Timeline.Pages {
             GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
             GridSkitterOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SkitterIni.ID).Order)).IsChecked = true;
             GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
-            BoxGluttonAlbum.SelectedIndex = listGluttonAlbum.Select(t => t.Id).ToList().IndexOf(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
+            ToggleGluttonAlbum.IsOn = "journal".Equals(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
             GridLspOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(LspIni.ID).Order)).IsChecked = true;
             // 刷新推送指示图标
@@ -704,8 +704,8 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void BoxGluttonAlbum_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string album = (e.AddedItems[0] as CateMeta).Id;
+        private async void ToggleGluttonAlbum_Toggled(object sender, RoutedEventArgs e) {
+            string album = ((ToggleSwitch)sender).IsOn ? "journal" : "merge";
             GluttonIni bi = ini.GetIni(GluttonIni.ID) as GluttonIni;
             if (album.Equals(bi.Album)) {
                 return;

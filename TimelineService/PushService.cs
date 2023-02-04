@@ -1250,11 +1250,11 @@ namespace TimelineService {
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
                     GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    if ("journal".Equals(ini.Glutton.Album)) {
+                    if ("merge".Equals(ini.Glutton.Album)) {
+                        data = api.Data[new Random().Next(api.Data.Count)];
+                    } else { // journal or null
                         int count = Math.Min(api.Data.Count, "date".Equals(ini.Glutton.Order) ? PHASE_SIZE : api.Data.Count);
                         data = api.Data[new Random().Next(count)];
-                    } else { // rank or null
-                        data = api.Data[new Random().Next(api.Data.Count)];
                     }
                     LogUtil.I("LoadGluttonAsync() cache from disk");
                 } catch (Exception e) {
@@ -1262,7 +1262,15 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                if ("journal".Equals(ini.Glutton.Album)) {
+                if ("merge".Equals(ini.Glutton.Album)) {
+                    const string URL_API_RANK = "https://api.nguaduot.cn/glutton/merge?client=timelinewallpaper&order={0}";
+                    string urlApi = string.Format(URL_API_RANK, ini.Glutton.Order);
+                    LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
+                    HttpClient client = new HttpClient();
+                    jsonData = await client.GetStringAsync(urlApi);
+                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                    data = api.Data[new Random().Next(api.Data.Count)];
+                } else { // journal or null
                     const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper&order={0}";
                     string urlApi = string.Format(URL_API_JOURNAL, ini.Glutton.Order);
                     LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
@@ -1272,14 +1280,6 @@ namespace TimelineService {
                     // 若为“收录”排序，则仅推送当期
                     int count = Math.Min(api.Data.Count, "date".Equals(ini.Glutton.Order) ? PHASE_SIZE : api.Data.Count);
                     data = api.Data[new Random().Next(count)];
-                } else { // rank or null
-                    const string URL_API_RANK = "https://api.nguaduot.cn/glutton/rank?client=timelinewallpaper";
-                    string urlApi = string.Format(URL_API_RANK);
-                    LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
-                    HttpClient client = new HttpClient();
-                    jsonData = await client.GetStringAsync(urlApi);
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
-                    data = api.Data[new Random().Next(api.Data.Count)];
                 }
                 await FileUtil.WriteProviderCache(GluttonIni.GetId(), ini.Glutton.Album, ini.Glutton.Order, jsonData);
             }

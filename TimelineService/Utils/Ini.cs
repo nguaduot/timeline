@@ -1023,7 +1023,7 @@ namespace TimelineService.Utils {
     }
 
     public sealed class GluttonIni {
-        private readonly List<string> ALBUMS = new List<string>() { "journal", "rank" };
+        private readonly List<string> ALBUMS = new List<string>() { "journal", "merge" };
         private readonly HashSet<string> ORDERS = new HashSet<string>() { "date", "score", "random" };
 
         private string album = "journal";

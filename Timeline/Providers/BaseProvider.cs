@@ -304,8 +304,10 @@ namespace Timeline.Providers {
                 return null;
             }
             string appName = AppInfo.Current.DisplayInfo.DisplayName;
+            string providerFix = !string.IsNullOrEmpty(meta.IdGlobalPrefix) ? meta.IdGlobalPrefix : provider;
+            string imgIdFix = !string.IsNullOrEmpty(meta.IdGlobalSuffix) ? meta.IdGlobalSuffix : meta.Id;
             try {
-                string name = string.Format("{0}_{1}_{2}{3}", appName, provider, meta.Id, meta.Format);
+                string name = string.Format("{0}_{1}_{2}{3}", appName, providerFix, imgIdFix, meta.Format);
                 name = FileUtil.MakeValidFileName(name, "");
                 return await meta.CacheUhd.CopyAsync(folder, name, NameCollisionOption.ReplaceExisting);
             } catch (Exception e) {

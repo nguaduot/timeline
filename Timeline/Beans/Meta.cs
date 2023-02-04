@@ -60,6 +60,14 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "format", NullValueHandling = NullValueHandling.Ignore)]
         public string Format { set; get; } = ".jpg";
 
+        // 全局ID前缀
+        [JsonProperty(PropertyName = "idGlobalPrefix")]
+        public string IdGlobalPrefix { set; get; }
+
+        // 全局ID后缀（一般与ID相同）
+        [JsonProperty(PropertyName = "idGlobalSuffix")]
+        public string IdGlobalSuffix { set; get; }
+
         // 原图尺寸（默认：0,0）
         [JsonConverter(typeof(SizeConverter))]
         [JsonProperty(PropertyName = "dimen", NullValueHandling = NullValueHandling.Ignore)]
