@@ -2,8 +2,8 @@
 
 # 拾光
 
-[![store](https://img.shields.io/badge/microsoft%20store-v8.0-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
-[![release](https://img.shields.io/badge/release-v8.0.221109-blue)](https://gitee.com/nguaduot/timeline/releases)
+[![store](https://img.shields.io/badge/microsoft%20store-v8.9-brightgreen)](https://www.microsoft.com/store/apps/9N7VHQ989BB7)
+[![release](https://img.shields.io/badge/release-v8.9.230204-blue)](https://gitee.com/nguaduot/timeline/releases)
 ![platform](https://img.shields.io/badge/platform-Windows%2011%20%26%2010-lightgrey)
 [![star](https://gitee.com/nguaduot/timeline/badge/star.svg?theme=dark)](https://gitee.com/nguaduot/timeline)
 
@@ -78,6 +78,16 @@ A：一般图源推送周期为 `24h`，即每一天推送一次，可通过如�
 + 找到目标图源的块 `[xxx]`（如 `一梦幽黎` 块为 `[ymyouli]`），找到参数 `desktopperiod`（推送间隔小时数），调为 `1` - `24` 之间的值，保存即可
 + 右键菜单开启桌面/锁屏推送即可
 
+**Q：图源太多，有没有多合一？**
+A：打开设置页，切换到 `贪食鬼` 图源，关闭 `周度精选`，即多合一（包含10+图源2w+图片）。
+(注：需升级拾光版本到 **v8.9** 或以上）
+
+**Q：如何调整缓存？**
+
+A：拾光会缓存历史浏览/推送图片，阈值各600张，每次启动时检查阈值并自动清理。阈值可于配置文件中修改：
++ 打开配置文件
++ 找到 `[app]` 块，按需修改 `cache` 参数值即可（改为 `0` 则自动清空缓存），保存，下次打开应用生效。
+
 **Q：如何解锁 `LSP` 图源？**
 
 A：`LSP` 为不可描述内容，默认不可见，若手动开启，则视为您已成年且自行承担责任：
@@ -106,8 +116,8 @@ A：`LSP` 为不可描述内容，默认不可见，若手动开启，则视为�
 
 ## 致谢
 
-上架 Microsoft Store 将近一年，收到全球评分 1000+ 次，其中 92% 给了满分，目前尚在最高评分榜前二十（同类第一），日活用户 2000+，且发现多篇推广文章，非常令人开心。  
-`拾光` 为非营利性项目，但也收到一些赞助（捐赠），基本可平衡服务器成本，继续运营一两年问题不大。
+上架 Microsoft Store 一年有余，收到全球评分 1000+ 次，其中 94% 给了满分，目前尚在最高评分榜前二十（同类第一），日活用户 2000+，且发现多篇推荐文章，非常令人开心。  
+`拾光` 为非营利性项目，收到过一些赞助（捐赠），基本可平衡服务器成本，继续运营一两年问题不大。
 
 诚挚感谢诸君的喜爱与支持，共勉共进。
 
