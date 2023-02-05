@@ -712,7 +712,7 @@
     <value>迫于服务器等成本压力，开放</value>
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
-    <value>近期热门</value>
+    <value>周度精选</value>
   </data>
   <data name="BoxR22Code.PlaceholderText" xml:space="preserve">
     <value>随便写点什么</value>
@@ -932,5 +932,11 @@
   </data>
   <data name="MsgUniformToFillShortcut" xml:space="preserve">
     <value>填充 (快捷键：Space)</value>
+  </data>
+  <data name="Provider_simple" xml:space="preserve">
+    <value>Simple Desktops</value>
+  </data>
+  <data name="Slogan_simple" xml:space="preserve">
+    <value>without distraction</value>
   </data>
 </root>

@@ -18,7 +18,7 @@
       "order": "random",
       "folder": "",
       "depth": 0,
-      "appetite": 20
+      "appetite": 10
     },
     "bing": {
       "desktopperiod": 24,
@@ -35,6 +35,21 @@
       "order": "date",
       "mirror": "bjp"
     },
+    "himawari8": {
+      "desktopperiod": 1,
+      "lockperiod": 2,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "offset": 0.5,
+      "ratio": 0.5
+    },
+    "one": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "date"
+    },
     "timeline": {
       "desktopperiod": 24,
       "lockperiod": 24,
@@ -44,13 +59,6 @@
       "cate": "",
       "unauthorized": false
     },
-    "one": {
-      "desktopperiod": 24,
-      "lockperiod": 24,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "order": "date"
-    },
     "glutton": {
       "desktopperiod": 24,
       "lockperiod": 24,
@@ -58,14 +66,6 @@
       "tileperiod": 2,
       "album": "journal",
       "order": "date"
-    },
-    "himawari8": {
-      "desktopperiod": 1,
-      "lockperiod": 2,
-      "toastperiod": 24,
-      "tileperiod": 2,
-      "offset": 0.5,
-      "ratio": 0.5
     },
     "ymyouli": {
       "desktopperiod": 24,
@@ -154,6 +154,13 @@
       "tileperiod": 2,
       "order": "random",
       "cate": ""
+    },
+    "simple": {
+      "desktopperiod": 24,
+      "lockperiod": 24,
+      "toastperiod": 24,
+      "tileperiod": 2,
+      "order": "random"
     },
     "infinity": {
       "desktopperiod": 24,

@@ -119,6 +119,7 @@ namespace Timeline.Pages {
             GridAbyssOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(AbyssIni.ID).Order)).IsChecked = true;
             GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
             GridSkitterOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SkitterIni.ID).Order)).IsChecked = true;
+            GridSimpleOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SimpleIni.ID).Order)).IsChecked = true;
             GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
             ToggleGluttonAlbum.IsOn = "journal".Equals(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
@@ -302,8 +303,8 @@ namespace Timeline.Pages {
             GluttonProvider glutton = ini.GenerateProvider(GluttonIni.ID) as GluttonProvider;
             LocalIni localIni = ini.GetIni(LocalIni.ID) as LocalIni;
             await glutton.LoadData(new CancellationTokenSource().Token, null, new GluttonIni() {
-                Album = "rank",
-                Order = "score"
+                Album = "journal",
+                Order = "date"
             }, new Go(null));
             List<Meta> top = glutton.GetMetas().Take(localIni.Appetite).ToList();
             Dictionary<string, double> topProgress = new Dictionary<string, double>();
@@ -1066,6 +1067,24 @@ namespace Timeline.Pages {
             }
             bi.Cate = cate;
             await IniUtil.SaveSkitterCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbSimpleOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridSimpleOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(SimpleIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveSimpleOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true

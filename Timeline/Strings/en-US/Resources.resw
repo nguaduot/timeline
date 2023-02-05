@@ -700,7 +700,7 @@
     <value>渠道，如果您有稳定的收入，可以打赏任意金额，将用于维护本项目以及提升积极性。(●'◡'●)</value>
   </data>
   <data name="TextLocalGlutton.Text" xml:space="preserve">
-    <value>Recently popular</value>
+    <value>Weekly album</value>
   </data>
   <data name="TextReview0.Text" xml:space="preserve">
     <value>独立开发，维护不易。我利用有限的业余时间设计了「拾光」，如果您喜欢，不妨前往</value>
@@ -932,5 +932,11 @@
   </data>
   <data name="MsgUniformToFillShortcut" xml:space="preserve">
     <value>Unifrom to fill (Shortcut: Space)</value>
+  </data>
+  <data name="Provider_simple" xml:space="preserve">
+    <value>Simple Desktops</value>
+  </data>
+  <data name="Slogan_simple" xml:space="preserve">
+    <value>without distraction</value>
   </data>
 </root>

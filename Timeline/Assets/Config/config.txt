@@ -1,4 +1,4 @@
-; 拾光 / Timeline v8.9
+; 拾光 / Timeline v9.0
 ; Microsoft Store：https://www.microsoft.com/store/apps/9N7VHQ989BB7
 ; 网页版：https://app.nguaduot.cn/timeline
 ; 开源：https://gitee.com/nguaduot/timeline
@@ -13,10 +13,10 @@ provider=bing
 ; provider=local        图源：本地图库 - 我的精选
 ; provider=bing         图源：Microsoft Bing - 每天发现一个新地方 https://cn.bing.com/
 ; provider=nasa         图源：NASA - 每日天文一图 https://apod.nasa.gov/apod/
-; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline/demo
-; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
-; provider=glutton      图源：贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=himawari8    图源：向日葵8号 - 实时地球 https://himawari.asia/
+; provider=one          图源：ONE · 一个 - 复杂世界里，一个就够了 http://m.wufazhuce.com/one
+; provider=timeline     图源：拾光 - 时光如歌，岁月如诗 https://api.nguaduot.cn/timeline/demo
+; provider=glutton      图源：贪食鬼 - 饕餮盛宴 https://api.nguaduot.cn/glutton/demo
 ; provider=ymyouli      图源：一梦幽黎 - 8K优质壁纸资源 https://ymyouli.com/
 ; provider=qingbz       图源：轻壁纸 - 4K壁纸分享站 https://qingbizhi.com/
 ; provider=zzzmh        图源：极简壁纸 - PC高清桌面壁纸 https://bz.zzzmh.cn/index
@@ -28,6 +28,7 @@ provider=bing
 ; provider=abyss        图源：Wallpaper Abyss - HD Wallpapers, Background Imges https://wall.alphacoders.com/
 ; provider=backiee      图源：backiee - Free Ultra HD wallpaper platform https://backiee.com/
 ; provider=skitter      图源：Skitterphoto - a place to find, show and share https://skitterphoto.com/
+; provider=simple       图源：Simple Desktops - without distraction http://simpledesktops.com/
 ; provider=infinity     图源：Infinity - 精选高清壁纸 https://www.infinitytab.com/
 ; provider=lsp          图源(隐藏)：LSP - 不可描述 https://api.nguaduot.cn/lsp/demo
 ; provider=oneplus      图源(弃用)：OnePlus - Shot on OnePlus https://photos.oneplus.com/
@@ -72,7 +73,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为24h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=random  排序：随缘（默认）
 
 folder=
@@ -81,8 +82,8 @@ folder=
 depth=0
 ; depth={int}  图库深度：读取子文件夹层数，最大2（默认为0，不读取子文件夹）
 
-appetite=20
-; appetite={int}  导入量：从「贪食鬼」图源热度集导入图片量（默认为20张）
+appetite=10
+; appetite={int}  导入量：从「贪食鬼」图源热度集导入图片量（默认为10张）
 
 [bing]
 
@@ -121,13 +122,51 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
-; order=date    排序：收录（默认）
+; order=date    排序：最新（默认）
 ; order=score   排序：趋势
 ; order=random  排序：随缘
 
 mirror=bjp
 ; mirror=     镜像：官方
 ; mirror=bjp  镜像：北京天文馆（默认） http://www.bjp.org.cn/mryt
+
+[himawari8]
+
+desktopperiod=1
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为1h/次，开启推送后生效）
+
+lockperiod=2
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+offset=0.50
+; offset={float}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
+
+ratio=0.50
+; ratio={float}  地球大小：0.10~1.00（默认为0.50，半屏大小）
+
+[one]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=date
+; order=date    排序：日期（默认）
+; order=random  排序：随缘
 
 [timeline]
 
@@ -159,24 +198,6 @@ cate=
 unauthorized=0
 ; unauthorized={bool}  未授权内容：0或1（默认为0，仅展示已授权内容）
 
-[one]
-
-desktopperiod=24
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-lockperiod=24
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-order=date
-; order=date    排序：日期（默认）
-; order=random  排序：随缘
-
 [glutton]
 
 desktopperiod=24
@@ -196,29 +217,9 @@ album=journal
 ; album=merge    集：大合集
 
 order=date
-; order=date    排序：收录（默认，热度集无该项）
+; order=date    排序：最新（默认）
 ; order=score   排序：趋势
 ; order=random  排序：随缘
-
-[himawari8]
-
-desktopperiod=1
-; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为1h/次，开启推送后生效）
-
-lockperiod=2
-; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-toastperiod=24
-; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
-
-tileperiod=2
-; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
-
-offset=0.50
-; offset={float}  地球位置：0.01~1.00（默认为0.50，居中，小于0.50偏左，大于0.50偏右）
-
-ratio=0.50
-; ratio={float}  地球大小：0.10~1.00（默认为0.50，半屏大小）
 
 [ymyouli]
 
@@ -235,7 +236,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -268,7 +269,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -298,7 +299,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -326,7 +327,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -354,7 +355,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -383,7 +384,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -408,7 +409,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -436,7 +437,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -471,7 +472,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -486,9 +487,11 @@ cate=
 ; cate=9   类别：Dark
 ; cate=10  类别：Earth
 ; cate=11  类别：Fantasy
+; cate=13  类别：Humor
 ; cate=14  类别：Game
 ; cate=15  类别：Holiday
 ; cate=16  类别：Man Made
+; cate=18  类别：Military
 ; cate=19  类别：Misc
 ; cate=20  类别：Movie
 ; cate=22  类别：Music
@@ -517,7 +520,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -545,7 +548,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -567,6 +570,25 @@ cate=
 ; cate=textures-wallpapers  类别：Textures/wallpapers
 ; cate=transportation       类别：Transportation
 ; cate=travel               类别：Travel
+
+[simple]
+
+desktopperiod=24
+; desktopperiod={float}  桌面背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+lockperiod=24
+; lockperiod={float}  锁屏背景推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+toastperiod=24
+; lockperiod={float}  通知推送周期：0.25~24（默认为24h/次，开启推送后生效）
+
+tileperiod=2
+; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
+
+order=random
+; order=date    排序：最新
+; order=score   排序：趋势
+; order=random  排序：随缘（默认）
 
 [infinity]
 
@@ -601,7 +623,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 
@@ -625,7 +647,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
-; order=date   排序：收录（默认）
+; order=date   排序：最新（默认）
 ; order=score  排序：趋势
 ; order=view   排序：浏览
 
@@ -644,7 +666,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=date
-; order=date    排序：收录（默认，热度集无该项）
+; order=date    排序：最新（默认，热度集无该项）
 ; order=random  排序：随缘
 
 [obzhi]
@@ -662,7 +684,7 @@ tileperiod=2
 ; lockperiod={float}  磁贴推送周期：0.25~24（默认为2h/次，开启推送后生效）
 
 order=random
-; order=date    排序：收录
+; order=date    排序：最新
 ; order=score   排序：趋势
 ; order=random  排序：随缘（默认）
 

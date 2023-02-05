@@ -25,6 +25,7 @@ namespace Timeline.Utils {
             { AbyssIni.ID, new AbyssIni() },
             { BackieeIni.ID, new BackieeIni() },
             { SkitterIni.ID, new SkitterIni() },
+            { SimpleIni.ID, new SimpleIni() },
             { InfinityIni.ID, new InfinityIni() },
             { GluttonIni.ID, new GluttonIni() },
             { LspIni.ID, new LspIni() },
@@ -559,7 +560,6 @@ namespace Timeline.Utils {
     public class SkitterIni : BaseIni {
         public const string ID = "skitter";
         public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
-        public const string URL_API_CATE = "https://api.nguaduot.cn/skitter/cate?client=timelinewallpaper";
 
         public SkitterIni() {
             Id = ID;
@@ -567,9 +567,26 @@ namespace Timeline.Utils {
             Order = "random";
         }
 
+        public override BaseProvider GenerateProvider() => new SkitterProvider { Id = this.Id };
+
+        override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
+            $"&order={Order}&cate={Cate}";
+    }
+
+    public class SimpleIni : BaseIni {
+        public const string ID = "simple";
+        public static readonly List<string> ORDERS = new List<string>() { "date", "score", "random" };
+        public const string URL_API_CATE = "https://api.nguaduot.cn/simple/cate?client=timelinewallpaper";
+
+        public SimpleIni() {
+            Id = ID;
+            Orders = ORDERS;
+            Order = "random";
+        }
+
         public override string GetCateApi() => URL_API_CATE;
 
-        public override BaseProvider GenerateProvider() => new SkitterProvider { Id = this.Id };
+        public override BaseProvider GenerateProvider() => new SimpleProvider { Id = this.Id };
 
         override public string ToString() => $"desktopperiod={DesktopPeriod}&lockperiod={LockPeriod}&toastperiod={ToastPeriod}&tileperiod={TilePeriod}" +
             $"&order={Order}&cate={Cate}";

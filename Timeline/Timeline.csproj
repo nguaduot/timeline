@@ -155,6 +155,7 @@
     <Compile Include="Beans\IhansenApi.cs" />
     <Compile Include="Beans\SkitterApi.cs" />
     <Compile Include="Beans\AbyssApi.cs" />
+    <Compile Include="Beans\SimpleApi.cs" />
     <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Beans\GluttonApi.cs" />
     <Compile Include="Beans\ToopicApi.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Providers\BackieeProvider.cs" />
     <Compile Include="Providers\SkitterProvider.cs" />
     <Compile Include="Providers\AbyssProvider.cs" />
+    <Compile Include="Providers\SimpleProvider.cs" />
     <Compile Include="Providers\ZzzmhProvider.cs" />
     <Compile Include="Providers\WallpaperupProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />

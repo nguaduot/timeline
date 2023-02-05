@@ -78,37 +78,31 @@ namespace TimelineService.Utils {
             ini.Folder = GetPrivateProfileString("app", "folder", "", iniFile);
             ini.Cache = GetPrivateProfileInt("app", "cache", 600, iniFile);
 
-            ini.Local.DesktopPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Local.LockPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Local.ToastPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Local.TilePeriod = GetPrivateProfileFloat(LocalIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Local.Folder = GetPrivateProfileString(LocalIni.GetId(), "folder", "", iniFile);
-            ini.Local.Depth = GetPrivateProfileInt(LocalIni.GetId(), "depth", 0, iniFile);
+            ini.Abyss.DesktopPeriod = GetPrivateProfileFloat(AbyssIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Abyss.LockPeriod = GetPrivateProfileFloat(AbyssIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Abyss.ToastPeriod = GetPrivateProfileFloat(AbyssIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Abyss.TilePeriod = GetPrivateProfileFloat(AbyssIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Abyss.Order = GetPrivateProfileString(AbyssIni.GetId(), "order", "random", iniFile);
+            ini.Abyss.Cate = GetPrivateProfileString(AbyssIni.GetId(), "cate", "", iniFile);
+
+            ini.Backiee.DesktopPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Backiee.LockPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Backiee.ToastPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Backiee.TilePeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Backiee.Order = GetPrivateProfileString(BackieeIni.GetId(), "order", "random", iniFile);
+            ini.Backiee.Cate = GetPrivateProfileString(BackieeIni.GetId(), "cate", "", iniFile);
 
             ini.Bing.DesktopPeriod = GetPrivateProfileFloat(BingIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Bing.LockPeriod = GetPrivateProfileFloat(BingIni.GetId(), "lockperiod", 24, iniFile);
             ini.Bing.ToastPeriod = GetPrivateProfileFloat(BingIni.GetId(), "toastperiod", 24, iniFile);
             ini.Bing.TilePeriod = GetPrivateProfileFloat(BingIni.GetId(), "tileperiod", 2, iniFile);
 
-            ini.Nasa.DesktopPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Nasa.LockPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Nasa.ToastPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Nasa.TilePeriod = GetPrivateProfileFloat(NasaIni.GetId(), "tileperiod", 2, iniFile);
-
-            ini.Timeline.DesktopPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Timeline.LockPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Timeline.ToastPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Timeline.TilePeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "tileperiod", 2, iniFile);
-
-            ini.One.DesktopPeriod = GetPrivateProfileFloat(OneIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.One.LockPeriod = GetPrivateProfileFloat(OneIni.GetId(), "lockperiod", 24, iniFile);
-            ini.One.ToastPeriod = GetPrivateProfileFloat(OneIni.GetId(), "toastperiod", 24, iniFile);
-            ini.One.TilePeriod = GetPrivateProfileFloat(OneIni.GetId(), "tileperiod", 2, iniFile);
-
-            ini.Ihansen.DesktopPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Ihansen.LockPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Ihansen.ToastPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Ihansen.TilePeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Glutton.DesktopPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Glutton.LockPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Glutton.ToastPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Glutton.TilePeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Glutton.Album = GetPrivateProfileString(GluttonIni.GetId(), "album", "journal", iniFile);
+            ini.Glutton.Order = GetPrivateProfileString(GluttonIni.GetId(), "order", "date", iniFile);
 
             ini.Himawari8.DesktopPeriod = GetPrivateProfileFloat(Himawari8Ini.GetId(), "desktopperiod", 1, iniFile);
             ini.Himawari8.LockPeriod = GetPrivateProfileFloat(Himawari8Ini.GetId(), "lockperiod", 2, iniFile);
@@ -117,12 +111,59 @@ namespace TimelineService.Utils {
             ini.Himawari8.Offset = GetPrivateProfileFloat(Himawari8Ini.GetId(), "offset", 0.5f, iniFile);
             ini.Himawari8.Ratio = GetPrivateProfileFloat(Himawari8Ini.GetId(), "ratio", 0.5f, iniFile);
 
-            ini.Ymyouli.DesktopPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Ymyouli.LockPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Ymyouli.ToastPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Ymyouli.TilePeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Ymyouli.Order = GetPrivateProfileString(YmyouliIni.GetId(), "order", "random", iniFile);
-            ini.Ymyouli.Cate = GetPrivateProfileString(YmyouliIni.GetId(), "cate", "", iniFile);
+            ini.Ihansen.DesktopPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Ihansen.LockPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Ihansen.ToastPeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Ihansen.TilePeriod = GetPrivateProfileFloat(IhansenIni.GetId(), "tileperiod", 2, iniFile);
+
+            ini.Infinity.DesktopPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Infinity.LockPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Infinity.ToastPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Infinity.TilePeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Infinity.Order = GetPrivateProfileString(InfinityIni.GetId(), "order", "random", iniFile);
+
+            ini.Local.DesktopPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Local.LockPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Local.ToastPeriod = GetPrivateProfileFloat(LocalIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Local.TilePeriod = GetPrivateProfileFloat(LocalIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Local.Folder = GetPrivateProfileString(LocalIni.GetId(), "folder", "", iniFile);
+            ini.Local.Depth = GetPrivateProfileInt(LocalIni.GetId(), "depth", 0, iniFile);
+
+            ini.Lsp.DesktopPeriod = GetPrivateProfileFloat(LspIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Lsp.LockPeriod = GetPrivateProfileFloat(LspIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Lsp.ToastPeriod = GetPrivateProfileFloat(LspIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Lsp.TilePeriod = GetPrivateProfileFloat(LspIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Lsp.Order = GetPrivateProfileString(LspIni.GetId(), "order", "random", iniFile);
+            ini.Lsp.Cate = GetPrivateProfileString(LspIni.GetId(), "cate", "", iniFile);
+
+            ini.Nasa.DesktopPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Nasa.LockPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Nasa.ToastPeriod = GetPrivateProfileFloat(NasaIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Nasa.TilePeriod = GetPrivateProfileFloat(NasaIni.GetId(), "tileperiod", 2, iniFile);
+
+            ini.Netbian.DesktopPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Netbian.LockPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Netbian.ToastPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Netbian.TilePeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Netbian.Order = GetPrivateProfileString(NetbianIni.GetId(), "order", "random", iniFile);
+            ini.Netbian.Cate = GetPrivateProfileString(NetbianIni.GetId(), "cate", "", iniFile);
+
+            ini.Obzhi.DesktopPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Obzhi.LockPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Obzhi.ToastPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Obzhi.TilePeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Obzhi.Order = GetPrivateProfileString(ObzhiIni.GetId(), "order", "random", iniFile);
+            ini.Obzhi.Cate = GetPrivateProfileString(ObzhiIni.GetId(), "cate", "", iniFile);
+
+            ini.One.DesktopPeriod = GetPrivateProfileFloat(OneIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.One.LockPeriod = GetPrivateProfileFloat(OneIni.GetId(), "lockperiod", 24, iniFile);
+            ini.One.ToastPeriod = GetPrivateProfileFloat(OneIni.GetId(), "toastperiod", 24, iniFile);
+            ini.One.TilePeriod = GetPrivateProfileFloat(OneIni.GetId(), "tileperiod", 2, iniFile);
+
+            ini.Oneplus.DesktopPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Oneplus.LockPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Oneplus.ToastPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Oneplus.TilePeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "tileperiod", 2, iniFile);
 
             ini.Qingbz.DesktopPeriod = GetPrivateProfileFloat(QingbzIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Qingbz.LockPeriod = GetPrivateProfileFloat(QingbzIni.GetId(), "lockperiod", 24, iniFile);
@@ -130,6 +171,31 @@ namespace TimelineService.Utils {
             ini.Qingbz.TilePeriod = GetPrivateProfileFloat(QingbzIni.GetId(), "tileperiod", 2, iniFile);
             ini.Qingbz.Order = GetPrivateProfileString(QingbzIni.GetId(), "order", "random", iniFile);
             ini.Qingbz.Cate = GetPrivateProfileString(QingbzIni.GetId(), "cate", "", iniFile);
+
+            ini.Skitter.DesktopPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Skitter.LockPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Skitter.ToastPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Skitter.TilePeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Skitter.Order = GetPrivateProfileString(SkitterIni.GetId(), "order", "random", iniFile);
+            ini.Skitter.Cate = GetPrivateProfileString(SkitterIni.GetId(), "cate", "", iniFile);
+
+            ini.Simple.DesktopPeriod = GetPrivateProfileFloat(SimpleIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Simple.LockPeriod = GetPrivateProfileFloat(SimpleIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Simple.ToastPeriod = GetPrivateProfileFloat(SimpleIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Simple.TilePeriod = GetPrivateProfileFloat(SimpleIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Simple.Order = GetPrivateProfileString(SimpleIni.GetId(), "order", "random", iniFile);
+
+            ini.Timeline.DesktopPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Timeline.LockPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Timeline.ToastPeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Timeline.TilePeriod = GetPrivateProfileFloat(TimelineIni.GetId(), "tileperiod", 2, iniFile);
+
+            ini.Toopic.DesktopPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Toopic.LockPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Toopic.ToastPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Toopic.TilePeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Toopic.Order = GetPrivateProfileString(ToopicIni.GetId(), "order", "random", iniFile);
+            ini.Toopic.Cate = GetPrivateProfileString(ToopicIni.GetId(), "cate", "", iniFile);
 
             ini.Wallhaven.DesktopPeriod = GetPrivateProfileFloat(WallhavenIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Wallhaven.LockPeriod = GetPrivateProfileFloat(WallhavenIni.GetId(), "lockperiod", 24, iniFile);
@@ -145,66 +211,6 @@ namespace TimelineService.Utils {
             ini.Wallhere.Order = GetPrivateProfileString(WallhereIni.GetId(), "order", "random", iniFile);
             ini.Wallhere.Cate = GetPrivateProfileString(WallhereIni.GetId(), "cate", "", iniFile);
 
-            ini.Zzzmh.DesktopPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Zzzmh.LockPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Zzzmh.ToastPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Zzzmh.TilePeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Zzzmh.Order = GetPrivateProfileString(ZzzmhIni.GetId(), "order", "random", iniFile);
-            ini.Zzzmh.Cate = GetPrivateProfileString(ZzzmhIni.GetId(), "cate", "", iniFile);
-
-            ini.Toopic.DesktopPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Toopic.LockPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Toopic.ToastPeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Toopic.TilePeriod = GetPrivateProfileFloat(ToopicIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Toopic.Order = GetPrivateProfileString(ToopicIni.GetId(), "order", "random", iniFile);
-            ini.Toopic.Cate = GetPrivateProfileString(ToopicIni.GetId(), "cate", "", iniFile);
-
-            ini.Netbian.DesktopPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Netbian.LockPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Netbian.ToastPeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Netbian.TilePeriod = GetPrivateProfileFloat(NetbianIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Netbian.Order = GetPrivateProfileString(NetbianIni.GetId(), "order", "random", iniFile);
-            ini.Netbian.Cate = GetPrivateProfileString(NetbianIni.GetId(), "cate", "", iniFile);
-
-            ini.Backiee.DesktopPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Backiee.LockPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Backiee.ToastPeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Backiee.TilePeriod = GetPrivateProfileFloat(BackieeIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Backiee.Order = GetPrivateProfileString(BackieeIni.GetId(), "order", "random", iniFile);
-            ini.Backiee.Cate = GetPrivateProfileString(BackieeIni.GetId(), "cate", "", iniFile);
-
-            ini.Skitter.DesktopPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Skitter.LockPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Skitter.ToastPeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Skitter.TilePeriod = GetPrivateProfileFloat(SkitterIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Skitter.Order = GetPrivateProfileString(SkitterIni.GetId(), "order", "random", iniFile);
-            ini.Skitter.Cate = GetPrivateProfileString(SkitterIni.GetId(), "cate", "", iniFile);
-
-            ini.Infinity.DesktopPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Infinity.LockPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Infinity.ToastPeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Infinity.TilePeriod = GetPrivateProfileFloat(InfinityIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Infinity.Order = GetPrivateProfileString(InfinityIni.GetId(), "order", "random", iniFile);
-
-            ini.Glutton.DesktopPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Glutton.LockPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Glutton.ToastPeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Glutton.TilePeriod = GetPrivateProfileFloat(GluttonIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Glutton.Album = GetPrivateProfileString(GluttonIni.GetId(), "album", "journal", iniFile);
-            ini.Glutton.Order = GetPrivateProfileString(GluttonIni.GetId(), "order", "date", iniFile);
-
-            ini.Lsp.DesktopPeriod = GetPrivateProfileFloat(LspIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Lsp.LockPeriod = GetPrivateProfileFloat(LspIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Lsp.ToastPeriod = GetPrivateProfileFloat(LspIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Lsp.TilePeriod = GetPrivateProfileFloat(LspIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Lsp.Order = GetPrivateProfileString(LspIni.GetId(), "order", "random", iniFile);
-            ini.Lsp.Cate = GetPrivateProfileString(LspIni.GetId(), "cate", "", iniFile);
-
-            ini.Oneplus.DesktopPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Oneplus.LockPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Oneplus.ToastPeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Oneplus.TilePeriod = GetPrivateProfileFloat(OneplusIni.GetId(), "tileperiod", 2, iniFile);
-
             ini.Wallpaperup.DesktopPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "desktopperiod", 24, iniFile);
             ini.Wallpaperup.LockPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "lockperiod", 24, iniFile);
             ini.Wallpaperup.ToastPeriod = GetPrivateProfileFloat(WallpaperupIni.GetId(), "toastperiod", 24, iniFile);
@@ -212,12 +218,19 @@ namespace TimelineService.Utils {
             ini.Wallpaperup.Order = GetPrivateProfileString(WallpaperupIni.GetId(), "order", "random", iniFile);
             ini.Wallpaperup.Cate = GetPrivateProfileString(WallpaperupIni.GetId(), "cate", "", iniFile);
 
-            ini.Obzhi.DesktopPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "desktopperiod", 24, iniFile);
-            ini.Obzhi.LockPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "lockperiod", 24, iniFile);
-            ini.Obzhi.ToastPeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "toastperiod", 24, iniFile);
-            ini.Obzhi.TilePeriod = GetPrivateProfileFloat(ObzhiIni.GetId(), "tileperiod", 2, iniFile);
-            ini.Obzhi.Order = GetPrivateProfileString(ObzhiIni.GetId(), "order", "random", iniFile);
-            ini.Obzhi.Cate = GetPrivateProfileString(ObzhiIni.GetId(), "cate", "", iniFile);
+            ini.Ymyouli.DesktopPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Ymyouli.LockPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Ymyouli.ToastPeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Ymyouli.TilePeriod = GetPrivateProfileFloat(YmyouliIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Ymyouli.Order = GetPrivateProfileString(YmyouliIni.GetId(), "order", "random", iniFile);
+            ini.Ymyouli.Cate = GetPrivateProfileString(YmyouliIni.GetId(), "cate", "", iniFile);
+
+            ini.Zzzmh.DesktopPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "desktopperiod", 24, iniFile);
+            ini.Zzzmh.LockPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "lockperiod", 24, iniFile);
+            ini.Zzzmh.ToastPeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "toastperiod", 24, iniFile);
+            ini.Zzzmh.TilePeriod = GetPrivateProfileFloat(ZzzmhIni.GetId(), "tileperiod", 2, iniFile);
+            ini.Zzzmh.Order = GetPrivateProfileString(ZzzmhIni.GetId(), "order", "random", iniFile);
+            ini.Zzzmh.Cate = GetPrivateProfileString(ZzzmhIni.GetId(), "cate", "", iniFile);
             return ini;
         }
     }

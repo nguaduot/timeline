@@ -137,6 +137,8 @@
     <Compile Include="Beans\NetbianApi.cs" />
     <Compile Include="Beans\BackieeApi.cs" />
     <Compile Include="Beans\SkitterApi.cs" />
+    <Compile Include="Beans\AbyssApi.cs" />
+    <Compile Include="Beans\SimpleApi.cs" />
     <Compile Include="Beans\ZzzmhApi.cs" />
     <Compile Include="Beans\WallpaperupApi.cs" />
     <Compile Include="Beans\WallhereApi.cs" />

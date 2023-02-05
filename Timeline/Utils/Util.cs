@@ -349,6 +349,11 @@ namespace Timeline.Utils {
             _ = WritePrivateProfileString(SkitterIni.ID, "cate", cate, iniFile.Path);
         }
 
+        public static async Task SaveSimpleOrderAsync(string order) {
+            StorageFile iniFile = await GenerateIniFileAsync();
+            _ = WritePrivateProfileString(SimpleIni.ID, "order", order, iniFile.Path);
+        }
+
         public static async Task SaveLspOrderAsync(string order) {
             StorageFile iniFile = await GenerateIniFileAsync();
             _ = WritePrivateProfileString(LspIni.ID, "order", order, iniFile.Path);
@@ -387,7 +392,7 @@ namespace Timeline.Utils {
                 Order = GetPrivateProfileString(LocalIni.ID, "order", "random", iniFile),
                 Folder = GetPrivateProfileString(LocalIni.ID, "folder", "", iniFile),
                 Depth = GetPrivateProfileInt(LocalIni.ID, "depth", 0, iniFile),
-                Appetite = GetPrivateProfileInt(LocalIni.ID, "appetite", 20, iniFile)
+                Appetite = GetPrivateProfileInt(LocalIni.ID, "appetite", 10, iniFile)
             });
             ini.SetIni(BingIni.ID, new BingIni {
                 DesktopPeriod = GetPrivateProfileFloat(BingIni.ID, "desktopperiod", 24, iniFile),
@@ -522,6 +527,13 @@ namespace Timeline.Utils {
                 TilePeriod = GetPrivateProfileFloat(SkitterIni.ID, "tileperiod", 2, iniFile),
                 Order = GetPrivateProfileString(SkitterIni.ID, "order", "random", iniFile),
                 Cate = GetPrivateProfileString(SkitterIni.ID, "cate", "", iniFile)
+            });
+            ini.SetIni(SimpleIni.ID, new SimpleIni {
+                DesktopPeriod = GetPrivateProfileFloat(SimpleIni.ID, "desktopperiod", 24, iniFile),
+                LockPeriod = GetPrivateProfileFloat(SimpleIni.ID, "lockperiod", 24, iniFile),
+                ToastPeriod = GetPrivateProfileFloat(SimpleIni.ID, "toastperiod", 24, iniFile),
+                TilePeriod = GetPrivateProfileFloat(SimpleIni.ID, "tileperiod", 2, iniFile),
+                Order = GetPrivateProfileString(SimpleIni.ID, "order", "random", iniFile)
             });
             ini.SetIni(InfinityIni.ID, new InfinityIni {
                 DesktopPeriod = GetPrivateProfileFloat(InfinityIni.ID, "desktopperiod", 24, iniFile),
