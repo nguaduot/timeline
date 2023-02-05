@@ -21,8 +21,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 
-//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
-
 namespace Timeline.Pages {
     public sealed partial class SettingsView : UserControl {
         public event EventHandler<SettingsEventArgs> SettingsChanged;
@@ -32,21 +30,21 @@ namespace Timeline.Pages {
 
         private readonly ResourceLoader resLoader;
 
+        ObservableCollection<CateMeta> listAbyssCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listBackieeCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listBingLang = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listYmyouliCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listNetbianCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listQingbzCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listSkitterCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listTimelineCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhavenCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallhereCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listWallpaperupCate = new ObservableCollection<CateMeta>();
+        ObservableCollection<CateMeta> listYmyouliCate = new ObservableCollection<CateMeta>();
         ObservableCollection<CateMeta> listZzzmhCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listToopicCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listNetbianCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listAbyssCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listBackieeCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listSkitterCate = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listGluttonAlbum = new ObservableCollection<CateMeta>();
-        ObservableCollection<CateMeta> listLspCate = new ObservableCollection<CateMeta>();
 
         private ReleaseApiData release = null;
 
@@ -100,30 +98,29 @@ namespace Timeline.Pages {
             ExpanderLsp.Visibility = ini.R18 == 1 || ExpanderLsp.Tag.Equals(ini.Provider)
                 ? Visibility.Visible : Visibility.Collapsed;
             // 刷新“图源”组设置项
+            GridAbyssOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(AbyssIni.ID).Order)).IsChecked = true;
+            GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
             BoxBingLang.SelectedIndex = listBingLang.Select(t => t.Id).ToList().IndexOf(((BingIni)ini.GetIni(BingIni.ID)).Lang);
-            GridNasaOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NasaIni.ID).Order)).IsChecked = true;
-            ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
-            //GridOneplusOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(OneplusIni.ID).Order)).IsChecked = true;
-            GridTimelineOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(TimelineIni.ID).Order)).IsChecked = true;
-            GridOneOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(OneIni.ID).Order)).IsChecked = true;
+            GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
+            ToggleGluttonAlbum.IsOn = "journal".Equals(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
             BoxHimawari8Offset.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Offset;
             BoxHimawari8Ratio.Value = ((Himawari8Ini)ini.GetIni(Himawari8Ini.ID)).Ratio;
-            GridYmyouliOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(YmyouliIni.ID).Order)).IsChecked = true;
+            GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
+            GridLspOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(LspIni.ID).Order)).IsChecked = true;
+            GridNasaOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NasaIni.ID).Order)).IsChecked = true;
+            ToggleNasaMirror.IsOn = "bjp".Equals(((NasaIni)ini.GetIni(NasaIni.ID)).Mirror);
+            GridNetbianOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NetbianIni.ID).Order)).IsChecked = true;
+            GridTimelineOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(TimelineIni.ID).Order)).IsChecked = true;
+            GridOneOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(OneIni.ID).Order)).IsChecked = true;
             GridQingbzOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(QingbzIni.ID).Order)).IsChecked = true;
+            GridSkitterOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SkitterIni.ID).Order)).IsChecked = true;
+            GridSimpleOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SimpleIni.ID).Order)).IsChecked = true;
+            GridToopicOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ToopicIni.ID).Order)).IsChecked = true;
             GridWallhavenOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhavenIni.ID).Order)).IsChecked = true;
             GridWallhereOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallhereIni.ID).Order)).IsChecked = true;
             GridWallpaperupOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(WallpaperupIni.ID).Order)).IsChecked = true;
+            GridYmyouliOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(YmyouliIni.ID).Order)).IsChecked = true;
             GridZzzmhOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ZzzmhIni.ID).Order)).IsChecked = true;
-            GridToopicOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(ToopicIni.ID).Order)).IsChecked = true;
-            GridNetbianOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(NetbianIni.ID).Order)).IsChecked = true;
-            GridAbyssOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(AbyssIni.ID).Order)).IsChecked = true;
-            GridBackieeOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(BackieeIni.ID).Order)).IsChecked = true;
-            GridSkitterOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SkitterIni.ID).Order)).IsChecked = true;
-            GridSimpleOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(SimpleIni.ID).Order)).IsChecked = true;
-            GridInfinityOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(InfinityIni.ID).Order)).IsChecked = true;
-            ToggleGluttonAlbum.IsOn = "journal".Equals(((GluttonIni)ini.GetIni(GluttonIni.ID)).Album);
-            GridGluttonOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(GluttonIni.ID).Order)).IsChecked = true;
-            GridLspOrder.Children.Cast<ToggleButton>().First(x => x.Tag.Equals(ini.GetIni(LspIni.ID).Order)).IsChecked = true;
             // 刷新推送指示图标
             //foreach (string id in dicPushDesktop.Keys) {
             //    dicPushDesktop[id].Visibility = id.Equals(ini.DesktopProvider) ? Visibility.Visible : Visibility.Collapsed;
@@ -481,6 +478,70 @@ namespace Timeline.Pages {
             }
         }
 
+        private async void TbAbyssOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridAbyssOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(AbyssIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveAbyssOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxAbyssCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(AbyssIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveAbyssCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbBackieeOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridBackieeOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(BackieeIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveBackieeOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxBackieeCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(BackieeIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveBackieeCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
         private async void BoxBingLang_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             string lang = (e.AddedItems[0] as CateMeta).Id;
             BingIni bi = ini.GetIni(BingIni.ID) as BingIni;
@@ -495,99 +556,37 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void TbNasaOrder_Click(object sender, RoutedEventArgs e) {
+        private async void TbGluttonOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridNasaOrder.Children.Cast<ToggleButton>()) {
+            foreach (ToggleButton tb in GridGluttonOrder.Children.Cast<ToggleButton>()) {
                 tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
             }
             string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(NasaIni.ID);
+            BaseIni bi = ini.GetIni(GluttonIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveNasaOrderAsync(bi.Order);
+            await IniUtil.SaveGluttonOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private async void ToggleNasaMirror_Toggled(object sender, RoutedEventArgs e) {
-            string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
-            NasaIni bi = ini.GetIni(NasaIni.ID) as NasaIni;
-            if (mirror.Equals(bi.Mirror)) {
+        private async void ToggleGluttonAlbum_Toggled(object sender, RoutedEventArgs e) {
+            string album = ((ToggleSwitch)sender).IsOn ? "journal" : "merge";
+            GluttonIni bi = ini.GetIni(GluttonIni.ID) as GluttonIni;
+            if (album.Equals(bi.Album)) {
                 return;
             }
-            bi.Mirror = mirror;
-            await IniUtil.SaveNasaMirrorAsync(bi.Mirror);
+            bi.Album = album;
+            await IniUtil.SaveGluttonAlbumAsync(bi.Album);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
-
-        //private async void TbOneplusOrder_Click(object sender, RoutedEventArgs e) {
-        //    ToggleButton tbThis = sender as ToggleButton;
-        //    foreach (ToggleButton tb in GridOneplusOrder.Children.Cast<ToggleButton>()) {
-        //        tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-        //    }
-        //    string order = tbThis.Tag as string;
-        //    BaseIni bi = ini.GetIni(OneplusIni.ID);
-        //    if (order.Equals(bi.Order)) {
-        //        return;
-        //    }
-        //    bi.Order = order;
-        //    await IniUtil.SaveOneplusOrderAsync(bi.Order);
-        //    await IniUtil.SaveProviderAsync(bi.Id);
-        //    SettingsChanged?.Invoke(this, new SettingsEventArgs {
-        //        ProviderConfigChanged = true
-        //    });
-        //}
-
-        private async void TbTimelineOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridTimelineOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(TimelineIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveTimelineOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxTimelineCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(TimelineIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveTimelineCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        //private void BtnTimelineContribute_Click(object sender, RoutedEventArgs e) {
-        //    DlgChanged?.Invoke(this, new DlgEventArgs {
-        //        TimelineContributeChanged = true
-        //    });
-        //}
-
-        //private async void BtnTimelineDonate_Click(object sender, RoutedEventArgs e) {
-        //    await new DonateDlg {
-        //        RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-        //    }.ShowAsync();
-        //}
 
         private void BoxHimawari8Offset_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
             if (himawari8OffsetTimer == null) {
@@ -633,42 +632,6 @@ namespace Timeline.Pages {
             himawari8RatioTimer.Start();
         }
 
-        private async void TbYmyouliOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridYmyouliOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(YmyouliIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveYmyouliOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(YmyouliIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveYmyouliCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
-        }
-
         private async void TbInfinityOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
             foreach (ToggleButton tb in GridInfinityOrder.Children.Cast<ToggleButton>()) {
@@ -687,32 +650,160 @@ namespace Timeline.Pages {
             });
         }
 
-        private async void TbGluttonOrder_Click(object sender, RoutedEventArgs e) {
+        private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
+            LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
+            StorageFolder folder = await FileUtil.GetGalleryFolder(bi.Folder, ini.Folder);
+            if (folder == null) {
+                return;
+            }
+            IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
+            StorageFile fileSelected = imgFiles.FirstOrDefault(f => f.ContentType.StartsWith("image"));
+            await FileUtil.LaunchFolderAsync(folder, fileSelected);
+        }
+
+        private async void BtnLocalPick_Click(object sender, RoutedEventArgs e) {
+            FolderPicker picker = new FolderPicker();
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add("*");
+
+            StorageFolder folder = await picker.PickSingleFolderAsync();
+            if (folder != null) {
+                // Application now has read/write access to all contents in the picked folder
+                // (including other sub-folder contents)
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+
+                LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
+                //if (folder.Path.Equals(bi.Folder)) {
+                //    return;
+                //}
+                bi.Folder = folder.Path;
+                await IniUtil.SaveLocalFolderAsync(bi.Folder);
+                await IniUtil.SaveProviderAsync(bi.Id);
+                SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                    ProviderConfigChanged = true
+                });
+            }
+        }
+
+        private async void BtnLocalImport_Click(object sender, RoutedEventArgs e) {
+            await ImportAsync();
+        }
+
+        private async void TbLspOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridGluttonOrder.Children.Cast<ToggleButton>()) {
+            foreach (ToggleButton tb in GridLspOrder.Children.Cast<ToggleButton>()) {
                 tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
             }
             string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(GluttonIni.ID);
+            BaseIni bi = ini.GetIni(LspIni.ID);
             if (order.Equals(bi.Order)) {
                 return;
             }
             bi.Order = order;
-            await IniUtil.SaveGluttonOrderAsync(bi.Order);
+            await IniUtil.SaveLspOrderAsync(bi.Order);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
             });
         }
 
-        private async void ToggleGluttonAlbum_Toggled(object sender, RoutedEventArgs e) {
-            string album = ((ToggleSwitch)sender).IsOn ? "journal" : "merge";
-            GluttonIni bi = ini.GetIni(GluttonIni.ID) as GluttonIni;
-            if (album.Equals(bi.Album)) {
+        private async void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(LspIni.ID);
+            if (cate.Equals(bi.Cate)) {
                 return;
             }
-            bi.Album = album;
-            await IniUtil.SaveGluttonAlbumAsync(bi.Album);
+            bi.Cate = cate;
+            await IniUtil.SaveLspCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void ToggleLspR22_Toggled(object sender, RoutedEventArgs e) {
+            if (ToggleLspR22.IsOn) {
+                R22AuthApiData data = await Api.LspR22AuthAsync();
+                if (data.R22 == 0) { // 未获授权
+                    ToggleLspR22.Toggled -= ToggleLspR22_Toggled;
+                    ToggleLspR22.IsOn = false;
+                    ToggleLspR22.Toggled += ToggleLspR22_Toggled;
+                    DlgChanged?.Invoke(this, new DlgEventArgs {
+                        LspR22Changed = data
+                    });
+                    return;
+                }
+            }
+
+            LspIni bi = ini.GetIni(LspIni.ID) as LspIni;
+            bi.R22 = ToggleLspR22.IsOn;
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbNetbianOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridNetbianOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(NetbianIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveNetbianOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxNetbianCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(NetbianIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveNetbianCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BtnNetbianDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlNetbian")));
+        }
+
+        private async void TbNasaOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridNasaOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(NasaIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveNasaOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void ToggleNasaMirror_Toggled(object sender, RoutedEventArgs e) {
+            string mirror = ((ToggleSwitch)sender).IsOn ? "bjp" : "";
+            NasaIni bi = ini.GetIni(NasaIni.ID) as NasaIni;
+            if (mirror.Equals(bi.Mirror)) {
+                return;
+            }
+            bi.Mirror = mirror;
+            await IniUtil.SaveNasaMirrorAsync(bi.Mirror);
             await IniUtil.SaveProviderAsync(bi.Id);
             SettingsChanged?.Invoke(this, new SettingsEventArgs {
                 ProviderConfigChanged = true
@@ -771,6 +862,124 @@ namespace Timeline.Pages {
 
         private async void BtnQingbzDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlQingbz")));
+        }
+
+        private async void TbSkitterOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridSkitterOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(SkitterIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveSkitterOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxSkitterCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(SkitterIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveSkitterCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbSimpleOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridSimpleOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(SimpleIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveSimpleOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbTimelineOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridTimelineOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(TimelineIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveTimelineOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxTimelineCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(TimelineIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveTimelineCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void TbToopicOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridToopicOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(ToopicIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveToopicOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxToopicCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(ToopicIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveToopicCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BtnToopicDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlToopic")));
         }
 
         private async void TbWallhavenOrder_Click(object sender, RoutedEventArgs e) {
@@ -869,6 +1078,42 @@ namespace Timeline.Pages {
             });
         }
 
+        private async void TbYmyouliOrder_Click(object sender, RoutedEventArgs e) {
+            ToggleButton tbThis = sender as ToggleButton;
+            foreach (ToggleButton tb in GridYmyouliOrder.Children.Cast<ToggleButton>()) {
+                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
+            }
+            string order = tbThis.Tag as string;
+            BaseIni bi = ini.GetIni(YmyouliIni.ID);
+            if (order.Equals(bi.Order)) {
+                return;
+            }
+            bi.Order = order;
+            await IniUtil.SaveYmyouliOrderAsync(bi.Order);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BoxYmyouliCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            string cate = (e.AddedItems[0] as CateMeta).Id;
+            BaseIni bi = ini.GetIni(YmyouliIni.ID);
+            if (cate.Equals(bi.Cate)) {
+                return;
+            }
+            bi.Cate = cate;
+            await IniUtil.SaveYmyouliCateAsync(bi.Cate);
+            await IniUtil.SaveProviderAsync(bi.Id);
+            SettingsChanged?.Invoke(this, new SettingsEventArgs {
+                ProviderConfigChanged = true
+            });
+        }
+
+        private async void BtnYmyouliDonate_Click(object sender, RoutedEventArgs e) {
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlYmyouli")));
+        }
+
         private async void TbZzzmhOrder_Click(object sender, RoutedEventArgs e) {
             ToggleButton tbThis = sender as ToggleButton;
             foreach (ToggleButton tb in GridZzzmhOrder.Children.Cast<ToggleButton>()) {
@@ -903,284 +1148,6 @@ namespace Timeline.Pages {
 
         private async void BtnZzzmhDonate_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlZzzmh")));
-        }
-
-        private async void TbToopicOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridToopicOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(ToopicIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveToopicOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxToopicCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(ToopicIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveToopicCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BtnToopicDonate_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlToopic")));
-        }
-
-        private async void TbNetbianOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridNetbianOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(NetbianIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveNetbianOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxNetbianCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(NetbianIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveNetbianCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BtnNetbianDonate_Click(object sender, RoutedEventArgs e) {
-            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlNetbian")));
-        }
-
-        private async void TbAbyssOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridAbyssOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(AbyssIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveAbyssOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxAbyssCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(AbyssIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveAbyssCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void TbBackieeOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridBackieeOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(BackieeIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveBackieeOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxBackieeCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(BackieeIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveBackieeCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void TbSkitterOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridSkitterOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(SkitterIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveSkitterOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxSkitterCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(SkitterIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveSkitterCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void TbSimpleOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridSimpleOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(SimpleIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveSimpleOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void TbLspOrder_Click(object sender, RoutedEventArgs e) {
-            ToggleButton tbThis = sender as ToggleButton;
-            foreach (ToggleButton tb in GridLspOrder.Children.Cast<ToggleButton>()) {
-                tb.IsChecked = tb.Tag.Equals(tbThis.Tag);
-            }
-            string order = tbThis.Tag as string;
-            BaseIni bi = ini.GetIni(LspIni.ID);
-            if (order.Equals(bi.Order)) {
-                return;
-            }
-            bi.Order = order;
-            await IniUtil.SaveLspOrderAsync(bi.Order);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BoxLspCate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            string cate = (e.AddedItems[0] as CateMeta).Id;
-            BaseIni bi = ini.GetIni(LspIni.ID);
-            if (cate.Equals(bi.Cate)) {
-                return;
-            }
-            bi.Cate = cate;
-            await IniUtil.SaveLspCateAsync(bi.Cate);
-            await IniUtil.SaveProviderAsync(bi.Id);
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void ToggleLspR22_Toggled(object sender, RoutedEventArgs e) {
-            if (ToggleLspR22.IsOn) {
-                R22AuthApiData data = await Api.LspR22AuthAsync();
-                if (data.R22 == 0) { // 未获授权
-                    ToggleLspR22.Toggled -= ToggleLspR22_Toggled;
-                    ToggleLspR22.IsOn = false;
-                    ToggleLspR22.Toggled += ToggleLspR22_Toggled;
-                    DlgChanged?.Invoke(this, new DlgEventArgs {
-                        LspR22Changed = data
-                    });
-                    return;
-                }
-            }
-
-            LspIni bi = ini.GetIni(LspIni.ID) as LspIni;
-            bi.R22 = ToggleLspR22.IsOn;
-            SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                ProviderConfigChanged = true
-            });
-        }
-
-        private async void BtnLocalFolder_Click(object sender, RoutedEventArgs e) {
-            LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
-            StorageFolder folder = await FileUtil.GetGalleryFolder(bi.Folder, ini.Folder);
-            if (folder == null) {
-                return;
-            }
-            IReadOnlyList<StorageFile> imgFiles = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
-            StorageFile fileSelected = imgFiles.FirstOrDefault(f => f.ContentType.StartsWith("image"));
-            await FileUtil.LaunchFolderAsync(folder, fileSelected);
-        }
-
-        private async void BtnLocalPick_Click(object sender, RoutedEventArgs e) {
-            FolderPicker picker = new FolderPicker();
-            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
-            picker.FileTypeFilter.Add("*");
-
-            StorageFolder folder = await picker.PickSingleFolderAsync();
-            if (folder != null) {
-                // Application now has read/write access to all contents in the picked folder
-                // (including other sub-folder contents)
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
-
-                LocalIni bi = ini.GetIni(LocalIni.ID) as LocalIni;
-                //if (folder.Path.Equals(bi.Folder)) {
-                //    return;
-                //}
-                bi.Folder = folder.Path;
-                await IniUtil.SaveLocalFolderAsync(bi.Folder);
-                await IniUtil.SaveProviderAsync(bi.Id);
-                SettingsChanged?.Invoke(this, new SettingsEventArgs {
-                    ProviderConfigChanged = true
-                });
-            }
-        }
-
-        private async void BtnLocalImport_Click(object sender, RoutedEventArgs e) {
-            await ImportAsync();
         }
 
         private async void ImgGhxi_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e) {

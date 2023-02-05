@@ -406,7 +406,7 @@ namespace TimelineService {
                 res = await LoadYmyouliAsync(Action.Tile);
             } else if (ZzzmhIni.GetId().Equals(tileProvider)) {
                 res = await LoadZzzmhAsync(Action.Tile);
-            } else { // 需要默认值
+            } else { // 设置默认值
                 res = await LoadBingAsync(Action.Tile);
             }
             if (res) {
