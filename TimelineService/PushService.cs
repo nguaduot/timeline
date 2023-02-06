@@ -1257,7 +1257,7 @@ namespace TimelineService {
                 }
             }
             if (data == null) {
-                const string URL_API = "https://api.nguaduot.cn/skitter/v2?client=timelinewallpaper&order={0}";
+                const string URL_API = "https://api.nguaduot.cn/simple/v2?client=timelinewallpaper&order={0}";
                 string urlApi = string.Format(URL_API, ini.Simple.Order);
                 LogUtil.I("LoadSimpleAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();

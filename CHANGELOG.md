@@ -1,6 +1,6 @@
 v9.0.230205
 
-+ 新增：图源 `Simple Desktops`
++ 新增：图源 `Simple Desktops`，主打简约/几何/色彩图片
 + 修复：图源 `Wallpaper Abyss` 推送不生效
 
 v8.9.230204

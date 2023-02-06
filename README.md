@@ -34,8 +34,8 @@
 三方图源：
 + [Microsoft Bing](https://cn.bing.com) - 每天发现一个新地方
 + [NASA](https://apod.nasa.gov/apod) - 每日天文一图 [[网页版]](https://api.nguaduot.cn/nasa/demo)
-+ [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [向日葵8号](https://himawari.asia/) - 实时地球
++ [ONE · 一个](http://m.wufazhuce.com/one) - 复杂世界里，一个就够了
 + [一梦幽黎](https://www.ymyouli.com) - 8K优质壁纸资源 [[网页版]](https://api.nguaduot.cn/ymyouli/demo)
 + [轻壁纸](https://qingbizhi.com/) - 壁纸分享站 [[网页版]](https://api.nguaduot.cn/qingbz/demo)
 + [极简壁纸](https://bz.zzzmh.cn/index) - PC高清桌面壁纸 [[网页版]](https://api.nguaduot.cn/zzzmh/demo)
@@ -47,6 +47,7 @@
 + [Wallpaper Abyss](https://wall.alphacoders.com/) - HD Wallpapers, Background Imges [[网页版]](https://api.nguaduot.cn/abyss/demo)
 + [backiee](https://backiee.com/) - Free Ultra HD wallpaper platform [[网页版]](https://api.nguaduot.cn/backiee/demo)
 + [Skitterphoto](https://skitterphoto.com/) - a place to find, show and share [[网页版]](https://api.nguaduot.cn/skitter/demo)
++ [Simple Desktops](http://simpledesktops.com/) - without distraction [[网页版]](https://api.nguaduot.cn/simple/demo)
 + [Infinity](https://www.infinitytab.com/) - 精选高清壁纸
 + [美图集](https://photo.ihansen.org/) - 看好的壁纸、风景、素材库
 + [OnePlus](https://photos.oneplus.com) - Shot on OnePlus
