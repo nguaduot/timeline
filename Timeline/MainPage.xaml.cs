@@ -1133,6 +1133,10 @@ namespace Timeline {
             ViewSettings.NotifyPaneOpened(ini);
         }
 
+        private void ViewSplit_PaneClosed(SplitView sender, object args) {
+            ViewSettings.NotifyPaneClosed();
+        }
+
         private void ImgUhd_ImageOpened(object sender, RoutedEventArgs e) {
             LogUtil.D("ImgUhd_ImageOpened() " + meta?.Id);
             StatusEnjoy();

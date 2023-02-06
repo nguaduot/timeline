@@ -156,6 +156,10 @@ namespace Timeline.Pages {
             }
         }
 
+        public void NotifyPaneClosed() {
+            BtnReview2.Visibility = Visibility.Collapsed; // 隐藏头部评分按钮
+        }
+
         private async Task RefreshCate(ComboBox boxCate, BaseIni bi) {
             ObservableCollection<CateMeta> boxCateList = boxCate.ItemsSource as ObservableCollection<CateMeta>;
             if (boxCateList.Count > 0) {
@@ -226,9 +230,19 @@ namespace Timeline.Pages {
                     });
                 }
             }
-            // 随机替换“评分”按钮为“赞助”
+            long ticks = DateTime.Now.Ticks;
+            // 随机显示头部评分按钮
+            if (new Random().Next(4) == 0 && BtnReview2.Tag == null) {
+                BtnReview2.Visibility = Visibility.Visible;
+                BtnReview2.Tag = true; // 确保只显示一次
+            }
+            // 随机显示评分或赞助按钮
             if (DateTime.Now.Ticks % 2 == 0) {
+                BtnReview2.Content = resLoader.GetString("ActionReview2");
                 BtnReview.Content = resLoader.GetString("ActionDonate");
+            } else {
+                BtnReview2.Content = resLoader.GetString("ActionDonate2");
+                BtnReview.Content = resLoader.GetString("ActionReview");
             }
             // 刷新运营数据
             if (release.Life != null && release.Life.Past > 0) {
@@ -427,10 +441,38 @@ namespace Timeline.Pages {
             }
         }
 
+        private async void LinkReview_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
+            BtnReview2.Visibility = Visibility.Collapsed; // 隐藏头部评分按钮
+            await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlReview")));
+        }
+
         private async void LinkDonate_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
+            BtnReview2.Visibility = Visibility.Collapsed; // 隐藏头部评分按钮
             await new DonateDlg {
                 RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
             }.ShowAsync();
+        }
+
+        private async void BtnReview_Click(object sender, RoutedEventArgs e) {
+            BtnReview2.Visibility = Visibility.Collapsed; // 隐藏头部评分按钮
+            if (BtnReview.Content.Equals(resLoader.GetString("ActionDonate"))) {
+                await new DonateDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                }.ShowAsync();
+            } else {
+                await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlReview")));
+            }
+        }
+
+        private async void BtnReview2_Click(object sender, RoutedEventArgs e) {
+            BtnReview2.Visibility = Visibility.Collapsed; // 隐藏头部评分按钮
+            if (BtnReview2.Content.Equals(resLoader.GetString("ActionDonate2"))) {
+                await new DonateDlg {
+                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
+                }.ShowAsync();
+            } else {
+                await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("UrlReview")));
+            }
         }
 
         private async void BtnIni_Click(object sender, RoutedEventArgs e) {
@@ -466,16 +508,6 @@ namespace Timeline.Pages {
 
         private async void BtnShowCachePush_Click(object sender, RoutedEventArgs e) {
             await FileUtil.LaunchFolderAsync(await FileUtil.GetWallpaperFolderAsync());
-        }
-
-        private async void BtnReview_Click(object sender, RoutedEventArgs e) {
-            if (BtnReview.Content.Equals(resLoader.GetString("ActionDonate"))) {
-                await new DonateDlg {
-                    RequestedTheme = ThemeUtil.ParseTheme(ini.Theme) // 修复未响应主题切换的BUG
-                }.ShowAsync();
-            } else {
-                await FileUtil.LaunchUriAsync(new Uri(resLoader.GetString("LinkReview/NavigateUri")));
-            }
         }
 
         private async void TbAbyssOrder_Click(object sender, RoutedEventArgs e) {

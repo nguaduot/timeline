@@ -21,7 +21,7 @@
                     <VisualState.Setters>
                         <Setter Target="TextThemeCur.Visibility"
                                 Value="Visible" />
-                        <Setter Target="TextSettings.Margin"
+                        <Setter Target="GridTitleSettings.Margin"
                                 Value="24" />
                         <Setter Target="ViewSettings.Padding"
                                 Value="24,0,24,36" />
@@ -30,10 +30,22 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <TextBlock Name="TextSettings"
-                   x:Uid="TextSettings"
-                   Margin="12"
-                   Style="{StaticResource TitleLargeTextBlockStyle}" />
+        <Grid Name="GridTitleSettings"
+              Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Uid="TextSettings"
+                       VerticalAlignment="Bottom"
+                       Style="{StaticResource TitleLargeTextBlockStyle}" />
+            <HyperlinkButton Grid.Column="1"
+                             Name="BtnReview2"
+                             Visibility="Collapsed"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Right"
+                             Click="BtnReview2_Click" />
+        </Grid>
 
         <ScrollViewer Grid.Row="1"
                       Name="ScrollSettings"
@@ -2478,7 +2490,6 @@
                             </StackPanel>
                             <Button Grid.Column="2"
                                     Name="BtnReview"
-                                    x:Uid="BtnReview"
                                     VerticalAlignment="Center"
                                     Click="BtnReview_Click" />
                         </Grid>
@@ -2490,8 +2501,8 @@
                                 <!-- Note: don't put Hyperlink element start to the next line, otherwise unexpected whitespace will be add. -->
                                 <Span xml:space="default">
                                     <Run x:Uid="TextReview0" />
-                                    <Hyperlink x:Uid="LinkReview"
-                                               UnderlineStyle="None">
+                                    <Hyperlink UnderlineStyle="None"
+                                               Click="LinkReview_Click">
                                         <Run x:Uid="TextReview1" />
                                     </Hyperlink>
                                     <Run x:Uid="TextReview2" />
@@ -2502,8 +2513,7 @@
                                        Margin="0,8,0,0">
                                 <Span xml:space="default">
                                     <Run x:Uid="TextDonate0" />
-                                    <Hyperlink x:Uid="LinkDonate"
-                                               UnderlineStyle="None"
+                                    <Hyperlink UnderlineStyle="None"
                                                Click="LinkDonate_Click">
                                         <Run x:Uid="TextDonate1" />
                                     </Hyperlink>
@@ -2579,39 +2589,6 @@
                                        TextWrapping="WrapWholeWords"
                                        Style="{StaticResource BodyTextBlockStyle}"
                                        Margin="0,8,0,0" />
-                            <!--<TextBlock TextWrapping="WrapWholeWords"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0">
-                                <Span xml:space="default">
-                                    <Run x:Uid="TextThankAd1" />
-                                    <Hyperlink x:Uid="LinkAd1"
-                                               UnderlineStyle="None">
-                                        <Run x:Uid="TextView" />
-                                    </Hyperlink>
-                                </Span>
-                            </TextBlock>
-                            <TextBlock TextWrapping="WrapWholeWords"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0">
-                                <Span xml:space="default">
-                                    <Run x:Uid="TextThankAd2" />
-                                    <Hyperlink x:Uid="LinkAd2"
-                                               UnderlineStyle="None">
-                                        <Run x:Uid="TextView" />
-                                    </Hyperlink>
-                                </Span>
-                            </TextBlock>
-                            <TextBlock TextWrapping="WrapWholeWords"
-                                       Style="{StaticResource BodyTextBlockStyle}"
-                                       Margin="0,8,0,0">
-                                <Span xml:space="default">
-                                    <Run x:Uid="TextThankAd3" />
-                                    <Hyperlink x:Uid="LinkAd3"
-                                               UnderlineStyle="None">
-                                        <Run x:Uid="TextView" />
-                                    </Hyperlink>
-                                </Span>
-                            </TextBlock>-->
                             <TextBlock Name="TextThankDonate"
                                        TextWrapping="WrapWholeWords"
                                        Visibility="Collapsed"

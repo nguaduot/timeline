@@ -497,6 +497,7 @@
     <SplitView Name="ViewSplit"
                IsPaneOpen="False"
                PaneOpened="ViewSplit_PaneOpened"
+               PaneClosed="ViewSplit_PaneClosed"
                DisplayMode="Overlay"
                PaneBackground="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                OpenPaneLength="356">

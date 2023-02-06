@@ -21,7 +21,7 @@
   在右侧的 [发行版](https://gitee.com/nguaduot/timeline/releases) 页面，找到最新版本，下载压缩包，然后解压，找到 `install.ps1` 脚本，右键 **使用 PowerShell 运行**，根据提示即可顺利安装。  
   如无法顺利安装，请参考：[Wiki / 安装](https://gitee.com/nguaduot/timeline/wikis/%E5%AE%89%E8%A3%85)
 
-体验网页版：[app.nguaduot.cn/timeline](https：//app.nguaduot.cn/timeline)
+体验网页版：[app.nguaduot.cn/timeline](https://app.nguaduot.cn/timeline)
 
 ## 图源
 

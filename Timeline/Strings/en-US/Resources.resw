@@ -252,11 +252,11 @@
   <data name="LinkOpenSource.NavigateUri" xml:space="preserve">
     <value>https://gitee.com/nguaduot/timeline</value>
   </data>
-  <data name="LinkReview.NavigateUri" xml:space="preserve">
+  <data name="UrlReview" xml:space="preserve">
     <value>ms-windows-store://review/?ProductId=9N7VHQ989BB7</value>
   </data>
   <data name="TextCopyright.Text" xml:space="preserve">
-    <value>© 2021-2022 nguaduot. All rights reserved.</value>
+    <value>© 2021-2023 nguaduot. All rights reserved.</value>
   </data>
   <data name="DlgDonate.CloseButtonText" xml:space="preserve">
     <value>Maybe next</value>
@@ -438,7 +438,7 @@
   <data name="Slogan_one" xml:space="preserve">
     <value>ONE IS ALL</value>
   </data>
-  <data name="BtnReview.Content" xml:space="preserve">
+  <data name="ActionReview" xml:space="preserve">
     <value>Go</value>
   </data>
   <data name="BtnProviderDonate.Content" xml:space="preserve">
@@ -581,9 +581,6 @@
   </data>
   <data name="TextSettingsOther.Text" xml:space="preserve">
     <value>Other</value>
-  </data>
-  <data name="TextThankAd1.Text" xml:space="preserve">
-    <value>Thank WeChat@网罗灯下黑 for article.</value>
   </data>
   <data name="Provider_wallhaven" xml:space="preserve">
     <value>wallhaven</value>
@@ -735,20 +732,11 @@
   <data name="ActionExpand" xml:space="preserve">
     <value>Expand</value>
   </data>
-  <data name="LinkAd1.NavigateUri" xml:space="preserve">
-    <value>https://mp.weixin.qq.com/s/bY9rJUhmowGr0mbxtDLR6w</value>
-  </data>
   <data name="TextView.Text" xml:space="preserve">
     <value>View</value>
   </data>
   <data name="ThankDonate2" xml:space="preserve">
     <value>Sponsor list: {0}</value>
-  </data>
-  <data name="LinkAd2.NavigateUri" xml:space="preserve">
-    <value>https://mp.weixin.qq.com/s/A1wVql71U8p_ikuPJ3cgcA</value>
-  </data>
-  <data name="TextThankAd2.Text" xml:space="preserve">
-    <value>Thank WeChat@阿明不哭 for article.</value>
   </data>
   <data name="GluttonPhase" xml:space="preserve">
     <value>Phase {1} {2}</value>
@@ -759,17 +747,11 @@
   <data name="TextGluttonAlbum.Text" xml:space="preserve">
     <value>Weekly album</value>
   </data>
-  <data name="LinkAd3.NavigateUri" xml:space="preserve">
-    <value>https://go2think.com/timeline-wallpaper-app/</value>
-  </data>
   <data name="Provider_wallpaperup" xml:space="preserve">
     <value>WallpaperUP</value>
   </data>
   <data name="Slogan_wallpaperup" xml:space="preserve">
     <value>Your best source of wallpapers</value>
-  </data>
-  <data name="TextThankAd3.Text" xml:space="preserve">
-    <value>Thank Go 2 Think for article.</value>
   </data>
   <data name="SettingsBbsDesc.Text" xml:space="preserve">
     <value>Messages from the developer</value>
@@ -938,5 +920,11 @@
   </data>
   <data name="Slogan_simple" xml:space="preserve">
     <value>without distraction</value>
+  </data>
+  <data name="ActionDonate2" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="ActionReview2" xml:space="preserve">
+    <value>Rate me</value>
   </data>
 </root>
