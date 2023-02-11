@@ -25,11 +25,11 @@ namespace Timeline.Beans {
         [JsonProperty(PropertyName = "title")]
         public string Title { set; get; }
 
-        // 故事
+        // 故事、标签组（分隔符：“, ”）
         [JsonProperty(PropertyName = "story")]
         public string Story { set; get; }
 
-        // 版权所有
+        // 版权所有、作者、上传者、分享者
         [JsonProperty(PropertyName = "copyright")]
         public string Copyright { set; get; }
 

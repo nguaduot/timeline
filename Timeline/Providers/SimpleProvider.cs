@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
-using System.Linq;
 
 namespace Timeline.Providers {
     public class SimpleProvider : BaseProvider {
@@ -15,7 +14,7 @@ namespace Timeline.Providers {
             "?client=timelinewallpaper&device={0}" +
             "&order={1}&tag={2}&no={3}&date={4}&score={5:F4}&admin={6}";
 
-        private Meta ParseBean(SimpleApiData bean) {
+        private Meta ParseBean(GeneralApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 No = bean.No,
@@ -56,12 +55,12 @@ namespace Timeline.Providers {
                 HttpResponseMessage res = await client.GetAsync(urlApi, token);
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                SimpleApi api = JsonConvert.DeserializeObject<SimpleApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 if (api.Status != 1) {
                     return false;
                 }
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (SimpleApiData item in api.Data) {
+                foreach (GeneralApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item));
                 }
                 AppendMetas(metasAdd);

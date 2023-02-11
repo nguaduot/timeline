@@ -139,30 +139,16 @@
     <Compile Include="Beans\InfinityApi.cs" />
     <Compile Include="Beans\CateApi.cs" />
     <Compile Include="Beans\Meta.cs" />
-    <Compile Include="Beans\NasaApiItem.cs" />
-    <Compile Include="Beans\ObzhiApi.cs" />
     <Compile Include="Beans\OneApi.cs" />
     <Compile Include="Beans\OneplusApi.cs" />
-    <Compile Include="Beans\QingbzApi.cs" />
     <Compile Include="Beans\RankApiReq.cs" />
     <Compile Include="Beans\ReleaseApi.cs" />
     <Compile Include="Beans\StatsApiReq.cs" />
-    <Compile Include="Beans\NasaApi.cs" />
     <Compile Include="Beans\TimelineApi.cs" />
     <Compile Include="Beans\LspApi.cs" />
     <Compile Include="Beans\GeneralApi.cs" />
-    <Compile Include="Beans\BackieeApi.cs" />
     <Compile Include="Beans\IhansenApi.cs" />
-    <Compile Include="Beans\SkitterApi.cs" />
-    <Compile Include="Beans\AbyssApi.cs" />
-    <Compile Include="Beans\SimpleApi.cs" />
-    <Compile Include="Beans\WallhavenApi.cs" />
     <Compile Include="Beans\GluttonApi.cs" />
-    <Compile Include="Beans\ToopicApi.cs" />
-    <Compile Include="Beans\NetbianApi.cs" />
-    <Compile Include="Beans\ZzzmhApi.cs" />
-    <Compile Include="Beans\WallpaperupApi.cs" />
-    <Compile Include="Beans\WallhereApi.cs" />
     <Compile Include="Beans\YmyouliApi.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -191,6 +177,7 @@
     <Compile Include="Providers\OneplusProvider.cs" />
     <Compile Include="Providers\OneProvider.cs" />
     <Compile Include="Providers\QingbzProvider.cs" />
+    <Compile Include="Providers\SimpleProvider.cs" />
     <Compile Include="Providers\TimelineProvider.cs" />
     <Compile Include="Providers\LspProvider.cs" />
     <Compile Include="Providers\GluttonProvider.cs" />
@@ -200,7 +187,6 @@
     <Compile Include="Providers\BackieeProvider.cs" />
     <Compile Include="Providers\SkitterProvider.cs" />
     <Compile Include="Providers\AbyssProvider.cs" />
-    <Compile Include="Providers\SimpleProvider.cs" />
     <Compile Include="Providers\ZzzmhProvider.cs" />
     <Compile Include="Providers\WallpaperupProvider.cs" />
     <Compile Include="Providers\WallhereProvider.cs" />
@@ -282,7 +268,6 @@
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <None Include="Timeline_TemporaryKey-alt.pfx" />
-    <None Include="Timeline_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

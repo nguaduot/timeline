@@ -15,7 +15,7 @@ namespace Timeline.Providers {
             "&order={1}&cate={2}" +
             "&tag={3}&no={4}&date={5}&score={6:F4}&admin={7}";
 
-        private Meta ParseBean(ObzhiApiData bean) {
+        private Meta ParseBean(GeneralApiData bean) {
             Meta meta = new Meta {
                 Id = bean.Id,
                 No = bean.No,
@@ -56,12 +56,12 @@ namespace Timeline.Providers {
                 HttpResponseMessage res = await client.GetAsync(urlApi, token);
                 string jsonData = await res.Content.ReadAsStringAsync();
                 //LogUtil.D("LoadData() provider data: " + jsonData.Trim());
-                ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 if (api.Status != 1) {
                     return false;
                 }
                 List<Meta> metasAdd = new List<Meta>();
-                foreach (ObzhiApiData item in api.Data) {
+                foreach (GeneralApiData item in api.Data) {
                     metasAdd.Add(ParseBean(item));
                 }
                 AppendMetas(metasAdd);

@@ -588,11 +588,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadAbyssAsync(Action action) {
-            AbyssApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(AbyssIni.GetId(), ini.Abyss.Order, ini.Abyss.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    AbyssApi api = JsonConvert.DeserializeObject<AbyssApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadAbyssAsync() cache from disk");
                 } catch (Exception e) {
@@ -605,7 +605,7 @@ namespace TimelineService {
                 LogUtil.I("LoadAbyssAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                AbyssApi api = JsonConvert.DeserializeObject<AbyssApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(AbyssIni.GetId(), ini.Abyss.Order, ini.Abyss.Cate, jsonData);
             }
@@ -628,11 +628,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadBackieeAsync(Action action) {
-            BackieeApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(BackieeIni.GetId(), ini.Backiee.Order, ini.Backiee.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    BackieeApi api = JsonConvert.DeserializeObject<BackieeApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadBackieeAsync() cache from disk");
                 } catch (Exception e) {
@@ -645,7 +645,7 @@ namespace TimelineService {
                 LogUtil.I("LoadBackieeAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                BackieeApi api = JsonConvert.DeserializeObject<BackieeApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(BackieeIni.GetId(), ini.Backiee.Order, ini.Backiee.Cate, jsonData);
             }
@@ -697,11 +697,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadTimelineAsync(Action action) {
-            TimelineApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(TimelineIni.GetId(), "date", "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
+                    data = JsonConvert.DeserializeObject<GeneralApi>(jsonData).Data[0];
                     LogUtil.I("LoadTimelineAsync() cache from disk");
                 } catch (Exception e) {
                     LogUtil.E("LoadTimelineAsync() " + e.Message);
@@ -712,7 +712,7 @@ namespace TimelineService {
                 LogUtil.I("LoadTimelineAsync() api url: " + URL_API);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(URL_API);
-                data = JsonConvert.DeserializeObject<TimelineApi>(jsonData).Data[0];
+                data = JsonConvert.DeserializeObject<GeneralApi>(jsonData).Data[0];
                 await FileUtil.WriteProviderCache(TimelineIni.GetId(), "date", "", jsonData);
             }
             if (action == Action.Toast || action == Action.Tile) {
@@ -765,11 +765,11 @@ namespace TimelineService {
 
         private async Task<bool> LoadGluttonAsync(Action action) {
             const int PHASE_SIZE = 10; // 每期图片数
-            GluttonApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(GluttonIni.GetId(), ini.Glutton.Album, ini.Glutton.Order);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     if ("merge".Equals(ini.Glutton.Album)) {
                         data = api.Data[new Random().Next(api.Data.Count)];
                     } else { // journal or null
@@ -788,7 +788,7 @@ namespace TimelineService {
                     LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
                     HttpClient client = new HttpClient();
                     jsonData = await client.GetStringAsync(urlApi);
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                 } else { // journal or null
                     const string URL_API_JOURNAL = "https://api.nguaduot.cn/glutton/journal?client=timelinewallpaper&order={0}";
@@ -796,7 +796,7 @@ namespace TimelineService {
                     LogUtil.I("LoadGluttonAsync() api url: " + urlApi);
                     HttpClient client = new HttpClient();
                     jsonData = await client.GetStringAsync(urlApi);
-                    GluttonApi api = JsonConvert.DeserializeObject<GluttonApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     // 若为“收录”排序，则仅推送当期
                     int count = Math.Min(api.Data.Count, "date".Equals(ini.Glutton.Order) ? PHASE_SIZE : api.Data.Count);
                     data = api.Data[new Random().Next(count)];
@@ -1010,11 +1010,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadLspAsync(Action action) {
-            LspApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(LspIni.GetId(), ini.Lsp.Order, ini.Lsp.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadLspAsync() cache from disk");
                 } catch (Exception e) {
@@ -1027,7 +1027,7 @@ namespace TimelineService {
                 LogUtil.I("LoadLspAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                LspApi api = JsonConvert.DeserializeObject<LspApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(LspIni.GetId(), ini.Lsp.Order, ini.Lsp.Cate, jsonData);
             }
@@ -1050,11 +1050,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadNasaAsync(Action action) {
-            NasaApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(NasaIni.GetId(), "date", "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadNasaAsync() cache from disk");
                 } catch (Exception e) {
@@ -1066,7 +1066,7 @@ namespace TimelineService {
                 LogUtil.I("LoadNasaAsync() api url: " + URL_API);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(URL_API);
-                NasaApi api = JsonConvert.DeserializeObject<NasaApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(NasaIni.GetId(), "date", "", jsonData);
             }
@@ -1089,11 +1089,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadNetbianAsync(Action action) {
-            NetbianApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(NetbianIni.GetId(), ini.Netbian.Order, ini.Netbian.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    NetbianApi api = JsonConvert.DeserializeObject<NetbianApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadNetbianAsync() cache from disk");
                 } catch (Exception e) {
@@ -1106,7 +1106,7 @@ namespace TimelineService {
                 LogUtil.I("LoadNetbianAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                NetbianApi api = JsonConvert.DeserializeObject<NetbianApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(NetbianIni.GetId(), ini.Netbian.Order, ini.Netbian.Cate, jsonData);
             }
@@ -1129,11 +1129,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadObzhiAsync(Action action) {
-            ObzhiApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(ObzhiIni.GetId(), ini.Obzhi.Order, ini.Obzhi.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadObzhiAsync() cache from disk");
                 } catch (Exception e) {
@@ -1146,7 +1146,7 @@ namespace TimelineService {
                 LogUtil.I("LoadObzhiAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                ObzhiApi api = JsonConvert.DeserializeObject<ObzhiApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(ObzhiIni.GetId(), ini.Obzhi.Order, ini.Obzhi.Cate, jsonData);
             }
@@ -1205,11 +1205,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadQingbzAsync(Action action) {
-            QingbzApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(QingbzIni.GetId(), ini.Qingbz.Order, ini.Qingbz.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadQingbzAsync() cache from disk");
                 } catch (Exception e) {
@@ -1222,7 +1222,7 @@ namespace TimelineService {
                 LogUtil.I("LoadQingbzAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                QingbzApi api = JsonConvert.DeserializeObject<QingbzApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(QingbzIni.GetId(), ini.Qingbz.Order, ini.Qingbz.Cate, jsonData);
             }
@@ -1245,11 +1245,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadSimpleAsync(Action action) {
-            SimpleApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(SimpleIni.GetId(), ini.Simple.Order, "");
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    SimpleApi api = JsonConvert.DeserializeObject<SimpleApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadSimpleAsync() cache from disk");
                 } catch (Exception e) {
@@ -1262,7 +1262,7 @@ namespace TimelineService {
                 LogUtil.I("LoadSimpleAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                SimpleApi api = JsonConvert.DeserializeObject<SimpleApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(SimpleIni.GetId(), ini.Simple.Order, "", jsonData);
             }
@@ -1285,11 +1285,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadSkitterAsync(Action action) {
-            SkitterApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(SkitterIni.GetId(), ini.Skitter.Order, ini.Skitter.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    SkitterApi api = JsonConvert.DeserializeObject<SkitterApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadSkitterAsync() cache from disk");
                 } catch (Exception e) {
@@ -1302,7 +1302,7 @@ namespace TimelineService {
                 LogUtil.I("LoadSkitterAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                SkitterApi api = JsonConvert.DeserializeObject<SkitterApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(SkitterIni.GetId(), ini.Skitter.Order, ini.Skitter.Cate, jsonData);
             }
@@ -1325,11 +1325,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadToopicAsync(Action action) {
-            ToopicApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(ToopicIni.GetId(), ini.Toopic.Order, ini.Toopic.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadToopicAsync() cache from disk");
                 } catch (Exception e) {
@@ -1342,7 +1342,7 @@ namespace TimelineService {
                 LogUtil.I("LoadToopicAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                ToopicApi api = JsonConvert.DeserializeObject<ToopicApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(ToopicIni.GetId(), ini.Toopic.Order, ini.Toopic.Cate, jsonData);
             }
@@ -1365,11 +1365,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhavenAsync(Action action) {
-            WallhavenApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Order, ini.Wallhaven.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadWallhaven() cache from disk");
                 } catch (Exception e) {
@@ -1382,7 +1382,7 @@ namespace TimelineService {
                 LogUtil.I("LoadWallhaven() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                WallhavenApi api = JsonConvert.DeserializeObject<WallhavenApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(WallhavenIni.GetId(), ini.Wallhaven.Order, ini.Wallhaven.Cate, jsonData);
             }
@@ -1405,11 +1405,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallhereAsync(Action action) {
-            WallhereApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(WallhereIni.GetId(), ini.Wallhere.Order, ini.Wallhere.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadWallhereAsync() cache from disk");
                 } catch (Exception e) {
@@ -1422,7 +1422,7 @@ namespace TimelineService {
                 LogUtil.I("LoadWallhereAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                WallhereApi api = JsonConvert.DeserializeObject<WallhereApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(WallhereIni.GetId(), ini.Wallhere.Order, ini.Wallhere.Cate, jsonData);
             }
@@ -1445,11 +1445,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadWallpaperupAsync(Action action) {
-            WallpaperupApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Order, ini.Wallpaperup.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadWallpaperupAsync() cache from disk");
                 } catch (Exception e) {
@@ -1462,7 +1462,7 @@ namespace TimelineService {
                 LogUtil.I("LoadWallpaperupAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                WallpaperupApi api = JsonConvert.DeserializeObject<WallpaperupApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(WallpaperupIni.GetId(), ini.Wallpaperup.Order, ini.Wallpaperup.Cate, jsonData);
             }
@@ -1485,11 +1485,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadYmyouliAsync(Action action) {
-            YmyouliApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Order, ini.Ymyouli.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadYmyouliAsync() cache from disk");
                 } catch (Exception e) {
@@ -1502,7 +1502,7 @@ namespace TimelineService {
                 LogUtil.I("LoadYmyouliAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                YmyouliApi api = JsonConvert.DeserializeObject<YmyouliApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(YmyouliIni.GetId(), ini.Ymyouli.Order, ini.Ymyouli.Cate, jsonData);
             }
@@ -1526,11 +1526,11 @@ namespace TimelineService {
         }
 
         private async Task<bool> LoadZzzmhAsync(Action action) {
-            ZzzmhApiData data = null;
+            GeneralApiData data = null;
             string jsonData = await FileUtil.ReadProviderCache(ZzzmhIni.GetId(), ini.Zzzmh.Order, ini.Zzzmh.Cate);
             if (!string.IsNullOrEmpty(jsonData)) {
                 try {
-                    ZzzmhApi api = JsonConvert.DeserializeObject<ZzzmhApi>(jsonData);
+                    GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                     data = api.Data[new Random().Next(api.Data.Count)];
                     LogUtil.I("LoadZzzmhAsync() cache from disk");
                 } catch (Exception e) {
@@ -1543,7 +1543,7 @@ namespace TimelineService {
                 LogUtil.I("LoadZzzmhAsync() api url: " + urlApi);
                 HttpClient client = new HttpClient();
                 jsonData = await client.GetStringAsync(urlApi);
-                ZzzmhApi api = JsonConvert.DeserializeObject<ZzzmhApi>(jsonData);
+                GeneralApi api = JsonConvert.DeserializeObject<GeneralApi>(jsonData);
                 data = api.Data[new Random().Next(api.Data.Count)];
                 await FileUtil.WriteProviderCache(ZzzmhIni.GetId(), ini.Zzzmh.Order, ini.Zzzmh.Cate, jsonData);
             }
